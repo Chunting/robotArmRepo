@@ -1,0 +1,4 @@
+ofxGui
+ofxNatNet
+ofxOsc
+ofxXmlSettings

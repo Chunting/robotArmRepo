@@ -9,3 +9,11 @@ ofxURDriver is coming Spring 2016.
 
 This app is test app for the KinematicModel of the UR5 robot arm.  It visualizes how the robot arm moves.
 
+#### WorldCalibration 
+
+This app calibrations the world
+
+	- UR5
+	- OptiTrack Mocap System (via NatNet)
+	- KinectV2 Skeleton/Depth/RGB
+
