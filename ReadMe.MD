@@ -19,5 +19,6 @@ This app calibrations the world
 
 
 
-_All Apps are built against openFrameworks - master.  Living on the bleeding edge_
+_All Apps are built against openFrameworks master branch_
+_living on the bleeding edge!_
  
