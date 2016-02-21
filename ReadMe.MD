@@ -17,3 +17,7 @@ This app calibrations the world
 - OptiTrack Mocap System (via NatNet)
 - KinectV2 Skeleton/Depth/RGB
 
+
+
+_All Apps are built against openFrameworks - master.  Living on the bleeding edge_
+ 
