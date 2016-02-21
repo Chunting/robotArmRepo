@@ -14,75 +14,8 @@ void ofApp::setup(){
     natnet.setScale(100);
     natnet.setDuplicatedPointRemovalDistance(20);
 #endif
-    
-    robot = new UrDriver(rt_msg_cond_,
-                         msg_cond_, "192.168.1.9");
-    
-    for(int i = 0; i < 6; i++){
-        angles.push_back(ofVec3f());
-        jointLength.push_back(ofVec3f());
-        jointsQ.push_back(ofQuaternion());
-        joints.push_back(ofNode());
-        
-    }
-    
-    joints[1].setParent(joints[0]);
-    joints[2].setParent(joints[1]);
-    joints[3].setParent(joints[2]);
-    joints[4].setParent(joints[3]);
-    joints[5].setParent(joints[4]);
-    
-    joints[0].setPosition(0, 0, 0);
-    joints[1].setPosition(ofVec3f(0, -109.3, 89.2));
-    joints[2].setPosition(ofVec3f(0, 0, 425));
-    joints[3].setPosition(ofVec3f(0, 109.3, 392));
-    joints[4].setPosition(ofVec3f(0, -109.3, 0));
-    joints[5].setPosition(ofVec3f(0, -82.5, 94.75));
-    
-    
-    
-    angles[0].set(0, 0, 1);
-    angles[1].set(1, 0, 0);
-    angles[2].set(1, 0, 0);
-    angles[3].set(1, 0, 0);
-    angles[4].set(0, 0, 1);
-    angles[5].set(0, 1, 0);
-    
-    jointLength[0].set(0, 0, 0);
-    jointLength[1].set(10, 0, 0);
-    jointLength[2].set(425, 0, 0);
-    jointLength[3].set(392, 0, 0);
-    jointLength[4].set(0, 109, 0);
-    jointLength[5].set(0, 82, 0);
+    robot.setup();
 
-    char buf[256];
-    vector<string> foo = robot->getJointNames();
-    std::string joint_prefix = "";
-    std::vector<std::string> joint_names;
-    joint_prefix = "ur5-";
-    joint_names.push_back(joint_prefix + "shoulder_pan_joint");
-    joint_names.push_back(joint_prefix + "shoulder_lift_joint");
-    joint_names.push_back(joint_prefix + "elbow_joint");
-    joint_names.push_back(joint_prefix + "wrist_1_joint");
-    joint_names.push_back(joint_prefix + "wrist_2_joint");
-    joint_names.push_back(joint_prefix + "wrist_3_joint");
-    robot->setJointNames(joint_names);
-    
-    //Bounds for SetPayload service
-    //Using a very conservative value as it should be set through the parameter server
-    double min_payload = 0.;
-    double max_payload = 1.;
-    robot->setMinPayload(min_payload);
-    robot->setMaxPayload(max_payload);
-    sprintf(buf, "Bounds for set_payload service calls: [%f, %f]",
-            min_payload, max_payload);
-    ofLog()<<buf;
-    
-    if( robot-> start()){
-        ofLog()<<"SUCCESSSS"<<endl;
-    }
-    
-    
 }
 
 
@@ -122,33 +55,6 @@ void ofApp::update(){
         sender.sendBundle(bundle);
     }
 #endif
-    
-    std::mutex msg_lock; // The values are locked for reading in the class, so just use a dummy mutex
-    std::unique_lock<std::mutex> locker(msg_lock);
-    while (!robot->rt_interface_->robot_state_->getControllerUpdated()) {
-        rt_msg_cond_.wait(locker);
-    }
-    
-    //    clock_gettime(CLOCK_MONOTONIC, &current_time);
-    //    elapsed_time = ofGetElapsedTimef();
-    //    last_time = ofGetElapsedTimef();
-    jointsRaw = robot->rt_interface_->robot_state_->getQActual();
-
-    for(int i = 0; i < joints.size(); i++){
-        jointsRaw[i] = ofRadToDeg(jointsRaw[i]);
-        if(i == 1 || i == 3){
-            jointsRaw[i]+=90;
-        }
-        jointsQ[i].makeRotate(jointsRaw[i], angles[i]);
-        joints[i].setOrientation(jointsQ[i]);
-    }
-    
-    
-    vector<double> foo = robot->rt_interface_->robot_state_->getToolVectorActual();
-    tool.setPosition(ofVec3f(foo[0], foo[1], foo[2])*1000);
-    tool.setOrientation(ofVec3f(ofRadToDeg(foo[3]), ofRadToDeg(foo[4]), ofRadToDeg(foo[5])));
-    
-    robot->rt_interface_->robot_state_->setControllerUpdated();
 }
 
 //--------------------------------------------------------------
@@ -239,36 +145,8 @@ void ofApp::draw(){
     ofDrawBitmapString(str, 10, 20);
 #endif
     
-    cam.begin(ofRectangle(0, 0, 640, 480));
-    ofEnableDepthTest();
-    ofSetColor(255, 255, 255);
-    tool.draw();
-    joints[0].draw();
-    for(int i = 1; i < joints.size(); i++){
-        if(i == 0){
-            ofSetColor(255, 0, 0);
-        }
-        if(i == 1){
-            ofSetColor(0, 255, 255);
-        }
-        if(i == 2){
-            ofSetColor(0, 0, 255);
-        }
-        if(i == 3){
-            ofSetColor(0, 255, 0);
-        }
-        if(i == 4){
-            ofSetColor(255, 255, 0);
-        }
-        if(i == 5){
-            ofSetColor(255, 0, 255);
-        }
-        ofDrawLine(joints[i].getGlobalPosition(), joints[i-1].getGlobalPosition());
-        joints[i].draw();
-    }
-    ofDisableDepthTest();
-    cam.end();
-    
+    robot.draw();
+        
 }
 
 //--------------------------------------------------------------
