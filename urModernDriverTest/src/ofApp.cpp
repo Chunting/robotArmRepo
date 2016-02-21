@@ -15,7 +15,6 @@ void ofApp::setup(){
     natnet.setDuplicatedPointRemovalDistance(20);
 #endif
     robot.setup();
-
 }
 
 

@@ -9,7 +9,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ur_driver.h"
-#include "KinectModel.h"
+#include "KinematicModel.h"
 class UR5 {
 public:
     UR5();
@@ -35,7 +35,7 @@ public:
     bool use_ros_control_;
     std::thread* ros_control_thread_;
     
-    KinectModel model;
+    KinematicModel model;
     ofEasyCam cam;
     
 

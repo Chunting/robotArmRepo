@@ -6,14 +6,14 @@
 //
 //
 
-#include "KinectModel.h"
-KinectModel::KinectModel(){
+#include "KinematicModel.h"
+KinematicModel::KinematicModel(){
     
 }
-KinectModel::~KinectModel(){
+KinematicModel::~KinematicModel(){
     
 }
-void KinectModel::setup(){
+void KinematicModel::setup(){
     
     for(int i = 0; i < 6; i++){
         angles.push_back(ofVec3f());
@@ -52,10 +52,10 @@ void KinectModel::setup(){
     jointLength[4].set(0, 109, 0);
     jointLength[5].set(0, 82, 0);
 }
-void KinectModel::update(){
+void KinematicModel::update(){
     
 }
-void KinectModel::draw(){
+void KinematicModel::draw(){
     ofSetColor(255, 255, 255);
     tool.draw();
     joints[0].draw();

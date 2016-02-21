@@ -8,10 +8,10 @@
 
 #pragma once
 #include "ofMain.h"
-class KinectModel{
+class KinematicModel{
 public:
-    KinectModel();
-    ~KinectModel();
+    KinematicModel();
+    ~KinematicModel();
     void setup();
     void update();
     void draw();
