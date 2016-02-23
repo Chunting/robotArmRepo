@@ -54,6 +54,8 @@ void ofApp::update(){
         sender.sendBundle(bundle);
     }
 #endif
+    
+    robot.update();
 }
 
 //--------------------------------------------------------------
