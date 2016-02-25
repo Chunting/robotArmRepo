@@ -21,7 +21,10 @@ This app calibrations the world
 - OptiTrack Mocap System (via NatNet)
 - KinectV2 Skeleton/Depth/RGB
 
-
+### READING MATERIAL
+[Script Manual](https://s3-eu-west-1.amazonaws.com/ur-support-site/18679/scriptmanual_en.pdf)
+[UR Kinematics](https://smartech.gatech.edu/bitstream/handle/1853/50782/ur_kin_tech_report_1.pdf)
+[UR Report](http://orbit.dtu.dk/files/117833332/Universal_Robot_report.pdf)
 
 _All Apps are built against openFrameworks master branch_
 
