@@ -16,10 +16,14 @@ public:
     void setup();
     void update();
     void draw();
+    void setToolMesh(ofMesh mesh);
     
     
     ofxAssimpModelLoader loader;
     vector<ofMesh> meshs;
+    ofMesh toolMesh;
+    
+    ofShader shader;
     
     float elapsed_time, last_time;
     ofVec3f pt;

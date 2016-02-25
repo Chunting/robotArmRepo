@@ -71,6 +71,11 @@ void KinematicModel::setup(){
     //    jointLength[3].set(392, 0, 0);
     //    jointLength[4].set(0, 109, 0);
     //    jointLength[5].set(0, 82, 0);
+    
+    shader.load("shaders/model");
+}
+void KinematicModel::setToolMesh(ofMesh mesh){
+    toolMesh = mesh;
 }
 void KinematicModel::update(){
     
@@ -79,8 +84,14 @@ void KinematicModel::draw(){
     ofSetColor(255, 255, 255);
     tool.draw();
     
+    shader.begin();
+    shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
+    shader.setUniform1f("stage", abs(sin(ofGetElapsedTimef()*0.001)*9.0));
     ofPushMatrix();
     {
+        ofRotateX(-90);
+        ofRotateZ(90);
+        
         ofTranslate(joints[0].getPosition());
         float x;
         ofVec3f axis;
@@ -88,7 +99,7 @@ void KinematicModel::draw(){
         q.getRotate(x, axis);
         ofRotate(x, axis.x, axis.y, axis.z);
         ofSetColor(255, 0, 0);
-        meshs[0].drawWireframe();
+        meshs[0].draw();
         ofPushMatrix();
         {
             ofSetColor(0, 255, 0);
@@ -96,7 +107,7 @@ void KinematicModel::draw(){
             q = joints[1].getOrientationQuat();
             q.getRotate(x, axis);
             ofRotate(x, axis.x, axis.y, axis.z);
-            meshs[1].drawWireframe();
+            meshs[1].draw();
             ofPushMatrix();
             {
                 
@@ -105,7 +116,7 @@ void KinematicModel::draw(){
                 q = joints[2].getOrientationQuat();
                 q.getRotate(x, axis);
                 ofRotate(x, axis.x, axis.y, axis.z);
-                meshs[2].drawWireframe();
+                meshs[2].draw();
                 ofPushMatrix();
                 {
                     ofTranslate(joints[3].getPosition());
@@ -116,18 +127,21 @@ void KinematicModel::draw(){
                     ofPushMatrix();
                     {
                         ofTranslate(joints[4].getPosition());
-                        meshs[3].drawWireframe();
+                        meshs[3].draw();
                         q = joints[4].getOrientationQuat();
                         q.getRotate(x, axis);
                         ofRotate(x, axis.x, axis.y, axis.z);
+                        
                         ofPushMatrix();
                         {
                             ofSetColor(255, 255, 0);
                             ofTranslate(joints[5].getPosition());
-//                            q = joints[5].getOrientationQuat();
-//                            q.getRotate(x, axis);
-//                            ofRotate(x, axis.x, axis.y, axis.z);
-                            meshs[4].drawWireframe();
+                            meshs[4].draw();
+                            q = joints[5].getOrientationQuat();
+                            q.getRotate(x, axis);
+                            ofRotate(x, axis.x, axis.y, axis.z);
+                            toolMesh.draw();
+                            
                         }
                         ofPopMatrix();
                     }
@@ -140,4 +154,5 @@ void KinematicModel::draw(){
         ofPopMatrix();
     }
     ofPopMatrix();
+    shader.end();
 }
