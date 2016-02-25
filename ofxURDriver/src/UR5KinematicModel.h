@@ -27,11 +27,18 @@ public:
     
     float elapsed_time, last_time;
     ofVec3f pt;
-    vector<ofNode> joints;
+    vector<ofNode> jointsNode;
+    vector<ofNode> jointsTargetNode;
+    vector<double> jointsTargetRaw;
     vector<double> jointsRaw;
+    vector<ofQuaternion> jointTargetQ;
     vector<ofQuaternion> jointsQ;
     vector<ofVec3f> angles;
     ofNode tool;
+    ofNode targetPoint;
     ofNode toolD;
     ofEasyCam cam;
+    
+    ofParameter<bool> bDrawModel;
+    ofParameter<bool> bDrawTargetModel;
 };

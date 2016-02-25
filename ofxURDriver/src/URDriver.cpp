@@ -91,15 +91,16 @@ void ofxURDriver::threadedFunction(){
         bDataReady = true;
         model.jointsRaw = robot->rt_interface_->robot_state_->getQActual();
         
-        for(int i = 0; i < model.joints.size(); i++){
+        for(int i = 0; i < model.jointsNode.size(); i++){
             model.jointsRaw[i] = ofRadToDeg(model.jointsRaw[i]);
             if(i == 1 || i == 3){
                 model.jointsRaw[i]+=90;
             }
             
             model.jointsQ[i].makeRotate(model.jointsRaw[i], model.angles[i]);
-            model.joints[i].setOrientation(model.jointsQ[i]);
+            model.jointsNode[i].setOrientation(model.jointsQ[i]);
         }
+        
         
         vector<double> foo = robot->rt_interface_->robot_state_->getToolVectorActual();
         float angle = sqrt(pow(foo[3], 2)+pow(foo[4], 2)+pow(foo[5], 2));
@@ -109,6 +110,29 @@ void ofxURDriver::threadedFunction(){
             model.tool.setOrientation(ofQuaternion(angle, ofVec3f(foo[3]/angle, foo[4]/angle, foo[5]/angle)));
         }
         model.tool.setPosition(ofVec3f(foo[0], foo[1], foo[2])*1000);
+        
+        foo = robot->rt_interface_->robot_state_->getToolVectorTarget();
+        
+        angle = sqrt(pow(foo[3], 2)+pow(foo[4], 2)+pow(foo[5], 2));
+        if( angle < epslion){
+            model.targetPoint.setOrientation(ofQuaternion(0, 0, 0, 1));
+        }else{
+            model.targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(foo[3]/angle, foo[4]/angle, foo[5]/angle)));
+        }
+        model.targetPoint.setPosition(ofVec3f(foo[0], foo[1], foo[2])*1000);
+
+        
+        model.jointsTargetRaw = robot->rt_interface_->robot_state_->getQTarget();
+        for(int i = 0; i < model.jointsTargetNode.size(); i++){
+            model.jointsTargetRaw[i] = ofRadToDeg(model.jointsTargetRaw[i]);
+            if(i == 1 || i == 3){
+                model.jointsTargetRaw[i]+=90;
+            }
+            
+            model.jointTargetQ[i].makeRotate(model.jointsTargetRaw[i], model.angles[i]);
+            model.jointsTargetNode[i].setOrientation(model.jointTargetQ[i]);
+        }
+        
         robot->rt_interface_->robot_state_->setControllerUpdated();
     }
 }

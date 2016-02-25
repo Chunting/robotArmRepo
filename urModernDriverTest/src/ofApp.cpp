@@ -150,9 +150,9 @@ void ofApp::draw(){
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, 40);
     
     cam.begin();
-    ofEnableDepthTest();
+//    ofEnableDepthTest();
     robot.model.draw();
-    ofDisableDepthTest();
+//    ofDisableDepthTest();
     cam.end();
 }
 

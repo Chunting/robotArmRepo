@@ -40,7 +40,6 @@ public:
     std::thread* ros_control_thread_;
     
     UR5KinematicModel model;
-
     RateTimer timer;
     float epslion = 0.00000000000000001;
 
