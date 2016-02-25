@@ -36,17 +36,17 @@
 		C894E4661C7E5080005140FF /* ofxAssimpModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C894E41C1C7E5080005140FF /* ofxAssimpModelLoader.cpp */; };
 		C894E4671C7E5080005140FF /* ofxAssimpTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C894E41E1C7E5080005140FF /* ofxAssimpTexture.cpp */; };
 		C894E4681C7E5080005140FF /* assimp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C894E45C1C7E5080005140FF /* assimp.a */; };
-		C8C3DBD21C7952C6005B68EB /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC01C7952C6005B68EB /* do_output.cpp */; };
-		C8C3DBD31C7952C6005B68EB /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC31C7952C6005B68EB /* robot_state.cpp */; };
-		C8C3DBD41C7952C6005B68EB /* robot_state_RT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC51C7952C6005B68EB /* robot_state_RT.cpp */; };
-		C8C3DBD51C7952C6005B68EB /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC71C7952C6005B68EB /* ur_communication.cpp */; };
-		C8C3DBD61C7952C6005B68EB /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC91C7952C6005B68EB /* ur_driver.cpp */; };
-		C8C3DBD71C7952C6005B68EB /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBCB1C7952C6005B68EB /* ur_realtime_communication.cpp */; };
-		C8C3DBD81C7952C6005B68EB /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */; };
-		C8C3DBD91C7952C6005B68EB /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBD01C7952C6005B68EB /* URDriver.cpp */; };
-		C8E78A851C7F5CB00085A516 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A7F1C7F5CB00085A516 /* URMove.cpp */; };
-		C8E78A861C7F5CB00085A516 /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A811C7F5CB00085A516 /* URRead.cpp */; };
-		C8E78A871C7F5CB00085A516 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A831C7F5CB00085A516 /* URToolHead.cpp */; };
+		C8E78AA71C7F61FD0085A516 /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A8F1C7F61FD0085A516 /* do_output.cpp */; };
+		C8E78AA81C7F61FD0085A516 /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A921C7F61FD0085A516 /* robot_state.cpp */; };
+		C8E78AA91C7F61FD0085A516 /* robot_state_RT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A941C7F61FD0085A516 /* robot_state_RT.cpp */; };
+		C8E78AAA1C7F61FD0085A516 /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A961C7F61FD0085A516 /* ur_communication.cpp */; };
+		C8E78AAB1C7F61FD0085A516 /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A981C7F61FD0085A516 /* ur_driver.cpp */; };
+		C8E78AAC1C7F61FD0085A516 /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A9A1C7F61FD0085A516 /* ur_realtime_communication.cpp */; };
+		C8E78AAD1C7F61FD0085A516 /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A9D1C7F61FD0085A516 /* UR5KinematicModel.cpp */; };
+		C8E78AAE1C7F61FD0085A516 /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A9F1C7F61FD0085A516 /* URDriver.cpp */; };
+		C8E78AAF1C7F61FD0085A516 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78AA11C7F61FD0085A516 /* URMove.cpp */; };
+		C8E78AB01C7F61FD0085A516 /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78AA31C7F61FD0085A516 /* URRead.cpp */; };
+		C8E78AB11C7F61FD0085A516 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78AA51C7F61FD0085A516 /* URToolHead.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -186,35 +186,47 @@
 		C894E4501C7E5080005140FF /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		C894E45C1C7E5080005140FF /* assimp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = assimp.a; sourceTree = "<group>"; };
 		C894E4631C7E5080005140FF /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		C8C3DBC01C7952C6005B68EB /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
-		C8C3DBC11C7952C6005B68EB /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
-		C8C3DBC21C7952C6005B68EB /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
-		C8C3DBC31C7952C6005B68EB /* robot_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state.cpp; sourceTree = "<group>"; };
-		C8C3DBC41C7952C6005B68EB /* robot_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state.h; sourceTree = "<group>"; };
-		C8C3DBC51C7952C6005B68EB /* robot_state_RT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state_RT.cpp; sourceTree = "<group>"; };
-		C8C3DBC61C7952C6005B68EB /* robot_state_RT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state_RT.h; sourceTree = "<group>"; };
-		C8C3DBC71C7952C6005B68EB /* ur_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_communication.cpp; sourceTree = "<group>"; };
-		C8C3DBC81C7952C6005B68EB /* ur_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_communication.h; sourceTree = "<group>"; };
-		C8C3DBC91C7952C6005B68EB /* ur_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_driver.cpp; sourceTree = "<group>"; };
-		C8C3DBCA1C7952C6005B68EB /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
-		C8C3DBCB1C7952C6005B68EB /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
-		C8C3DBCC1C7952C6005B68EB /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
-		C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
-		C8C3DBCF1C7952C6005B68EB /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
-		C8C3DBD01C7952C6005B68EB /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
-		C8C3DBD11C7952C6005B68EB /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
 		C8E78A791C7F59E30085A516 /* DelayTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DelayTimer.h; sourceTree = "<group>"; };
 		C8E78A7A1C7F59E30085A516 /* FadeTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FadeTimer.h; sourceTree = "<group>"; };
 		C8E78A7B1C7F59E30085A516 /* Hysteresis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hysteresis.h; sourceTree = "<group>"; };
 		C8E78A7C1C7F59E30085A516 /* LerpTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LerpTimer.h; sourceTree = "<group>"; };
 		C8E78A7D1C7F59E30085A516 /* ofxTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTiming.h; sourceTree = "<group>"; };
 		C8E78A7E1C7F59E30085A516 /* RateTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RateTimer.h; sourceTree = "<group>"; };
-		C8E78A7F1C7F5CB00085A516 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
-		C8E78A801C7F5CB00085A516 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
-		C8E78A811C7F5CB00085A516 /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
-		C8E78A821C7F5CB00085A516 /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
-		C8E78A831C7F5CB00085A516 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
-		C8E78A841C7F5CB00085A516 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
+		C8E78A891C7F60CA0085A516 /* model.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.frag; sourceTree = "<group>"; };
+		C8E78A8A1C7F60CA0085A516 /* model.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = model.vert; sourceTree = "<group>"; };
+		C8E78A8F1C7F61FD0085A516 /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
+		C8E78A901C7F61FD0085A516 /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
+		C8E78A911C7F61FD0085A516 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		C8E78A921C7F61FD0085A516 /* robot_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state.cpp; sourceTree = "<group>"; };
+		C8E78A931C7F61FD0085A516 /* robot_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state.h; sourceTree = "<group>"; };
+		C8E78A941C7F61FD0085A516 /* robot_state_RT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state_RT.cpp; sourceTree = "<group>"; };
+		C8E78A951C7F61FD0085A516 /* robot_state_RT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state_RT.h; sourceTree = "<group>"; };
+		C8E78A961C7F61FD0085A516 /* ur_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_communication.cpp; sourceTree = "<group>"; };
+		C8E78A971C7F61FD0085A516 /* ur_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_communication.h; sourceTree = "<group>"; };
+		C8E78A981C7F61FD0085A516 /* ur_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_driver.cpp; sourceTree = "<group>"; };
+		C8E78A991C7F61FD0085A516 /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
+		C8E78A9A1C7F61FD0085A516 /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
+		C8E78A9B1C7F61FD0085A516 /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
+		C8E78A9D1C7F61FD0085A516 /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
+		C8E78A9E1C7F61FD0085A516 /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
+		C8E78A9F1C7F61FD0085A516 /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
+		C8E78AA01C7F61FD0085A516 /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
+		C8E78AA11C7F61FD0085A516 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
+		C8E78AA21C7F61FD0085A516 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
+		C8E78AA31C7F61FD0085A516 /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
+		C8E78AA41C7F61FD0085A516 /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
+		C8E78AA51C7F61FD0085A516 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
+		C8E78AA61C7F61FD0085A516 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
+		C8E78AB51C7F629D0085A516 /* Calibration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
+		C8E78AB61C7F629D0085A516 /* Calibratoin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Calibratoin.cpp; sourceTree = "<group>"; };
+		C8E78AB71C7F629D0085A516 /* World.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		C8E78AB81C7F629D0085A516 /* World.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		C8E78ABA1C7F629D0085A516 /* MoCapBody.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MoCapBody.cpp; sourceTree = "<group>"; };
+		C8E78ABB1C7F629D0085A516 /* MoCapBody.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoCapBody.h; sourceTree = "<group>"; };
+		C8E78ABC1C7F629D0085A516 /* MoCapProvider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MoCapProvider.cpp; sourceTree = "<group>"; };
+		C8E78ABD1C7F629D0085A516 /* MoCapProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoCapProvider.h; sourceTree = "<group>"; };
+		C8E78ABE1C7F629D0085A516 /* MoCapTool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MoCapTool.cpp; sourceTree = "<group>"; };
+		C8E78ABF1C7F629D0085A516 /* MoCapTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoCapTool.h; sourceTree = "<group>"; };
 		D9BFFBBF4CC43DEE890B3C3E /* OscTypes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscTypes.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp; sourceTree = SOURCE_ROOT; };
 		DF49D76C45D5DB505A234880 /* ofxOscMessage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOscMessage.cpp; path = ../../../addons/ofxOsc/src/ofxOscMessage.cpp; sourceTree = SOURCE_ROOT; };
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
@@ -542,60 +554,6 @@
 			path = license;
 			sourceTree = "<group>";
 		};
-		C8C3DBBD1C7952C6005B68EB /* ofxURDriver */ = {
-			isa = PBXGroup;
-			children = (
-				C8C3DBBE1C7952C6005B68EB /* lib */,
-				C8C3DBCD1C7952C6005B68EB /* src */,
-			);
-			path = ofxURDriver;
-			sourceTree = "<group>";
-		};
-		C8C3DBBE1C7952C6005B68EB /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				C8C3DBBF1C7952C6005B68EB /* urDriver */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		C8C3DBBF1C7952C6005B68EB /* urDriver */ = {
-			isa = PBXGroup;
-			children = (
-				C8C3DBC01C7952C6005B68EB /* do_output.cpp */,
-				C8C3DBC11C7952C6005B68EB /* do_output.h */,
-				C8C3DBC21C7952C6005B68EB /* endian.h */,
-				C8C3DBC31C7952C6005B68EB /* robot_state.cpp */,
-				C8C3DBC41C7952C6005B68EB /* robot_state.h */,
-				C8C3DBC51C7952C6005B68EB /* robot_state_RT.cpp */,
-				C8C3DBC61C7952C6005B68EB /* robot_state_RT.h */,
-				C8C3DBC71C7952C6005B68EB /* ur_communication.cpp */,
-				C8C3DBC81C7952C6005B68EB /* ur_communication.h */,
-				C8C3DBC91C7952C6005B68EB /* ur_driver.cpp */,
-				C8C3DBCA1C7952C6005B68EB /* ur_driver.h */,
-				C8C3DBCB1C7952C6005B68EB /* ur_realtime_communication.cpp */,
-				C8C3DBCC1C7952C6005B68EB /* ur_realtime_communication.h */,
-			);
-			path = urDriver;
-			sourceTree = "<group>";
-		};
-		C8C3DBCD1C7952C6005B68EB /* src */ = {
-			isa = PBXGroup;
-			children = (
-				C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */,
-				C8C3DBCF1C7952C6005B68EB /* UR5KinematicModel.h */,
-				C8C3DBD01C7952C6005B68EB /* URDriver.cpp */,
-				C8C3DBD11C7952C6005B68EB /* URDriver.h */,
-				C8E78A7F1C7F5CB00085A516 /* URMove.cpp */,
-				C8E78A801C7F5CB00085A516 /* URMove.h */,
-				C8E78A811C7F5CB00085A516 /* URRead.cpp */,
-				C8E78A821C7F5CB00085A516 /* URRead.h */,
-				C8E78A831C7F5CB00085A516 /* URToolHead.cpp */,
-				C8E78A841C7F5CB00085A516 /* URToolHead.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
 		C8E78A771C7F59E30085A516 /* ofxTiming */ = {
 			isa = PBXGroup;
 			children = (
@@ -616,6 +574,105 @@
 			);
 			name = src;
 			path = ../../../addons/ofxTiming/src;
+			sourceTree = "<group>";
+		};
+		C8E78A881C7F60CA0085A516 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A891C7F60CA0085A516 /* model.frag */,
+				C8E78A8A1C7F60CA0085A516 /* model.vert */,
+			);
+			name = shaders;
+			path = bin/data/shaders;
+			sourceTree = "<group>";
+		};
+		C8E78A8C1C7F61FD0085A516 /* ofxURDriver */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A8D1C7F61FD0085A516 /* lib */,
+				C8E78A9C1C7F61FD0085A516 /* src */,
+			);
+			name = ofxURDriver;
+			path = ../../ofxURDriver;
+			sourceTree = "<group>";
+		};
+		C8E78A8D1C7F61FD0085A516 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A8E1C7F61FD0085A516 /* urDriver */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		C8E78A8E1C7F61FD0085A516 /* urDriver */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A8F1C7F61FD0085A516 /* do_output.cpp */,
+				C8E78A901C7F61FD0085A516 /* do_output.h */,
+				C8E78A911C7F61FD0085A516 /* endian.h */,
+				C8E78A921C7F61FD0085A516 /* robot_state.cpp */,
+				C8E78A931C7F61FD0085A516 /* robot_state.h */,
+				C8E78A941C7F61FD0085A516 /* robot_state_RT.cpp */,
+				C8E78A951C7F61FD0085A516 /* robot_state_RT.h */,
+				C8E78A961C7F61FD0085A516 /* ur_communication.cpp */,
+				C8E78A971C7F61FD0085A516 /* ur_communication.h */,
+				C8E78A981C7F61FD0085A516 /* ur_driver.cpp */,
+				C8E78A991C7F61FD0085A516 /* ur_driver.h */,
+				C8E78A9A1C7F61FD0085A516 /* ur_realtime_communication.cpp */,
+				C8E78A9B1C7F61FD0085A516 /* ur_realtime_communication.h */,
+			);
+			path = urDriver;
+			sourceTree = "<group>";
+		};
+		C8E78A9C1C7F61FD0085A516 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A9D1C7F61FD0085A516 /* UR5KinematicModel.cpp */,
+				C8E78A9E1C7F61FD0085A516 /* UR5KinematicModel.h */,
+				C8E78A9F1C7F61FD0085A516 /* URDriver.cpp */,
+				C8E78AA01C7F61FD0085A516 /* URDriver.h */,
+				C8E78AA11C7F61FD0085A516 /* URMove.cpp */,
+				C8E78AA21C7F61FD0085A516 /* URMove.h */,
+				C8E78AA31C7F61FD0085A516 /* URRead.cpp */,
+				C8E78AA41C7F61FD0085A516 /* URRead.h */,
+				C8E78AA51C7F61FD0085A516 /* URToolHead.cpp */,
+				C8E78AA61C7F61FD0085A516 /* URToolHead.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		C8E78AB31C7F629D0085A516 /* sharedCode */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78AB41C7F629D0085A516 /* calibration */,
+				C8E78AB91C7F629D0085A516 /* motioncapture */,
+			);
+			name = sharedCode;
+			path = ../../sharedCode;
+			sourceTree = "<group>";
+		};
+		C8E78AB41C7F629D0085A516 /* calibration */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78AB51C7F629D0085A516 /* Calibration.h */,
+				C8E78AB61C7F629D0085A516 /* Calibratoin.cpp */,
+				C8E78AB71C7F629D0085A516 /* World.cpp */,
+				C8E78AB81C7F629D0085A516 /* World.h */,
+			);
+			path = calibration;
+			sourceTree = "<group>";
+		};
+		C8E78AB91C7F629D0085A516 /* motioncapture */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78ABA1C7F629D0085A516 /* MoCapBody.cpp */,
+				C8E78ABB1C7F629D0085A516 /* MoCapBody.h */,
+				C8E78ABC1C7F629D0085A516 /* MoCapProvider.cpp */,
+				C8E78ABD1C7F629D0085A516 /* MoCapProvider.h */,
+				C8E78ABE1C7F629D0085A516 /* MoCapTool.cpp */,
+				C8E78ABF1C7F629D0085A516 /* MoCapTool.h */,
+			);
+			path = motioncapture;
 			sourceTree = "<group>";
 		};
 		D27B2221A225CA523C019676 /* src */ = {
@@ -640,6 +697,7 @@
 			children = (
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				C8E78A881C7F60CA0085A516 /* shaders */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -654,7 +712,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				C8C3DBBD1C7952C6005B68EB /* ofxURDriver */,
+				C8E78AB31C7F629D0085A516 /* sharedCode */,
+				C8E78A8C1C7F61FD0085A516 /* ofxURDriver */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -793,41 +852,41 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				C8E78AA71C7F61FD0085A516 /* do_output.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
+				C8E78AAE1C7F61FD0085A516 /* URDriver.cpp in Sources */,
 				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
 				2EB82731E35103D1E16BAFCF /* ofxNatNet.cpp in Sources */,
+				C8E78AAD1C7F61FD0085A516 /* UR5KinematicModel.cpp in Sources */,
+				C8E78AA91C7F61FD0085A516 /* robot_state_RT.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
-				C8C3DBD41C7952C6005B68EB /* robot_state_RT.cpp in Sources */,
 				C894E4641C7E5080005140FF /* ofxAssimpAnimation.cpp in Sources */,
-				C8C3DBD71C7952C6005B68EB /* ur_realtime_communication.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
-				C8C3DBD21C7952C6005B68EB /* do_output.cpp in Sources */,
 				C894E4651C7E5080005140FF /* ofxAssimpMeshHelper.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
-				C8C3DBD81C7952C6005B68EB /* UR5KinematicModel.cpp in Sources */,
-				C8E78A871C7F5CB00085A516 /* URToolHead.cpp in Sources */,
-				C8C3DBD61C7952C6005B68EB /* ur_driver.cpp in Sources */,
-				C8C3DBD31C7952C6005B68EB /* robot_state.cpp in Sources */,
+				C8E78AB11C7F61FD0085A516 /* URToolHead.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
-				C8E78A861C7F5CB00085A516 /* URRead.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
+				C8E78AAB1C7F61FD0085A516 /* ur_driver.cpp in Sources */,
+				C8E78AB01C7F61FD0085A516 /* URRead.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
-				C8E78A851C7F5CB00085A516 /* URMove.cpp in Sources */,
+				C8E78AAA1C7F61FD0085A516 /* ur_communication.cpp in Sources */,
+				C8E78AAF1C7F61FD0085A516 /* URMove.cpp in Sources */,
 				C894E4661C7E5080005140FF /* ofxAssimpModelLoader.cpp in Sources */,
-				C8C3DBD91C7952C6005B68EB /* URDriver.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
-				C8C3DBD51C7952C6005B68EB /* ur_communication.cpp in Sources */,
+				C8E78AAC1C7F61FD0085A516 /* ur_realtime_communication.cpp in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
+				C8E78AA81C7F61FD0085A516 /* robot_state.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,

@@ -17,7 +17,7 @@ const vec4 g  = vec4(0,1,0,1);
 const vec4 off = vec4(vec3(0.), 1.);
 
 void main() {
-	float stage = 8.;
+	float stage = 4.;
 	
 	if(stage < 1.) {
 

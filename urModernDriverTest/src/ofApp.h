@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
 #include "URDriver.h"

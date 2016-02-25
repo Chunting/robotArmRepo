@@ -50,7 +50,7 @@ void ofxURDriver::start(){
 
 void ofxURDriver::disconnect(){
     robot->halt();
-    stopThread();
+//    stopThread();
 }
 
 bool ofxURDriver::isDataReady(){
