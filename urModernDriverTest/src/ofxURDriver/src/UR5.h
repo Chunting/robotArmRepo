@@ -38,5 +38,7 @@ public:
     KinematicModel model;
     ofEasyCam cam;
     
+    
+    float epslion = 0.00000000000000001;
 
 };

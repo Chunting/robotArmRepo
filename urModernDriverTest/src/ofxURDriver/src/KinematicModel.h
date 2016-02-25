@@ -8,6 +8,7 @@
 
 #pragma once
 #include "ofMain.h"
+#include "ofxAssimpModelLoader.h"
 class KinematicModel{
 public:
     KinematicModel();
@@ -15,6 +16,10 @@ public:
     void setup();
     void update();
     void draw();
+    
+    
+    ofxAssimpModelLoader loader;
+    vector<ofMesh> meshs;
     
     float elapsed_time, last_time;
     ofVec3f pt;

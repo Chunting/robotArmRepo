@@ -61,18 +61,27 @@ void UR5::update(){
     
     for(int i = 0; i < model.joints.size(); i++){
         model.jointsRaw[i] = ofRadToDeg(model.jointsRaw[i]);
+//         cout<<"RAW ANGLE "<<i<<" "<<model.jointsRaw[i]<<endl;
         if(i == 1 || i == 3){
             model.jointsRaw[i]+=90;
         }
+    
         model.jointsQ[i].makeRotate(model.jointsRaw[i], model.angles[i]);
         model.joints[i].setOrientation(model.jointsQ[i]);
+        if(i == 5){
+            cout<<model.joints[i].getGlobalPosition().length()<<endl;
+        }
     }
     
-    
     vector<double> foo = robot->rt_interface_->robot_state_->getToolVectorActual();
+    float angle = sqrt(pow(foo[3], 2)+pow(foo[4], 2)+pow(foo[5], 2));
+    if( angle < epslion){
+        model.tool.setOrientation(ofQuaternion(0, 0, 0, 1));
+    }else{
+        model.tool.setOrientation(ofQuaternion(angle, ofVec3f(foo[3]/angle, foo[4]/angle, foo[5]/angle)));
+    }
     model.tool.setPosition(ofVec3f(foo[0], foo[1], foo[2])*1000);
-    model.tool.setOrientation(ofVec3f(ofRadToDeg(foo[3]), ofRadToDeg(foo[4]), ofRadToDeg(foo[5])));
-    
+    cout<<ofVec3f(foo[0], foo[1], foo[2]).length()*1000<<endl;
     robot->rt_interface_->robot_state_->setControllerUpdated();
     
 }
