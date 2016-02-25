@@ -1,4 +1,8 @@
-### robotArm Research @ CMU
+### Robotic Arm Research @ [The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
+
+
+![KinematicModel](data/debug_view_1.gif)
+
 
 #### urModernDriverTest
 
