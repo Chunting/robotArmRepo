@@ -14,7 +14,8 @@ void ofApp::setup(){
     natnet.setScale(100);
     natnet.setDuplicatedPointRemovalDistance(20);
 #endif
-    robot.setup();
+    robot.setup("192.168.1.9",0, 1);
+    robot.start();
 }
 
 
@@ -55,7 +56,6 @@ void ofApp::update(){
     }
 #endif
     
-    robot.update();
 }
 
 //--------------------------------------------------------------
@@ -145,9 +145,17 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(str, 10, 20);
 #endif
+    ofSetColor(255, 0, 255);
+    ofDrawBitmapString("GUI FPS "+ofToString(ofGetFrameRate()), 10, 20);
+    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, 40);
     
-    robot.draw();
-        
+    cam.begin();
+    robot.model.draw();
+    cam.end();
+}
+
+void ofApp::exit(){
+    robot.disconnect();
 }
 
 //--------------------------------------------------------------

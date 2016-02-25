@@ -42,8 +42,11 @@
 		C8C3DBD51C7952C6005B68EB /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC71C7952C6005B68EB /* ur_communication.cpp */; };
 		C8C3DBD61C7952C6005B68EB /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBC91C7952C6005B68EB /* ur_driver.cpp */; };
 		C8C3DBD71C7952C6005B68EB /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBCB1C7952C6005B68EB /* ur_realtime_communication.cpp */; };
-		C8C3DBD81C7952C6005B68EB /* KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBCE1C7952C6005B68EB /* KinematicModel.cpp */; };
-		C8C3DBD91C7952C6005B68EB /* UR5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBD01C7952C6005B68EB /* UR5.cpp */; };
+		C8C3DBD81C7952C6005B68EB /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */; };
+		C8C3DBD91C7952C6005B68EB /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C3DBD01C7952C6005B68EB /* URDriver.cpp */; };
+		C8E78A851C7F5CB00085A516 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A7F1C7F5CB00085A516 /* URMove.cpp */; };
+		C8E78A861C7F5CB00085A516 /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A811C7F5CB00085A516 /* URRead.cpp */; };
+		C8E78A871C7F5CB00085A516 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E78A831C7F5CB00085A516 /* URToolHead.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -196,10 +199,22 @@
 		C8C3DBCA1C7952C6005B68EB /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
 		C8C3DBCB1C7952C6005B68EB /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
 		C8C3DBCC1C7952C6005B68EB /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
-		C8C3DBCE1C7952C6005B68EB /* KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KinematicModel.cpp; sourceTree = "<group>"; };
-		C8C3DBCF1C7952C6005B68EB /* KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinematicModel.h; sourceTree = "<group>"; };
-		C8C3DBD01C7952C6005B68EB /* UR5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5.cpp; sourceTree = "<group>"; };
-		C8C3DBD11C7952C6005B68EB /* UR5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5.h; sourceTree = "<group>"; };
+		C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
+		C8C3DBCF1C7952C6005B68EB /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
+		C8C3DBD01C7952C6005B68EB /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
+		C8C3DBD11C7952C6005B68EB /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
+		C8E78A791C7F59E30085A516 /* DelayTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DelayTimer.h; sourceTree = "<group>"; };
+		C8E78A7A1C7F59E30085A516 /* FadeTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FadeTimer.h; sourceTree = "<group>"; };
+		C8E78A7B1C7F59E30085A516 /* Hysteresis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hysteresis.h; sourceTree = "<group>"; };
+		C8E78A7C1C7F59E30085A516 /* LerpTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LerpTimer.h; sourceTree = "<group>"; };
+		C8E78A7D1C7F59E30085A516 /* ofxTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTiming.h; sourceTree = "<group>"; };
+		C8E78A7E1C7F59E30085A516 /* RateTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RateTimer.h; sourceTree = "<group>"; };
+		C8E78A7F1C7F5CB00085A516 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
+		C8E78A801C7F5CB00085A516 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
+		C8E78A811C7F5CB00085A516 /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
+		C8E78A821C7F5CB00085A516 /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
+		C8E78A831C7F5CB00085A516 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
+		C8E78A841C7F5CB00085A516 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
 		D9BFFBBF4CC43DEE890B3C3E /* OscTypes.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = OscTypes.cpp; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.cpp; sourceTree = SOURCE_ROOT; };
 		DF49D76C45D5DB505A234880 /* ofxOscMessage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOscMessage.cpp; path = ../../../addons/ofxOsc/src/ofxOscMessage.cpp; sourceTree = SOURCE_ROOT; };
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
@@ -368,6 +383,7 @@
 				E6053AB7FEC63D5F83825B88 /* ofxOsc */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				C894E4161C7E5080005140FF /* ofxAssimpModelLoader */,
+				C8E78A771C7F59E30085A516 /* ofxTiming */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -566,12 +582,40 @@
 		C8C3DBCD1C7952C6005B68EB /* src */ = {
 			isa = PBXGroup;
 			children = (
-				C8C3DBCE1C7952C6005B68EB /* KinematicModel.cpp */,
-				C8C3DBCF1C7952C6005B68EB /* KinematicModel.h */,
-				C8C3DBD01C7952C6005B68EB /* UR5.cpp */,
-				C8C3DBD11C7952C6005B68EB /* UR5.h */,
+				C8C3DBCE1C7952C6005B68EB /* UR5KinematicModel.cpp */,
+				C8C3DBCF1C7952C6005B68EB /* UR5KinematicModel.h */,
+				C8C3DBD01C7952C6005B68EB /* URDriver.cpp */,
+				C8C3DBD11C7952C6005B68EB /* URDriver.h */,
+				C8E78A7F1C7F5CB00085A516 /* URMove.cpp */,
+				C8E78A801C7F5CB00085A516 /* URMove.h */,
+				C8E78A811C7F5CB00085A516 /* URRead.cpp */,
+				C8E78A821C7F5CB00085A516 /* URRead.h */,
+				C8E78A831C7F5CB00085A516 /* URToolHead.cpp */,
+				C8E78A841C7F5CB00085A516 /* URToolHead.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		C8E78A771C7F59E30085A516 /* ofxTiming */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A781C7F59E30085A516 /* src */,
+			);
+			name = ofxTiming;
+			sourceTree = "<group>";
+		};
+		C8E78A781C7F59E30085A516 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C8E78A791C7F59E30085A516 /* DelayTimer.h */,
+				C8E78A7A1C7F59E30085A516 /* FadeTimer.h */,
+				C8E78A7B1C7F59E30085A516 /* Hysteresis.h */,
+				C8E78A7C1C7F59E30085A516 /* LerpTimer.h */,
+				C8E78A7D1C7F59E30085A516 /* ofxTiming.h */,
+				C8E78A7E1C7F59E30085A516 /* RateTimer.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxTiming/src;
 			sourceTree = "<group>";
 		};
 		D27B2221A225CA523C019676 /* src */ = {
@@ -767,14 +811,17 @@
 				C8C3DBD21C7952C6005B68EB /* do_output.cpp in Sources */,
 				C894E4651C7E5080005140FF /* ofxAssimpMeshHelper.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
-				C8C3DBD81C7952C6005B68EB /* KinematicModel.cpp in Sources */,
+				C8C3DBD81C7952C6005B68EB /* UR5KinematicModel.cpp in Sources */,
+				C8E78A871C7F5CB00085A516 /* URToolHead.cpp in Sources */,
 				C8C3DBD61C7952C6005B68EB /* ur_driver.cpp in Sources */,
 				C8C3DBD31C7952C6005B68EB /* robot_state.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
+				C8E78A861C7F5CB00085A516 /* URRead.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
+				C8E78A851C7F5CB00085A516 /* URMove.cpp in Sources */,
 				C894E4661C7E5080005140FF /* ofxAssimpModelLoader.cpp in Sources */,
-				C8C3DBD91C7952C6005B68EB /* UR5.cpp in Sources */,
+				C8C3DBD91C7952C6005B68EB /* URDriver.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				C8C3DBD51C7952C6005B68EB /* ur_communication.cpp in Sources */,

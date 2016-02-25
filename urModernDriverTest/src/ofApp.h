@@ -4,13 +4,14 @@
 
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
-#include "UR5.h"
+#include "URDriver.h"
 class ofApp : public ofBaseApp{
     
 public:
     void setup();
     void update();
     void draw();
+    void exit();
     
     void keyPressed(int key);
     void keyReleased(int key);
@@ -31,5 +32,5 @@ public:
     ofEasyCam cam;
     //Motion Capture OSC Server
     ofxOscSender sender;
-    UR5 robot;
+    ofxURDriver robot;
 };

@@ -9,10 +9,10 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
-class KinematicModel{
+class UR5KinematicModel{
 public:
-    KinematicModel();
-    ~KinematicModel();
+    UR5KinematicModel();
+    ~UR5KinematicModel();
     void setup();
     void update();
     void draw();
@@ -30,7 +30,6 @@ public:
     vector<ofNode> joints;
     vector<double> jointsRaw;
     vector<ofQuaternion> jointsQ;
-    vector<ofVec3f> jointLength;
     vector<ofVec3f> angles;
     ofNode tool;
     ofNode toolD;

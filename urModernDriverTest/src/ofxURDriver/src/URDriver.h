@@ -1,5 +1,5 @@
 //
-//  UR5.hpp
+//  ofxURDriver.hpp
 //  urModernDriverTest
 //
 //  Created by dantheman on 2/20/16.
@@ -9,16 +9,20 @@
 #pragma once
 #include "ofMain.h"
 #include "ur_driver.h"
-#include "KinematicModel.h"
-class UR5 {
+#include "UR5KinematicModel.h"
+#include "ofxTiming.h"
+class ofxURDriver : public ofThread{
 public:
-    UR5();
-    ~UR5();
-    void setup();
-    void update();
-    void draw();
-    
-    ofRectangle mViewPort;
+    ofxURDriver();
+    ~ofxURDriver();
+    void setup(string ipAddress, double minPayload = 0.0, double maxPayload = 1.0);
+    void start();
+    void disconnect();
+    void threadedFunction();
+    bool isDataReady();
+    float getThreadFPS();
+    bool bDataReady;
+    bool bStarted;
     
     // Robot Arm
     UrDriver* robot;
@@ -35,10 +39,9 @@ public:
     bool use_ros_control_;
     std::thread* ros_control_thread_;
     
-    KinematicModel model;
-    ofEasyCam cam;
-    
-    
+    UR5KinematicModel model;
+
+    RateTimer timer;
     float epslion = 0.00000000000000001;
 
 };

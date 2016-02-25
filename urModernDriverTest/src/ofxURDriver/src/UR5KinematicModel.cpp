@@ -6,21 +6,19 @@
 //
 //
 
-#include "KinematicModel.h"
-KinematicModel::KinematicModel(){
+#include "UR5KinematicModel.h"
+UR5KinematicModel::UR5KinematicModel(){
     
 }
-KinematicModel::~KinematicModel(){
+UR5KinematicModel::~UR5KinematicModel(){
     
 }
-void KinematicModel::setup(){
+void UR5KinematicModel::setup(){
     
     for(int i = 0; i < 6; i++){
         angles.push_back(ofVec3f());
-        jointLength.push_back(ofVec3f());
         jointsQ.push_back(ofQuaternion());
         joints.push_back(ofNode());
-        
     }
     
     ofDirectory dir;
@@ -33,22 +31,12 @@ void KinematicModel::setup(){
         meshs.push_back(loader.getMesh(0));
     }
     
-    
-    
-    
-    //    -86.20,70.50,0
-    //    -425.00,0,0
-    //    -346.93,-54.50,0
-    //    45.50,-47.50,0
-    //    47.50,-45.50,0
-    //    45.50,-47.50,0
-    
+
     joints[0].setPosition(-0.525,0,6.386);
     joints[1].setPosition(-85.795,0,-77.537);
     joints[2].setPosition(-425.09,0,0);
     joints[3].setPosition(-391.782,0,6.929);
     joints[4].setPosition(-47.781,0,-46.634);
-    //    joints[5].setPosition(47.50,-45.50,0);
     joints[5].setPosition(-45.829,0,-47.509);
     
     joints[1].setParent(joints[0]);
@@ -65,22 +53,15 @@ void KinematicModel::setup(){
     angles[4].set(-1, 0, 0);
     angles[5].set(0, 0, 1);
     
-    //    jointLength[0].set(0, 0, 0);
-    //    jointLength[1].set(10, 0, 0);
-    //    jointLength[2].set(425, 0, 0);
-    //    jointLength[3].set(392, 0, 0);
-    //    jointLength[4].set(0, 109, 0);
-    //    jointLength[5].set(0, 82, 0);
-    
     shader.load("shaders/model");
 }
-void KinematicModel::setToolMesh(ofMesh mesh){
+void UR5KinematicModel::setToolMesh(ofMesh mesh){
     toolMesh = mesh;
 }
-void KinematicModel::update(){
+void UR5KinematicModel::update(){
     
 }
-void KinematicModel::draw(){
+void UR5KinematicModel::draw(){
     ofSetColor(255, 255, 255);
     tool.draw();
     
