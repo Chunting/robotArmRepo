@@ -19,7 +19,6 @@ void UR5KinematicModel::setup(){
         angles.push_back(ofVec3f());
         jointsQ.push_back(ofQuaternion());
         jointsNode.push_back(ofNode());
-        
         jointsTargetNode.push_back(ofNode());
         jointTargetQ.push_back(ofQuaternion());
     }
@@ -33,7 +32,10 @@ void UR5KinematicModel::setup(){
         loader.loadModel(dir.getPath(i));
         meshs.push_back(loader.getMesh(0));
     }
-    
+
+    jointsRaw.assign(6, 0.0);
+    jointsRaw[1] = -PI/2.0;
+    jointsRaw[3] = -PI/2.0;
     
     jointsNode[0].setPosition(-0.525,0,6.386);
     jointsNode[1].setPosition(-85.795,0,-77.537);
@@ -63,11 +65,11 @@ void UR5KinematicModel::setup(){
     jointsTargetNode[5].setParent(jointsTargetNode[4]);
     
     
-    angles[0].set(-1, 0, 0);
-    angles[1].set(0, 0, -1);
-    angles[2].set(0, 0, -1);
-    angles[3].set(0, 0, -1);
-    angles[4].set(-1, 0, 0);
+    angles[0].set(1, 0, 0);
+    angles[1].set(0, 0, 1);
+    angles[2].set(0, 0, 1);
+    angles[3].set(0, 0, 1);
+    angles[4].set(1, 0, 0);
     angles[5].set(0, 0, 1);
     
     shader.load("shaders/model");
@@ -98,9 +100,8 @@ void UR5KinematicModel::draw(){
         shader.setUniform1f("alpha", 1.0);
         ofPushMatrix();
         {
-            ofRotateX(-90);
-            ofRotateZ(90);
-            
+            ofRotateZ(-90);
+            ofRotateX(90);
             ofTranslate(jointsNode[0].getPosition());
             float x;
             ofVec3f axis;
@@ -125,24 +126,27 @@ void UR5KinematicModel::draw(){
                     ofPushMatrix();
                     {
                         ofTranslate(jointsNode[3].getPosition());
+                        meshs[3].draw();
                         q = jointsNode[3].getOrientationQuat();
                         q.getRotate(x, axis);
                         ofRotate(x, axis.x, axis.y, axis.z);
                         ofPushMatrix();
                         {
                             ofTranslate(jointsNode[4].getPosition());
-                            meshs[3].draw();
+     
                             q = jointsNode[4].getOrientationQuat();
+                            meshs[4].draw();
                             q.getRotate(x, axis);
                             ofRotate(x, axis.x, axis.y, axis.z);
-                            
+                   
                             ofPushMatrix();
                             {
                                 ofTranslate(jointsNode[5].getPosition());
-                                meshs[4].draw();
+                                meshs[5].draw();
                                 q = jointsNode[5].getOrientationQuat();
                                 q.getRotate(x, axis);
                                 ofRotate(x, axis.x, axis.y, axis.z);
+                             
                                 toolMesh.draw();
                                 
                             }
@@ -169,9 +173,7 @@ void UR5KinematicModel::draw(){
         shader.setUniform1f("alpha", 0.9);
         ofPushMatrix();
         {
-            ofRotateX(-90);
-            ofRotateZ(90);
-            
+
             ofTranslate(jointsTargetNode[0].getPosition());
             float x;
             ofVec3f axis;
@@ -216,6 +218,7 @@ void UR5KinematicModel::draw(){
                                 q = jointsTargetNode[5].getOrientationQuat();
                                 q.getRotate(x, axis);
                                 ofRotate(x, axis.x, axis.y, axis.z);
+                                meshs[5].draw();
                                 targetPoint.draw();
                                 
                             }

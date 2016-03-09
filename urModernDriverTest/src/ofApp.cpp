@@ -5,9 +5,18 @@ void ofApp::setup(){
     ofSetFrameRate(120);
     ofSetVerticalSync(true);
     ofBackground(0);
+
     
     string interface_name = "en0"; // or network interface name
     
+    targetPoint.setPosition(0, 0, 0);
+    parent.setPosition(0, 0, 0);
+    targetPoint.setParent(parent);
+    robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
+    
+    panel.setup(robotArmParams);
+    panel.loadFromFile("settings.xml");
 #ifdef ENABLE_NATNET
     sender.setup("192.168.1.255", 7777);
     natnet.setup(interface_name, "192.168.1.107");  // interface name, server ip
@@ -16,8 +25,10 @@ void ofApp::setup(){
 #endif
     robot.setup("192.168.1.9",0, 1);
     robot.start();
+    movement.setup();
+    speeds.assign(6, 0);
+    move = false;
 }
-
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -56,6 +67,30 @@ void ofApp::update(){
     }
 #endif
     
+    
+    
+//    float angle = sqrt(pow(targetPointAngles.get().x, 2)+pow(targetPointAngles.get().y, 2)+pow(targetPointAngles.get().z, 2));
+//    if( angle < 0.00000000001){
+//        targetPoint.setOrientation(ofQuaternion(0, 0, 0, 1));
+//    }else{
+//        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
+//    }
+    targetPoint.setPosition(targetPointPos.get());
+    movement.setCurrentJointPosition(robot.getJointPositions());
+    targetPoint.lookAt(ofVec3f(1, 2, 1), cam.getUpDir());
+    movement.addTargetPoint(targetPoint);
+    movement.update();
+    
+    if(move){
+        robot.setSpeed(movement.getCurrentSpeed());
+    }
+}
+
+
+void ofApp::testMotors(){
+    vector<double> foo;
+    foo.assign(6, 0.0);
+    robot.setSpeed(foo);
 }
 
 //--------------------------------------------------------------
@@ -148,22 +183,38 @@ void ofApp::draw(){
     ofSetColor(255, 0, 255);
     ofDrawBitmapString("GUI FPS "+ofToString(ofGetFrameRate()), 10, 20);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, 40);
-    
-    cam.begin();
-//    ofEnableDepthTest();
+    //    cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, -1, 0));
+    cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    //    ofEnableDepthTest();
     robot.model.draw();
-//    ofDisableDepthTest();
+    //    ofDisableDepthTest();
+    ofSetColor(255, 0, 255);
+    ofPushMatrix();
+    ofTranslate(targetPoint.getPosition()*ofVec3f(1000, 1000, 1000));
+    ofDrawSphere(20);
+    ofPopMatrix();
     cam.end();
+    
+    movement.draw();
+    
+
+    panel.draw();
 }
 
 void ofApp::exit(){
-    robot.disconnect();
-    robot.waitForThread();
+//    robot.waitForThread();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    
+    if(key == 'm'){
+        move = !move;
+    }
+    if(key == ' '){
+        targetPointPos = robot.model.tool.getPosition();
+        targetPoint.setPosition(targetPointPos.get());
+        targetPoint.setOrientation(robot.model.jointsQ[5]);
+    }
 }
 
 //--------------------------------------------------------------

@@ -19,10 +19,15 @@ public:
     void start();
     void disconnect();
     void threadedFunction();
+    vector<double> getToolPointRaw();
+    vector<double> getJointPositions();
+    vector<double> getJointAngles();
     bool isDataReady();
     float getThreadFPS();
     bool bDataReady;
     bool bStarted;
+    void moveJoints(vector<double> pos);
+    void setSpeed(vector<double> speeds);
     
     // Robot Arm
     UrDriver* robot;
@@ -42,5 +47,9 @@ public:
     UR5KinematicModel model;
     RateTimer timer;
     float epslion = 0.00000000000000001;
+    
+    deque<vector<double> > posBuffer;
+    deque<vector<double> > speedBuffers;
+
 
 };

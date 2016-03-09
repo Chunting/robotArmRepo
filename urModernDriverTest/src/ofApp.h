@@ -4,6 +4,9 @@
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
 #include "URDriver.h"
+#include "URMove.h"
+#include "UR5KinematicModel.h"
+#include "ofxGui.h"
 class ofApp : public ofBaseApp{
     
 public:
@@ -11,7 +14,6 @@ public:
     void update();
     void draw();
     void exit();
-    
     void keyPressed(int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y );
@@ -24,12 +26,27 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
+    void testMotors();
+    ofParameterGroup robotArmParams;
+    ofParameter<ofVec3f> targetPointPos;
+    ofParameter<ofVec3f> targetPointAngles;
+    ofxPanel panel;
     
-           //Motion Capture Visualization
+
     ofxNatNet natnet;
 
     ofEasyCam cam;
     //Motion Capture OSC Server
     ofxOscSender sender;
     ofxURDriver robot;
+    URMove movement;
+    
+    vector<double> speeds;
+    
+    ofNode targetPoint;
+    ofNode parent;
+    
+    int count;
+    
+    bool move;
 };

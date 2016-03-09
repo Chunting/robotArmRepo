@@ -29,6 +29,8 @@ UrDriver::UrDriver(std::condition_variable& rt_msg_cond,
 	char buffer[256];
 	struct sockaddr_in serv_addr;
 	int n, flag;
+            
+            
 
 	firmware_version_ = 0;
 	reverse_connected_ = false;
@@ -230,14 +232,16 @@ bool UrDriver::openServo() {
 	if (new_sockfd_ < 0) {
         ofLog()<<"ERROR on accepting reverse communication"<<endl;
 		return false;
-	}
+    }else{
+       ofLog()<<"Connected reverse communication"<<endl; 
+    }
 	reverse_connected_ = true;
 	return true;
 }
 void UrDriver::closeServo(std::vector<double> positions) {
-//	if (positions.size() != 6)
-//		UrDriver::servoj(rt_interface_->robot_state_->getQActual(), 0);
-//	else
+	if (positions.size() != 6)
+		UrDriver::servoj(rt_interface_->robot_state_->getQActual(), 0);
+	else
 		UrDriver::servoj(positions, 0);
 
 	reverse_connected_ = false;

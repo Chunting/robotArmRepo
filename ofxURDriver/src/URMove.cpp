@@ -5,3 +5,279 @@
 //  Created by Dan Moore on 2/20/16.
 //
 //
+#include "URMove.h"
+URMove::URMove(){
+    
+}
+URMove::~URMove(){
+    
+}
+void URMove::setup(){
+    movementParams.setName("UR Movements");
+    movementParams.add(maxSpeed.set("Max Speed", 0, 0, 1000));
+    movementParams.add(minSpeed.set("Min Speed", 0, 0, 1000));
+    movementParams.add(timeDiff.set("Delta T", 125, 0, 250));
+    
+    for(int i = 0; i < 8; i++){
+        previews.push_back(new UR5KinematicModel());
+        previews.back()->setup();
+        cams.push_back(ofEasyCam());
+        
+    }
+    selectedSolution = 0;
+    deltaTimer.setSmoothing(true);
+    distance = 0;
+}
+
+
+void URMove::update(){
+    deltaTimer.tick();
+    deltaT = 1.0/timeDiff;
+    deltaTime = deltaTimer.getPeriod();
+    
+    //updatePathDebug();
+    
+    urKinematics(targetPoint.getGlobalTransformMatrix());
+    computeVelocities();
+    
+}
+
+vector<double> URMove::getCurrentSpeed(){
+    return currentJointSpeeds;
+}
+
+void URMove::setCurrentJointPosition(vector<double> pose){
+    ofLog()<<ofToString(pose)<<endl;
+    urKinematics(pose);
+    selectedSolution = selectSolution();
+}
+
+void URMove::computeVelocities(){
+    //    selectedSolution = selectSolution();
+    currentJointSpeeds.clear();
+    currentJointSpeeds.assign(6, 0);
+    if(selectedSolution != -1){
+        if(currentPose.size() > 0){
+            
+            for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
+                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime*10);
+                if(abs(currentJointSpeeds[i]) > TWO_PI){
+                    cout<<"TO BIG"<<endl;
+                    currentJointSpeeds[i] = 0;
+                }
+            }
+        }
+    }
+    lastJointSpeeds = currentJointSpeeds;
+    //    ofLog()<<ofToString(currentJointSpeeds);
+}
+
+void URMove::addTargetPoint(ofNode & node){
+    targetPoint = node;
+    //    targetPoint.setPosition(targetPoint.getPosition()*-1);
+    //    targetPoint.setOrientation(targetPoint.getOrientationQuat().inverse());
+}
+
+void URMove::updatePathDebug(){
+    //    totalLength = targetLine.getPerimeter();
+    //    totalArea = targetLine.getArea();
+    //    nearestDataPoint = targetLine[nearestIndex];
+    //    lengthAtIndex = targetLine.getLengthAtIndex(nearestIndex);
+    //    pointAtIndex = targetLine.getPointAtIndexInterpolated(nearestIndex);
+    //    pointAtLength = targetLine.getPointAtLength(lengthAtIndex);
+    //    pointAtPercent = targetLine.getPointAtPercent(lengthAtIndex / totalLength);
+    //    indexAtLength = targetLine.getIndexAtLength(lengthAtIndex);
+    //
+    //    sinTime = ofMap(sin(ofGetElapsedTimef() * 0.5), -1, 1, 0, 1);
+    //    sinIndex = sinTime * (targetLine.isClosed() ? targetLine.size() : (targetLine.size()-1));  // sinTime mapped to indices direct
+    //    sinIndexLength = targetLine.getIndexAtPercent(sinTime); // sinTime mapped to indices based on length
+    //
+    //    lengthAtIndexSin = targetLine.getLengthAtIndexInterpolated(sinIndex);
+    //    pointAtIndexSin = targetLine.getPointAtIndexInterpolated(sinIndex);
+    //    pointAtPercentSin = targetLine.getPointAtPercent(sinTime);
+    //
+    //    angleAtIndex = targetLine.getAngleAtIndex(nearestIndex);
+    //    angleAtIndexSin = targetLine.getAngleAtIndexInterpolated(sinIndex);
+    //
+    //    rotAtIndex = targetLine.getRotationAtIndex(nearestIndex);
+    //    rotAtIndexSin = targetLine.getRotationAtIndexInterpolated(sinIndex);
+    //
+    //    rotMagAtIndex = rotAtIndex.length();
+    //    rotMagAtIndexSin = rotAtIndexSin.length();
+    //
+    //    normalAtIndex = targetLine.getNormalAtIndex(nearestIndex);
+    //
+    //    tangentAtIndexSin = targetLine.getTangentAtIndexInterpolated(sinIndex);
+    //    normalAtIndexSin = targetLine.getNormalAtIndexInterpolated(sinIndex);
+    //    rotationAtIndexSin = targetLine.getRotationAtIndexInterpolated(sinIndex);
+}
+ofQuaternion URMove::eulerToQuat(const ofVec3f & rotationEuler) {
+    ofQuaternion rotation;
+    float c1 = cos(rotationEuler[2] * 0.5);
+    float c2 = cos(rotationEuler[1] * 0.5);
+    float c3 = cos(rotationEuler[0] * 0.5);
+    float s1 = sin(rotationEuler[2] * 0.5);
+    float s2 = sin(rotationEuler[1] * 0.5);
+    float s3 = sin(rotationEuler[0] * 0.5);
+    
+    rotation[0] = c1*c2*s3 - s1*s2*c3;
+    rotation[1] = c1*s2*c3 + s1*c2*s3;
+    rotation[2] = s1*c2*c3 - c1*s2*s3;
+    rotation[3] = c1*c2*c3 + s1*s2*s3;
+    
+    return rotation;
+}
+
+void URMove::draw(){
+    int j = 0;
+    for(int i = 0; i < inversePosition.size(); i++){
+        if(i < 4){
+            cams[i].begin(ofRectangle(ofGetWindowWidth()/2+(j)*ofGetWindowWidth()/8, 0, ofGetWindowWidth()/8, ofGetWindowHeight()/2));
+        }else{
+            cams[i].begin(ofRectangle(ofGetWindowWidth()/2+(j)*ofGetWindowWidth()/8, ofGetWindowHeight()/2,ofGetWindowWidth()/9, ofGetWindowHeight()/2));
+        }
+        ofPushMatrix();
+        //        ofRotateZ(180);
+        previews[i]->draw();
+        ofPopMatrix();
+        ofPushMatrix();
+        ofScale(1000, 1000, 1000);
+        ofDrawSphere(targetPoint.getPosition(), 100/1000);
+        //        targetLine.draw();
+        ofPopMatrix();
+        cams[i].end();
+        j+=1;
+        j = j%4;
+    }
+    
+    
+    cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    ofPushMatrix();
+    ofScale(1000, 1000, 1000);
+    ofDrawSphere(targetPoint.getPosition(), 10/1000);
+    //    targetPoint.draw();
+    ofPopMatrix();
+    cam.end();
+    
+    
+    ofPushMatrix();
+    ofTranslate(ofGetWindowWidth()-100, 0);
+    for(int i = 0; i < currentJointSpeeds.size(); i++){
+        ofSetColor(255, 255, 0);
+        if(i%2==0)
+            ofSetColor(255, 0, 255);
+        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], 0, TWO_PI, 0, 100, true), 50);
+    }
+    ofPopMatrix();
+}
+
+int URMove::selectSolution(){
+    int nearestSolution = 0;
+    if(currentPose.size() > 0 && inversePosition.size() > 0){
+        double minDistance = DBL_MAX;
+        vector<double> sums;
+        sums.resize(inversePosition.size());
+        for(int i = 0; i < inversePosition.size(); i++){
+            for(int j = 0; j < inversePosition[i].size(); j++){
+                sums[i]+=abs(currentPose[j]-inversePosition[i][j]);
+            }
+        }
+        
+        for(int i = 0; i < sums.size(); i++){
+            if(sums[i] < minDistance){
+                nearestSolution = i;
+                minDistance = sums[i];
+                distance = minDistance;
+            }
+        }
+        ofLog()<<"nearestSolution "<<nearestSolution<<endl;
+        ofLog()<<"minDistance "<<minDistance<<endl;
+        return nearestSolution;
+    }else{
+        return -1;
+    }
+}
+
+void URMove::urKinematics(vector<double> input){
+    if(input.size() == 6){
+        urKinematics(input[0], input[1], input[2], input[3], input[4], input[5]);
+    }
+}
+
+void URMove::urKinematics(ofMatrix4x4 input){
+    double q_sols[8*6];
+    double* T = new double[16];
+    for(int i = 0; i < 4; i++){
+        T[i] = (double)input._mat[i][0];
+        T[i+(4)] = (double)input._mat[i][1];
+        T[i+(8)] = (double)input._mat[i][2];
+        T[i+(12)] = (double)input._mat[i][3];
+    }
+        cout<<"=================="<<endl;
+    for(int i=0;i<4;i++) {
+        for(int j=i*4;j<(i+1)*4;j++)
+            printf("%1.3f ", T[j]);
+        printf("\n");
+    }
+        cout<<"=================="<<endl;
+    int num_sols = kinematics.inverse(T, q_sols);
+    inversePosition.clear();
+    for(int i=0;i<num_sols;i++){
+        vector<double> fooSol;
+        fooSol.push_back(q_sols[i*6+0]);
+        fooSol.push_back(q_sols[i*6+1]);
+        fooSol.push_back(q_sols[i*6+2]);
+        fooSol.push_back(q_sols[i*6+3]);
+        fooSol.push_back(q_sols[i*6+4]);
+        fooSol.push_back(q_sols[i*6+5]);
+        //        ofLog()<<ofToString(fooSol)<<endl;
+        inversePosition.push_back(fooSol);
+    }
+    
+    if(inversePosition.size() > 0){
+        for(int i = 0; i < inversePosition.size(); i++){
+            previews[i]->jointsRaw = inversePosition[i];
+            previews[i]->jointsProcessed.resize(previews[i]->jointsRaw.size());
+            for(int j = 0; j < previews[i]->jointsNode.size(); j++){
+                previews[i]->jointsProcessed[j] = ofRadToDeg(previews[i]->jointsRaw[j]);
+                if(j == 1 || j == 3){
+                    previews[i]->jointsProcessed[j]-=90;
+                }
+                
+                previews[i]->jointsQ[j].makeRotate(previews[i]->jointsProcessed[j], previews[i]->angles[j]);
+                previews[i]->jointsNode[j].setOrientation(previews[i]->jointsQ[j]);
+                previews[i]->targetPoint.setPosition(targetPoint.getPosition()*1000);
+            }
+        }
+    }
+    
+}
+void URMove::urKinematics(double o, double t, double th, double f, double fi, double s){
+    double q[6] = {o, t, th, f, fi, s};
+    double* T = new double[16];
+    kinematics.forward(q, T);
+//    cout<<"=================="<<endl;
+//    for(int i=0;i<4;i++) {
+//        for(int j=i*4;j<(i+1)*4;j++)
+//            printf("%1.3f ", T[j]);
+//        printf("\n");
+//    }
+//    ofMatrix4x4 mat;
+//
+//    cout<<"=================="<<endl;
+    double q_sols[8*6];
+    int num_sols = kinematics.inverse(T, q_sols);
+    inversePosition.clear();
+    for(int i=0;i<num_sols;i++){
+        vector<double> fooSol;
+        fooSol.push_back(q_sols[i*6+0]);
+        fooSol.push_back(q_sols[i*6+1]);
+        fooSol.push_back(q_sols[i*6+2]);
+        fooSol.push_back(q_sols[i*6+3]);
+        fooSol.push_back(q_sols[i*6+4]);
+        fooSol.push_back(q_sols[i*6+5]);
+        //        ofLog()<<ofToString(fooSol)<<endl;
+        inversePosition.push_back(fooSol);
+    }
+}
+

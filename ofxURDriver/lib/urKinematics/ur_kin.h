@@ -38,6 +38,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ikfast.h"
+
 // These kinematics find the tranfrom from the base link to the end effector.
 // Though the raw D-H parameters specify a transform from the 0th link to the 6th link,
 // offset transforms are specified in this formulation.

@@ -81,6 +81,7 @@ public:
 	void setMinPayload(double m);
 	void setMaxPayload(double m);
 	void setServojTime(double t);
+    
 
 };
 

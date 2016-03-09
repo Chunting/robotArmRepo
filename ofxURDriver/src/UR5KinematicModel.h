@@ -30,7 +30,10 @@ public:
     vector<ofNode> jointsNode;
     vector<ofNode> jointsTargetNode;
     vector<double> jointsTargetRaw;
+    vector<double> jointsProcessed;
     vector<double> jointsRaw;
+    vector<double> toolPointTarget;
+    vector<double> toolPoint;
     vector<ofQuaternion> jointTargetQ;
     vector<ofQuaternion> jointsQ;
     vector<ofVec3f> angles;
