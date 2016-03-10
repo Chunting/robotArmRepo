@@ -30,7 +30,12 @@ public:
     ofParameterGroup robotArmParams;
     ofParameter<ofVec3f> targetPointPos;
     ofParameter<ofVec3f> targetPointAngles;
+    vector<ofParameter<float> > jointPos;
+    vector<ofParameter<float> > targetJointPos;
+    ofParameter<ofVec3f> toolPoint;
     ofxPanel panel;
+    
+    
     
 
     ofxNatNet natnet;

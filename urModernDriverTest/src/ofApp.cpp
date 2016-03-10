@@ -14,6 +14,13 @@ void ofApp::setup(){
     targetPoint.setParent(parent);
     robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
+    for(int i = 0; i < 6; i++){
+        jointPos.push_back(ofParameter<float>());
+        robotArmParams.add(jointPos.back().set("joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
+        targetJointPos.push_back(ofParameter<float>());
+        robotArmParams.add(targetJointPos.back().set("target joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
+    }
+    robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     
     panel.setup(robotArmParams);
     panel.loadFromFile("settings.xml");
@@ -28,6 +35,8 @@ void ofApp::setup(){
     movement.setup();
     speeds.assign(6, 0);
     move = false;
+    
+    cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
 }
 
 //--------------------------------------------------------------
@@ -75,14 +84,31 @@ void ofApp::update(){
 //    }else{
 //        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
 //    }
-    targetPoint.setPosition(targetPointPos.get());
-    movement.setCurrentJointPosition(robot.getJointPositions());
-    targetPoint.lookAt(ofVec3f(1, 2, 1), cam.getUpDir());
-    movement.addTargetPoint(targetPoint);
+    vector<double> foo = robot.getJointPositions();
+    movement.setCurrentJointPosition(foo);
+
+    for(int i = 0; i < foo.size(); i++){
+        jointPos[i] = (float)foo[i];
+    }
+    
+
+    toolPoint = robot.model.tool.position;
+//    targetPoint.position = targetPointPos;
+//    targetPointPos = robot.model.tool.position;
+
     movement.update();
     
+    vector<double> target = movement.getTargetJointPos();
+    for(int i = 0; i < target.size(); i++){
+        targetJointPos[i] = (float)target[i];
+    }
+    
+    vector<double> tempSpeeds;
+    tempSpeeds.assign(6, 0);
+
     if(move){
-        robot.setSpeed(movement.getCurrentSpeed());
+        tempSpeeds = movement.getCurrentSpeed();
+        robot.setSpeed(tempSpeeds);
     }
 }
 
@@ -181,17 +207,13 @@ void ofApp::draw(){
     ofDrawBitmapString(str, 10, 20);
 #endif
     ofSetColor(255, 0, 255);
-    ofDrawBitmapString("GUI FPS "+ofToString(ofGetFrameRate()), 10, 20);
-    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, 40);
-    //    cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, -1, 0));
+    ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 10, ofGetWindowHeight()-20);
+    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, ofGetWindowHeight()-40);
     cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    //    ofEnableDepthTest();
     robot.model.draw();
-    //    ofDisableDepthTest();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
-    ofTranslate(targetPoint.getPosition()*ofVec3f(1000, 1000, 1000));
-    ofDrawSphere(20);
+    ofDrawSphere(robot.model.tool.position*ofVec3f(1000, 1000, 1000), 5);
     ofPopMatrix();
     cam.end();
     
@@ -211,9 +233,10 @@ void ofApp::keyPressed(int key){
         move = !move;
     }
     if(key == ' '){
-        targetPointPos = robot.model.tool.getPosition();
-        targetPoint.setPosition(targetPointPos.get());
-        targetPoint.setOrientation(robot.model.jointsQ[5]);
+        Joint j;
+        j.position = targetPointPos.get();
+        j.rotation = ofQuaternion(-90, ofVec3f(0, 0, 1));
+        movement.addTargetPoint(j);
     }
 }
 

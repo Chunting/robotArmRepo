@@ -15,67 +15,53 @@ UR5KinematicModel::~UR5KinematicModel(){
 }
 void UR5KinematicModel::setup(){
     
-    for(int i = 0; i < 6; i++){
-        angles.push_back(ofVec3f());
-        jointsQ.push_back(ofQuaternion());
-        jointsNode.push_back(ofNode());
-        jointsTargetNode.push_back(ofNode());
-        jointTargetQ.push_back(ofQuaternion());
-    }
-    
     ofDirectory dir;
     dir.listDir(ofToDataPath("models"));
     dir.sort();
     dir.allowExt("dae");
+    //
+//    for(int i = 0; i < dir.size(); i++){
+//        loader.loadModel(dir.getPath(i));
+//        meshs.push_back(loader.getMesh(0));
+//    }
     
-    for(int i = 0; i < dir.size(); i++){
-        loader.loadModel(dir.getPath(i));
-        meshs.push_back(loader.getMesh(0));
-    }
+    //
+    loader.loadModel(ofToDataPath("models/ur5.dae"));
 
+    for(int i = 0; i < loader.getNumMeshes(); i++){
+        meshs.push_back(loader.getMesh(i));
+    }
+    
     jointsRaw.assign(6, 0.0);
     jointsRaw[1] = -PI/2.0;
     jointsRaw[3] = -PI/2.0;
     
-    jointsNode[0].setPosition(-0.525,0,6.386);
-    jointsNode[1].setPosition(-85.795,0,-77.537);
-    jointsNode[2].setPosition(-425.09,0,0);
-    jointsNode[3].setPosition(-391.782,0,6.929);
-    jointsNode[4].setPosition(-47.781,0,-46.634);
-    jointsNode[5].setPosition(-45.829,0,-47.509);
+    joints.resize(6);
     
-    jointsTargetNode[0].setPosition(-0.525,0,6.386);
-    jointsTargetNode[1].setPosition(-85.795,0,-77.537);
-    jointsTargetNode[2].setPosition(-425.09,0,0);
-    jointsTargetNode[3].setPosition(-391.782,0,6.929);
-    jointsTargetNode[4].setPosition(-47.781,0,-46.634);
-    jointsTargetNode[5].setPosition(-45.829,0,-47.509);
+    joints[0].position.set(0, 0, 0);
+    joints[1].position.set(0, -72.238, 83.204);
+    joints[2].position.set(0,-77.537,511.41);
+    joints[3].position.set(0, -70.608, 903.192);
+    joints[4].position.set(0, -117.242, 950.973);
+    joints[5].position.set(0, -164.751, 996.802);
     
-    jointsNode[1].setParent(jointsNode[0]);
-    jointsNode[2].setParent(jointsNode[1]);
-    jointsNode[3].setParent(jointsNode[2]);
-    jointsNode[4].setParent(jointsNode[3]);
-    jointsNode[5].setParent(jointsNode[4]);
+    for(int i = 1; i < joints.size(); i++){
+        joints[i].offset = joints[i].position-joints[i-1].position;
+    }
     
     
-    jointsTargetNode[1].setParent(jointsTargetNode[0]);
-    jointsTargetNode[2].setParent(jointsTargetNode[1]);
-    jointsTargetNode[3].setParent(jointsTargetNode[2]);
-    jointsTargetNode[4].setParent(jointsTargetNode[3]);
-    jointsTargetNode[5].setParent(jointsTargetNode[4]);
-    
-    
-    angles[0].set(1, 0, 0);
-    angles[1].set(0, 0, 1);
-    angles[2].set(0, 0, 1);
-    angles[3].set(0, 0, 1);
-    angles[4].set(1, 0, 0);
-    angles[5].set(0, 0, 1);
+    joints[0].axis.set(0, 0, 1);
+    joints[1].axis.set(0, -1, 0);
+    joints[2].axis.set(0, -1, 0);
+    joints[3].axis.set(0, -1, 0);
+    joints[4].axis.set(0, 0, 1);
+    joints[5].axis.set(0, 1, 0);
     
     shader.load("shaders/model");
     
     bDrawModel.set("Draw Model", true);
     bDrawTargetModel.set("Draw Target Model", false);
+    bDrawModel = true;
 }
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
     toolMesh = mesh;
@@ -84,13 +70,21 @@ void UR5KinematicModel::update(){
     
 }
 void UR5KinematicModel::draw(){
+    ofDrawAxis(100);
     ofEnableDepthTest();
     ofSetColor(255, 255, 0);
-    tool.draw();
+    ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 10);
     
     ofSetColor(255, 0, 255);
-    targetPoint.draw();
+    //    targetPoint.draw();
     ofDisableDepthTest();
+    
+    //
+    //    for(int i = 0; i < joints.size(); i++){
+    //        jointsNode[i].draw();
+    //    }
+    
+    
     
     if(bDrawModel){
         ofEnableDepthTest();
@@ -98,142 +92,60 @@ void UR5KinematicModel::draw(){
         shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
         shader.setUniform1f("stage", 3.0);
         shader.setUniform1f("alpha", 1.0);
+        float x;
+        ofVec3f axis;
+        ofQuaternion q;
+        ofVec3f offset;
         ofPushMatrix();
         {
-            ofRotateZ(-90);
-            ofRotateX(90);
-            ofTranslate(jointsNode[0].getPosition());
-            float x;
-            ofVec3f axis;
-            ofQuaternion q = jointsNode[0].getGlobalOrientation();
-            q.getRotate(x, axis);
-            ofRotate(x, axis.x, axis.y, axis.z);
-            meshs[0].draw();
-            ofPushMatrix();
+            for(int i = 0; i < joints.size(); i++)
             {
-                ofTranslate(jointsNode[1].getPosition());
-                q = jointsNode[1].getOrientationQuat();
+                float x;
+                ofVec3f axis;
+                q = joints[i].rotation;
                 q.getRotate(x, axis);
-                ofRotate(x, axis.x, axis.y, axis.z);
-                meshs[1].draw();
-                ofPushMatrix();
-                {
-                    ofTranslate(jointsNode[2].getPosition());
-                    q = jointsNode[2].getOrientationQuat();
-                    q.getRotate(x, axis);
-                    ofRotate(x, axis.x, axis.y, axis.z);
-                    meshs[2].draw();
+                ofTranslate(joints[i].offset);
+                ofDrawAxis(10);
+                if(i >= 3){
                     ofPushMatrix();
-                    {
-                        ofTranslate(jointsNode[3].getPosition());
-                        meshs[3].draw();
-                        q = jointsNode[3].getOrientationQuat();
-                        q.getRotate(x, axis);
-                        ofRotate(x, axis.x, axis.y, axis.z);
-                        ofPushMatrix();
-                        {
-                            ofTranslate(jointsNode[4].getPosition());
-     
-                            q = jointsNode[4].getOrientationQuat();
-                            meshs[4].draw();
-                            q.getRotate(x, axis);
-                            ofRotate(x, axis.x, axis.y, axis.z);
-                   
-                            ofPushMatrix();
-                            {
-                                ofTranslate(jointsNode[5].getPosition());
-                                meshs[5].draw();
-                                q = jointsNode[5].getOrientationQuat();
-                                q.getRotate(x, axis);
-                                ofRotate(x, axis.x, axis.y, axis.z);
-                             
-                                toolMesh.draw();
-                                
-                            }
-                            ofPopMatrix();
-                        }
-                        ofPopMatrix();
-                    }
+                    ofRotateZ(-180);
+                    ofRotateX(-180);
+                    ofScale(100, 100, 100);
+                    meshs[i].draw();
                     ofPopMatrix();
                 }
-                ofPopMatrix();
+                ofRotate(x, axis.x, axis.y, axis.z);
+                ofDrawAxis(100);
+                if(i < 3){
+                    ofPushMatrix();
+                    ofRotateZ(-180);
+                    ofRotateX(-180);
+                    ofScale(100, 100, 100);
+                    meshs[i].draw();
+                    ofPopMatrix();
+                }
             }
-            ofPopMatrix();
         }
         ofPopMatrix();
         shader.end();
         ofDisableDepthTest();
-    }
-    
-    if(bDrawTargetModel){
-        ofEnableDepthTest();
-        shader.begin();
-        shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
-        shader.setUniform1f("stage", 3.);
-        shader.setUniform1f("alpha", 0.9);
+        
         ofPushMatrix();
         {
+            for(int i = 0; i < joints.size(); i++)
+            {
+                float x;
+                ofVec3f axis;
+                q = joints[i].rotation;
+                q.getRotate(x, axis);
+                ofTranslate(joints[i].offset);
+                ofDrawAxis(10);
+                ofRotate(x, axis.x, axis.y, axis.z);
+                ofDrawAxis(100);
 
-            ofTranslate(jointsTargetNode[0].getPosition());
-            float x;
-            ofVec3f axis;
-            ofQuaternion q = jointsTargetNode[0].getGlobalOrientation();
-            q.getRotate(x, axis);
-            ofRotate(x, axis.x, axis.y, axis.z);
-            ofSetColor(255, 0, 0);
-            meshs[0].draw();
-            ofPushMatrix();
-            {
-                ofTranslate(jointsTargetNode[1].getPosition());
-                q = jointsTargetNode[1].getOrientationQuat();
-                q.getRotate(x, axis);
-                ofRotate(x, axis.x, axis.y, axis.z);
-                meshs[1].draw();
-                ofPushMatrix();
-                {
-                    
-                    ofTranslate(jointsTargetNode[2].getPosition());
-                    q = jointsTargetNode[2].getOrientationQuat();
-                    q.getRotate(x, axis);
-                    ofRotate(x, axis.x, axis.y, axis.z);
-                    meshs[2].draw();
-                    ofPushMatrix();
-                    {
-                        ofTranslate(jointsTargetNode[3].getPosition());
-                        q = jointsTargetNode[3].getOrientationQuat();
-                        q.getRotate(x, axis);
-                        ofRotate(x, axis.x, axis.y, axis.z);
-                        ofPushMatrix();
-                        {
-                            ofTranslate(jointsTargetNode[4].getPosition());
-                            meshs[3].draw();
-                            q = jointsTargetNode[4].getOrientationQuat();
-                            q.getRotate(x, axis);
-                            ofRotate(x, axis.x, axis.y, axis.z);
-                            
-                            ofPushMatrix();
-                            {
-                                ofTranslate(jointsTargetNode[5].getPosition());
-                                meshs[4].draw();
-                                q = jointsTargetNode[5].getOrientationQuat();
-                                q.getRotate(x, axis);
-                                ofRotate(x, axis.x, axis.y, axis.z);
-                                meshs[5].draw();
-                                targetPoint.draw();
-                                
-                            }
-                            ofPopMatrix();
-                        }
-                        ofPopMatrix();
-                    }
-                    ofPopMatrix();
-                }
-                ofPopMatrix();
             }
-            ofPopMatrix();
         }
         ofPopMatrix();
-        shader.end();
-        ofDisableDepthTest();
+
     }
 }

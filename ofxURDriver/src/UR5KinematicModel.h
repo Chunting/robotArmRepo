@@ -9,6 +9,14 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
+
+struct Joint{
+    ofVec3f offset;
+    ofVec3f axis;
+    ofVec3f position;
+    ofQuaternion rotation;
+};
+
 class UR5KinematicModel{
 public:
     UR5KinematicModel();
@@ -27,19 +35,14 @@ public:
     
     float elapsed_time, last_time;
     ofVec3f pt;
-    vector<ofNode> jointsNode;
-    vector<ofNode> jointsTargetNode;
-    vector<double> jointsTargetRaw;
+    vector<Joint> joints;
     vector<double> jointsProcessed;
     vector<double> jointsRaw;
-    vector<double> toolPointTarget;
-    vector<double> toolPoint;
-    vector<ofQuaternion> jointTargetQ;
-    vector<ofQuaternion> jointsQ;
-    vector<ofVec3f> angles;
-    ofNode tool;
-    ofNode targetPoint;
-    ofNode toolD;
+    vector<double> toolPointRaw;
+    Joint tool;
+
+    Joint dtoolPoint;
+    
     ofEasyCam cam;
     
     ofParameter<bool> bDrawModel;

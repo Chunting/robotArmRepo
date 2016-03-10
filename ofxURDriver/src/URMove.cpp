@@ -22,11 +22,14 @@ void URMove::setup(){
         previews.push_back(new UR5KinematicModel());
         previews.back()->setup();
         cams.push_back(ofEasyCam());
+        //        cams.back().lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
         
     }
-    selectedSolution = 0;
+    selectedSolution = -1;
     deltaTimer.setSmoothing(true);
     distance = 0;
+    
+    
 }
 
 
@@ -34,12 +37,19 @@ void URMove::update(){
     deltaTimer.tick();
     deltaT = 1.0/timeDiff;
     deltaTime = deltaTimer.getPeriod();
-    
-    //updatePathDebug();
-    
-    urKinematics(targetPoint.getGlobalTransformMatrix());
+    mat.setTranslation(targetPoint.position);
+    mat.setRotate(targetPoint.rotation);
+    urKinematics(mat);
     computeVelocities();
     
+}
+
+vector<double> URMove::getTargetJointPos(){
+    if(selectedSolution > -1){
+        return inversePosition[selectedSolution];
+    }else{
+        return currentPose;
+    }
 }
 
 vector<double> URMove::getCurrentSpeed(){
@@ -47,24 +57,24 @@ vector<double> URMove::getCurrentSpeed(){
 }
 
 void URMove::setCurrentJointPosition(vector<double> pose){
-    ofLog()<<ofToString(pose)<<endl;
+    currentPose = pose;
     urKinematics(pose);
     selectedSolution = selectSolution();
 }
 
 void URMove::computeVelocities(){
-    //    selectedSolution = selectSolution();
+//    selectedSolution = selectSolution();
     currentJointSpeeds.clear();
     currentJointSpeeds.assign(6, 0);
     if(selectedSolution != -1){
         if(currentPose.size() > 0){
             
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
-                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime*10);
-                if(abs(currentJointSpeeds[i]) > TWO_PI){
-                    cout<<"TO BIG"<<endl;
+                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i]);
+                if(i >= 3){
                     currentJointSpeeds[i] = 0;
                 }
+                
             }
         }
     }
@@ -72,10 +82,9 @@ void URMove::computeVelocities(){
     //    ofLog()<<ofToString(currentJointSpeeds);
 }
 
-void URMove::addTargetPoint(ofNode & node){
-    targetPoint = node;
-    //    targetPoint.setPosition(targetPoint.getPosition()*-1);
-    //    targetPoint.setOrientation(targetPoint.getOrientationQuat().inverse());
+void URMove::addTargetPoint(Joint target){
+    targetPoint = target;
+
 }
 
 void URMove::updatePathDebug(){
@@ -137,13 +146,11 @@ void URMove::draw(){
             cams[i].begin(ofRectangle(ofGetWindowWidth()/2+(j)*ofGetWindowWidth()/8, ofGetWindowHeight()/2,ofGetWindowWidth()/9, ofGetWindowHeight()/2));
         }
         ofPushMatrix();
-        //        ofRotateZ(180);
         previews[i]->draw();
         ofPopMatrix();
         ofPushMatrix();
-        ofScale(1000, 1000, 1000);
-        ofDrawSphere(targetPoint.getPosition(), 100/1000);
-        //        targetLine.draw();
+        ofSetColor(255, 0, 255);
+        ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 10);
         ofPopMatrix();
         cams[i].end();
         j+=1;
@@ -153,9 +160,8 @@ void URMove::draw(){
     
     cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     ofPushMatrix();
-    ofScale(1000, 1000, 1000);
-    ofDrawSphere(targetPoint.getPosition(), 10/1000);
-    //    targetPoint.draw();
+    ofSetColor(255, 255, 0);
+    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 10);
     ofPopMatrix();
     cam.end();
     
@@ -192,7 +198,7 @@ int URMove::selectSolution(){
         }
         ofLog()<<"nearestSolution "<<nearestSolution<<endl;
         ofLog()<<"minDistance "<<minDistance<<endl;
-        return nearestSolution;
+        return 0;
     }else{
         return -1;
     }
@@ -207,24 +213,27 @@ void URMove::urKinematics(vector<double> input){
 void URMove::urKinematics(ofMatrix4x4 input){
     double q_sols[8*6];
     double* T = new double[16];
+//    cout<<"=================="<<endl;
+//     cout<<"ofMatttt"<<endl;
+//    ofLog()<<ofToString(input)<<endl;
     for(int i = 0; i < 4; i++){
         T[i] = (double)input._mat[i][0];
         T[i+(4)] = (double)input._mat[i][1];
         T[i+(8)] = (double)input._mat[i][2];
         T[i+(12)] = (double)input._mat[i][3];
     }
-        cout<<"=================="<<endl;
-    for(int i=0;i<4;i++) {
-        for(int j=i*4;j<(i+1)*4;j++)
-            printf("%1.3f ", T[j]);
-        printf("\n");
-    }
-        cout<<"=================="<<endl;
+//    cout<<"=================="<<endl;
+//    for(int i=0;i<4;i++) {
+//        for(int j=i*4;j<(i+1)*4;j++)
+//            printf("%1.3f ", T[j]);
+//        printf("\n");
+//    }
+//    cout<<"=================="<<endl;
     int num_sols = kinematics.inverse(T, q_sols);
     inversePosition.clear();
     for(int i=0;i<num_sols;i++){
         vector<double> fooSol;
-        fooSol.push_back(q_sols[i*6+0]);
+        fooSol.push_back(q_sols[i*6]);
         fooSol.push_back(q_sols[i*6+1]);
         fooSol.push_back(q_sols[i*6+2]);
         fooSol.push_back(q_sols[i*6+3]);
@@ -237,16 +246,18 @@ void URMove::urKinematics(ofMatrix4x4 input){
     if(inversePosition.size() > 0){
         for(int i = 0; i < inversePosition.size(); i++){
             previews[i]->jointsRaw = inversePosition[i];
+//            cout<<ofToString(previews[i]->jointsRaw)<<endl;
             previews[i]->jointsProcessed.resize(previews[i]->jointsRaw.size());
-            for(int j = 0; j < previews[i]->jointsNode.size(); j++){
+            for(int j = 0; j < previews[i]->joints.size(); j++){
+                if(j == 1 || j == 3){
+                    inversePosition[i][j] = inversePosition[i][j] - TWO_PI;
+                    previews[i]->jointsRaw[j]=inversePosition[i][j];
+                }
                 previews[i]->jointsProcessed[j] = ofRadToDeg(previews[i]->jointsRaw[j]);
                 if(j == 1 || j == 3){
-                    previews[i]->jointsProcessed[j]-=90;
+                    previews[i]->jointsProcessed[j]+=90;
                 }
-                
-                previews[i]->jointsQ[j].makeRotate(previews[i]->jointsProcessed[j], previews[i]->angles[j]);
-                previews[i]->jointsNode[j].setOrientation(previews[i]->jointsQ[j]);
-                previews[i]->targetPoint.setPosition(targetPoint.getPosition()*1000);
+                previews[i]->joints[j].rotation.makeRotate(previews[i]->jointsProcessed[j], previews[i]->joints[j].axis);
             }
         }
     }
@@ -256,15 +267,15 @@ void URMove::urKinematics(double o, double t, double th, double f, double fi, do
     double q[6] = {o, t, th, f, fi, s};
     double* T = new double[16];
     kinematics.forward(q, T);
-//    cout<<"=================="<<endl;
-//    for(int i=0;i<4;i++) {
-//        for(int j=i*4;j<(i+1)*4;j++)
-//            printf("%1.3f ", T[j]);
-//        printf("\n");
-//    }
-//    ofMatrix4x4 mat;
-//
-//    cout<<"=================="<<endl;
+    //    cout<<"=================="<<endl;
+    //    for(int i=0;i<4;i++) {
+    //        for(int j=i*4;j<(i+1)*4;j++)
+    //            printf("%1.3f ", T[j]);
+    //        printf("\n");
+    //    }
+    //    ofMatrix4x4 mat;
+    //
+    //    cout<<"=================="<<endl;
     double q_sols[8*6];
     int num_sols = kinematics.inverse(T, q_sols);
     inversePosition.clear();

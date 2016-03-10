@@ -21,13 +21,14 @@ public:
     void draw();
     void computeVelocities();
     void updatePathDebug();
-    void addTargetPoint(ofNode & pt);
+    void addTargetPoint(Joint target);
     void urKinematics(vector<double> input);
     void urKinematics(ofMatrix4x4 input);
     void urKinematics(double o, double t, double th, double f, double fi, double s);
 //    void urKinematics(vector<double> input);
     void setCurrentJointPosition(vector<double> pos);
     ofParameterGroup movementParams;
+    vector<double> getTargetJointPos();
     vector<double> getCurrentSpeed();
 protected:
     float distance;
@@ -78,7 +79,8 @@ protected:
     ofVec3f tangentAtIndexSin;
     ofVec3f normalAtIndexSin;
     ofVec3f rotationAtIndexSin;
-    ofNode targetPoint;
+    Joint targetPoint;
     unsigned int nearestIndex;
     float rotAngle;
+    ofNode node;
 };

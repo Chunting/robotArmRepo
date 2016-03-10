@@ -1,5 +1,18 @@
 <group>
-	<Target_Point_POS>-0.163265, 0.255102, -0.193878</Target_Point_POS>
+	<Target_Point_POS>0.255102, 0.0102041, 0.622449</Target_Point_POS>
 	<Target_Point_Angles>0, 0, 0</Target_Point_Angles>
 <group/>
+<joint_0>6.21705</joint_0>
+	<joint_1>-1.76513</joint_1>
+	<joint_2>1.19653</joint_2>
+	<joint_3>-5.35751</joint_3>
+	<joint_4>1.49967</joint_4>
+	<joint_5>3.06632</joint_5>
+	<ToolPoint>-0.299278, -0.0962274, 0.600093</ToolPoint>
+<target_joint_0>6.21709</target_joint_0>
+	<target_joint_1>-1.76554</target_joint_1>
+	<target_joint_2>1.19765</target_joint_2>
+	<target_joint_3>-5.71529</target_joint_3>
+	<target_joint_4>3.0755</target_joint_4>
+	<target_joint_5>3.14159</target_joint_5>
 </group>
