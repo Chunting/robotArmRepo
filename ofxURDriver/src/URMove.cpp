@@ -68,10 +68,9 @@ void URMove::computeVelocities(){
     currentJointSpeeds.assign(6, 0);
     if(selectedSolution != -1){
         if(currentPose.size() > 0){
-            
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
-                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i]);
-                if(i >= 3){
+                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime*2);
+                if(i > 3){
                     currentJointSpeeds[i] = 0;
                 }
                 
@@ -84,42 +83,9 @@ void URMove::computeVelocities(){
 
 void URMove::addTargetPoint(Joint target){
     targetPoint = target;
-
+    
 }
 
-void URMove::updatePathDebug(){
-    //    totalLength = targetLine.getPerimeter();
-    //    totalArea = targetLine.getArea();
-    //    nearestDataPoint = targetLine[nearestIndex];
-    //    lengthAtIndex = targetLine.getLengthAtIndex(nearestIndex);
-    //    pointAtIndex = targetLine.getPointAtIndexInterpolated(nearestIndex);
-    //    pointAtLength = targetLine.getPointAtLength(lengthAtIndex);
-    //    pointAtPercent = targetLine.getPointAtPercent(lengthAtIndex / totalLength);
-    //    indexAtLength = targetLine.getIndexAtLength(lengthAtIndex);
-    //
-    //    sinTime = ofMap(sin(ofGetElapsedTimef() * 0.5), -1, 1, 0, 1);
-    //    sinIndex = sinTime * (targetLine.isClosed() ? targetLine.size() : (targetLine.size()-1));  // sinTime mapped to indices direct
-    //    sinIndexLength = targetLine.getIndexAtPercent(sinTime); // sinTime mapped to indices based on length
-    //
-    //    lengthAtIndexSin = targetLine.getLengthAtIndexInterpolated(sinIndex);
-    //    pointAtIndexSin = targetLine.getPointAtIndexInterpolated(sinIndex);
-    //    pointAtPercentSin = targetLine.getPointAtPercent(sinTime);
-    //
-    //    angleAtIndex = targetLine.getAngleAtIndex(nearestIndex);
-    //    angleAtIndexSin = targetLine.getAngleAtIndexInterpolated(sinIndex);
-    //
-    //    rotAtIndex = targetLine.getRotationAtIndex(nearestIndex);
-    //    rotAtIndexSin = targetLine.getRotationAtIndexInterpolated(sinIndex);
-    //
-    //    rotMagAtIndex = rotAtIndex.length();
-    //    rotMagAtIndexSin = rotAtIndexSin.length();
-    //
-    //    normalAtIndex = targetLine.getNormalAtIndex(nearestIndex);
-    //
-    //    tangentAtIndexSin = targetLine.getTangentAtIndexInterpolated(sinIndex);
-    //    normalAtIndexSin = targetLine.getNormalAtIndexInterpolated(sinIndex);
-    //    rotationAtIndexSin = targetLine.getRotationAtIndexInterpolated(sinIndex);
-}
 ofQuaternion URMove::eulerToQuat(const ofVec3f & rotationEuler) {
     ofQuaternion rotation;
     float c1 = cos(rotationEuler[2] * 0.5);
@@ -178,26 +144,48 @@ void URMove::draw(){
 }
 
 int URMove::selectSolution(){
-    int nearestSolution = 0;
+    vector<int> nearestSolution;
+    vector<int> count;
     if(currentPose.size() > 0 && inversePosition.size() > 0){
-        double minDistance = DBL_MAX;
-        vector<double> sums;
-        sums.resize(inversePosition.size());
+        vector<double> minDistances;
+        vector<vector<double> > diffs;
+        diffs.resize(inversePosition.size());
+        nearestSolution.resize(inversePosition[0].size());
+        count.resize(inversePosition.size());
+        minDistances.assign(inversePosition.size(), DBL_MAX);
         for(int i = 0; i < inversePosition.size(); i++){
+            diffs[i].resize(inversePosition[i].size());
             for(int j = 0; j < inversePosition[i].size(); j++){
-                sums[i]+=abs(currentPose[j]-inversePosition[i][j]);
+                diffs[i][j]=(inversePosition[i][j]-abs(currentPose[j]));
             }
         }
         
-        for(int i = 0; i < sums.size(); i++){
-            if(sums[i] < minDistance){
-                nearestSolution = i;
-                minDistance = sums[i];
-                distance = minDistance;
+        for(int i = 0; i < diffs.size(); i++){
+            for(int j = 0; j < diffs[i].size(); j++){
+                if(diffs[i][j] < minDistances[i]){
+                    nearestSolution[j] = i;
+                    minDistances[i] = diffs[i][j];
+                    distance = minDistances[i];
+                }
             }
         }
-        ofLog()<<"nearestSolution "<<nearestSolution<<endl;
-        ofLog()<<"minDistance "<<minDistance<<endl;
+        vector<int> count;
+        count.resize(inversePosition.size());
+        for(int i =0; i < nearestSolution.size();i++){
+            count[nearestSolution[i]]++;
+        }
+        int nearest = INT_MIN;
+        int max = INT_MIN;
+        for(int i = 0; i < count.size(); i++){
+            if(count[i] > max){
+                nearest = i;
+                max = count[i];
+            }
+        }
+//        ofLog()<<"nearestSolutions per joint "<<ofToString(nearestSolution)<<endl;
+//        ofLog()<<"minDistance per joint "<<ofToString(minDistances)<<endl;
+//        ofLog()<<"count "<<ofToString(count)<<endl;
+        ofLog()<<"nearest "<<nearest<<endl;
         return 0;
     }else{
         return -1;
@@ -213,22 +201,22 @@ void URMove::urKinematics(vector<double> input){
 void URMove::urKinematics(ofMatrix4x4 input){
     double q_sols[8*6];
     double* T = new double[16];
-//    cout<<"=================="<<endl;
-//     cout<<"ofMatttt"<<endl;
-//    ofLog()<<ofToString(input)<<endl;
+    //    cout<<"=================="<<endl;
+    //     cout<<"ofMatttt"<<endl;
+    //    ofLog()<<ofToString(input)<<endl;
     for(int i = 0; i < 4; i++){
         T[i] = (double)input._mat[i][0];
         T[i+(4)] = (double)input._mat[i][1];
         T[i+(8)] = (double)input._mat[i][2];
         T[i+(12)] = (double)input._mat[i][3];
     }
-//    cout<<"=================="<<endl;
-//    for(int i=0;i<4;i++) {
-//        for(int j=i*4;j<(i+1)*4;j++)
-//            printf("%1.3f ", T[j]);
-//        printf("\n");
-//    }
-//    cout<<"=================="<<endl;
+    //    cout<<"=================="<<endl;
+    //    for(int i=0;i<4;i++) {
+    //        for(int j=i*4;j<(i+1)*4;j++)
+    //            printf("%1.3f ", T[j]);
+    //        printf("\n");
+    //    }
+    //    cout<<"=================="<<endl;
     int num_sols = kinematics.inverse(T, q_sols);
     inversePosition.clear();
     for(int i=0;i<num_sols;i++){
@@ -246,12 +234,12 @@ void URMove::urKinematics(ofMatrix4x4 input){
     if(inversePosition.size() > 0){
         for(int i = 0; i < inversePosition.size(); i++){
             previews[i]->jointsRaw = inversePosition[i];
-//            cout<<ofToString(previews[i]->jointsRaw)<<endl;
+            //            cout<<ofToString(previews[i]->jointsRaw)<<endl;
             previews[i]->jointsProcessed.resize(previews[i]->jointsRaw.size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 1 || j == 3){
                     inversePosition[i][j] = inversePosition[i][j] - TWO_PI;
-                    previews[i]->jointsRaw[j]=inversePosition[i][j];
+                    previews[i]->jointsRaw[j]= inversePosition[i][j];
                 }
                 previews[i]->jointsProcessed[j] = ofRadToDeg(previews[i]->jointsRaw[j]);
                 if(j == 1 || j == 3){

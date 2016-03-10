@@ -9,9 +9,9 @@ void ofApp::setup(){
     
     string interface_name = "en0"; // or network interface name
     
-    targetPoint.setPosition(0, 0, 0);
+//    targetPoint.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
-    targetPoint.setParent(parent);
+//    targetPoint.setParent(parent);
     robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
     for(int i = 0; i < 6; i++){
@@ -90,11 +90,14 @@ void ofApp::update(){
     for(int i = 0; i < foo.size(); i++){
         jointPos[i] = (float)foo[i];
     }
-    
+    targetPoint.position = targetPointPos.get();
 
     toolPoint = robot.model.tool.position;
-//    targetPoint.position = targetPointPos;
-//    targetPointPos = robot.model.tool.position;
+    targetPoint.position = targetPoint.position + ofVec3f(0.2*cos((ofGetElapsedTimef()*0.1)), 0, 0.2*sin((ofGetElapsedTimef()*0.1)*2));
+    
+    
+    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    movement.addTargetPoint(targetPoint);
 
     movement.update();
     
@@ -213,7 +216,8 @@ void ofApp::draw(){
     robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
-    ofDrawSphere(robot.model.tool.position*ofVec3f(1000, 1000, 1000), 5);
+    ofDrawSphere(toolPoint.get()*ofVec3f(1000, 1000, 1000), 5);
+    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofPopMatrix();
     cam.end();
     
@@ -233,10 +237,9 @@ void ofApp::keyPressed(int key){
         move = !move;
     }
     if(key == ' '){
-        Joint j;
-        j.position = targetPointPos.get();
-        j.rotation = ofQuaternion(-90, ofVec3f(0, 0, 1));
-        movement.addTargetPoint(j);
+
+        targetPoint.rotation = ofQuaternion(-90, ofVec3f(0, 0, 1));
+        movement.addTargetPoint(targetPoint);
     }
 }
 

@@ -48,7 +48,7 @@ public:
     
     vector<double> speeds;
     
-    ofNode targetPoint;
+    Joint targetPoint;
     ofNode parent;
     
     int count;
