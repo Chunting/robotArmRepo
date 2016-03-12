@@ -69,7 +69,10 @@ void URMove::computeVelocities(){
     if(selectedSolution != -1){
         if(currentPose.size() > 0){
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
-                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime*2);
+                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime);
+                if(abs(currentJointSpeeds[i]) > PI){
+                    cout<<"TOO FAST"<<endl;
+                }
                 if(i > 3){
                     currentJointSpeeds[i] = 0;
                 }

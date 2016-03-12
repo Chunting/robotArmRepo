@@ -93,7 +93,7 @@ void ofApp::update(){
     targetPoint.position = targetPointPos.get();
 
     toolPoint = robot.model.tool.position;
-    targetPoint.position = targetPoint.position + ofVec3f(0.2*cos((ofGetElapsedTimef()*0.1)), 0, 0.2*sin((ofGetElapsedTimef()*0.1)*2));
+    targetPoint.position = targetPoint.position + ofVec3f(0.2*cos((ofGetElapsedTimef())), 0, 0.2*sin((ofGetElapsedTimef())*2));
     
     
     targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
