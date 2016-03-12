@@ -2,9 +2,9 @@
 - URMove
   - [ ] Plot Path from CurrentPos to Target 
   - [ ] Interpolate based on distance
-  - [ ] acceleration 
-  - [ ] add deacceleration to prevent sudden stops
+  - [ ] tweak acceleration/deacceleration to prevent sudden stops/jerks
   - [ ] select correct Q Sol
+  - [ ] remap to correct ranges/wrap to nearest joint position
 - URKinematics
   - [ ] figure out why the inverse is mirrored
   - [ ]  initial rotations on quaternion?
