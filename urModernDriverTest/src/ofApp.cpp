@@ -90,13 +90,14 @@ void ofApp::update(){
     for(int i = 0; i < foo.size(); i++){
         jointPos[i] = (float)foo[i];
     }
-    targetPoint.position = targetPointPos.get();
+    targetPoint.position.interpolate(targetPointPos.get(), 0.01);
 
     toolPoint = robot.model.tool.position;
-    targetPoint.position = targetPoint.position + ofVec3f(0.2*cos((ofGetElapsedTimef())), 0, 0.2*sin((ofGetElapsedTimef())*2));
+//    targetPoint.position = targetPoint.position + ofVec3f(0.1*cos((ofGetElapsedTimef()*0.5)), 0, 0.1*sin((ofGetElapsedTimef()*0.5)*2));
     
     
     targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
     movement.addTargetPoint(targetPoint);
 
     movement.update();
@@ -228,7 +229,8 @@ void ofApp::draw(){
 }
 
 void ofApp::exit(){
-//    robot.waitForThread();
+    if(robot.bStarted)
+        robot.waitForThread();
 }
 
 //--------------------------------------------------------------

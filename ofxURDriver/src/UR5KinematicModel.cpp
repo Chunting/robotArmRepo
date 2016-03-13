@@ -89,7 +89,7 @@ void UR5KinematicModel::draw(){
     if(bDrawModel){
         ofEnableDepthTest();
         shader.begin();
-        shader.setUniform1f("elapsedTime", ofGetElapsedTimef());
+        shader.setUniform1f("elapsedTime", abs(sin(ofGetElapsedTimef()*0.01)));
         shader.setUniform1f("stage", 3.0);
         shader.setUniform1f("alpha", 1.0);
         float x;

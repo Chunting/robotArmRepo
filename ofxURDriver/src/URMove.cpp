@@ -37,6 +37,8 @@ void URMove::update(){
     deltaTimer.tick();
     deltaT = 1.0/timeDiff;
     deltaTime = deltaTimer.getPeriod();
+    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, 0.05);
+    targetPoint.rotation.slerp(0.05, targetPoint.rotation, newTargetPoint.rotation);
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     urKinematics(mat);
@@ -70,10 +72,11 @@ void URMove::computeVelocities(){
         if(currentPose.size() > 0){
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/(deltaTime);
+                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], 0.9);
                 if(abs(currentJointSpeeds[i]) > PI){
-                    cout<<"TOO FAST"<<endl;
+                    ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }
-                if(i > 3){
+                if(i > 4){
                     currentJointSpeeds[i] = 0;
                 }
                 
@@ -81,30 +84,12 @@ void URMove::computeVelocities(){
         }
     }
     lastJointSpeeds = currentJointSpeeds;
-    //    ofLog()<<ofToString(currentJointSpeeds);
 }
 
 void URMove::addTargetPoint(Joint target){
-    targetPoint = target;
-    
+    newTargetPoint = target;    
 }
 
-ofQuaternion URMove::eulerToQuat(const ofVec3f & rotationEuler) {
-    ofQuaternion rotation;
-    float c1 = cos(rotationEuler[2] * 0.5);
-    float c2 = cos(rotationEuler[1] * 0.5);
-    float c3 = cos(rotationEuler[0] * 0.5);
-    float s1 = sin(rotationEuler[2] * 0.5);
-    float s2 = sin(rotationEuler[1] * 0.5);
-    float s3 = sin(rotationEuler[0] * 0.5);
-    
-    rotation[0] = c1*c2*s3 - s1*s2*c3;
-    rotation[1] = c1*s2*c3 + s1*c2*s3;
-    rotation[2] = s1*c2*c3 - c1*s2*s3;
-    rotation[3] = c1*c2*c3 + s1*s2*s3;
-    
-    return rotation;
-}
 
 void URMove::draw(){
     int j = 0;

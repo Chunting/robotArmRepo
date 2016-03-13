@@ -33,7 +33,6 @@ public:
 protected:
     float distance;
     int selectSolution();
-    ofQuaternion eulerToQuat(const ofVec3f & rotationEuler);
     vector<ofEasyCam> cams;
     vector<UR5KinematicModel*> previews;
     //Motion Capture Visualization
@@ -52,6 +51,7 @@ protected:
     vector<double> currentJointSpeeds;
     vector<double> lastJointSpeeds;
     deque<vector<float> > jointSpeedHistory;
+    deque<Joint> positions;
     ofEasyCam cam;
     ofPolyline targetLine;
     float totalLength;
@@ -80,6 +80,7 @@ protected:
     ofVec3f normalAtIndexSin;
     ofVec3f rotationAtIndexSin;
     Joint targetPoint;
+    Joint newTargetPoint;
     unsigned int nearestIndex;
     float rotAngle;
     ofNode node;
