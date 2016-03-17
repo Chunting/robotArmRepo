@@ -27,8 +27,8 @@ public:
     bool bDataReady;
     bool bStarted;
     void moveJoints(vector<double> pos);
-    void setSpeed(vector<double> speeds);
-    
+    void setSpeed(vector<double> speeds, double acceleration = 100.0);
+    ofVec3f getToolPoint();
     // Robot Arm
     UrDriver* robot;
     std::condition_variable rt_msg_cond_;
@@ -43,7 +43,8 @@ public:
     std::string tool_frame_;
     bool use_ros_control_;
     std::thread* ros_control_thread_;
-    
+    vector<double> currentSpeed;
+    double acceleration;
     UR5KinematicModel model;
     RateTimer timer;
     float epslion = 0.00000000000000001;
@@ -51,5 +52,5 @@ public:
     deque<vector<double> > posBuffer;
     deque<vector<double> > speedBuffers;
 
-
+    bool bMove;
 };

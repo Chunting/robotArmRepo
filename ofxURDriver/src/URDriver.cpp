@@ -9,6 +9,9 @@
 #include "URDriver.h"
 
 ofxURDriver::ofxURDriver(){
+    currentSpeed.assign(6, 0.0);
+    acceleration = 0.0;
+    
 }
 
 ofxURDriver::~ofxURDriver(){
@@ -89,13 +92,23 @@ float ofxURDriver::getThreadFPS(){
     }
     return fps;
 }
+ofVec3f ofxURDriver::getToolPoint(){
+    lock();
+    ofVec3f foo = model.tool.position;
+    unlock();
+    return foo;
+}
 
 void ofxURDriver::moveJoints(vector<double> pos){
     posBuffer.push_back(pos);
 }
 
-void ofxURDriver::setSpeed(vector<double> speeds){
-    speedBuffers.push_back(speeds);
+void ofxURDriver::setSpeed(vector<double> speeds, double accel){
+    lock();
+    currentSpeed = speeds;
+    acceleration = accel;
+    bMove = true;
+    unlock();
 }
 
 void ofxURDriver::threadedFunction(){
@@ -138,13 +151,12 @@ void ofxURDriver::threadedFunction(){
                 model.tool.rotation = ofQuaternion(angle, ofVec3f(model.toolPointRaw[3]/angle, model.toolPointRaw[4]/angle, model.toolPointRaw[5]/angle));
             }
             model.tool.position = ofVec3f(model.toolPointRaw[0], model.toolPointRaw[1], model.toolPointRaw[2]);
-
+            
             robot->rt_interface_->robot_state_->setControllerUpdated();
             
-
-            if(speedBuffers.size() > 0){
-                robot->setSpeed(speedBuffers.front()[0], speedBuffers.front()[1], speedBuffers.front()[2], speedBuffers.front()[3], speedBuffers.front()[4], speedBuffers.front()[5]);
-                speedBuffers.pop_front();
+            if(bMove){
+                robot->setSpeed(currentSpeed[0], currentSpeed[1], currentSpeed[2], currentSpeed[3], currentSpeed[4], currentSpeed[5], acceleration);
+                bMove = false;
             }
         }
     }

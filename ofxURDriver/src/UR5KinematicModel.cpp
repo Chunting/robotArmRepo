@@ -50,12 +50,21 @@ void UR5KinematicModel::setup(){
     }
     
     
+    
     joints[0].axis.set(0, 0, 1);
     joints[1].axis.set(0, -1, 0);
     joints[2].axis.set(0, -1, 0);
     joints[3].axis.set(0, -1, 0);
     joints[4].axis.set(0, 0, 1);
     joints[5].axis.set(0, 1, 0);
+    
+    
+    joints[0].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[1].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[2].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[3].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[4].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[5].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
     
     shader.load("shaders/model");
     

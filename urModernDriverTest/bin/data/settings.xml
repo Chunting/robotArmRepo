@@ -1,18 +1,44 @@
 <group>
-	<Target_Point_POS>0.0306122, -0.357143, 0.622449</Target_Point_POS>
-	<Target_Point_Angles>0, 0, 0</Target_Point_Angles>
+	<Target_Point_POS>0.336735, 0.581633, 0.306122</Target_Point_POS>
+	<Target_Point_Angles>90, -90, 0</Target_Point_Angles>
 <group/>
-<joint_0>4.49028</joint_0>
-	<joint_1>-1.91192</joint_1>
-	<joint_2>1.78282</joint_2>
-	<joint_3>-1.44176</joint_3>
-	<joint_4>1.57084</joint_4>
-	<joint_5>0.0121561</joint_5>
-	<ToolPoint>-0.0324708, 0.357209, 0.62288</ToolPoint>
-<target_joint_0>4.48939</target_joint_0>
-	<target_joint_1>-1.91192</target_joint_1>
-	<target_joint_2>1.78287</target_joint_2>
-	<target_joint_3>-1.44175</target_joint_3>
+<joint_0>2.14337</joint_0>
+	<joint_1>-2.98469</joint_1>
+	<joint_2>0.649633</joint_2>
+	<joint_3>0.756877</joint_3>
+	<joint_4>1.56606</joint_4>
+	<joint_5>-0.00167782</joint_5>
+	<ToolPoint>0, 0, 0</ToolPoint>
+<target_joint_0>2.14411</target_joint_0>
+	<target_joint_1>-2.01824</target_joint_1>
+	<target_joint_2>1.92322</target_joint_2>
+	<target_joint_3>-1.47578</target_joint_3>
 	<target_joint_4>1.5708</target_joint_4>
-	<target_joint_5>0.223002</target_joint_5>
+	<target_joint_5>2.56828</target_joint_5>
+<Joint_Speed0>0.000357826</Joint_Speed0>
+	<Joint_Speed1>0.390495</Joint_Speed1>
+	<Joint_Speed2>0.427478</Joint_Speed2>
+	<Joint_Speed3>-0.815766</Joint_Speed3>
+	<Joint_Speed4>0.00184166</Joint_Speed4>
+	<Joint_Speed5>0</Joint_Speed5>
+<Joints>
+		<joint_0>0</joint_0>
+		<target_joint_0>0.882869</target_joint_0>
+		<Joint_Speed0>0</Joint_Speed0>
+		<joint_1>-1.5708</joint_1>
+		<target_joint_1>5.3147</target_joint_1>
+		<Joint_Speed1>0</Joint_Speed1>
+		<joint_2>0</joint_2>
+		<target_joint_2>1.55026</target_joint_2>
+		<Joint_Speed2>0</Joint_Speed2>
+		<joint_3>-1.5708</joint_3>
+		<target_joint_3>4.13061</target_joint_3>
+		<Joint_Speed3>0</Joint_Speed3>
+		<joint_4>0</joint_4>
+		<target_joint_4>1.5708</target_joint_4>
+		<Joint_Speed4>0</Joint_Speed4>
+		<joint_5>0</joint_5>
+		<target_joint_5>3.82952</target_joint_5>
+		<Joint_Speed5>0</Joint_Speed5>
+	</Joints>
 </group>

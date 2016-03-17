@@ -28,15 +28,17 @@ public:
     
     void testMotors();
     ofParameterGroup robotArmParams;
+    ofParameterGroup joints;
     ofParameter<ofVec3f> targetPointPos;
     ofParameter<ofVec3f> targetPointAngles;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;
+     vector<ofParameter<float> > jointVelocities;
     ofParameter<ofVec3f> toolPoint;
     ofxPanel panel;
     
     
-    
+    bool stop;
 
     ofxNatNet natnet;
 
@@ -45,7 +47,7 @@ public:
     ofxOscSender sender;
     ofxURDriver robot;
     URMove movement;
-    
+    float acceleration;
     vector<double> speeds;
     
     Joint targetPoint;

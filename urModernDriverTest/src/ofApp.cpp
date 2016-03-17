@@ -5,7 +5,7 @@ void ofApp::setup(){
     ofSetFrameRate(120);
     ofSetVerticalSync(true);
     ofBackground(0);
-
+    ofSetLogLevel(OF_LOG_SILENT);
     
     string interface_name = "en0"; // or network interface name
     
@@ -14,16 +14,22 @@ void ofApp::setup(){
 //    targetPoint.setParent(parent);
     robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
-    for(int i = 0; i < 6; i++){
-        jointPos.push_back(ofParameter<float>());
-        robotArmParams.add(jointPos.back().set("joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
-        targetJointPos.push_back(ofParameter<float>());
-        robotArmParams.add(targetJointPos.back().set("target joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
-    }
     robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     
     panel.setup(robotArmParams);
     panel.loadFromFile("settings.xml");
+    joints.setName("Joints");
+    for(int i = 0; i < 6; i++){
+        jointPos.push_back(ofParameter<float>());
+        targetJointPos.push_back(ofParameter<float>());
+        jointVelocities.push_back(ofParameter<float>());
+        joints.add(jointPos.back().set("joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
+        joints.add(targetJointPos.back().set("target joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
+        joints.add(jointVelocities.back().set("Joint Speed"+ofToString(i), 0, -100, 100));
+    }
+    
+    panel.add(joints);
+    
 #ifdef ENABLE_NATNET
     sender.setup("192.168.1.255", 7777);
     natnet.setup(interface_name, "192.168.1.107");  // interface name, server ip
@@ -90,14 +96,14 @@ void ofApp::update(){
     for(int i = 0; i < foo.size(); i++){
         jointPos[i] = (float)foo[i];
     }
-    targetPoint.position.interpolate(targetPointPos.get(), 0.01);
+    targetPoint.position.interpolate(targetPointPos.get(), 0.5);
 
-    toolPoint = robot.model.tool.position;
-//    targetPoint.position = targetPoint.position + ofVec3f(0.1*cos((ofGetElapsedTimef()*0.5)), 0, 0.1*sin((ofGetElapsedTimef()*0.5)*2));
+    toolPoint = robot.getToolPoint();
     
     
     targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
     targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetPointAngles = targetPoint.rotation.getEuler();
     movement.addTargetPoint(targetPoint);
 
     movement.update();
@@ -109,18 +115,26 @@ void ofApp::update(){
     
     vector<double> tempSpeeds;
     tempSpeeds.assign(6, 0);
+    
 
     if(move){
         tempSpeeds = movement.getCurrentSpeed();
+        for(int i = 0; i < tempSpeeds.size(); i++){
+            jointVelocities[i] = (float)tempSpeeds[i];
+        }
         robot.setSpeed(tempSpeeds);
     }
+ 
+  
 }
 
 
 void ofApp::testMotors(){
     vector<double> foo;
     foo.assign(6, 0.0);
-    robot.setSpeed(foo);
+    if(!stop)
+        foo[0] = 1.0;
+    robot.setSpeed(foo, ofRandom(1, 100));
 }
 
 //--------------------------------------------------------------
@@ -229,7 +243,8 @@ void ofApp::draw(){
 }
 
 void ofApp::exit(){
-    if(robot.bStarted)
+    panel.saveToFile("settings.xml");
+    if(robot.isThreadRunning())
         robot.waitForThread();
 }
 
@@ -238,11 +253,11 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         move = !move;
     }
-    if(key == ' '){
-
-        targetPoint.rotation = ofQuaternion(-90, ofVec3f(0, 0, 1));
-        movement.addTargetPoint(targetPoint);
+    if(key == ' ' ){
+        testMotors();
+        stop=!stop;
     }
+
 }
 
 //--------------------------------------------------------------
