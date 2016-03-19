@@ -5,7 +5,7 @@
 
 cd ../../addons
 
-PREFIX="git clone git@github.com:"
+PREFIX="git clone http://github.com/"
 ${PREFIX}kylemcdonald/ofxTiming
 ${PREFIX}satoruhiga/ofxNatNet
 
