@@ -8,7 +8,7 @@
 	<joint_3>0.756877</joint_3>
 	<joint_4>1.56606</joint_4>
 	<joint_5>-0.00167782</joint_5>
-	<ToolPoint>0.305963, -0.243333, 0.492298</ToolPoint>
+	<ToolPoint>0.205186, -0.315867, 0.622879</ToolPoint>
 <target_joint_0>2.14411</target_joint_0>
 	<target_joint_1>-2.01824</target_joint_1>
 	<target_joint_2>1.92322</target_joint_2>
@@ -22,25 +22,26 @@
 	<Joint_Speed4>0.00184166</Joint_Speed4>
 	<Joint_Speed5>0</Joint_Speed5>
 <Joints>
-		<joint_0>2.18348</joint_0>
-		<target_joint_0>1.82371</target_joint_0>
-		<Joint_Speed0>-2.27117</Joint_Speed0>
-		<joint_1>-1.80983</joint_1>
-		<target_joint_1>-1.81774</target_joint_1>
-		<Joint_Speed1>-0.0568143</Joint_Speed1>
-		<joint_2>2.04767</joint_2>
-		<target_joint_2>2.22217</target_joint_2>
-		<Joint_Speed2>1.12334</Joint_Speed2>
-		<joint_3>-1.80831</joint_3>
-		<target_joint_3>-2.06862</target_joint_3>
-		<Joint_Speed3>-1.6664</Joint_Speed3>
-		<joint_4>1.57082</joint_4>
-		<target_joint_4>1.38401</target_joint_4>
-		<Joint_Speed4>-1.19402</Joint_Speed4>
-		<joint_5>-0.00169021</joint_5>
-		<target_joint_5>5.89086</target_joint_5>
+		<joint_0>1.8495</joint_0>
+		<target_joint_0>1.90798</target_joint_0>
+		<Joint_Speed0>0.459708</Joint_Speed0>
+		<joint_1>-1.86709</joint_1>
+		<target_joint_1>-1.74032</target_joint_1>
+		<Joint_Speed1>0.996579</Joint_Speed1>
+		<joint_2>1.75337</joint_2>
+		<target_joint_2>1.97073</target_joint_2>
+		<Joint_Speed2>1.7087</Joint_Speed2>
+		<joint_3>-1.45709</joint_3>
+		<target_joint_3>-1.80122</target_joint_3>
+		<Joint_Speed3>-2.70536</Joint_Speed3>
+		<joint_4>1.57101</joint_4>
+		<target_joint_4>1.57078</target_joint_4>
+		<Joint_Speed4>-0.001817</Joint_Speed4>
+		<joint_5>0.070444</joint_5>
+		<target_joint_5>5.94599</target_joint_5>
 		<Joint_Speed5>0</Joint_Speed5>
 	<Move>0</Move>
-	<avgAccel>46.6921</avgAccel>
+	<avgAccel>0.104475</avgAccel>
+	<figure8>0</figure8>
 	</Joints>
 </group>

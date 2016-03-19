@@ -240,7 +240,9 @@ void ofApp::draw(){
     robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
+     ofSetColor(255, 0, 255, 200);
     ofDrawSphere(toolPoint.get()*ofVec3f(1000, 1000, 1000), 5);
+     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofPopMatrix();
     cam.end();
