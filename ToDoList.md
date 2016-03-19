@@ -1,9 +1,9 @@
 ### TO DO LIST
 - URMove
   - [ ] Plot Path from CurrentPos to Target 
-  - [ ] Interpolate based on distance
+  - [X] Interpolate based on distance
   - [X] tweak acceleration/deacceleration to prevent sudden stops/jerks
-  - [ ] select correct Q Sol
+  - [X] select correct Q Sol
   - [ ] remap to correct ranges/wrap to nearest joint position
 - URKinematics
   - [X] figure out why the inverse is mirrored
