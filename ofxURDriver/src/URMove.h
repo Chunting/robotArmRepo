@@ -27,6 +27,7 @@ public:
     void urKinematics(double o, double t, double th, double f, double fi, double s);
 //    void urKinematics(vector<double> input);
     void setCurrentJointPosition(vector<double> pos);
+    float getAcceleration();
     ofParameterGroup movementParams;
     vector<double> getTargetJointPos();
     vector<double> getCurrentSpeed();
@@ -50,6 +51,9 @@ protected:
     vector<double> lastPosition;
     vector<double> currentJointSpeeds;
     vector<double> lastJointSpeeds;
+    vector<double> acceleration;
+    double avgAccel;
+    double lastAvgAccel;
     deque<vector<float> > jointSpeedHistory;
     deque<Joint> positions;
     ofEasyCam cam;

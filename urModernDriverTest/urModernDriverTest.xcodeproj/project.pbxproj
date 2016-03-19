@@ -31,13 +31,6 @@
 		B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */; };
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
 		C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC8881B3C8C0A1C45F042E7A /* OscPrintReceivedElements.cpp */; };
-		C80842B71C8E2013000ECB3F /* ofxGizmo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842A01C8E2013000ECB3F /* ofxGizmo.cpp */; };
-		C80842B81C8E2013000ECB3F /* GizmoTransformMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842A51C8E2013000ECB3F /* GizmoTransformMove.cpp */; };
-		C80842B91C8E2013000ECB3F /* GizmoTransformRender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842A71C8E2013000ECB3F /* GizmoTransformRender.cpp */; };
-		C80842BA1C8E2013000ECB3F /* GizmoTransformRotate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842A91C8E2013000ECB3F /* GizmoTransformRotate.cpp */; };
-		C80842BB1C8E2013000ECB3F /* GizmoTransformScale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842AB1C8E2013000ECB3F /* GizmoTransformScale.cpp */; };
-		C80842BC1C8E2013000ECB3F /* ZBaseMaths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842B11C8E2013000ECB3F /* ZBaseMaths.cpp */; };
-		C80842BD1C8E2013000ECB3F /* ZMathsFunc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80842B51C8E2013000ECB3F /* ZMathsFunc.cpp */; };
 		C894E4641C7E5080005140FF /* ofxAssimpAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C894E4181C7E5080005140FF /* ofxAssimpAnimation.cpp */; };
 		C894E4651C7E5080005140FF /* ofxAssimpMeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C894E41A1C7E5080005140FF /* ofxAssimpMeshHelper.cpp */; };
 		C894E4661C7E5080005140FF /* ofxAssimpModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C894E41C1C7E5080005140FF /* ofxAssimpModelLoader.cpp */; };
@@ -139,27 +132,6 @@
 		C58862C6D212C8E8A83810F4 /* ofxOscMessage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscMessage.h; path = ../../../addons/ofxOsc/src/ofxOscMessage.h; sourceTree = SOURCE_ROOT; };
 		C6937888E126BADC8777423B /* OscTypes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscTypes.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
-		C80842A01C8E2013000ECB3F /* ofxGizmo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGizmo.cpp; sourceTree = "<group>"; };
-		C80842A11C8E2013000ECB3F /* ofxGizmo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxGizmo.h; sourceTree = "<group>"; };
-		C80842A41C8E2013000ECB3F /* GizmoTransform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GizmoTransform.h; sourceTree = "<group>"; };
-		C80842A51C8E2013000ECB3F /* GizmoTransformMove.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GizmoTransformMove.cpp; sourceTree = "<group>"; };
-		C80842A61C8E2013000ECB3F /* GizmoTransformMove.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GizmoTransformMove.h; sourceTree = "<group>"; };
-		C80842A71C8E2013000ECB3F /* GizmoTransformRender.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GizmoTransformRender.cpp; sourceTree = "<group>"; };
-		C80842A81C8E2013000ECB3F /* GizmoTransformRender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GizmoTransformRender.h; sourceTree = "<group>"; };
-		C80842A91C8E2013000ECB3F /* GizmoTransformRotate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GizmoTransformRotate.cpp; sourceTree = "<group>"; };
-		C80842AA1C8E2013000ECB3F /* GizmoTransformRotate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GizmoTransformRotate.h; sourceTree = "<group>"; };
-		C80842AB1C8E2013000ECB3F /* GizmoTransformScale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GizmoTransformScale.cpp; sourceTree = "<group>"; };
-		C80842AC1C8E2013000ECB3F /* GizmoTransformScale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GizmoTransformScale.h; sourceTree = "<group>"; };
-		C80842AD1C8E2013000ECB3F /* IGizmo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IGizmo.h; sourceTree = "<group>"; };
-		C80842AE1C8E2013000ECB3F /* LibBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibBase.h; sourceTree = "<group>"; };
-		C80842AF1C8E2013000ECB3F /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		C80842B01C8E2013000ECB3F /* ZBaseDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBaseDefs.h; sourceTree = "<group>"; };
-		C80842B11C8E2013000ECB3F /* ZBaseMaths.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ZBaseMaths.cpp; sourceTree = "<group>"; };
-		C80842B21C8E2013000ECB3F /* ZBaseMaths.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBaseMaths.h; sourceTree = "<group>"; };
-		C80842B31C8E2013000ECB3F /* ZBaseMaths.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = ZBaseMaths.inl; sourceTree = "<group>"; };
-		C80842B41C8E2013000ECB3F /* ZCollisionsUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZCollisionsUtils.h; sourceTree = "<group>"; };
-		C80842B51C8E2013000ECB3F /* ZMathsFunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ZMathsFunc.cpp; sourceTree = "<group>"; };
-		C80842B61C8E2013000ECB3F /* ZMathsFunc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZMathsFunc.h; sourceTree = "<group>"; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
 		C894E4181C7E5080005140FF /* ofxAssimpAnimation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAssimpAnimation.cpp; sourceTree = "<group>"; };
 		C894E4191C7E5080005140FF /* ofxAssimpAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpAnimation.h; sourceTree = "<group>"; };
@@ -428,7 +400,6 @@
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				C894E4161C7E5080005140FF /* ofxAssimpModelLoader */,
 				C8E78A771C7F59E30085A516 /* ofxTiming */,
-				C808429E1C8E2013000ECB3F /* ofxGizmo */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -450,60 +421,6 @@
 				9F7986DC4EB05E75FCE2C777 /* ofxOscSender.h */,
 			);
 			name = src;
-			sourceTree = "<group>";
-		};
-		C808429E1C8E2013000ECB3F /* ofxGizmo */ = {
-			isa = PBXGroup;
-			children = (
-				C808429F1C8E2013000ECB3F /* src */,
-				C80842A21C8E2013000ECB3F /* libs */,
-			);
-			name = ofxGizmo;
-			sourceTree = "<group>";
-		};
-		C808429F1C8E2013000ECB3F /* src */ = {
-			isa = PBXGroup;
-			children = (
-				C80842A01C8E2013000ECB3F /* ofxGizmo.cpp */,
-				C80842A11C8E2013000ECB3F /* ofxGizmo.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxGizmo/src;
-			sourceTree = "<group>";
-		};
-		C80842A21C8E2013000ECB3F /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				C80842A31C8E2013000ECB3F /* LibGizmo */,
-			);
-			name = libs;
-			path = ../../../addons/ofxGizmo/libs;
-			sourceTree = "<group>";
-		};
-		C80842A31C8E2013000ECB3F /* LibGizmo */ = {
-			isa = PBXGroup;
-			children = (
-				C80842A41C8E2013000ECB3F /* GizmoTransform.h */,
-				C80842A51C8E2013000ECB3F /* GizmoTransformMove.cpp */,
-				C80842A61C8E2013000ECB3F /* GizmoTransformMove.h */,
-				C80842A71C8E2013000ECB3F /* GizmoTransformRender.cpp */,
-				C80842A81C8E2013000ECB3F /* GizmoTransformRender.h */,
-				C80842A91C8E2013000ECB3F /* GizmoTransformRotate.cpp */,
-				C80842AA1C8E2013000ECB3F /* GizmoTransformRotate.h */,
-				C80842AB1C8E2013000ECB3F /* GizmoTransformScale.cpp */,
-				C80842AC1C8E2013000ECB3F /* GizmoTransformScale.h */,
-				C80842AD1C8E2013000ECB3F /* IGizmo.h */,
-				C80842AE1C8E2013000ECB3F /* LibBase.h */,
-				C80842AF1C8E2013000ECB3F /* README.txt */,
-				C80842B01C8E2013000ECB3F /* ZBaseDefs.h */,
-				C80842B11C8E2013000ECB3F /* ZBaseMaths.cpp */,
-				C80842B21C8E2013000ECB3F /* ZBaseMaths.h */,
-				C80842B31C8E2013000ECB3F /* ZBaseMaths.inl */,
-				C80842B41C8E2013000ECB3F /* ZCollisionsUtils.h */,
-				C80842B51C8E2013000ECB3F /* ZMathsFunc.cpp */,
-				C80842B61C8E2013000ECB3F /* ZMathsFunc.h */,
-			);
-			path = LibGizmo;
 			sourceTree = "<group>";
 		};
 		C894E4161C7E5080005140FF /* ofxAssimpModelLoader */ = {
@@ -956,7 +873,6 @@
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
 				C8E78AAE1C7F61FD0085A516 /* URDriver.cpp in Sources */,
-				C80842BC1C8E2013000ECB3F /* ZBaseMaths.cpp in Sources */,
 				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
@@ -967,16 +883,13 @@
 				C8E78AA91C7F61FD0085A516 /* robot_state_RT.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
 				C894E4641C7E5080005140FF /* ofxAssimpAnimation.cpp in Sources */,
-				C80842BD1C8E2013000ECB3F /* ZMathsFunc.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				C894E4651C7E5080005140FF /* ofxAssimpMeshHelper.cpp in Sources */,
 				4ADB88E2FB52E76A471065DE /* ofxOscParameterSync.cpp in Sources */,
-				C80842BA1C8E2013000ECB3F /* GizmoTransformRotate.cpp in Sources */,
 				C8E78AB11C7F61FD0085A516 /* URToolHead.cpp in Sources */,
 				640279EE111671BD026CB013 /* ofxOscReceiver.cpp in Sources */,
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				C8E78AAB1C7F61FD0085A516 /* ur_driver.cpp in Sources */,
-				C80842B81C8E2013000ECB3F /* GizmoTransformMove.cpp in Sources */,
 				C8E78AB01C7F61FD0085A516 /* URRead.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				C8E78AAA1C7F61FD0085A516 /* ur_communication.cpp in Sources */,
@@ -985,17 +898,14 @@
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				C8E78AAC1C7F61FD0085A516 /* ur_realtime_communication.cpp in Sources */,
-				C80842BB1C8E2013000ECB3F /* GizmoTransformScale.cpp in Sources */,
 				62545D179C94265CA1389D4A /* OscOutboundPacketStream.cpp in Sources */,
 				C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */,
 				0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */,
 				C8E78AA81C7F61FD0085A516 /* robot_state.cpp in Sources */,
-				C80842B91C8E2013000ECB3F /* GizmoTransformRender.cpp in Sources */,
 				879A251454401BC0B6E4F238 /* OscTypes.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
-				C80842B71C8E2013000ECB3F /* ofxGizmo.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				C894E4671C7E5080005140FF /* ofxAssimpTexture.cpp in Sources */,
 				C8E78AC41C7F89740085A516 /* ur_kin.cpp in Sources */,

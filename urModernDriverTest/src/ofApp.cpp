@@ -9,9 +9,9 @@ void ofApp::setup(){
     
     string interface_name = "en0"; // or network interface name
     
-//    targetPoint.setPosition(0, 0, 0);
+    //    targetPoint.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
-//    targetPoint.setParent(parent);
+    //    targetPoint.setParent(parent);
     robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
     robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
@@ -19,6 +19,9 @@ void ofApp::setup(){
     panel.setup(robotArmParams);
     panel.loadFromFile("settings.xml");
     joints.setName("Joints");
+    joints.add(bMove.set("Move", false));
+    joints.add(avgAccel.set("avgAccel", 0, 0, 200));
+    joints.add(figure8.set("figure8", false));
     for(int i = 0; i < 6; i++){
         jointPos.push_back(ofParameter<float>());
         targetJointPos.push_back(ofParameter<float>());
@@ -40,7 +43,7 @@ void ofApp::setup(){
     robot.start();
     movement.setup();
     speeds.assign(6, 0);
-    move = false;
+    bMove = false;
     
     cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
 }
@@ -84,28 +87,34 @@ void ofApp::update(){
     
     
     
-//    float angle = sqrt(pow(targetPointAngles.get().x, 2)+pow(targetPointAngles.get().y, 2)+pow(targetPointAngles.get().z, 2));
-//    if( angle < 0.00000000001){
-//        targetPoint.setOrientation(ofQuaternion(0, 0, 0, 1));
-//    }else{
-//        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
-//    }
+    //    float angle = sqrt(pow(targetPointAngles.get().x, 2)+pow(targetPointAngles.get().y, 2)+pow(targetPointAngles.get().z, 2));
+    //    if( angle < 0.00000000001){
+    //        targetPoint.setOrientation(ofQuaternion(0, 0, 0, 1));
+    //    }else{
+    //        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
+    //    }
     vector<double> foo = robot.getJointPositions();
     movement.setCurrentJointPosition(foo);
-
+    
     for(int i = 0; i < foo.size(); i++){
         jointPos[i] = (float)foo[i];
     }
-    targetPoint.position.interpolate(targetPointPos.get(), 0.5);
-
+    targetPoint.position.interpolate(targetPointPos.get(), 0.1);
+    
     toolPoint = robot.getToolPoint();
     
-    
-    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    targetPointAngles = targetPoint.rotation.getEuler();
-    movement.addTargetPoint(targetPoint);
-
+    if(!figure8){
+        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        targetPointAngles = targetPoint.rotation.getEuler();
+        movement.addTargetPoint(targetPoint);
+    }else{
+        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        targetPointAngles = targetPoint.rotation.getEuler();
+        movement.addTargetPoint(targetPoint);
+    }
     movement.update();
     
     vector<double> target = movement.getTargetJointPos();
@@ -116,16 +125,16 @@ void ofApp::update(){
     vector<double> tempSpeeds;
     tempSpeeds.assign(6, 0);
     
-
-    if(move){
-        tempSpeeds = movement.getCurrentSpeed();
-        for(int i = 0; i < tempSpeeds.size(); i++){
-            jointVelocities[i] = (float)tempSpeeds[i];
-        }
-        robot.setSpeed(tempSpeeds);
+    tempSpeeds = movement.getCurrentSpeed();
+    for(int i = 0; i < tempSpeeds.size(); i++){
+        jointVelocities[i] = (float)tempSpeeds[i];
     }
- 
-  
+    avgAccel = movement.getAcceleration();
+    if(bMove){
+        robot.setSpeed(tempSpeeds, avgAccel);
+    }
+    
+    
 }
 
 
@@ -238,7 +247,7 @@ void ofApp::draw(){
     
     movement.draw();
     
-
+    
     panel.draw();
 }
 
@@ -251,13 +260,14 @@ void ofApp::exit(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     if(key == 'm'){
-        move = !move;
+        bMove = !bMove;
     }
     if(key == ' ' ){
-        testMotors();
-        stop=!stop;
+        targetPointPos = toolPoint;
     }
-
+    if(key == '8'){
+        figure8 = !figure8;
+    }
 }
 
 //--------------------------------------------------------------

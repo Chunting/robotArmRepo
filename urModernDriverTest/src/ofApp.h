@@ -31,12 +31,15 @@ public:
     ofParameterGroup joints;
     ofParameter<ofVec3f> targetPointPos;
     ofParameter<ofVec3f> targetPointAngles;
+    ofParameter<float> avgAccel;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;
      vector<ofParameter<float> > jointVelocities;
     ofParameter<ofVec3f> toolPoint;
-    ofxPanel panel;
+    ofParameter<bool> bMove;
+    ofParameter<bool> figure8;
     
+    ofxPanel panel;
     
     bool stop;
 
