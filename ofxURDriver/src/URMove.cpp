@@ -92,6 +92,10 @@ void URMove::computeVelocities(){
 
 void URMove::addTargetPoint(Joint target){
     newTargetPoint = target;
+    targetLine.addVertex(target.position*1000);
+    if(targetLine.getVertices().size() > 400){
+        targetLine.getVertices().erase(targetLine.getVertices().begin());
+    }
 }
 
 
@@ -103,6 +107,7 @@ void URMove::draw(){
         previews[0]->draw();
         ofPopMatrix();
         ofPushMatrix();
+        targetLine.draw();
         ofSetColor(255, 0, 255, 200);
         ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
         ofSetColor(255, 255, 0, 200);
@@ -120,6 +125,7 @@ void URMove::draw(){
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+    targetLine.draw();
     ofPopMatrix();
     cam.end();
     

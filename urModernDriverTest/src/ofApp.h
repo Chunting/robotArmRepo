@@ -36,20 +36,22 @@ public:
     ofParameter<float> avgAccel;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;
-     vector<ofParameter<float> > jointVelocities;
+    vector<ofParameter<float> > jointVelocities;
     ofParameter<ofVec3f> toolPoint;
     ofParameter<bool> bMove;
     ofParameter<bool> figure8;
     ofParameter<bool> bTrace;
+    ofParameter<bool> bFollow;
+    ofParameter<bool> bCopy;
     
     ofxPanel panel;
     ofxPanel panelWorkSurface;
     ofxPanel panelJoints;
     
     bool stop;
-
+    
     ofxNatNet natnet;
-
+    
     ofEasyCam cam;
     //Motion Capture OSC Server
     ofxOscSender sender;

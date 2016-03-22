@@ -15,6 +15,7 @@ void WorkSurface::setup(){
     plane.setPosition(0, 0, 0);
     plane.setWidth(1);
     plane.setHeight(1);
+    targetIndex = 0;
     
 }
 void WorkSurface::setCorners(vector<ofPoint> pts){
@@ -42,10 +43,10 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
 }
 void WorkSurface::update(){
     ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
-    ofPoint diffTwo = targetPoints[0].get() - targetPoints[2].get();
+    ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
     
     position = targetPoints[0].get().getMiddle(targetPoints[2].get());
-    diffOne.normalize();
+//    diffOne.normalize();
     diffTwo.normalize();
     crossed = diffTwo.cross(diffOne);
     orientation.makeRotate(ofPoint(0, 0, 1), crossed);
@@ -58,16 +59,17 @@ void WorkSurface::addStroke(ofPolyline stroke){
     
 }
 void WorkSurface::addStrokes(vector<ofPolyline> strokes){
-    ofPoint diffUpper = targetPoints[2].get() - targetPoints[0].get();
-    ofPoint diffLower = targetPoints[3].get() - targetPoints[1].get();
+    float height = (targetPoints[0].get() - targetPoints[3].get()).length();
+    float width = (targetPoints[0].get() - targetPoints[1].get()).length();
+    
     lines.clear();
     ofMatrix4x4 mat;
     mat.makeRotationMatrix(orientation);
-    mat.setTranslation(targetPoints[3].get());
+    mat.setTranslation(position);
     for(int i = 0; i < strokes.size(); i++){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
-            fooLine.addVertex(strokes[i].getVertices()[j]*mat);
+            fooLine.addVertex(strokes[i].getVertices()[j]*width*mat);
         }
         lines.push_back(fooLine);
     }
@@ -76,12 +78,17 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
 Joint WorkSurface::getTargetPoint(float t){
     Joint foo;
     if(lines.size() > 0){
-        float sinTime = ofMap(sin(t * 0.5), -1, 1, 0, 1);
-        float sinIndexLength = lines[0].getIndexAtPercent(sinTime);
-        ofPoint p = lines[0].getPointAtIndexInterpolated(sinIndexLength);
-        
+        t = fmodf(t, 15.0)/15.0;
+        float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
+        ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
         foo.position = p;
         foo.rotation = orientation;
+        if(1.0-t < 0.0001 | t == 0.0){
+            targetIndex++;
+            if(targetIndex >=lines.size()){
+                targetIndex = 0;
+            }
+        }
     }
     return foo;
 }

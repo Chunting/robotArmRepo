@@ -47,4 +47,5 @@ public:
     ofRectangle rect;
     vector<ofPolyline> lines;
     ofPolyline workArea;
+    int targetIndex;
 };

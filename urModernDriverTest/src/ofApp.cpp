@@ -17,6 +17,9 @@ void ofApp::setup(){
     robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     
     panel.setup(robotArmParams);
+    panel.add(bFollow.set("Follow TargetPoint", false));
+    panel.add(bTrace.set("bTrace GML", false));
+    panel.add(bCopy.set("bCopy Tool Point", false));
     workSurface.setup();
     panelWorkSurface.setup(workSurface.workSurfacePrarms);
     panel.loadFromFile("settings.xml");
@@ -53,7 +56,7 @@ void ofApp::setup(){
     
     cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
     
-    gml.loadFile("gml/161.gml", 0, 0, 640, 480);
+    gml.loadFile("gml/218.gml", 0, 0, 640, 480);
 }
 
 //--------------------------------------------------------------
@@ -109,23 +112,25 @@ void ofApp::update(){
         jointPos[i] = (float)foo[i];
     }
     targetPoint.position.interpolate(targetPointPos.get(), 0.1);
-    
     toolPoint = robot.getToolPoint();
-    
-//    if(!bMove){
-//        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-//        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-//        targetPointAngles = targetPoint.rotation.getEuler();
-//        movement.addTargetPoint(targetPoint);
-//    }else if(bTrace){
-        movement.addTargetPoint(workSurface.getTargetPoint(ofGetElapsedTimef()*0.1));
-//    }else if(figure8){
-//        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-//        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-//        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-//        targetPointAngles = targetPoint.rotation.getEuler();
-//        movement.addTargetPoint(targetPoint);
-//    }
+    if(bCopy){
+        bCopy = false;
+        targetPoint.position = toolPoint;
+    }
+    if(!bFollow){
+        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        targetPointAngles = targetPoint.rotation.getEuler();
+        movement.addTargetPoint(targetPoint);
+    }else if(bTrace){
+        movement.addTargetPoint(workSurface.getTargetPoint(ofGetElapsedTimef()));
+    }else if(figure8){
+        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        targetPointAngles = targetPoint.rotation.getEuler();
+        movement.addTargetPoint(targetPoint);
+    }
     movement.update();
     
     vector<double> target = movement.getTargetJointPos();
