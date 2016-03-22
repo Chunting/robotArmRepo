@@ -7,6 +7,8 @@
 #include "URMove.h"
 #include "UR5KinematicModel.h"
 #include "ofxGui.h"
+#include "GMLPath.h"
+#include "WorkSurface.h"
 class ofApp : public ofBaseApp{
     
 public:
@@ -25,8 +27,8 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    
     void testMotors();
+    WorkSurface workSurface;
     ofParameterGroup robotArmParams;
     ofParameterGroup joints;
     ofParameter<ofVec3f> targetPointPos;
@@ -38,8 +40,11 @@ public:
     ofParameter<ofVec3f> toolPoint;
     ofParameter<bool> bMove;
     ofParameter<bool> figure8;
+    ofParameter<bool> bTrace;
     
     ofxPanel panel;
+    ofxPanel panelWorkSurface;
+    ofxPanel panelJoints;
     
     bool stop;
 
@@ -59,4 +64,6 @@ public:
     int count;
     
     bool move;
+    
+    GMLPath gml;
 };

@@ -17,7 +17,10 @@ void ofApp::setup(){
     robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     
     panel.setup(robotArmParams);
+    workSurface.setup();
+    panelWorkSurface.setup(workSurface.workSurfacePrarms);
     panel.loadFromFile("settings.xml");
+    panel.setPosition(10, 10);
     joints.setName("Joints");
     joints.add(bMove.set("Move", false));
     joints.add(avgAccel.set("avgAccel", 0, 0, 200));
@@ -31,7 +34,10 @@ void ofApp::setup(){
         joints.add(jointVelocities.back().set("Joint Speed"+ofToString(i), 0, -100, 100));
     }
     
-    panel.add(joints);
+    panelJoints.setup(joints);
+    panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
+    panelWorkSurface.setPosition(panel.getWidth()+10, 10);
+    panelWorkSurface.loadFromFile("worksurface.xml");
     
 #ifdef ENABLE_NATNET
     sender.setup("192.168.1.255", 7777);
@@ -46,6 +52,8 @@ void ofApp::setup(){
     bMove = false;
     
     cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+    
+    gml.loadFile("gml/161.gml", 0, 0, 640, 480);
 }
 
 //--------------------------------------------------------------
@@ -93,6 +101,7 @@ void ofApp::update(){
     //    }else{
     //        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
     //    }
+    workSurface.update();
     vector<double> foo = robot.getJointPositions();
     movement.setCurrentJointPosition(foo);
     
@@ -103,18 +112,20 @@ void ofApp::update(){
     
     toolPoint = robot.getToolPoint();
     
-    if(!figure8){
-        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        targetPointAngles = targetPoint.rotation.getEuler();
-        movement.addTargetPoint(targetPoint);
-    }else{
-        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        targetPointAngles = targetPoint.rotation.getEuler();
-        movement.addTargetPoint(targetPoint);
-    }
+//    if(!bMove){
+//        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+//        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+//        targetPointAngles = targetPoint.rotation.getEuler();
+//        movement.addTargetPoint(targetPoint);
+//    }else if(bTrace){
+        movement.addTargetPoint(workSurface.getTargetPoint(ofGetElapsedTimef()*0.1));
+//    }else if(figure8){
+//        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+//        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+//        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+//        targetPointAngles = targetPoint.rotation.getEuler();
+//        movement.addTargetPoint(targetPoint);
+//    }
     movement.update();
     
     vector<double> target = movement.getTargetJointPos();
@@ -133,8 +144,6 @@ void ofApp::update(){
     if(bMove){
         robot.setSpeed(tempSpeeds, avgAccel);
     }
-    
-    
 }
 
 
@@ -240,21 +249,29 @@ void ofApp::draw(){
     robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
-     ofSetColor(255, 0, 255, 200);
+    ofSetColor(255, 0, 255, 200);
     ofDrawSphere(toolPoint.get()*ofVec3f(1000, 1000, 1000), 5);
-     ofSetColor(255, 255, 0, 200);
+    ofSetColor(255, 255, 0, 200);
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofPopMatrix();
+    workSurface.draw();
     cam.end();
     
     movement.draw();
     
+    ofPushMatrix();
+    ofSetColor(255, 0, 255);
+    gml.draw();
+    ofPopMatrix();
     
     panel.draw();
+    panelJoints.draw();
+    panelWorkSurface.draw();
 }
 
 void ofApp::exit(){
     panel.saveToFile("settings.xml");
+    panelWorkSurface.saveToFile("worksurface.xml");
     if(robot.isThreadRunning())
         robot.waitForThread();
 }
@@ -265,7 +282,20 @@ void ofApp::keyPressed(int key){
         bMove = !bMove;
     }
     if(key == ' ' ){
-        targetPointPos = toolPoint;
+        workSurface.addStrokes(gml.getPath(1.0));
+        bTrace = true;
+    }
+    if(key == '1'){
+        workSurface.setCorner(WorkSurface::UL, toolPoint);
+    }
+    if(key == '2'){
+        workSurface.setCorner(WorkSurface::UR, toolPoint);
+    }
+    if(key == '3'){
+        workSurface.setCorner(WorkSurface::LL, toolPoint);
+    }
+    if(key == '4'){
+        workSurface.setCorner(WorkSurface::LR, toolPoint);
     }
     if(key == '8'){
         figure8 = !figure8;

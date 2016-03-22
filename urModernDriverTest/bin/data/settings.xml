@@ -1,5 +1,5 @@
 <group>
-	<Target_Point_POS>0.236941, -0.345931, 0.500798</Target_Point_POS>
+	<Target_Point_POS>0.236941, -0.282411, 0.500798</Target_Point_POS>
 	<Target_Point_Angles>90, -90, 0</Target_Point_Angles>
 <group/>
 <joint_0>2.14337</joint_0>
@@ -8,7 +8,7 @@
 	<joint_3>0.756877</joint_3>
 	<joint_4>1.56606</joint_4>
 	<joint_5>-0.00167782</joint_5>
-	<ToolPoint>0.205186, -0.315867, 0.622879</ToolPoint>
+	<ToolPoint>0, 0, 0</ToolPoint>
 <target_joint_0>2.14411</target_joint_0>
 	<target_joint_1>-2.01824</target_joint_1>
 	<target_joint_2>1.92322</target_joint_2>
@@ -22,26 +22,36 @@
 	<Joint_Speed4>0.00184166</Joint_Speed4>
 	<Joint_Speed5>0</Joint_Speed5>
 <Joints>
-		<joint_0>1.8495</joint_0>
-		<target_joint_0>1.90798</target_joint_0>
-		<Joint_Speed0>0.459708</Joint_Speed0>
-		<joint_1>-1.86709</joint_1>
-		<target_joint_1>-1.74032</target_joint_1>
-		<Joint_Speed1>0.996579</Joint_Speed1>
-		<joint_2>1.75337</joint_2>
-		<target_joint_2>1.97073</target_joint_2>
-		<Joint_Speed2>1.7087</Joint_Speed2>
-		<joint_3>-1.45709</joint_3>
-		<target_joint_3>-1.80122</target_joint_3>
-		<Joint_Speed3>-2.70536</Joint_Speed3>
-		<joint_4>1.57101</joint_4>
-		<target_joint_4>1.57078</target_joint_4>
-		<Joint_Speed4>-0.001817</Joint_Speed4>
-		<joint_5>0.070444</joint_5>
+		<joint_0>0</joint_0>
+		<target_joint_0>1.90799</target_joint_0>
+		<Joint_Speed0>8.99873</Joint_Speed0>
+		<joint_1>-1.5708</joint_1>
+		<target_joint_1>-1.7403</target_joint_1>
+		<Joint_Speed1>-0.799459</Joint_Speed1>
+		<joint_2>0</joint_2>
+		<target_joint_2>1.97069</target_joint_2>
+		<Joint_Speed2>9.29444</Joint_Speed2>
+		<joint_3>-1.5708</joint_3>
+		<target_joint_3>-1.80118</target_joint_3>
+		<Joint_Speed3>-1.08657</Joint_Speed3>
+		<joint_4>0</joint_4>
+		<target_joint_4>1.5708</target_joint_4>
+		<Joint_Speed4>7.40841</Joint_Speed4>
+		<joint_5>0</joint_5>
 		<target_joint_5>5.94599</target_joint_5>
 		<Joint_Speed5>0</Joint_Speed5>
 	<Move>0</Move>
-	<avgAccel>0.104475</avgAccel>
+	<avgAccel>2.35099e-36</avgAccel>
 	<figure8>0</figure8>
 	</Joints>
+<Work_Surface>
+		<WS_Position>0, 0.387756, 0.346939</WS_Position>
+		<WS_size>0, 0, 0</WS_size>
+	<Orientation>0, 0, 360</Orientation>
+	<TP-0>-0.5, 0.326531, 0.122449</TP-0>
+		<TP-1>0.5, 0.326531, 0.122449</TP-1>
+		<TP-2>0.5, 0.44898, 0.571429</TP-2>
+		<TP-3>-0.5, 0.44898, 0.571429</TP-3>
+	<WS_Euler>-105.255, 0, 0</WS_Euler>
+	</Work_Surface>
 </group>
