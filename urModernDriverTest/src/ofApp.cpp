@@ -56,7 +56,7 @@ void ofApp::setup(){
     
     cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
     
-    gml.loadFile("gml/218.gml", 0, 0, 640, 480);
+    gml.loadFile("gml/161.gml", 0, 0, 640, 480);
 }
 
 //--------------------------------------------------------------
@@ -111,26 +111,29 @@ void ofApp::update(){
     for(int i = 0; i < foo.size(); i++){
         jointPos[i] = (float)foo[i];
     }
-    targetPoint.position.interpolate(targetPointPos.get(), 0.1);
+    
     toolPoint = robot.getToolPoint();
+    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetPointAngles = targetPoint.rotation.getEuler();
     if(bCopy){
         bCopy = false;
         targetPoint.position = toolPoint;
-    }
-    if(!bFollow){
-        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        targetPointAngles = targetPoint.rotation.getEuler();
-        movement.addTargetPoint(targetPoint);
+        targetPointPos = toolPoint;
+    }else if(bFollow){
+        targetPoint.position.interpolate(targetPointPos.get(), 0.1);
     }else if(bTrace){
-        movement.addTargetPoint(workSurface.getTargetPoint(ofGetElapsedTimef()));
+        targetPoint = workSurface.getTargetPoint(ofGetElapsedTimef()*0.25);
+        targetPointPos = targetPoint.position;
     }else if(figure8){
-        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
         targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         targetPointAngles = targetPoint.rotation.getEuler();
-        movement.addTargetPoint(targetPoint);
+        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+ 
     }
+    
+    movement.addTargetPoint(targetPoint);
     movement.update();
     
     vector<double> target = movement.getTargetJointPos();

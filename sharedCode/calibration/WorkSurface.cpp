@@ -78,7 +78,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
 Joint WorkSurface::getTargetPoint(float t){
     Joint foo;
     if(lines.size() > 0){
-        t = fmodf(t, 15.0)/15.0;
+        t = fmodf(t, 60.0)/60.0;
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
         foo.position = p;

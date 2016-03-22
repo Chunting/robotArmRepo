@@ -42,8 +42,6 @@ void URMove::update(){
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     urKinematics(mat);
-    
-    
 }
 
 vector<double> URMove::getTargetJointPos(){
