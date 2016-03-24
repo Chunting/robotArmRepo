@@ -39,7 +39,7 @@ public:
     vector<ofParameter<float> > jointVelocities;
     ofParameter<ofVec3f> toolPoint;
     ofParameter<bool> bMove;
-    ofParameter<bool> figure8;
+    ofParameter<bool> bFigure8;
     ofParameter<bool> bTrace;
     ofParameter<bool> bFollow;
     ofParameter<bool> bCopy;

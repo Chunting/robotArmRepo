@@ -60,9 +60,6 @@ void WorkSurface::update(){
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
-    orientation+=ofQuaternion(45, axis);
-    
-    
 }
 void WorkSurface::addPoint(ofVec3f pt){
     

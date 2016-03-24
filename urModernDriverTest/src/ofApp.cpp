@@ -21,13 +21,13 @@ void ofApp::setup(){
     panel.add(bTrace.set("bTrace GML", false));
     panel.add(bCopy.set("bCopy Tool Point", false));
     workSurface.setup();
-    panelWorkSurface.setup(workSurface.workSurfacePrarms);
+
     panel.loadFromFile("settings.xml");
     panel.setPosition(10, 10);
     joints.setName("Joints");
     joints.add(bMove.set("Move", false));
     joints.add(avgAccel.set("avgAccel", 0, 0, 200));
-    joints.add(figure8.set("figure8", false));
+    joints.add(bFigure8.set("bFigure8", false));
     for(int i = 0; i < 6; i++){
         jointPos.push_back(ofParameter<float>());
         targetJointPos.push_back(ofParameter<float>());
@@ -39,6 +39,7 @@ void ofApp::setup(){
     
     panelJoints.setup(joints);
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
+    panelWorkSurface.setup(workSurface.workSurfacePrarms);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("worksurface.xml");
     
@@ -129,7 +130,7 @@ void ofApp::update(){
         targetPoint.rotation *= jTCP.rotation;
         targetPointPos = targetPoint.position;
 //        targetPoint.rotation *= ofQuaternion(90, ofVec3f(0, 0, 1));
-    }else if(figure8){
+    }else if(bFigure8){
         targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         targetPointAngles = targetPoint.rotation.getEuler();
@@ -312,7 +313,7 @@ void ofApp::keyPressed(int key){
         workSurface.setCorner(WorkSurface::LR, toolPoint);
     }
     if(key == '8'){
-        figure8 = !figure8;
+        bFigure8 = !bFigure8;
     }
 }
 

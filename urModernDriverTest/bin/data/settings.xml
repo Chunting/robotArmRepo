@@ -45,14 +45,19 @@
 	<figure8>0</figure8>
 	</Joints>
 <Work_Surface>
-		<WS_Position>-0.404079, -0.441622, 0.24804</WS_Position>
+		<WS_Position>-0.422635, 0.43598, 0.014374</WS_Position>
 		<WS_size>0, 0, 0</WS_size>
 	<Orientation>0, 0, 360</Orientation>
-	<TP-0>-0.227992, -0.598335, 0.128733</TP-0>
-		<TP-1>-0.614467, -0.257542, 0.11912</TP-1>
-		<TP-2>-0.580166, -0.284909, 0.367347</TP-2>
-		<TP-3>-0.275691, -0.555393, 0.438776</TP-3>
-	<WS_Euler>59.6776, -49.5725, -29.6712</WS_Euler>
+	<TP-0>-0.220642, 0.624475, 0.181591</TP-0>
+		<TP-1>-0.626781, 0.255263, 0.191001</TP-1>
+		<TP-2>-0.624628, 0.247486, -0.152843</TP-2>
+		<TP-3>-0.213279, 0.630313, -0.153259</TP-3>
+	<WS_Euler>-58.6097, -50.9026, 29.9128</WS_Euler>
+	<qAxis>-0.739923, -0.672692, -0</qAxis>
+		<qAngle>90.1084</qAngle>
+		<Fix_X>95.4</Fix_X>
+		<Fix_Y>138.6</Fix_Y>
+		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
 <Follow_TargetPoint>0</Follow_TargetPoint>
 	<bTrace_GML>1</bTrace_GML>
