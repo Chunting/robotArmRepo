@@ -1,6 +1,6 @@
 ### TO DO LIST
 - URMove
-  - [ ] Plot Path from CurrentPos to Target 
+  - [X] Plot Path from CurrentPos to Target 
   - [X] Interpolate based on distance
   - [X] tweak acceleration/deacceleration to prevent sudden stops/jerks
   - [X] select correct Q Sol
@@ -12,5 +12,5 @@
   - [ ] Create URTool class to manage the Toolpoint
   - [ ] create safe zone to prevent toolpoint from colliding with body.
 - URWorkingZone
-  - [ ] Define a working zone and optimize movements to remain within that zone
+  - [X] Define a working zone and optimize movements to remain within that zone (Sort of done)
     
