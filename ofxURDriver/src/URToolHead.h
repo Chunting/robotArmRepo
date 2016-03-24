@@ -22,6 +22,8 @@ public:
     ~URToolHead(){
         
     };
+    void setOrientation(ofQuaternion orientation);
+    ofMatrix4x4 getMatrix();
     void setup();
     void update();
     void draw();
@@ -30,4 +32,5 @@ public:
 protected:
     Tool currentTool;
     vector<Tool> availableTools;
+    ofMatrix4x4 rot;
 };

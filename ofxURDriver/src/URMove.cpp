@@ -37,8 +37,8 @@ void URMove::setup(){
 void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
-    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, 0.05);
-    targetPoint.rotation.slerp(0.05, targetPoint.rotation, newTargetPoint.rotation);
+    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, 0.9);
+    targetPoint.rotation.slerp(0.9, targetPoint.rotation, newTargetPoint.rotation);
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     urKinematics(mat);
@@ -73,16 +73,14 @@ void URMove::computeVelocities(){
             lastJointSpeeds = currentJointSpeeds;
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], 0.9);
+//                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], 0.9);
                 if(abs(currentJointSpeeds[i]) > PI){
                     ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }
-                if(i > 4){
-                    currentJointSpeeds[i] = 0;
-                }else{
-                    acceleration[i] = abs(currentJointSpeeds[i]-lastJointSpeeds[i]);
-                    avgAccel = MAX(acceleration[i], avgAccel);
-                }
+                
+                acceleration[i] = abs(currentJointSpeeds[i]-lastJointSpeeds[i]);
+                avgAccel = MAX(acceleration[i], avgAccel);
+                
             }
         }
     }
@@ -91,7 +89,7 @@ void URMove::computeVelocities(){
 void URMove::addTargetPoint(Joint target){
     newTargetPoint = target;
     targetLine.addVertex(target.position*1000);
-    if(targetLine.getVertices().size() > 400){
+    if(targetLine.getVertices().size() > 1400){
         targetLine.getVertices().erase(targetLine.getVertices().begin());
     }
 }
@@ -212,7 +210,6 @@ void URMove::urKinematics(ofMatrix4x4 input){
         fooSol.push_back(q_sols[i*6+3]);
         fooSol.push_back(q_sols[i*6+4]);
         fooSol.push_back(q_sols[i*6+5]);
-        //        ofLog()<<ofToString(fooSol)<<endl;
         inversePosition.push_back(fooSol);
     }
     

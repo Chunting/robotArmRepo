@@ -34,10 +34,15 @@ void GMLPath::draw(){
 
 vector<ofPolyline> GMLPath::getPath(float scale){
     vector<ofPolyline> lines;
+    ofQuaternion q;
+    q.set(180, 0, 0, 0);
+    q.makeRotate(180, 0, 0, 1);
+    ofMatrix4x4 mat;
+    q.get(mat);
     for(int i = 0; i < polys.size(); i++){
         ofPolyline line;
         for(int j = 0; j < polys[i].getVertices().size(); j++){
-            line.addVertex(polys[i].getVertices()[j]*ofVec2f(scale, scale*aspectRatio));
+            line.addVertex(polys[i].getVertices()[j]*ofVec2f(scale, scale*aspectRatio)*mat);
         }
         lines.push_back(line);
     }

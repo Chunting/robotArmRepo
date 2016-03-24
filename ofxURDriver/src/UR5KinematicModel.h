@@ -25,7 +25,7 @@ public:
     void update();
     void draw();
     void setToolMesh(ofMesh mesh);
-    
+    ofQuaternion getToolPointMatrix();
     
     ofxAssimpModelLoader loader;
     vector<ofMesh> meshs;

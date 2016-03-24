@@ -56,7 +56,7 @@ void ofApp::setup(){
     
     cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
     
-    gml.loadFile("gml/161.gml", 0, 0, 640, 480);
+    gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
 }
 
 //--------------------------------------------------------------
@@ -115,6 +115,7 @@ void ofApp::update(){
     toolPoint = robot.getToolPoint();
     targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
     targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetPoint.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
     targetPointAngles = targetPoint.rotation.getEuler();
     if(bCopy){
         bCopy = false;
@@ -123,14 +124,17 @@ void ofApp::update(){
     }else if(bFollow){
         targetPoint.position.interpolate(targetPointPos.get(), 0.1);
     }else if(bTrace){
-        targetPoint = workSurface.getTargetPoint(ofGetElapsedTimef()*0.25);
+        Joint fooj = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
+        targetPoint.position = fooj.position;
+        targetPoint.rotation *= fooj.rotation;
         targetPointPos = targetPoint.position;
+//        targetPoint.rotation *= ofQuaternion(90, ofVec3f(0, 0, 1));
     }else if(figure8){
         targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         targetPointAngles = targetPoint.rotation.getEuler();
         targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
- 
+        
     }
     
     movement.addTargetPoint(targetPoint);
@@ -278,10 +282,11 @@ void ofApp::draw(){
 }
 
 void ofApp::exit(){
+    bMove = false;
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("worksurface.xml");
     if(robot.isThreadRunning())
-        robot.waitForThread();
+        robot.stopThread();
 }
 
 //--------------------------------------------------------------
@@ -292,6 +297,7 @@ void ofApp::keyPressed(int key){
     if(key == ' ' ){
         workSurface.addStrokes(gml.getPath(1.0));
         bTrace = true;
+        tagStartTime = ofGetElapsedTimef();
     }
     if(key == '1'){
         workSurface.setCorner(WorkSurface::UL, toolPoint);

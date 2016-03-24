@@ -35,7 +35,13 @@ public:
     ofParameter<ofVec3f> position;
     ofParameter<ofVec3f> size;
     ofParameter<ofVec3f> rotation;
+    ofParameter<ofVec3f> qAxis;
+    ofParameter<float> qAngle;
     vector<ofParameter<ofPoint> > targetPoints;
+    ofParameter<float> fixOrientationX;
+    ofParameter<float> fixOrientationY;
+    ofParameter<float> fixOrientationZ;
+    ofQuaternion fix;
     ofQuaternion orientation;
     ofQuaternion orientationX;
     ofQuaternion orientationY;

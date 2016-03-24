@@ -68,4 +68,5 @@ public:
     bool move;
     
     GMLPath gml;
+    float tagStartTime;
 };

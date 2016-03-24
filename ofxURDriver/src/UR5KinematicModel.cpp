@@ -72,6 +72,12 @@ void UR5KinematicModel::setup(){
     bDrawTargetModel.set("Draw Target Model", false);
     bDrawModel = true;
 }
+
+ofQuaternion UR5KinematicModel::getToolPointMatrix(){
+
+    return joints[0].rotation*joints[1].rotation*joints[2].rotation*joints[3].rotation*joints[4].rotation;
+}
+
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
     toolMesh = mesh;
 }

@@ -21,6 +21,7 @@ public:
     void draw();
     void computeVelocities();
     void updatePathDebug();
+
     void addTargetPoint(Joint target);
     void urKinematics(vector<double> input);
     void urKinematics(ofMatrix4x4 input);

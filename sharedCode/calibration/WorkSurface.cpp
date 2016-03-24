@@ -4,7 +4,11 @@ void WorkSurface::setup(){
     workSurfacePrarms.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfacePrarms.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfacePrarms.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    
+    workSurfacePrarms.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
+    workSurfacePrarms.add(qAngle.set("qAngle",0, 0, 360));
+    workSurfacePrarms.add(fixOrientationX.set("Fix X", 0, 0, 360));
+    workSurfacePrarms.add(fixOrientationY.set("Fix Y", 0, 0, 360));
+    workSurfacePrarms.add(fixOrientationZ.set("Fix Z", 0, 0, 360));
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfacePrarms.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -45,12 +49,20 @@ void WorkSurface::update(){
     ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
     ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
     
-    position = targetPoints[0].get().getMiddle(targetPoints[2].get());
-//    diffOne.normalize();
-    diffTwo.normalize();
-    crossed = diffTwo.cross(diffOne);
-    orientation.makeRotate(ofPoint(0, 0, 1), crossed);
+    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
+    diffOne.normalize();
+    crossed = diffOne.cross(diffTwo);
+    crossed.normalize();
+    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
+    ofVec3f axis;
+    float angle;
+    orientation.getRotate(angle, axis);
     rotation = orientation.getEuler();
+    qAxis = axis;
+    qAngle = angle;
+    orientation+=ofQuaternion(45, axis);
+    
+    
 }
 void WorkSurface::addPoint(ofVec3f pt){
     
@@ -61,15 +73,15 @@ void WorkSurface::addStroke(ofPolyline stroke){
 void WorkSurface::addStrokes(vector<ofPolyline> strokes){
     float height = (targetPoints[0].get() - targetPoints[3].get()).length();
     float width = (targetPoints[0].get() - targetPoints[1].get()).length();
-    
+    float multiply = MAX(height, width);
     lines.clear();
     ofMatrix4x4 mat;
     mat.makeRotationMatrix(orientation);
-    mat.setTranslation(position);
+    mat.setTranslation(targetPoints[3]);
     for(int i = 0; i < strokes.size(); i++){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
-            fooLine.addVertex(strokes[i].getVertices()[j]*width*mat);
+            fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
         }
         lines.push_back(fooLine);
     }
@@ -78,12 +90,14 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
 Joint WorkSurface::getTargetPoint(float t){
     Joint foo;
     if(lines.size() > 0){
-        t = fmodf(t, 60.0)/60.0;
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.05;
+        t = fmodf(t, length)/length;
+        
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
         foo.position = p;
         foo.rotation = orientation;
-        if(1.0-t < 0.0001 | t == 0.0){
+        if(1.0-t < 0.01 || t == 0.0){
             targetIndex++;
             if(targetIndex >=lines.size()){
                 targetIndex = 0;
