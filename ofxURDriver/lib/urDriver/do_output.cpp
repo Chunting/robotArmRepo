@@ -52,6 +52,6 @@ void print_fatal(std::string inp) {
 	ros::shutdown();
 #else
 	printf("FATAL: %s\n", inp.c_str());
-	_exit(1);
+//	exit(1);
 #endif
 }
