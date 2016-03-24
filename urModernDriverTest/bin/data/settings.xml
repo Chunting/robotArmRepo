@@ -1,5 +1,5 @@
 <group>
-	<Target_Point_POS>-0.386135, 0.472047, -0.103538</Target_Point_POS>
+	<Target_Point_POS>-0.371806, 0.474512, 0.530612</Target_Point_POS>
 	<Target_Point_Angles>90, -90, 0</Target_Point_Angles>
 <group/>
 <joint_0>2.14337</joint_0>
@@ -8,7 +8,7 @@
 	<joint_3>0.756877</joint_3>
 	<joint_4>1.56606</joint_4>
 	<joint_5>-0.00167782</joint_5>
-	<ToolPoint>-0.348952, 0.514688, 0.0798682</ToolPoint>
+	<ToolPoint>-0.373092, 0.473878, 0.531027</ToolPoint>
 <target_joint_0>2.14411</target_joint_0>
 	<target_joint_1>-2.01824</target_joint_1>
 	<target_joint_2>1.92322</target_joint_2>
@@ -59,7 +59,7 @@
 		<Fix_Y>138.6</Fix_Y>
 		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
-<Follow_TargetPoint>0</Follow_TargetPoint>
-	<bTrace_GML>1</bTrace_GML>
+<Follow_TargetPoint>1</Follow_TargetPoint>
+	<bTrace_GML>0</bTrace_GML>
 	<bCopy_Tool_Point>0</bCopy_Tool_Point>
 </group>
