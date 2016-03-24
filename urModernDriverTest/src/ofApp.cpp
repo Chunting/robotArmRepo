@@ -105,11 +105,11 @@ void ofApp::update(){
     //        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
     //    }
     workSurface.update();
-    vector<double> foo = robot.getJointPositions();
-    movement.setCurrentJointPosition(foo);
+    vector<double> currentJointPos = robot.getJointPositions();
+    movement.setCurrentJointPosition(currentJointPos);
     
-    for(int i = 0; i < foo.size(); i++){
-        jointPos[i] = (float)foo[i];
+    for(int i = 0; i < currentJointPos.size(); i++){
+        jointPos[i] = (float)currentJointPos[i];
     }
     
     toolPoint = robot.getToolPoint();
@@ -124,9 +124,9 @@ void ofApp::update(){
     }else if(bFollow){
         targetPoint.position.interpolate(targetPointPos.get(), 0.1);
     }else if(bTrace){
-        Joint fooj = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
-        targetPoint.position = fooj.position;
-        targetPoint.rotation *= fooj.rotation;
+        Joint jTCP = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
+        targetPoint.position = jTCP.position;
+        targetPoint.rotation *= jTCP.rotation;
         targetPointPos = targetPoint.position;
 //        targetPoint.rotation *= ofQuaternion(90, ofVec3f(0, 0, 1));
     }else if(figure8){
