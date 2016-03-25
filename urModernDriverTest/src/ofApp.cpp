@@ -55,7 +55,7 @@ void ofApp::setup(){
     speeds.assign(6, 0);
     bMove = false;
     
-    cam.lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+
     
     gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
 }
@@ -124,6 +124,7 @@ void ofApp::update(){
         targetPointPos = toolPoint;
     }else if(bFollow){
         targetPoint.position.interpolate(targetPointPos.get(), 0.1);
+
     }else if(bTrace){
         Joint jTCP = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
         targetPoint.position = jTCP.position;
@@ -138,6 +139,8 @@ void ofApp::update(){
         
     }
     
+    // update Joint 'targetPoint' to modify the robot's pos & orient
+
     movement.addTargetPoint(targetPoint);
     movement.update();
     
@@ -157,6 +160,17 @@ void ofApp::update(){
     if(bMove){
         robot.setSpeed(tempSpeeds, avgAccel);
     }
+    
+    
+    /* 3D Navigation */
+    
+    // update which easyCam is active
+    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+        activeCam = 0;
+    else
+        activeCam = 1;
+    
+//    cams[1] = &movement.cam;
 }
 
 
@@ -258,7 +272,7 @@ void ofApp::draw(){
     ofSetColor(255, 0, 255);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 10, ofGetWindowHeight()-20);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, ofGetWindowHeight()-40);
-    cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
@@ -268,7 +282,7 @@ void ofApp::draw(){
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofPopMatrix();
     workSurface.draw();
-    cam.end();
+    cams[0].end();
     
     movement.draw();
     
@@ -280,6 +294,9 @@ void ofApp::draw(){
     panel.draw();
     panelJoints.draw();
     panelWorkSurface.draw();
+    
+    /* 3D Navigation */
+    hightlightViewports();
 }
 
 void ofApp::exit(){
@@ -315,6 +332,87 @@ void ofApp::keyPressed(int key){
     if(key == '8'){
         bFigure8 = !bFigure8;
     }
+    
+    handleViewportPresets(key);
+}
+
+//--------------------------------------------------------------
+void ofApp::handleViewportPresets(int key){
+    
+    float dist = 800;
+    
+    // TOP VIEW
+    if (key == 't'){
+        cams[activeCam].reset();
+        cams[activeCam].setDistance(dist);
+        viewportLabels[activeCam] = "TOP VIEW";
+    }
+    // LEFT VIEW
+    else if (key == 'l'){
+        cams[activeCam].reset();
+        cams[activeCam].rotate(-90, ofVec3f(0,1,0));
+        cams[activeCam].setDistance(dist);
+        viewportLabels[activeCam] = "LEFT VIEW";
+    }
+    // RIGHT VIEW
+    else if (key == 'r'){
+        cams[activeCam].reset();
+        cams[activeCam].rotate(90, ofVec3f(0,1,0));
+        cams[activeCam].setDistance(dist);
+        viewportLabels[activeCam] = "RIGHT VIEW";
+    }
+    // PERSPECTIVE VIEW
+    else if (key == 'p'){
+        
+    }
+    // CUSTOM SAVED VIEW
+    else if (key == 'c'){
+        cams[activeCam].reset();
+        cams[activeCam].setGlobalPosition(savedCamMats[activeCam].getTranslation());
+        cams[activeCam].setGlobalOrientation(savedCamMats[activeCam].getRotate());
+        viewportLabels[activeCam] = "SAVED VIEW";
+    }
+    // Record custom view port
+    if (key == 's'){
+        savedCamMats[activeCam] = cams[activeCam].getGlobalTransformMatrix();
+        viewportLabels[activeCam] = "New Viewport Saved!";
+        cout << ofToString(savedCamMats[activeCam]) << endl;
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::hightlightViewports(){
+    ofPushStyle();
+    
+    float w = 6;
+    ofSetLineWidth(w);
+    
+    // highlight right viewport
+    if (activeCam == 1){
+        ofSetColor(ofColor::white,80);
+        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
+        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
+        ofSetColor(ofColor::white,40);
+        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
+        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
+        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
+    }
+    // hightligh left viewport
+    else{
+        ofSetLineWidth(w);
+        ofSetColor(ofColor::white,80);
+        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
+        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
+        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
+        ofSetColor(ofColor::white,40);
+        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
+        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
+    }
+    ofPopStyle();
 }
 
 //--------------------------------------------------------------
@@ -329,7 +427,8 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-    
+    // clear viewport label
+    viewportLabels[activeCam] = "";
 }
 
 //--------------------------------------------------------------

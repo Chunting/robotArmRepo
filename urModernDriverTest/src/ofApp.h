@@ -9,6 +9,9 @@
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
+
+#define N_CAMERAS 2
+
 class ofApp : public ofBaseApp{
     
 public:
@@ -69,4 +72,26 @@ public:
     
     GMLPath gml;
     float tagStartTime;
+    
+    // 3D Navigation
+    ofEasyCam cams[N_CAMERAS];
+    ofMatrix4x4 savedCamMats[N_CAMERAS];
+    string viewportLabels[N_CAMERAS];
+    int activeCam;
+    
+    /**
+     Use hotkeys to cyle through preset viewports.
+     @param key
+     't' = Top View      <br/>
+     'l' = Left View     <br/>
+     'r' = Right View    <br/>
+     'c' = Custom View   <br/>
+     's' = Save current for Custom View
+     */
+    void handleViewportPresets(int key);
+    
+    /**
+     Highlights the active viewport.
+     */
+    void hightlightViewports();
 };

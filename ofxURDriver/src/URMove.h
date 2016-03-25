@@ -32,6 +32,8 @@ public:
     ofParameterGroup movementParams;
     vector<double> getTargetJointPos();
     vector<double> getCurrentSpeed();
+    ofEasyCam cam;
+    
 protected:
     float distance;
     int selectSolution();
@@ -57,7 +59,7 @@ protected:
     double lastAvgAccel;
     deque<vector<float> > jointSpeedHistory;
     deque<Joint> positions;
-    ofEasyCam cam;
+//    ofEasyCam cam;
     ofPolyline targetLine;
     float totalLength;
     float totalArea;

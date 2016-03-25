@@ -160,4 +160,6 @@ void ofxURDriver::threadedFunction(){
             }
         }
     }
+    
+    
 }
