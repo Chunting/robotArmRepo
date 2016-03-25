@@ -8,7 +8,7 @@
 	<joint_3>0.756877</joint_3>
 	<joint_4>1.56606</joint_4>
 	<joint_5>-0.00167782</joint_5>
-	<ToolPoint>-0.42045, 0.355279, 0.428938</ToolPoint>
+	<ToolPoint>0, 0, 0</ToolPoint>
 <target_joint_0>2.14411</target_joint_0>
 	<target_joint_1>-2.01824</target_joint_1>
 	<target_joint_2>1.92322</target_joint_2>

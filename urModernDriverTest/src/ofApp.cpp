@@ -58,6 +58,13 @@ void ofApp::setup(){
 
     
     gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
+    
+    /* 3D Navigation */
+//    cams[1] = &movement.cam;
+    // need to move URMove camera to ofApp
+
+    handleViewportPresets('p');
+
 }
 
 //--------------------------------------------------------------
@@ -170,7 +177,6 @@ void ofApp::update(){
     else
         activeCam = 1;
     
-//    cams[1] = &movement.cam;
 }
 
 
@@ -185,6 +191,9 @@ void ofApp::testMotors(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofEnableAlphaBlending();
+    
+    
+    
 #ifdef ENABLE_NATNET
     cam.begin();
     
@@ -269,9 +278,12 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(str, 10, 20);
 #endif
-    ofSetColor(255, 0, 255);
-    ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 10, ofGetWindowHeight()-20);
-    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 10, ofGetWindowHeight()-40);
+    
+    
+    
+    ofSetColor(255,160);
+    ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
+    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.model.draw();
     ofSetColor(255, 0, 255);
@@ -339,7 +351,8 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::handleViewportPresets(int key){
     
-    float dist = 800;
+    float dist = 2000;
+    float zOffset = 450;
     
     // TOP VIEW
     if (key == 't'){
@@ -350,22 +363,33 @@ void ofApp::handleViewportPresets(int key){
     // LEFT VIEW
     else if (key == 'l'){
         cams[activeCam].reset();
-        cams[activeCam].rotate(-90, ofVec3f(0,1,0));
+        cams[activeCam].rotate(90, ofVec3f(0,1,0));
+        cams[activeCam].rotate(90, ofVec3f(1,0,0));
         cams[activeCam].setDistance(dist);
+        cams[activeCam].boom(zOffset);
         viewportLabels[activeCam] = "LEFT VIEW";
     }
-    // RIGHT VIEW
-    else if (key == 'r'){
+    // FRONT VIEW
+    else if (key == 'f'){
         cams[activeCam].reset();
-        cams[activeCam].rotate(90, ofVec3f(0,1,0));
+        cams[activeCam].rotate(90, ofVec3f(1,0,0));
         cams[activeCam].setDistance(dist);
-        viewportLabels[activeCam] = "RIGHT VIEW";
+        cams[activeCam].boom(zOffset);
+        viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
     else if (key == 'p'){
-        
+        // hardcoded perspective camera
+        ofMatrix4x4 perspective = ofMatrix4x4(0.937959, -0.322461, -0.127483, 0,
+                                              0.226044, 0.289835,     0.93, 0,
+                                              -0.262939, -0.901119, 0.344743, 0,
+                                              -971.326, -1499.33,  1038.77, 1);
+        cams[activeCam].reset();
+        cams[activeCam].setGlobalPosition(perspective.getTranslation());
+        cams[activeCam].setGlobalOrientation(perspective.getRotate());
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
-    // CUSTOM SAVED VIEW
+    // CUSTOM  VIEW
     else if (key == 'c'){
         cams[activeCam].reset();
         cams[activeCam].setGlobalPosition(savedCamMats[activeCam].getTranslation());
@@ -412,6 +436,14 @@ void ofApp::hightlightViewports(){
         ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
         ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
     }
+    
+    // show Viewport info
+    
+
+    ofSetColor(ofColor::white,200);
+    ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
+    ofDrawBitmapString(viewportLabels[1], ofGetWindowWidth()/2+30, ofGetWindowHeight()-30);
+    
     ofPopStyle();
 }
 

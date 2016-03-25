@@ -80,18 +80,18 @@ public:
     int activeCam;
     
     /**
-     Use hotkeys to cyle through preset viewports.
-     @param key
-     't' = Top View      <br/>
-     'l' = Left View     <br/>
-     'r' = Right View    <br/>
-     'c' = Custom View   <br/>
-     's' = Save current for Custom View
+         Use hotkeys to cyle through preset viewports.
+             @param key
+                 't' = Top View      <br/>
+                 'l' = Left View     <br/>
+                 'f' = Front View    <br/>
+                 'c' = Custom View   <br/>
+                 's' = Save current for Custom View
      */
     void handleViewportPresets(int key);
     
     /**
-     Highlights the active viewport.
+         Highlights the active viewport.
      */
     void hightlightViewports();
 };
