@@ -85,6 +85,7 @@ public:
                  't' = Top View      <br/>
                  'l' = Left View     <br/>
                  'f' = Front View    <br/>
+                 'p' = Perspective   <br/>
                  'c' = Custom View   <br/>
                  's' = Save current for Custom View
      */
