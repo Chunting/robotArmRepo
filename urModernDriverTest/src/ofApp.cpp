@@ -93,7 +93,7 @@ void ofApp::update(){
     targetPointAngles = robot.model.getToolPointMatrix().getEuler();    // is this the right TCP orientation?
     
     
-    // testing hard coded orientations
+    /* testing hard coded orientations */
 //    targetPoint.rotation = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
 //    targetPoint.rotation = ofQuaternion(0,  .707,   0,  .707);  //  90¼ about Y-Axis
 //    targetPoint.rotation = ofQuaternion(0,  0,  .707,   .707);  //  90¼ about Z-Axis

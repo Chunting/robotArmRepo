@@ -52,6 +52,7 @@ public:
     ofPlanePrimitive plane;
     ofRectangle rect;
     vector<ofPolyline> lines;
+    vector<ofPolyline> strokes_original;
     ofPolyline workArea;
     int targetIndex;
 };
