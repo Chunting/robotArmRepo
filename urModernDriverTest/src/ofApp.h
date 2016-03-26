@@ -36,6 +36,7 @@ public:
     ofParameterGroup joints;
     ofParameter<ofVec3f> targetPointPos;
     ofParameter<ofVec3f> targetPointAngles;
+    ofParameter<ofVec3f> targetPointOrientation;
     ofParameter<float> avgAccel;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;
@@ -54,6 +55,9 @@ public:
     bool stop;
     
     ofxNatNet natnet;
+    void setupNatNet();
+    void updateNatNet();
+    void drawNatNet();
     
     ofEasyCam cam;
     //Motion Capture OSC Server
