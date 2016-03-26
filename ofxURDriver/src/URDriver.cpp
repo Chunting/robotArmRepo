@@ -99,6 +99,8 @@ ofVec3f ofxURDriver::getToolPoint(){
     return foo;
 }
 
+
+
 void ofxURDriver::moveJoints(vector<double> pos){
     posBuffer.push_back(pos);
 }

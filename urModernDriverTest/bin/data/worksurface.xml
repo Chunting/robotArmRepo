@@ -6,12 +6,12 @@
     <TP-1>-0.626781, 0.255263, 0.191001</TP-1>
     <TP-2>-0.624628, 0.247486, -0.152843</TP-2>
     <TP-3>-0.213279, 0.630313, -0.153259</TP-3>
-    <WS_Euler>-58.6097, -50.9026, 29.9128</WS_Euler>
+    <WS_Euler>-93.8595, 117.365, -59.2247</WS_Euler>
 <Work_Surface/>
 <Fix_Orient>0, 0, 0, 1</Fix_Orient>
 <Fix_X>95.4</Fix_X>
 	<Fix_Y>138.6</Fix_Y>
 	<Fix_Z>0</Fix_Z>
-<qAxis>-0.739923, -0.672692, -0</qAxis>
-	<qAngle>90.1084</qAngle>
+<qAxis>0.618381, -0.694785, -0.367259</qAxis>
+	<qAngle>180</qAngle>
 </Work_Surface>

@@ -13,7 +13,7 @@ void ofApp::setup(){
     parent.setPosition(0, 0, 0);
     //    targetPoint.setParent(parent);
     robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    robotArmParams.add(targetPointOrientation.set("TargetPointOrientation",ofVec3f(90,-90, 0), ofVec3f(-90, -90, -90), ofVec3f(90, 90, 90)));
+    robotArmParams.add(targetOrientation.set("Target Orientation",ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
     robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
     robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     
@@ -53,6 +53,8 @@ void ofApp::setup(){
     speeds.assign(6, 0);
     bMove = false;
     
+    // get the current pose on start up
+    bCopy = true;
 
     
     gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
@@ -88,17 +90,42 @@ void ofApp::update(){
     }
     
     toolPoint = robot.getToolPoint();
-    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    targetPoint.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-    targetPointAngles = targetPoint.rotation.getEuler();
+    targetPointAngles = robot.model.getToolPointMatrix().getEuler();    // is this the right TCP orientation?
+    
+    
+    // testing hard coded orientations
+//    targetPoint.rotation = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
+//    targetPoint.rotation = ofQuaternion(0,  .707,   0,  .707);  //  90¼ about Y-Axis
+//    targetPoint.rotation = ofQuaternion(0,  0,  .707,   .707);  //  90¼ about Z-Axis
+//    targetPoint.rotation = ofQuaternion(-.707,   0,  0,  .707); // -90¼ about X-Axis
+//    targetPoint.rotation = ofQuaternion(0,  -.707,   0,  .707); // -90¼ about Y-Axis
+//    targetPoint.rotation = ofQuaternion(0,  0,  -.707,   .707); // -90¼ about Z-Axis
+//    targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
+    
+
+    
     if(bCopy){
         bCopy = false;
+        
         targetPoint.position = toolPoint;
+        targetPoint.rotation = robot.model.getToolPointMatrix();
+        
         targetPointPos = toolPoint;
-        targetPointOrientation = targetPoint.rotation.getEuler();
+        targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
     }else if(bFollow){
+        // go from current to next position
         targetPoint.position.interpolate(targetPointPos.get(), 0.1);
+
+        // go from current orientation to next orientation (???)
+//        ofMatrix4x4 prev = ofMatrix4x4(targetPoint.rotation);
+//        ofMatrix4x4 diff = prev.getInverse() * ofMatrix4x4(ofQuaternion(targetOrientation));
+//        targetPoint.rotation *= diff.getRotate();
+        
+        // or slerp from current to target orientation (???)
+        targetPoint.rotation.slerp(.1, targetPoint.rotation, ofQuaternion(targetOrientation));
+        
+        // or just reassign the value (???)
+//        targetPoint.rotation = ofQuaternion(targetOrientation);
 
     }else if(bTrace){
         Joint jTCP = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
@@ -114,8 +141,7 @@ void ofApp::update(){
         
     }
     
-    // update Joint 'targetPoint' to modify the robot's pos & orient
-    targetPoint.rotation = ofQuaternion(targetPointOrientation.get());
+
     movement.addTargetPoint(targetPoint);
     movement.update();
     
@@ -326,7 +352,9 @@ void ofApp::hightlightViewports(){
 
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
+    ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
     ofDrawBitmapString(viewportLabels[1], ofGetWindowWidth()/2+30, ofGetWindowHeight()-30);
+    ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
     
     ofPopStyle();
 }
