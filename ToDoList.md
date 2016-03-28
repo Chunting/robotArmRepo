@@ -14,3 +14,5 @@
 - URWorkingZone
   - [X] Define a working zone and optimize movements to remain within that zone (Sort of done)
     
+- Var Naming
+  - [ ] Toolpoint -> TCP 
