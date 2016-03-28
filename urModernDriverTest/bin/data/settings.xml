@@ -1,6 +1,6 @@
 <group>
-	<Target_Point_POS>0, 0, 0</Target_Point_POS>
-	<Target_Point_Angles>90, -90, -5.12264e-06</Target_Point_Angles>
+	<Target_Point_POS>0.0899875, 0.126787, 0.0178571</Target_Point_POS>
+	<Target_Point_Angles>0, 0, 0</Target_Point_Angles>
 <group/>
 <joint_0>2.14337</joint_0>
 	<joint_1>-2.98469</joint_1>
@@ -45,21 +45,23 @@
 	<figure8>0</figure8>
 	</Joints>
 <Work_Surface>
-		<WS_Position>-0.422635, 0.43598, 0.014374</WS_Position>
+		<WS_Position>-0.615619, 0.240441, 0.163748</WS_Position>
 		<WS_size>0, 0, 0</WS_size>
 	<Orientation>0, 0, 360</Orientation>
-	<TP-0>-0.220642, 0.624475, 0.181591</TP-0>
-		<TP-1>-0.626781, 0.255263, 0.191001</TP-1>
-		<TP-2>-0.624628, 0.247486, -0.152843</TP-2>
-		<TP-3>-0.213279, 0.630313, -0.153259</TP-3>
-	<WS_Euler>-58.6097, -50.9026, 29.9128</WS_Euler>
-	<qAxis>-0.739923, -0.672692, -0</qAxis>
-		<qAngle>90.1084</qAngle>
+	<TP-0>-0.603097, 0.351555, 0.367634</TP-0>
+		<TP-1>-0.704331, 0.0413182, 0.367687</TP-1>
+		<TP-2>-0.704534, 0.0391832, -0.039617</TP-2>
+		<TP-3>-0.450515, 0.529707, -0.040712</TP-3>
+	<WS_Euler>-3.50727, -89.0208, -81.1252</WS_Euler>
+	<qAxis>0.586863, -0.619575, -0.521266</qAxis>
+		<qAngle>122.718</qAngle>
 		<Fix_X>95.4</Fix_X>
 		<Fix_Y>138.6</Fix_Y>
 		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
 <Follow_TargetPoint>0</Follow_TargetPoint>
-	<bTrace_GML>0</bTrace_GML>
+	<bTrace_GML>1</bTrace_GML>
 	<bCopy_Tool_Point>0</bCopy_Tool_Point>
+<TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
+<Target_Orientation>0, 0, 0, 1</Target_Orientation>
 </group>

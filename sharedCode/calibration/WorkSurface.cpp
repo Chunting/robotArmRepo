@@ -24,6 +24,7 @@ void WorkSurface::setup(){
 }
 void WorkSurface::setCorners(vector<ofPoint> pts){
     corners = pts;
+    
 }
 void WorkSurface::setCorner(CORNER i, ofPoint pt){
     switch (i) {
@@ -45,21 +46,69 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
             break;
     }
 }
+
 void WorkSurface::update(){
-    ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
-    ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
     
-    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
-    diffOne.normalize();
-    crossed = diffOne.cross(diffTwo);
-    crossed.normalize();
-    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
+    // update the worksurface mesh
+    if (mesh.getVertices().size() == 0){
+        for (int i=0; i<targetPoints.size(); i++)
+            mesh.addVertex(targetPoints[i].get());
+            mesh.addTriangle(0, 1, 2);
+            mesh.addTriangle(0, 2, 3);
+    }
+    else{
+        mesh.setVertex(0, targetPoints[0]);
+        mesh.setVertex(1, targetPoints[1]);
+        mesh.setVertex(2, targetPoints[2]);
+        mesh.setVertex(3, targetPoints[3]);
+    }
+
+    // update the mesh normal as the average of its two face normals
+    ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
+    
+    orientation.set(n);
+    
+    // realign the local axis of the worksurface
+    //      this is a bit hacky ... I don't think it works for everything
+    ofQuaternion conj = orientation.conj();
+    orientation *= conj;
+    orientation.makeRotate(-45, 0, 0, -1);
+    orientation *= conj.conj();
+    
+    conj = orientation.conj();
+    orientation *= conj;
+    orientation.makeRotate(-90, 1, 0, 0);
+    orientation *= conj.conj();
+
+    
+//    ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
+//    ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
+//    
+//    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
+//    diffOne.normalize();
+//    crossed = diffOne.cross(diffTwo);
+//    crossed.normalize();
+//    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
+    
+    // assign new orientation
     ofVec3f axis;
     float angle;
     orientation.getRotate(angle, axis);
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
+    
+    // update the position
+    ofVec3f centroid;
+    for (auto &p : targetPoints)
+        centroid += p;
+    position = centroid/4;//targetPoints[2].get().getMiddle(targetPoints[0].get());
+    
+    // update GML
+    if (strokes_original.size() != 0)
+        addStrokes(strokes_original);
+    
+
 }
 void WorkSurface::addPoint(ofVec3f pt){
     
@@ -68,16 +117,38 @@ void WorkSurface::addStroke(ofPolyline stroke){
     
 }
 void WorkSurface::addStrokes(vector<ofPolyline> strokes){
+    
+    // store the original linework
+    if (strokes_original.size() == 0){
+        ofPolyline pl;
+        for (auto &stroke : strokes){
+            for (auto &v : stroke.getVertices())
+                pl.addVertex(v);
+        }
+        strokes_original.push_back(pl);
+    }
+    
+    
+    // get the centroid of the line drawing
+    ofVec3f centroid;
+    for (auto &pl : strokes)
+       centroid += pl.getCentroid2D();
+    centroid /= strokes.size();
+
+    // scale & align linework
     float height = (targetPoints[0].get() - targetPoints[3].get()).length();
     float width = (targetPoints[0].get() - targetPoints[1].get()).length();
     float multiply = MAX(height, width);
     lines.clear();
     ofMatrix4x4 mat;
     mat.makeRotationMatrix(orientation);
-    mat.setTranslation(targetPoints[3]);
+    mat.setTranslation(position);//targetPoints[3]); // center stroke on canvas
     for(int i = 0; i < strokes.size(); i++){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
+            // center stroke on canvas
+            strokes[i].getVertices()[j] -= centroid;
+            
             fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
         }
         lines.push_back(fooLine);
@@ -117,8 +188,9 @@ void WorkSurface::draw(){
     for(int i = 0; i < lines.size(); i++){
         lines[i].draw();
     }
+    mesh.drawWireframe();
     ofPopMatrix();
-    
+  
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     ofDrawSphere(targetPoints[0], 10);

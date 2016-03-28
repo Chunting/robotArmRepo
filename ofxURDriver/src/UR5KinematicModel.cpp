@@ -142,6 +142,7 @@ void UR5KinematicModel::draw(){
             }
         }
         ofPopMatrix();
+            
         shader.end();
         ofDisableDepthTest();
         
