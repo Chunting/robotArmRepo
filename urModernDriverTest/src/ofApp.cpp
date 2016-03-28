@@ -186,22 +186,24 @@ void ofApp::testMotors(){
 void ofApp::draw(){
     ofEnableAlphaBlending();
     
-#ifdef ENABLE_NATNET
-    drawNatNet();
-#endif
-
-    
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.model.draw();
+    
+    #ifdef ENABLE_NATNET
+        drawNatNet();
+    #endif
+    
+    
+    if (!hideRobot)
+        robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
     ofSetColor(255, 0, 255, 200);
     ofDrawSphere(toolPoint.get()*ofVec3f(1000, 1000, 1000), 5);
     ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 15);
     ofPopMatrix();
     workSurface.draw();
     cams[0].end();
@@ -238,6 +240,8 @@ void ofApp::keyPressed(int key){
         workSurface.addStrokes(gml.getPath(1.0));
         bTrace = true;
         tagStartTime = ofGetElapsedTimef();
+     
+        
     }
     if(key == '1'){
         workSurface.setCorner(WorkSurface::UL, toolPoint);
@@ -255,7 +259,19 @@ void ofApp::keyPressed(int key){
         bFigure8 = !bFigure8;
     }
     
+    
     handleViewportPresets(key);
+    
+    if (key == 'h')
+        hideRobot = !hideRobot;
+
+    if (key == 'r')
+        record = !record;
+    
+    if (key == 'q'){
+        exit();
+        std::exit(0);
+    }
 }
 
 //--------------------------------------------------------------
@@ -361,134 +377,217 @@ void ofApp::hightlightViewports(){
 
 //--------------------------------------------------------------
 void ofApp::setupNatNet(){
-    string myIP = "192.168.1.107";
-    string serverIP = "192.168.1.107";
+    string myIP = "192.168.1.141";
+    string serverIP = "192.168.1.131";
     sender.setup("192.168.1.255", 7777);
     natnet.setup(myIP, serverIP);  // interface name, server ip
-    natnet.setScale(100);
+    natnet.setScale(1000);
     natnet.setDuplicatedPointRemovalDistance(20);
 }
 
 //--------------------------------------------------------------
 void ofApp::updateNatNet(){
     natnet.update();
-    ofxOscBundle bundle;
-    int count = 0;
-    for (int i = 0; i < max(0, (int)natnet.getNumMarkersSet() - 1); i++) {
-        for (int j = 0; j < natnet.getMarkersSetAt(i).size(); j++) {
-            ofxOscMessage b;
-            b.setAddress("/natnet/marker");
-            b.addInt32Arg(j);
-            b.addFloatArg(natnet.getMarkersSetAt(i)[j].x);
-            b.addFloatArg(natnet.getMarkersSetAt(i)[j].y);
-            b.addFloatArg(natnet.getMarkersSetAt(i)[j].z);
-            bundle.addMessage(b);
-            count++;
+    
+    // add a path trail to rigidBody
+    if (natnet.getNumRigidBody()==1){
+        const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
+        
+        if (record){
+            toolpath.push_back(rb);
+        
+            // store previous 20 rigid bodies
+            if (toolpath.size()>20)
+                toolpath.erase(toolpath.begin());
         }
+        
+        // move the worksurface based on the rigid body
+        if (!record)
+            updateWorksurface(rb);
+        
     }
     
-    for (int i = 0; i < natnet.getNumRigidBody(); i++) {
-        const ofxNatNet::RigidBody &RB = natnet.getRigidBodyAt(i);
-        ofxOscMessage m;
-        m.setAddress("/natnet/rigidbody");
-        m.addInt32Arg(i);
-        for(int j = 0; j < RB.markers.size(); j++){
-            m.addFloatArg(RB.markers[j].x);
-            m.addFloatArg(RB.markers[j].y);
-            m.addFloatArg(RB.markers[j].z);
-        }
-        count++;
-        bundle.addMessage(m);
-    }
-    if(count > 0){
-        sender.sendBundle(bundle);
-    }
+    
+    /* Handle OSC */
+    
+//    ofxOscBundle bundle;
+//    int count = 0;
+//    for (int i = 0; i < max(0, (int)natnet.getNumMarkersSet() - 1); i++) {
+//        for (int j = 0; j < natnet.getMarkersSetAt(i).size(); j++) {
+//            ofxOscMessage b;
+//            b.setAddress("/natnet/marker");
+//            b.addInt32Arg(j);
+//            b.addFloatArg(natnet.getMarkersSetAt(i)[j].x);
+//            b.addFloatArg(natnet.getMarkersSetAt(i)[j].y);
+//            b.addFloatArg(natnet.getMarkersSetAt(i)[j].z);
+//            bundle.addMessage(b);
+//            count++;
+//        }
+//    }
+//    
+//    for (int i = 0; i < natnet.getNumRigidBody(); i++) {
+//        const ofxNatNet::RigidBody &RB = natnet.getRigidBodyAt(i);
+//        
+//        ofxOscMessage m;
+//        m.setAddress("/natnet/rigidbody");
+//        m.addInt32Arg(i);
+//        for(int j = 0; j < RB.markers.size(); j++){
+//            m.addFloatArg(RB.markers[j].x);
+//            m.addFloatArg(RB.markers[j].y);
+//            m.addFloatArg(RB.markers[j].z);
+//        }
+//        count++;
+//        bundle.addMessage(m);
+//    }
+//    if(count > 0){
+//        sender.sendBundle(bundle);
+//    }
+
 }
 
 //--------------------------------------------------------------
 void ofApp::drawNatNet(){
-    cam.begin();
+//    cam.begin();
     
     ofDrawAxis(100);
     
-    ofFill();
+    drawHistory();
     
-    // draw all markers set
-    ofSetColor(255, 128);
-    for (int i = 0; i < max(0, (int)natnet.getNumMarkersSet() - 1); i++) {
-        for (int j = 0; j < natnet.getMarkersSetAt(i).size(); j++) {
-            ofDrawBox(natnet.getMarkersSetAt(i)[j], 3);
+//    ofFill();
+//    
+//    // draw all markers set
+//    ofSetColor(255, 128);
+//    for (int i = 0; i < max(0, (int)natnet.getNumMarkersSet() - 1); i++) {
+//        for (int j = 0; j < natnet.getMarkersSetAt(i).size(); j++) {
+//            ofDrawBox(natnet.getMarkersSetAt(i)[j], 3);
+//        }
+//    }
+//    
+//    // draw all markers
+//    ofSetColor(255, 30);
+//    for (int i = 0; i < natnet.getNumMarker(); i++) {
+//        ofDrawBox(natnet.getMarker(i), 3);
+//    }
+//    
+//    ofNoFill();
+//    
+//    // draw filtered markers
+//    ofSetColor(255);
+//    for (int i = 0; i < natnet.getNumFilterdMarker(); i++) {
+//        ofDrawBox(natnet.getFilterdMarker(i), 10);
+//    }
+//    
+//    // draw rigidbodies
+//    for (int i = 0; i < natnet.getNumRigidBody(); i++) {
+//        const ofxNatNet::RigidBody &RB = natnet.getRigidBodyAt(i);
+//        
+//        if (RB.isActive())
+//            ofSetColor(0, 255, 0);
+//        else
+//            ofSetColor(255, 0, 0);
+//        
+//        ofPushMatrix();
+//        glMultMatrixf(RB.getMatrix().getPtr());
+//        ofDrawAxis(30);
+//        ofPopMatrix();
+//        
+//        glBegin(GL_LINE_LOOP);
+//        for (int n = 0; n < RB.markers.size(); n++) {
+//            glVertex3fv(RB.markers[n].getPtr());
+//        }
+//        glEnd();
+//        
+//        for (int n = 0; n < RB.markers.size(); n++) {
+//            ofDrawBox(RB.markers[n], 5);
+//        }
+//    }
+    
+//    // draw skeletons
+//    for (int j = 0;  j < natnet.getNumSkeleton(); j++) {
+//        const ofxNatNet::Skeleton &S = natnet.getSkeletonAt(j);
+//        ofSetColor(0, 0, 255);
+//        
+//        for (int i = 0; i < S.joints.size(); i++) {
+//            const ofxNatNet::RigidBody &RB = S.joints[i];
+//            ofPushMatrix();
+//            glMultMatrixf(RB.getMatrix().getPtr());
+//            ofDrawBox(5);
+//            ofPopMatrix();
+//        }
+//    }
+    
+//    cam.end();
+//    
+//    string str;
+//    str += "frames: " + ofToString(natnet.getFrameNumber()) + "\n";
+//    str += "data rate: " + ofToString(natnet.getDataRate()) + "\n";
+//    str += string("connected: ") + (natnet.isConnected() ? "YES" : "NO") + "\n";
+//    str += "num markers set: " + ofToString(natnet.getNumMarkersSet()) + "\n";
+//    str += "num marker: " + ofToString(natnet.getNumMarker()) + "\n";
+//    str += "num filtered (non regidbodies) marker: " +
+//    ofToString(natnet.getNumFilterdMarker()) + "\n";
+//    str += "num rigidbody: " + ofToString(natnet.getNumRigidBody()) + "\n";
+//    str += "num skeleton: " + ofToString(natnet.getNumSkeleton()) + "\n";
+//    
+//    ofSetColor(255);
+//    ofDrawBitmapString(str, 10, 20);
+}
+
+//--------------------------------------------------------------
+void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
+    
+    
+    if (toolpath.size() > 0){
+        
+        // get the previous transformation matrix
+        ofxNatNet::RigidBody prev = toolpath[toolpath.size()-1];
+        
+        // find the difference between the current transformation matrix
+        ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
+        
+        // apply matrix to each of the recorded bodies
+        for (auto &tp: toolpath){
+            tp.matrix *= diff;
+            
+            // update markers
+            for (int i=0; i<tp.markers.size(); i++)
+                tp.markers[i] = tp.markers[i] * diff;
         }
-    }
-    
-    // draw all markers
-    ofSetColor(255, 30);
-    for (int i = 0; i < natnet.getNumMarker(); i++) {
-        ofDrawBox(natnet.getMarker(i), 3);
-    }
-    
-    ofNoFill();
-    
-    // draw filtered markers
-    ofSetColor(255);
-    for (int i = 0; i < natnet.getNumFilterdMarker(); i++) {
-        ofDrawBox(natnet.getFilterdMarker(i), 10);
-    }
-    
-    // draw rigidbodies
-    for (int i = 0; i < natnet.getNumRigidBody(); i++) {
-        const ofxNatNet::RigidBody &RB = natnet.getRigidBodyAt(i);
         
-        if (RB.isActive())
-            ofSetColor(0, 255, 0);
-        else
-            ofSetColor(255, 0, 0);
-        
-        ofPushMatrix();
-        glMultMatrixf(RB.getMatrix().getPtr());
-        ofDrawAxis(30);
-        ofPopMatrix();
-        
-        glBegin(GL_LINE_LOOP);
-        for (int n = 0; n < RB.markers.size(); n++) {
-            glVertex3fv(RB.markers[n].getPtr());
+        // apply the difference to the corners of the worksurface
+        for (int i=0; i<4; i++){
+            auto v = workSurface.targetPoints[i].get() * ofVec3f(1000,1000,1000) * diff;
+            workSurface.targetPoints[i] = v/1000;
         }
-        glEnd();
         
-        for (int n = 0; n < RB.markers.size(); n++) {
-            ofDrawBox(RB.markers[n], 5);
-        }
     }
     
-    // draw skeletons
-    for (int j = 0;  j < natnet.getNumSkeleton(); j++) {
-        const ofxNatNet::Skeleton &S = natnet.getSkeletonAt(j);
-        ofSetColor(0, 0, 255);
-        
-        for (int i = 0; i < S.joints.size(); i++) {
-            const ofxNatNet::RigidBody &RB = S.joints[i];
-            ofPushMatrix();
-            glMultMatrixf(RB.getMatrix().getPtr());
-            ofDrawBox(5);
-            ofPopMatrix();
-        }
+}
+
+//--------------------------------------------------------------
+void ofApp::drawHistory(){
+
+    // show path
+    ofPolyline tp;
+    for (auto &path: toolpath){
+        ofSetColor(ofColor::azure);
+        tp.addVertex(path.getMatrix().getTranslation());
     }
+    tp.draw();
     
-    cam.end();
+    // show rigid body
+    ofPolyline bodies;
+    float alpha = 255;
+    float step = 255 / (toolpath.size()+1);
+    for (auto &rb: toolpath){
+        ofSetColor(ofColor::navajoWhite, alpha);
+        for (int i = 0; i < rb.markers.size(); i++)
+            bodies.addVertex(rb.markers[i]);
+        alpha -= step;
+    }
+    bodies.draw();
     
-    string str;
-    str += "frames: " + ofToString(natnet.getFrameNumber()) + "\n";
-    str += "data rate: " + ofToString(natnet.getDataRate()) + "\n";
-    str += string("connected: ") + (natnet.isConnected() ? "YES" : "NO") + "\n";
-    str += "num markers set: " + ofToString(natnet.getNumMarkersSet()) + "\n";
-    str += "num marker: " + ofToString(natnet.getNumMarker()) + "\n";
-    str += "num filtered (non regidbodies) marker: " +
-    ofToString(natnet.getNumFilterdMarker()) + "\n";
-    str += "num rigidbody: " + ofToString(natnet.getNumRigidBody()) + "\n";
-    str += "num skeleton: " + ofToString(natnet.getNumSkeleton()) + "\n";
     
-    ofSetColor(255);
-    ofDrawBitmapString(str, 10, 20);
 }
 
 //--------------------------------------------------------------

@@ -62,14 +62,14 @@ void WorkSurface::update(){
         mesh.setVertex(2, targetPoints[2]);
         mesh.setVertex(3, targetPoints[3]);
     }
-   
+
     // update the mesh normal as the average of its two face normals
     ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
     
     orientation.set(n);
     
-    // realign the local axis of the worksurface ... REALIGNMENT NOT CONSISTENTLY WORKING YET
-    // ... Does the mesh face normal update
+    // realign the local axis of the worksurface
+    //      this is a bit hacky ... I don't think it works for everything
     ofQuaternion conj = orientation.conj();
     orientation *= conj;
     orientation.makeRotate(-45, 0, 0, -1);
@@ -190,7 +190,7 @@ void WorkSurface::draw(){
     }
     mesh.drawWireframe();
     ofPopMatrix();
-    
+  
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     ofDrawSphere(targetPoints[0], 10);

@@ -11,6 +11,7 @@
 #include "WorkSurface.h"
 
 #define N_CAMERAS 2
+#define ENABLE_NATNET
 
 class ofApp : public ofBaseApp{
     
@@ -73,6 +74,7 @@ public:
     int count;
     
     bool move;
+    bool hideRobot;
     
     GMLPath gml;
     float tagStartTime;
@@ -95,14 +97,31 @@ public:
      */
     void handleViewportPresets(int key);
     
-    /**
-         Highlights the active viewport.
-     */
+    /// Highlights the active viewport.
     void hightlightViewports();
     
     
+    /* MoCap Stuff */
+    bool record;
+    /// Stores previous rigid bodies
+    vector<ofxNatNet::RigidBody> toolpath;
+
+    
+    /// Draws the plane, markers, and orientation axes of a given RigidBody.
+    /// @param rb
+    ///     Rigid Body passed by NatNet
+    void drawRigidBody(const ofxNatNet::RigidBody &rb);
+    void drawHistory();
+
+    
+    /// Transforms a recorded toolpath based on the movement of a RigidBody.
+    /// @param rb
+    ///     Rigid Body that transforms the recorded toolpath
+    void updateWorksurface(const ofxNatNet::RigidBody &rb);
+    
+    
     /*
-        Common Quaternion Values 
+        Common Quaternion Values
         from: http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer
      
          w          x           y           z           Description
