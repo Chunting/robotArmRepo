@@ -405,23 +405,25 @@ void ofApp::updateNatNet(){
     if (natnet.getNumRigidBody()==1){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
         
+        // check if the rigid body is moving
+        if (toolpath.size() > 0){
+            float dist = 2;
+            ofVec3f curr = rb.matrix.getTranslation();
+            ofVec3f prev = toolpath[toolpath.size()-1].matrix.getTranslation();
+            isMoving = curr.squareDistance(prev) > dist*dist ;
+        }
+        
+        // save the 
         if (record){
             toolpath.push_back(rb);
             
-            // check if the rigid body is moving
-            if (toolpath.size() > 1){
-                
-            }
-                
-        
             // store previous 20 rigid bodies
             if (toolpath.size()>20)
                 toolpath.erase(toolpath.begin());
         }
-        
+
         // move the worksurface based on the rigid body
-        if (!record)
-            updateWorksurface(rb);
+        updateWorksurface(rb);
         
     }
     
@@ -639,7 +641,10 @@ void ofApp::drawHistory(){
     // show test srf
     ofPushStyle();
     ofSetLineWidth(5);
-    ofSetColor(ofColor::aqua);
+    if (isMoving)
+        ofSetColor(255, 0, 0);
+    else
+        ofSetColor(ofColor::aqua);
     rbWorksrf.draw();
     ofPopStyle();
     
