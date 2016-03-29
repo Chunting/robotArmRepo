@@ -52,7 +52,6 @@ void ofApp::setup(){
     movement.setup();
     speeds.assign(6, 0);
     bMove = false;
-    
     // get the current pose on start up
     bCopy = true;
 
@@ -64,7 +63,18 @@ void ofApp::setup(){
     // need to move URMove camera to ofApp
 
     handleViewportPresets('p');
+    
+    
+    
+    float w = 400;
+    float h = 300;
+    float offset = +200;
 
+    rbWorksrf.addVertex(ofVec3f(-w/2,  h/2 + offset, 0)); // UL
+    rbWorksrf.addVertex(ofVec3f( w/2,  h/2 + offset, 0)); // LL
+    rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
+    rbWorksrf.addVertex(ofVec3f(-w/2, -h/2 + offset, 0)); // LL
+    rbWorksrf.close();
 }
 
 //--------------------------------------------------------------
@@ -90,8 +100,10 @@ void ofApp::update(){
     }
     
     toolPoint = robot.getToolPoint();
-    targetPointAngles = robot.model.getToolPointMatrix().getEuler();    // is this the right TCP orientation?
-    
+    // set to default orientation, then modify
+    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetPoint.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
     
     /* testing hard coded orientations */
 //    targetPoint.rotation = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
@@ -101,14 +113,12 @@ void ofApp::update(){
 //    targetPoint.rotation = ofQuaternion(0,  -.707,   0,  .707); // -90¼ about Y-Axis
 //    targetPoint.rotation = ofQuaternion(0,  0,  -.707,   .707); // -90¼ about Z-Axis
 //    targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
-    
-
-    
+  
     if(bCopy){
         bCopy = false;
         
         targetPoint.position = toolPoint;
-        targetPoint.rotation = robot.model.getToolPointMatrix();
+        targetPoint.rotation *= robot.model.getToolPointMatrix();
         
         targetPointPos = toolPoint;
         targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
@@ -122,10 +132,12 @@ void ofApp::update(){
 //        targetPoint.rotation *= diff.getRotate();
         
         // or slerp from current to target orientation (???)
-        targetPoint.rotation.slerp(.1, targetPoint.rotation, ofQuaternion(targetOrientation));
-        
+//        targetPoint.rotation.slerp(.1, targetPoint.rotation, ofQuaternion(targetOrientation));
+     
         // or just reassign the value (???)
-//        targetPoint.rotation = ofQuaternion(targetOrientation);
+        targetPoint.rotation *= ofQuaternion(targetOrientation);
+        
+        targetPointAngles = targetPoint.rotation.getEuler();
 
     }else if(bTrace){
         Joint jTCP = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
@@ -382,7 +394,7 @@ void ofApp::setupNatNet(){
     sender.setup("192.168.1.255", 7777);
     natnet.setup(myIP, serverIP);  // interface name, server ip
     natnet.setScale(1000);
-    natnet.setDuplicatedPointRemovalDistance(20);
+    natnet.setDuplicatedPointRemovalDistance(10);
 }
 
 //--------------------------------------------------------------
@@ -395,6 +407,12 @@ void ofApp::updateNatNet(){
         
         if (record){
             toolpath.push_back(rb);
+            
+            // check if the rigid body is moving
+            if (toolpath.size() > 1){
+                
+            }
+                
         
             // store previous 20 rigid bodies
             if (toolpath.size()>20)
@@ -555,10 +573,41 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
         }
         
         // apply the difference to the corners of the worksurface
-        for (int i=0; i<4; i++){
-            auto v = workSurface.targetPoints[i].get() * ofVec3f(1000,1000,1000) * diff;
-            workSurface.targetPoints[i] = v/1000;
+//        for (int i=0; i<4; i++){
+//            auto v = workSurface.targetPoints[i].get() * ofVec3f(1000,1000,1000) * diff;
+//            workSurface.targetPoints[i] = v/1000;
+//        }
+        
+        
+        // initialize rigidbody worksurface
+        if (rbWorksrf.getVertices()[0].z == 0){
+            // orient worksurface with rigid body
+            rbWorksrf.getVertices()[0] = rbWorksrf.getVertices()[0] * rb.matrix;
+            rbWorksrf.getVertices()[1] = rbWorksrf.getVertices()[1] * rb.matrix;
+            rbWorksrf.getVertices()[2] = rbWorksrf.getVertices()[2] * rb.matrix;
+            rbWorksrf.getVertices()[3] = rbWorksrf.getVertices()[3] * rb.matrix;
         }
+        else{
+            // update rigidbody worksurface
+            rbWorksrf.getVertices()[0] = rbWorksrf.getVertices()[0] * diff;
+            rbWorksrf.getVertices()[1] = rbWorksrf.getVertices()[1] * diff;
+            rbWorksrf.getVertices()[2] = rbWorksrf.getVertices()[2] * diff;
+            rbWorksrf.getVertices()[3] = rbWorksrf.getVertices()[3] * diff;
+            
+            // update worksurface corner
+            workSurface.targetPoints[0] = rbWorksrf.getVertices()[0] / 1000;
+            workSurface.targetPoints[1] = rbWorksrf.getVertices()[1] / 1000;
+            workSurface.targetPoints[2] = rbWorksrf.getVertices()[2] / 1000;
+            workSurface.targetPoints[3] = rbWorksrf.getVertices()[3] / 1000;
+            
+            // override worksurface position and orientation
+            workSurface.orientation = rb.getMatrix().getRotate();
+        }
+
+        
+        
+//        workSurface.position = rb.getMatrix().getTranslation();
+//        workSurface.orientation = rb.getMatrix().getRotate();
         
     }
     
@@ -587,6 +636,12 @@ void ofApp::drawHistory(){
     }
     bodies.draw();
     
+    // show test srf
+    ofPushStyle();
+    ofSetLineWidth(5);
+    ofSetColor(ofColor::aqua);
+    rbWorksrf.draw();
+    ofPopStyle();
     
 }
 

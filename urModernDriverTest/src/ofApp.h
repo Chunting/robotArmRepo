@@ -56,6 +56,7 @@ public:
     bool stop;
     
     ofxNatNet natnet;
+    bool isMoving;
     void setupNatNet();
     void updateNatNet();
     void drawNatNet();
@@ -112,7 +113,7 @@ public:
     ///     Rigid Body passed by NatNet
     void drawRigidBody(const ofxNatNet::RigidBody &rb);
     void drawHistory();
-
+    ofPolyline rbWorksrf;
     
     /// Transforms a recorded toolpath based on the movement of a RigidBody.
     /// @param rb

@@ -63,22 +63,24 @@ void WorkSurface::update(){
         mesh.setVertex(3, targetPoints[3]);
     }
 
+    
+     /* USE RIGID BODY FROM NATNET AS WORKSURFACE */
     // update the mesh normal as the average of its two face normals
-    ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
-    
-    orientation.set(n);
-    
-    // realign the local axis of the worksurface
-    //      this is a bit hacky ... I don't think it works for everything
-    ofQuaternion conj = orientation.conj();
-    orientation *= conj;
-    orientation.makeRotate(-45, 0, 0, -1);
-    orientation *= conj.conj();
-    
-    conj = orientation.conj();
-    orientation *= conj;
-    orientation.makeRotate(-90, 1, 0, 0);
-    orientation *= conj.conj();
+//    ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
+//    
+//    orientation.set(n);
+//    
+//    // realign the local axis of the worksurface
+//    //      this is a bit hacky ... I don't think it works for everything
+//    ofQuaternion conj = orientation.conj();
+//    orientation *= conj;
+//    orientation.makeRotate(-45, 0, 0, -1);
+//    orientation *= conj.conj();
+//    
+//    conj = orientation.conj();
+//    orientation *= conj;
+//    orientation.makeRotate(-90, 1, 0, 0);
+//    orientation *= conj.conj();
 
     
 //    ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
