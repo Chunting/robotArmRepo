@@ -7,12 +7,16 @@
   - [ ] remap to correct ranges/wrap to nearest joint position
 - URKinematics
   - [X] figure out why the inverse is mirrored
-  - [X]  initial rotations on quaternion?
+  - [X] initial rotations on quaternion?
+  - [ ] Joints to extend ofNode
 - URTool
   - [ ] Create URTool class to manage the Toolpoint
   - [ ] create safe zone to prevent toolpoint from colliding with body.
 - URWorkingZone
   - [X] Define a working zone and optimize movements to remain within that zone (Sort of done)
-    
-- Var Naming
-  - [ ] Toolpoint -> TCP 
+- Refactoring
+  - [ ] Rename Toolpoint -> TCP & targetTCP
+  - [ ] Remove redundant variables (e.g, targetPointPos -> tartgetTCP.position)
+  - [ ] Synchronize world scalar for Mocap & Robot
+- Release Prep
+  - [ ] Example Project(s)
