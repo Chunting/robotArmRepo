@@ -120,7 +120,7 @@ void WorkSurface::addStroke(ofPolyline stroke){
 }
 void WorkSurface::addStrokes(vector<ofPolyline> strokes){
     
-    // store the original linework
+    // add retract/approach points & store the original linework
     if (strokes_original.size() == 0){
         ofPolyline pl;
         for (auto &stroke : strokes){
@@ -137,6 +137,59 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
        centroid += pl.getCentroid2D();
     centroid /= strokes.size();
 
+    // scale & align linework
+    float height = (targetPoints[0].get() - targetPoints[3].get()).length();
+    float width = (targetPoints[0].get() - targetPoints[1].get()).length();
+    float multiply = MAX(height, width);
+    lines.clear();
+    ofMatrix4x4 mat;
+    mat.makeRotationMatrix(orientation);
+    mat.setTranslation(position);//targetPoints[3]); // center stroke on canvas
+    for(int i = 0; i < strokes.size(); i++){
+        ofPolyline fooLine;
+        for(int j = 0; j < strokes[i].getVertices().size(); j++){
+            // center stroke on canvas
+            strokes[i].getVertices()[j] -= centroid;
+            
+            fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
+        }
+        lines.push_back(fooLine);
+    }
+}
+
+void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
+    
+    // add retract/approach points & store the original linework
+    if (strokes_original.size() == 0){
+        
+        // add a approach/retract point to the start and end of the path
+        for (auto &stroke : strokes){
+            auto first = ofVec3f(stroke.getVertices()[0]);
+            auto last = ofVec3f(stroke.getVertices()[stroke.getVertices().size()-1]);
+            
+            first.z += retractDist;
+            last.z  += retractDist;
+            
+            stroke.insertVertex(first, 0);
+            stroke.insertVertex(last, stroke.getVertices().size()-1);
+        }
+        
+        
+        ofPolyline pl;
+        for (auto &stroke : strokes){
+            for (auto &v : stroke.getVertices())
+                pl.addVertex(v);
+        }
+        strokes_original.push_back(pl);
+    }
+    
+    
+    // get the centroid of the line drawing
+    ofVec3f centroid;
+    for (auto &pl : strokes)
+        centroid += pl.getCentroid2D();
+    centroid /= strokes.size();
+    
     // scale & align linework
     float height = (targetPoints[0].get() - targetPoints[3].get()).length();
     float width = (targetPoints[0].get() - targetPoints[1].get()).length();

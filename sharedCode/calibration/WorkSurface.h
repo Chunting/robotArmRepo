@@ -25,6 +25,12 @@ public:
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
     void addStrokes(vector<ofPolyline> strokes);
+    
+    /// Assign a set of strokes to a worksurface and add a
+    /// retract/approach distance to the start and end of each stroke.
+    /// @param retractDist
+    ///     distance (in meters) to retract
+    void addStrokes(vector<ofPolyline> strokes, float retractDist);
     void setRotationX(float x);
     void setRotationY(float x);
     void setRotationZ(float x);

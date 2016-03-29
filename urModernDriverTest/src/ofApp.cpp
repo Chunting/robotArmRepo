@@ -68,7 +68,7 @@ void ofApp::setup(){
     
     float w = 400;
     float h = 300;
-    float offset = +200;
+    float offset = 00;//400;
 
     rbWorksrf.addVertex(ofVec3f(-w/2,  h/2 + offset, 0)); // UL
     rbWorksrf.addVertex(ofVec3f( w/2,  h/2 + offset, 0)); // LL
@@ -118,10 +118,15 @@ void ofApp::update(){
         bCopy = false;
         
         targetPoint.position = toolPoint;
-        targetPoint.rotation *= robot.model.getToolPointMatrix();
+        
+//        targetPoint.rotation *= robot.model.getToolPointMatrix(); // doesn't work
+        
         
         targetPointPos = toolPoint;
         targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
+        
+
+        
     }else if(bFollow){
         // go from current to next position
         targetPoint.position.interpolate(targetPointPos.get(), 0.1);
@@ -145,20 +150,20 @@ void ofApp::update(){
         targetPoint.rotation *= jTCP.rotation;
         targetPointPos = targetPoint.position;
 
-#ifdef ENABLE_NATNET
-        // retract if our canvas is moving
-        if (isMoving && toolpath.size() > 0){
-            float offset = -25;
-            ofVec3f retract = ofVec3f(0,0,offset/1000);
-            
-            // align to worksurface
-            retract = retract * toolpath[toolpath.size()-1].matrix.getRotate();
-            
-            // modify target point
-            targetPoint.position += retract;
-            targetPointPos = targetPoint.position;
-        }
-#endif
+//#ifdef ENABLE_NATNET
+//        // retract if our canvas is moving
+//        if (isMoving && toolpath.size() > 0){
+//            float offset = -25;
+//            ofVec3f retract = ofVec3f(0,0,offset/1000);
+//            
+//            // align to worksurface
+//            retract = retract * toolpath[toolpath.size()-1].matrix.getRotate();
+//            
+//            // modify target point
+//            targetPoint.position += retract;
+//            targetPointPos = targetPoint.position;
+//        }
+//#endif
         
     }else if(bFigure8){
         targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
@@ -264,10 +269,9 @@ void ofApp::keyPressed(int key){
         bMove = !bMove;
     }
     if(key == ' ' ){
-        workSurface.addStrokes(gml.getPath(1.0));
+        workSurface.addStrokes(gml.getPath(1.0),-.1);
         bTrace = true;
-        tagStartTime = ofGetElapsedTimef();
-     
+        tagStartTime = ofGetElapsedTimef(); 
         
     }
     if(key == '1'){
@@ -409,7 +413,7 @@ void ofApp::setupNatNet(){
     sender.setup("192.168.1.255", 7777);
     natnet.setup(myIP, serverIP);  // interface name, server ip
     natnet.setScale(1000);
-    natnet.setDuplicatedPointRemovalDistance(10);
+    natnet.setDuplicatedPointRemovalDistance(25);
 }
 
 //--------------------------------------------------------------
@@ -419,13 +423,7 @@ void ofApp::updateNatNet(){
     if (natnet.getNumRigidBody()==1){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
         
-        // check if the rigid body is moving
-        if (toolpath.size() > 0){
-            float dist = .25;
-            ofVec3f curr = rb.matrix.getTranslation();
-            ofVec3f prev = toolpath[toolpath.size()-1].matrix.getTranslation();
-            isMoving = curr.squareDistance(prev) > dist*dist ;
-        }
+      
         
         // add to the rigid body history
         if (record){
@@ -434,6 +432,14 @@ void ofApp::updateNatNet(){
             // store previous 20 rigid bodies
             if (toolpath.size()>20)
                 toolpath.erase(toolpath.begin());
+            
+            // check if the rigid body is moving
+            if (toolpath.size() > 0){
+                float dist = .25;
+                ofVec3f curr = rb.matrix.getTranslation();
+                ofVec3f prev = toolpath[toolpath.size()-1].matrix.getTranslation();
+                isMoving = curr.squareDistance(prev) > dist*dist ;
+            }
         }
 
         // move the worksurface based on the rigid body

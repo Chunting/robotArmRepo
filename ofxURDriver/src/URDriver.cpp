@@ -154,6 +154,8 @@ void ofxURDriver::threadedFunction(){
             }
             model.tool.position = ofVec3f(model.toolPointRaw[0], model.toolPointRaw[1], model.toolPointRaw[2]);
             
+            // add tool offset here?
+            
             robot->rt_interface_->robot_state_->setControllerUpdated();
             
             if(bMove){

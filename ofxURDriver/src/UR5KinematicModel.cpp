@@ -34,7 +34,7 @@ void UR5KinematicModel::setup(){
     // load default tool ... right now exporting with 34.5 offset
     loader.loadModel(ofToDataPath("models/myTool.dae"));
     setToolMesh(loader.getMesh(loader.getNumMeshes()-1));
-    tool.offset = ofVec3f(0,135,0);
+    tool.offset = ofVec3f(0,-135,0);    // is this doing anything?
     
     jointsRaw.assign(6, 0.0);
     jointsRaw[1] = -PI/2.0;
@@ -48,10 +48,11 @@ void UR5KinematicModel::setup(){
     joints[3].position.set(0, -70.608, 903.192);
     joints[4].position.set(0, -117.242, 950.973);
     joints[5].position.set(0, -164.751, 996.802);
+    tool.position.set(joints[5].position + ofVec3f(0,-135,0)); // tool tip position
     
-    for(int i = 1; i < joints.size(); i++){
+    for(int i = 1; i < joints.size(); i++)
         joints[i].offset = joints[i].position-joints[i-1].position;
-    }
+    tool.offset = joints[5].offset;
     
     
     
@@ -61,7 +62,7 @@ void UR5KinematicModel::setup(){
     joints[3].axis.set(0, -1, 0);
     joints[4].axis.set(0, 0, 1);
     joints[5].axis.set(0, 1, 0);
-    
+    tool.axis.set(joints[5].axis);
     
     joints[0].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
     joints[1].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
@@ -69,6 +70,7 @@ void UR5KinematicModel::setup(){
     joints[3].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
     joints[4].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
     joints[5].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    tool.rotation = joints[5].rotation;
     
     shader.load("shaders/model");
     
@@ -84,9 +86,9 @@ ofQuaternion UR5KinematicModel::getToolPointMatrix(){
 
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
     
-    // add an initial 34.5 offset to place on the end of joint 5
-    for (auto &v : mesh.getVertices())
-        v.y -= 34.5;
+//    // add an initial 34.5 offset to place on the end of joint 5
+//    for (auto &v : mesh.getVertices())
+//        v.y -= 34.5;
     
     toolMesh = mesh;
 }
@@ -98,6 +100,7 @@ void UR5KinematicModel::draw(){
     ofEnableDepthTest();
     ofSetColor(255, 255, 0);
     ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 10);
+    
     
     ofSetColor(255, 0, 255);
     //    targetPoint.draw();
