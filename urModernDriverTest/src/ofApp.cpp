@@ -144,7 +144,22 @@ void ofApp::update(){
         targetPoint.position = jTCP.position;
         targetPoint.rotation *= jTCP.rotation;
         targetPointPos = targetPoint.position;
-//        targetPoint.rotation *= ofQuaternion(90, ofVec3f(0, 0, 1));
+
+#ifdef ENABLE_NATNET
+        // retract if our canvas is moving
+        if (isMoving && toolpath.size() > 0){
+            float offset = -25;
+            ofVec3f retract = ofVec3f(0,0,offset/1000);
+            
+            // align to worksurface
+            retract = retract * toolpath[toolpath.size()-1].matrix.getRotate();
+            
+            // modify target point
+            targetPoint.position += retract;
+            targetPointPos = targetPoint.position;
+        }
+#endif
+        
     }else if(bFigure8){
         targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
@@ -401,19 +416,18 @@ void ofApp::setupNatNet(){
 void ofApp::updateNatNet(){
     natnet.update();
     
-    // add a path trail to rigidBody
     if (natnet.getNumRigidBody()==1){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
         
         // check if the rigid body is moving
         if (toolpath.size() > 0){
-            float dist = 2;
+            float dist = .25;
             ofVec3f curr = rb.matrix.getTranslation();
             ofVec3f prev = toolpath[toolpath.size()-1].matrix.getTranslation();
             isMoving = curr.squareDistance(prev) > dist*dist ;
         }
         
-        // save the 
+        // add to the rigid body history
         if (record){
             toolpath.push_back(rb);
             
