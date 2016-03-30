@@ -9,22 +9,23 @@ void ofApp::setup(){
     
     string interface_name = "en0"; // or network interface name
     
-    //    targetPoint.setPosition(0, 0, 0);
+    //    tcp.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
-    //    targetPoint.setParent(parent);
-    robotArmParams.add(targetPointPos.set("Target Point POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    robotArmParams.add(targetOrientation.set("Target Orientation",ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
-    robotArmParams.add(targetPointAngles.set("Target Point Angles", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
-    robotArmParams.add(toolPoint.set("ToolPoint", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    //    tcp.setParent(parent);
+    robotArmParams.add(targetTCP_POS.set("Set TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    robotArmParams.add(targetTCP_ORIENT.set("Set TCP ORIENT",ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
+    robotArmParams.add(TCP_POS.set("Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    robotArmParams.add(TCP_ORIENT_XYZ.set("Robot TCP ORIENT", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
     
     panel.setup(robotArmParams);
-    panel.add(bFollow.set("Follow TargetPoint", false));
+    panel.add(bFollow.set("set TCP", false));
     panel.add(bTrace.set("bTrace GML", false));
-    panel.add(bCopy.set("bCopy Tool Point", false));
-    workSurface.setup();
-
+    panel.add(bCopy.set("get TCP", false));
     panel.loadFromFile("settings.xml");
     panel.setPosition(10, 10);
+    
+    workSurface.setup();
+    
     joints.setName("Joints");
     joints.add(bMove.set("Move", false));
     joints.add(avgAccel.set("avgAccel", 0, 0, 200));
@@ -65,7 +66,7 @@ void ofApp::setup(){
     handleViewportPresets('p');
     
     
-    
+    // temp fix ... set up rigid body worksurface for drawing/following mocap
     float w = 400;
     float h = 300;
     float offset = 00;//400;
@@ -83,72 +84,57 @@ void ofApp::update(){
     updateNatNet();
 #endif
     
-    
-    
-    //    float angle = sqrt(pow(targetPointAngles.get().x, 2)+pow(targetPointAngles.get().y, 2)+pow(targetPointAngles.get().z, 2));
-    //    if( angle < 0.00000000001){
-    //        targetPoint.setOrientation(ofQuaternion(0, 0, 0, 1));
-    //    }else{
-    //        targetPoint.setOrientation(ofQuaternion(angle, ofVec3f(targetPointAngles.get().x/angle, targetPointAngles.get().y/angle, targetPointAngles.get().z/angle)));
-    //    }
-    workSurface.update();
+  
+    // pass the current joints from the robot to the kinematic solver
     vector<double> currentJointPos = robot.getJointPositions();
     movement.setCurrentJointPosition(currentJointPos);
     
-    for(int i = 0; i < currentJointPos.size(); i++){
+    // update GUI params
+    for(int i = 0; i < currentJointPos.size(); i++)
         jointPos[i] = (float)currentJointPos[i];
-    }
+    TCP_POS = robot.getToolPoint();
     
-    toolPoint = robot.getToolPoint();
-    // set to default orientation, then modify
-    targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    targetPoint.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-    
-    /* testing hard coded orientations */
-//    targetPoint.rotation = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
-//    targetPoint.rotation = ofQuaternion(0,  .707,   0,  .707);  //  90¼ about Y-Axis
-//    targetPoint.rotation = ofQuaternion(0,  0,  .707,   .707);  //  90¼ about Z-Axis
-//    targetPoint.rotation = ofQuaternion(-.707,   0,  0,  .707); // -90¼ about X-Axis
-//    targetPoint.rotation = ofQuaternion(0,  -.707,   0,  .707); // -90¼ about Y-Axis
-//    targetPoint.rotation = ofQuaternion(0,  0,  -.707,   .707); // -90¼ about Z-Axis
-//    targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
+    // set target TCP to a default orientation, then modify
+    targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
   
+    // assign the target pose to the current robot pose
     if(bCopy){
         bCopy = false;
         
-        targetPoint.position = toolPoint;
+        // get the robot's position
+        targetTCP.position = robot.getToolPoint();
+        // get the robot's orientation
+        // targetTCP.rotation = .... <-- why is this working without grabbing the current orientation?
         
-//        targetPoint.rotation *= robot.model.getToolPointMatrix(); // doesn't work
+        // update GUI params
+        targetTCP_POS = targetTCP.position;
+        targetTCP_ORIENT = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
         
+    }
+    // follow a user-defined position and orientation
+    else if(bFollow){
         
-        targetPointPos = toolPoint;
-        targetOrientation = ofVec4f(targetPoint.rotation.x(), targetPoint.rotation.y(), targetPoint.rotation.z(), targetPoint.rotation.w());
-        
-
-        
-    }else if(bFollow){
         // go from current to next position
-        targetPoint.position.interpolate(targetPointPos.get(), 0.1);
-
+        targetTCP.position.interpolate(targetTCP_POS.get(), 0.1);
         // go from current orientation to next orientation (???)
-//        ofMatrix4x4 prev = ofMatrix4x4(targetPoint.rotation);
-//        ofMatrix4x4 diff = prev.getInverse() * ofMatrix4x4(ofQuaternion(targetOrientation));
-//        targetPoint.rotation *= diff.getRotate();
+        targetTCP.rotation *= ofQuaternion(targetTCP_ORIENT);
         
-        // or slerp from current to target orientation (???)
-//        targetPoint.rotation.slerp(.1, targetPoint.rotation, ofQuaternion(targetOrientation));
-     
-        // or just reassign the value (???)
-        targetPoint.rotation *= ofQuaternion(targetOrientation);
+        // update GUI params
+        TCP_ORIENT_XYZ = targetTCP.rotation.getEuler();
+    }
+    // follow a pre-defined path
+    else if(bTrace){
         
-        targetPointAngles = targetPoint.rotation.getEuler();
-
-    }else if(bTrace){
-        Joint jTCP = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
-        targetPoint.position = jTCP.position;
-        targetPoint.rotation *= jTCP.rotation;
-        targetPointPos = targetPoint.position;
+        // update the worksurface
+        workSurface.update();
+        
+        // get the target point on the worksurface
+        Joint workSrfTarget = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
+        targetTCP.position = workSrfTarget.position;
+        targetTCP.rotation *= workSrfTarget.rotation;
+        targetTCP_POS = targetTCP.position;
 
 //#ifdef ENABLE_NATNET
 //        // retract if our canvas is moving
@@ -160,39 +146,48 @@ void ofApp::update(){
 //            retract = retract * toolpath[toolpath.size()-1].matrix.getRotate();
 //            
 //            // modify target point
-//            targetPoint.position += retract;
-//            targetPointPos = targetPoint.position;
+//            tcp.position += retract;
+//            targetTCP = tcp.position;
 //        }
 //#endif
+    }
+    // draw out a figure 8 in mid-air
+    else if(bFigure8){
         
-    }else if(bFigure8){
-        targetPoint.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        targetPoint.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        targetPointAngles = targetPoint.rotation.getEuler();
-        targetPoint.position.interpolate(targetPointPos.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+        // use a preset orientation
+        targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         
+        // update the target position
+        targetTCP.position.interpolate(targetTCP_POS.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+        
+        // update GUI params
+        TCP_ORIENT_XYZ = targetTCP.rotation.getEuler();
     }
     
-
-    movement.addTargetPoint(targetPoint);
+    
+    // send the target TCP to the kinematic solver
+    movement.addTargetPoint(targetTCP);
     movement.update();
     
-    vector<double> target = movement.getTargetJointPos();
-    for(int i = 0; i < target.size(); i++){
-        targetJointPos[i] = (float)target[i];
-    }
     
+    // get back the target joint trajectories
+    vector<double> target = movement.getTargetJointPos();
+    for(int i = 0; i < target.size(); i++)
+        targetJointPos[i] = (float)target[i];
+   
+    // set the joint speeds
     vector<double> tempSpeeds;
     tempSpeeds.assign(6, 0);
-    
     tempSpeeds = movement.getCurrentSpeed();
-    for(int i = 0; i < tempSpeeds.size(); i++){
+    for(int i = 0; i < tempSpeeds.size(); i++)
         jointVelocities[i] = (float)tempSpeeds[i];
-    }
+   
+    // move the robot to the target TCP
     avgAccel = movement.getAcceleration();
-    if(bMove){
+    if(bMove)
         robot.setSpeed(tempSpeeds, avgAccel);
-    }
+    
     
     
     /* 3D Navigation */
@@ -233,9 +228,9 @@ void ofApp::draw(){
     ofSetColor(255, 0, 255);
     ofPushMatrix();
     ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(toolPoint.get()*ofVec3f(1000, 1000, 1000), 5);
+    ofDrawSphere(TCP_POS.get()*ofVec3f(1000, 1000, 1000), 5);
     ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 15);
+    ofDrawSphere(targetTCP.position*ofVec3f(1000, 1000, 1000), 15);
     ofPopMatrix();
     workSurface.draw();
     cams[0].end();
@@ -275,16 +270,16 @@ void ofApp::keyPressed(int key){
         
     }
     if(key == '1'){
-        workSurface.setCorner(WorkSurface::UL, toolPoint);
+        workSurface.setCorner(WorkSurface::UL, TCP_POS);
     }
     if(key == '2'){
-        workSurface.setCorner(WorkSurface::UR, toolPoint);
+        workSurface.setCorner(WorkSurface::UR, TCP_POS);
     }
     if(key == '3'){
-        workSurface.setCorner(WorkSurface::LL, toolPoint);
+        workSurface.setCorner(WorkSurface::LL, TCP_POS);
     }
     if(key == '4'){
-        workSurface.setCorner(WorkSurface::LR, toolPoint);
+        workSurface.setCorner(WorkSurface::LR, TCP_POS);
     }
     if(key == '8'){
         bFigure8 = !bFigure8;

@@ -32,17 +32,22 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     void testMotors();
+    
+    /// \brief 3D mesh with paths for robot to follow
     WorkSurface workSurface;
+    
     ofParameterGroup robotArmParams;
+    ofParameter<ofVec3f> targetTCP_POS;
+    ofParameter<ofVec4f> targetTCP_ORIENT;
+    ofParameter<ofVec3f> TCP_ORIENT_XYZ;
+    ofParameter<ofVec3f> TCP_POS;
+    
     ofParameterGroup joints;
-    ofParameter<ofVec3f> targetPointPos;
-    ofParameter<ofVec3f> targetPointAngles;
-    ofParameter<ofVec4f> targetOrientation;
     ofParameter<float> avgAccel;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;
     vector<ofParameter<float> > jointVelocities;
-    ofParameter<ofVec3f> toolPoint;
+    
     ofParameter<bool> bMove;
     ofParameter<bool> bFigure8;
     ofParameter<bool> bTrace;
@@ -69,7 +74,18 @@ public:
     float acceleration;
     vector<double> speeds;
     
-    Joint targetPoint;
+    /// \brief Tool Center Point for Robot
+    ///
+    /// Note that if a tool is not defined, the
+    /// default TCP is Joint 5
+//    Joint tcp;
+    
+    /// \brief Targeted Tool Center Point for Robot
+    ///
+    /// This is the desired TCP for the robot set
+    /// by the user.
+    Joint targetTCP;
+    
     ofNode parent;
     
     int count;
@@ -108,14 +124,14 @@ public:
     vector<ofxNatNet::RigidBody> toolpath;
 
     
-    /// Draws the plane, markers, and orientation axes of a given RigidBody.
-    /// @param rb
+    /// \brief Draws the plane, markers, and orientation axes of a given RigidBody.
+    /// \param rb
     ///     Rigid Body passed by NatNet
     void drawRigidBody(const ofxNatNet::RigidBody &rb);
     void drawHistory();
     ofPolyline rbWorksrf;
     
-    /// Transforms a recorded toolpath based on the movement of a RigidBody.
+    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
     /// @param rb
     ///     Rigid Body that transforms the recorded toolpath
     void updateWorksurface(const ofxNatNet::RigidBody &rb);
@@ -138,4 +154,11 @@ public:
          sqrt(0.5)	0           -sqrt(0.5)	0           -90¡ rotation around Y axis
          sqrt(0.5)	0           0           -sqrt(0.5)	-90¡ rotation around Z axis
      */
+    
+    //    ofQuaternion POS_90_X = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
+    //    ofQuaternion POS_90_Y = ofQuaternion(0,  .707,   0,  .707);  //  90¼ about Y-Axis
+    //    ofQuaternion POS_90_Z = ofQuaternion(0,  0,  .707,   .707);  //  90¼ about Z-Axis
+    //    ofQuaternion NEG_90_X = ofQuaternion(-.707,   0,  0,  .707); // -90¼ about X-Axis
+    //    ofQuaternion NEG_90_Y = ofQuaternion(0,  -.707,   0,  .707); // -90¼ about Y-Axis
+    //    ofQuaternion NEG_90_Z = ofQuaternion(0,  0,  -.707,   .707); // -90¼ about Z-Axis
 };
