@@ -60,13 +60,19 @@
 		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
 <Follow_TargetPoint>0</Follow_TargetPoint>
-	<bTrace_GML>0</bTrace_GML>
+	<bTrace_GML>1</bTrace_GML>
 	<bCopy_Tool_Point>0</bCopy_Tool_Point>
 <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
 <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>
+<<<<<<< Updated upstream
 <Set_TCP_POS>1.22897, -0.606747, -0.420377</Set_TCP_POS>
 	<Set_TCP_ORIENT>0.696991, 0.249656, 0.643873, -0.19314</Set_TCP_ORIENT>
 	<Robot_TCP_POS>0.346673, -0.468834, 0.194152</Robot_TCP_POS>
+=======
+<Set_TCP_POS>0.431354, -0.390264, 0.306078</Set_TCP_POS>
+	<Set_TCP_ORIENT>0.0485616, 0.0352967, -0.390061, 0.91883</Set_TCP_ORIENT>
+	<Robot_TCP_POS>0.347967, -0.46208, 0.185513</Robot_TCP_POS>
+>>>>>>> Stashed changes
 	<Robot_TCP_ORIENT>0, -270, -90</Robot_TCP_ORIENT>
 	<set_TCP>0</set_TCP>
 	<get_TCP>0</get_TCP>

@@ -1,4 +1,5 @@
 <Work_Surface>
+<<<<<<< Updated upstream
     <WS_Position>1.22897, -0.606747, -0.420377</WS_Position>
     <WS_size>0, 0, 0</WS_size>
     <Orientation>0, 0, 360</Orientation>
@@ -7,11 +8,26 @@
     <TP-2>1.22862, -0.35795, -0.444899</TP-2>
     <TP-3>1.46885, -0.677146, -0.424258</TP-3>
     <WS_Euler>-170.458, 174.995, 53.2006</WS_Euler>
+=======
+    <WS_Position>0.431354, -0.390264, 0.306078</WS_Position>
+    <WS_size>0, 0, 0</WS_size>
+    <Orientation>0, 0, 360</Orientation>
+    <TP-0>0.572786, -0.236621, 0.168624</TP-0>
+    <TP-1>0.283671, -0.512073, 0.145283</TP-1>
+    <TP-2>0.289923, -0.543912, 0.443533</TP-2>
+    <TP-3>0.579037, -0.26845, 0.466874</TP-3>
+    <WS_Euler>80.7035, 175.103, -43.7084</WS_Euler>
+>>>>>>> Stashed changes
 <Work_Surface/>
 <Fix_Orient>0, 0, 0, 1</Fix_Orient>
 <Fix_X>0</Fix_X>
 	<Fix_Y>0</Fix_Y>
 	<Fix_Z>0</Fix_Z>
+<<<<<<< Updated upstream
 <qAxis>-0.00190157, 0.0613501, 0.998114</qAxis>
 	<qAngle>126.637</qAngle>
+=======
+<qAxis>-0.267773, 0.72345, -0.636331</qAxis>
+	<qAngle>148.55</qAngle>
+>>>>>>> Stashed changes
 </Work_Surface>
