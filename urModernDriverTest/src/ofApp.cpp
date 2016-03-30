@@ -1,6 +1,7 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 
 #include "ofApp.h"
+#include "URUtils.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -234,9 +235,9 @@ void ofApp::draw(){
     ofSetColor(255, 0, 255);
     ofPushMatrix();
     ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(TCP_POS.get()*ofVec3f(1000, 1000, 1000), 5);
+    ofDrawSphere(toMM(TCP_POS.get()), 5);
     ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(targetTCP.position*ofVec3f(1000, 1000, 1000), 15);
+    ofDrawSphere(toMM(targetTCP.position), 15);
     ofPopMatrix();
     workSurface.draw();
     cams[0].end();
@@ -601,14 +602,15 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
         ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
         
         if (bFollow){
-            ofQuaternion tempQ = targetTCP.rotation * 1000;
-            ofVec3f tempP = targetTCP.position * 1000;
+            ofQuaternion tempQ = toMM(targetTCP.rotation);
+            ofVec3f tempP = toMM(targetTCP.position);;
             
             tempP = tempP * diff;
             tempQ = rb.getMatrix().getRotate();
 
-            targetTCP.rotation = tempQ / 1000;
-            targetTCP.position = tempP / 1000;
+            targetTCP.rotation = toMeters(tempQ);
+            targetTCP.position = toMeters(tempP);
+
         }
         
         // apply matrix to each of the recorded bodies
@@ -619,12 +621,6 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
             for (int i=0; i<tp.markers.size(); i++)
                 tp.markers[i] = tp.markers[i] * diff;
         }
-        
-        // apply the difference to the corners of the worksurface
-//        for (int i=0; i<4; i++){
-//            auto v = workSurface.targetPoints[i].get() * ofVec3f(1000,1000,1000) * diff;
-//            workSurface.targetPoints[i] = v/1000;
-//        }
         
         
         // initialize rigidbody worksurface
@@ -643,20 +639,14 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
             rbWorksrf.getVertices()[3] = rbWorksrf.getVertices()[3] * diff;
             
             // update worksurface corner
-            workSurface.targetPoints[0] = rbWorksrf.getVertices()[0] / 1000;
-            workSurface.targetPoints[1] = rbWorksrf.getVertices()[1] / 1000;
-            workSurface.targetPoints[2] = rbWorksrf.getVertices()[2] / 1000;
-            workSurface.targetPoints[3] = rbWorksrf.getVertices()[3] / 1000;
+            workSurface.targetPoints[0] = toMeters(rbWorksrf.getVertices()[0]);// / 1000;
+            workSurface.targetPoints[1] = toMeters(rbWorksrf.getVertices()[1]);// / 1000;
+            workSurface.targetPoints[2] = toMeters(rbWorksrf.getVertices()[2]);// / 1000;
+            workSurface.targetPoints[3] = toMeters(rbWorksrf.getVertices()[3]);// / 1000;
             
-            // override worksurface position and orientation
+            // override worksurface orientation
             workSurface.orientation = rb.getMatrix().getRotate();
-            workSurface.position = rb.getMatrix().getTranslation();
         }
-
-        
-        
-//        workSurface.position = rb.getMatrix().getTranslation();
-//        workSurface.orientation = rb.getMatrix().getRotate();
         
     }
     
