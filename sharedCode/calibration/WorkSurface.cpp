@@ -65,12 +65,12 @@ void WorkSurface::update(){
     }
 
     
-     /* USE RIGID BODY FROM NATNET AS WORKSURFACE */
-    // update the mesh normal as the average of its two face normals
-//    ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
-//    
-//    orientation.set(n);
-//    
+//      USE RIGID BODY FROM NATNET AS WORKSURFACE 
+//     update the mesh normal as the average of its two face normals
+    ofVec3f n = (mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2;
+    
+    orientation.set(n);
+    
 //    // realign the local axis of the worksurface
 //    //      this is a bit hacky ... I don't think it works for everything
 //    ofQuaternion conj = orientation.conj();
@@ -84,14 +84,14 @@ void WorkSurface::update(){
 //    orientation *= conj.conj();
 
     
-    ofPoint diffOne = targetPoints[0].get() - targetPoints[2].get();
-    ofPoint diffTwo = targetPoints[3].get() - targetPoints[1].get();
-    
-    position = targetPoints[3].get().getMiddle(targetPoints[0].get());
-    diffOne.normalize();
-    crossed = diffOne.cross(diffTwo);
-    crossed.normalize();
-    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
+//    ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
+//    ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
+//    
+//    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
+//    diffOne.normalize();
+//    crossed = diffOne.cross(diffTwo);
+//    crossed.normalize();
+//    orientation.makeRotate(ofPoint(0, 0, 1), crossed);
     
     // assign new orientation
     ofVec3f axis;
@@ -105,7 +105,7 @@ void WorkSurface::update(){
     ofVec3f centroid;
     for (auto &p : targetPoints)
         centroid += p;
-//    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
+    position = centroid/4;//targetPoints[2].get().getMiddle(targetPoints[0].get());
     
     // update GML
     if (strokes_original.size() != 0)
@@ -141,7 +141,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
     // scale & align linework
     float height = (targetPoints[0].get() - targetPoints[3].get()).length();
     float width = (targetPoints[0].get() - targetPoints[1].get()).length();
-    float multiply = 0.5;
+    float multiply = 1.0;
     lines.clear();
     ofMatrix4x4 mat;
     mat.makeRotationMatrix(orientation);
