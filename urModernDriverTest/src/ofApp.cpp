@@ -119,11 +119,13 @@ void ofApp::update(){
     else if(bFollow){
         
         // follow mocap rigid body
-        if (recordedPath.size() > 0){
+        if (recordedPath.size() > 1){
             
-            auto &rb = recordedPath[0];
-            targetTCP.position = rb.matrix.getTranslation()/1000;
-            targetTCP.rotation = rb.matrix.getRotate();
+//            auto &rb = recordedPath[0];
+//            targetTCP.position = rb.matrix.getTranslation()/1000;
+//            targetTCP.rotation = rb.matrix.getRotate();
+            
+            updateWorksurface(recordedPath[0]);
             
         }
         
@@ -266,9 +268,25 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         bMove = !bMove;
     }
-    if(key == ' ' ){
-        workSurface.addStrokes(gml.getPath(1.0),-.1);
+    if(key == ' '){
+        vector<ofPolyline> strokes;
+        float retract;
+        if (recordedPath.size() > 0) {
+            // DEBUGGING....testing mocap tracking single point on worksrf
+            ofPolyline temp;
+            temp.addVertex(ofPoint (0,0,0));
+            
+            retract = 0;
+            strokes.push_back(temp);
+        }
+        else{
+            retract = -.1;
+            strokes = gml.getPath(1.0);
+        }
+        
+        workSurface.addStrokes(strokes,retract);
         bTrace = true;
+        bFollow = false;
         tagStartTime = ofGetElapsedTimef(); 
         
     }
@@ -420,8 +438,6 @@ void ofApp::updateNatNet(){
     
     if (natnet.getNumRigidBody()==1){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
-        
-      
         
         // add to the rigid body history
         if (record){
@@ -575,17 +591,23 @@ void ofApp::drawNatNet(){
 void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
     
     
-    if (recordedPath.size() > 0){
+    if (recordedPath.size() > 1){
         
         // get the previous transformation matrix
-        ofxNatNet::RigidBody prev = recordedPath[recordedPath.size()-1];
+        ofxNatNet::RigidBody prev = recordedPath[recordedPath.size()-2];
         
         // find the difference between the current transformation matrix
         ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
         
         if (bFollow){
-            targetTCP.rotation = ofQuaternion(ofMatrix4x4(targetTCP.rotation) * diff);
-            targetTCP.translation = targetTCP.translation * diff;
+            ofQuaternion tempQ = targetTCP.rotation * 1000;
+            ofVec3f tempP = targetTCP.position * 1000;
+            
+            tempP = tempP * diff;
+            tempQ = rb.getMatrix().getRotate();
+
+            targetTCP.rotation = tempQ / 1000;
+            targetTCP.position = tempP / 1000;
         }
         
         // apply matrix to each of the recorded bodies
@@ -627,6 +649,7 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
             
             // override worksurface position and orientation
             workSurface.orientation = rb.getMatrix().getRotate();
+            workSurface.position = rb.getMatrix().getTranslation();
         }
 
         
