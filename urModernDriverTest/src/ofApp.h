@@ -120,8 +120,10 @@ public:
     
     
     /* MoCap Stuff */
+    
+    /// \brief flag to record the path of rigid body
     bool record;
-    /// Stores previous rigid bodies
+    /// \brief Stores previous rigid bodies
     vector<ofxNatNet::RigidBody> recordedPath;
 
     
@@ -133,9 +135,17 @@ public:
     ofPolyline rbWorksrf;
     
     /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
-    /// @param rb
+    /// \param rb
     ///     Rigid Body that transforms the recorded toolpath
     void updateWorksurface(const ofxNatNet::RigidBody &rb);
+    
+    /// \brief set the corners of the work surface using unlabled markers
+    bool useUnlabledMarkers;
+    
+    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
+    /// \param markers
+    ///     List of markers to use as corners (should be 4)
+    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
     
     
     /*
