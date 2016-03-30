@@ -440,7 +440,7 @@ void ofApp::setupNatNet(){
 void ofApp::updateNatNet(){
     natnet.update();
     
-    if (natnet.getNumRigidBody()==1 && !useUnlabledMarkers){
+    if (natnet.getNumRigidBody() > 0 && !useUnlabledMarkers){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);  // more than one rigid body crashes ofxNatNet now
         
         // add to the rigid body history

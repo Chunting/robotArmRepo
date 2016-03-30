@@ -60,20 +60,20 @@
 		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
 <Follow_TargetPoint>0</Follow_TargetPoint>
-	<bTrace_GML>0</bTrace_GML>
+	<bTrace_GML>1</bTrace_GML>
 	<bCopy_Tool_Point>0</bCopy_Tool_Point>
 <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
 <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>
-<Set_TCP_POS>1.22897, -0.606747, -0.420377</Set_TCP_POS>
-	<Set_TCP_ORIENT>0.696991, 0.249656, 0.643873, -0.19314</Set_TCP_ORIENT>
-	<Robot_TCP_POS>0.346673, -0.468834, 0.194152</Robot_TCP_POS>
+<Set_TCP_POS>0.0554378, -1.70817, -0.0457874</Set_TCP_POS>
+	<Set_TCP_ORIENT>0.260755, 0.137933, 0.44622, 0.844908</Set_TCP_ORIENT>
+	<Robot_TCP_POS>0.286143, -0.752402, 0.0669643</Robot_TCP_POS>
 	<Robot_TCP_ORIENT>0, -270, -90</Robot_TCP_ORIENT>
 	<set_TCP>0</set_TCP>
 	<get_TCP>0</get_TCP>
 <UR_Movements>
 		<Max_Speed>0</Max_Speed>
 		<Min_Speed>0</Min_Speed>
-		<Delta_T>0.142586</Delta_T>
+		<Delta_T>0.297832</Delta_T>
 		<targetTCPLerpSpeed>0.984709</targetTCPLerpSpeed>
 		<jointSpeedLerpSpeed>0.979612</jointSpeedLerpSpeed>
 	<Reported_MIN_Speed>-11.7227</Reported_MIN_Speed>

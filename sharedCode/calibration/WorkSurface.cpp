@@ -84,14 +84,14 @@ void WorkSurface::update(){
 //    orientation *= conj.conj();
 
     
-//    ofPoint diffOne = targetPoints[0].get() - targetPoints[1].get();
-//    ofPoint diffTwo = targetPoints[0].get() - targetPoints[3].get();
-//    
-//    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
-//    diffOne.normalize();
-//    crossed = diffOne.cross(diffTwo);
-//    crossed.normalize();
-//    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
+    ofPoint diffOne = targetPoints[0].get() - targetPoints[2].get();
+    ofPoint diffTwo = targetPoints[3].get() - targetPoints[1].get();
+    
+    position = targetPoints[3].get().getMiddle(targetPoints[0].get());
+    diffOne.normalize();
+    crossed = diffOne.cross(diffTwo);
+    crossed.normalize();
+    orientation.makeRotate(ofPoint(0, 0, -1), crossed);
     
     // assign new orientation
     ofVec3f axis;
@@ -105,7 +105,7 @@ void WorkSurface::update(){
     ofVec3f centroid;
     for (auto &p : targetPoints)
         centroid += p;
-    position = centroid/4;//targetPoints[2].get().getMiddle(targetPoints[0].get());
+//    position = targetPoints[2].get().getMiddle(targetPoints[0].get());
     
     // update GML
     if (strokes_original.size() != 0)
@@ -141,7 +141,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
     // scale & align linework
     float height = (targetPoints[0].get() - targetPoints[3].get()).length();
     float width = (targetPoints[0].get() - targetPoints[1].get()).length();
-    float multiply = MAX(height, width);
+    float multiply = 0.5;
     lines.clear();
     ofMatrix4x4 mat;
     mat.makeRotationMatrix(orientation);
@@ -150,7 +150,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
             // center stroke on canvas
-            strokes[i].getVertices()[j] -= centroid;
+//            strokes[i].getVertices()[j] -= centroid;
             
             fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
         }
@@ -203,7 +203,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
             // center stroke on canvas
-            strokes[i].getVertices()[j] -= centroid;
+//            strokes[i].getVertices()[j] -= centroid;
             
             fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
         }
