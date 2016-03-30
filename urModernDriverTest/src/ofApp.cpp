@@ -59,8 +59,8 @@ void ofApp::setup(){
     // get the current pose on start up
     bCopy = true;
     panel.loadFromFile("settings.xml");
-    
-    gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
+    gml.setup();
+    gml.loadFile("gml/53520.gml");
     
     /* 3D Navigation */
 //    cams[1] = &movement.cam;
@@ -425,7 +425,7 @@ void ofApp::hightlightViewports(){
 
 //--------------------------------------------------------------
 void ofApp::setupNatNet(){
-    string myIP = "192.168.1.141";
+    string myIP = "en6";
     string serverIP = "192.168.1.131";
     sender.setup("192.168.1.255", 7777);
     natnet.setup(myIP, serverIP);  // interface name, server ip

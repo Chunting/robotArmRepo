@@ -7,7 +7,7 @@
 //
 
 #pragma once
-#include "tagReader.h"
+#include "ofxGML.h"
 
 class GMLPath {
     string filepath;
@@ -15,10 +15,9 @@ class GMLPath {
 public:
     GMLPath(){};
     ~GMLPath(){};
-    GMLPath(string _filepath){
-        loadFile(_filepath, 0, 0, 640, 480);
-    }
-    void loadFile(string _filepath, float x, float y, float maxx, float maxy);
+
+    void setup(float x = 0, float y = 0, float width = 1, float height = 1);
+    void loadFile(string _filepath);
     void draw();
     vector<ofPolyline> getPath(float scale);
     tagReader reader;

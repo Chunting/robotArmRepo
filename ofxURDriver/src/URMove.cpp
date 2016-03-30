@@ -15,12 +15,12 @@ URMove::~URMove(){
 }
 void URMove::setup(){
     movementParams.setName("UR Movements");
-    movementParams.add(minSpeed.set("Reported MIN Speed", 0.0, 0.0, 1000.0));
-    movementParams.add(maxSpeed.set("Reported MAX Speed", 0.0, 0.0, 1000.0));
+    movementParams.add(minSpeed.set("MIN Speed", 0.0, 0.0, TWO_PI*10));
+    movementParams.add(maxSpeed.set(" MAX Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
-    movementParams.add(targetTCPLerpSpeed.set("targetTCPLerpSpeed", 0.9, 0.01, 0.99));
-    movementParams.add(jointSpeedLerpSpeed.set("jointSpeedLerpSpeed", 0.9, 0.01, 0.99));
-    movementParams.add(jointAccelerationMultipler.set("jointAccelerationMultipler", 200, 1, 1000));
+    movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
+    movementParams.add(jointSpeedLerpSpeed.set("Join LerpSpeed", 0.9, 0.001, 1.0));
+    movementParams.add(jointAccelerationMultipler.set("Acceleration M", 200, 1, 1000));
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
@@ -77,9 +77,11 @@ void URMove::computeVelocities(){
             lastJointSpeeds = currentJointSpeeds;
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
-                minSpeed = MIN(minSpeed.get(), currentJointSpeeds[i]);
-                maxSpeed = MAX(maxSpeed.get(), currentJointSpeeds[i]);
+//                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
+                float tempMin = minSpeed;
+                float tempMax = maxSpeed;
+                minSpeed = MIN(tempMin, currentJointSpeeds[i]);
+                maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
                 if(abs(currentJointSpeeds[i]) > PI){
                     ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }

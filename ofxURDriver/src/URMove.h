@@ -52,7 +52,7 @@ protected:
     ofMatrix4x4 mat;
     ofParameter<float> maxSpeed;
     ofParameter<float> minSpeed;
-    ofParameter<int> deltaTime;
+    ofParameter<float> deltaTime;
     float deltaT;
     RateTimer deltaTimer;
     vector<double> lastPosition;
