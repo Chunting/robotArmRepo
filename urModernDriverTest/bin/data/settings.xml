@@ -60,7 +60,7 @@
 		<Fix_Z>0</Fix_Z>
 	</Work_Surface>
 <Follow_TargetPoint>0</Follow_TargetPoint>
-	<bTrace_GML>1</bTrace_GML>
+	<bTrace_GML>0</bTrace_GML>
 	<bCopy_Tool_Point>0</bCopy_Tool_Point>
 <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
 <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>

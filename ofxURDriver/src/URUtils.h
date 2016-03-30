@@ -7,7 +7,9 @@
 //
 #pragma once
 
-/// Takes ofMatrix4x4 and returns row-major array in UR World Cords
+/// \brief Converts a 4x4 matrix to a 1D array
+/// \param input ofMatrix4x4 to convert
+/// \return row-major array in UR World Cords
 double* toUR(ofMatrix4x4 input){
     double* T = new double[16];
     
@@ -18,4 +20,32 @@ double* toUR(ofMatrix4x4 input){
         T[i+(12)] = (double)input._mat[i][3];
     }
     return T;
+}
+
+/// \brief Converts a 3D point from millimeters to meters
+/// \param v ofVec3f to convert
+/// \return returns a copy of the point in meters
+ofVec3f toMeters(ofVec3f v){
+    return ofVec3f(v/1000);
+}
+
+/// \brief Converts a 3D point from meters to millimeters
+/// \param v ofVec3f to convert
+/// \return copy of the point in millimeters
+ofVec3f toMM(ofVec3f v){
+    return ofVec3f(v*1000);
+}
+
+/// \brief Converts an orientation from meters to millimeters
+/// \param v ofQuaternion to convert
+/// \return copy of the orientation in millimeters
+ofQuaternion toMM(ofQuaternion q){
+    return ofQuaternion(q*1000);
+}
+
+/// \brief Converts an orientation from millimeters to meters
+/// \param v ofQuaternion to convert
+/// \return copy of the orientation in meters
+ofQuaternion toMeters(ofQuaternion q){
+    return ofQuaternion(q/1000);
 }
