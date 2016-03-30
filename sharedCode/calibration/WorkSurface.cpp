@@ -1,18 +1,18 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 #include "WorkSurface.h"
 void WorkSurface::setup(){
-    workSurfacePrarms.setName("Work Surface");
-    workSurfacePrarms.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    workSurfacePrarms.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    workSurfacePrarms.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfacePrarms.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfacePrarms.add(qAngle.set("qAngle",0, 0, 360));
-    workSurfacePrarms.add(fixOrientationX.set("Fix X", 0, 0, 360));
-    workSurfacePrarms.add(fixOrientationY.set("Fix Y", 0, 0, 360));
-    workSurfacePrarms.add(fixOrientationZ.set("Fix Z", 0, 0, 360));
+    workSurfaceParams.setName("Work Surface");
+    workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    workSurfaceParams.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
+    workSurfaceParams.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
+    workSurfaceParams.add(qAngle.set("qAngle",0, 0, 360));
+    workSurfaceParams.add(fixOrientationX.set("Fix X", 0, 0, 360));
+    workSurfaceParams.add(fixOrientationY.set("Fix Y", 0, 0, 360));
+    workSurfaceParams.add(fixOrientationZ.set("Fix Z", 0, 0, 360));
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
-        workSurfacePrarms.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
+        workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
     }
     warp.setup();
     corners.assign(4, ofPoint(0, 0, 0));

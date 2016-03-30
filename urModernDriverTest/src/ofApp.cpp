@@ -23,7 +23,7 @@ void ofApp::setup(){
     panel.add(bFollow.set("set TCP", false));
     panel.add(bTrace.set("bTrace GML", false));
     panel.add(bCopy.set("get TCP", false));
-    panel.loadFromFile("settings.xml");
+
     panel.setPosition(10, 10);
     
     workSurface.setup();
@@ -43,7 +43,7 @@ void ofApp::setup(){
     
     panelJoints.setup(joints);
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
-    panelWorkSurface.setup(workSurface.workSurfacePrarms);
+    panelWorkSurface.setup(workSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("worksurface.xml");
     
@@ -53,11 +53,12 @@ void ofApp::setup(){
     robot.setup("192.168.1.9",0, 1);
     robot.start();
     movement.setup();
+    panel.add(movement.movementParams);
     speeds.assign(6, 0);
     bMove = false;
     // get the current pose on start up
     bCopy = true;
-
+    panel.loadFromFile("settings.xml");
     
     gml.loadFile("gml/53520.gml", 0, 0, 640, 480);
     

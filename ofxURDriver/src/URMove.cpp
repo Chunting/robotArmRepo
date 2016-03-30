@@ -14,9 +14,12 @@ URMove::~URMove(){
 }
 void URMove::setup(){
     movementParams.setName("UR Movements");
-    movementParams.add(maxSpeed.set("Max Speed", 0, 0, 1000));
-    movementParams.add(minSpeed.set("Min Speed", 0, 0, 1000));
-    movementParams.add(timeDiff.set("Delta T", 125, 0, 250));
+    movementParams.add(minSpeed.set("Reported MIN Speed", 0.0, 0.0, 1000.0));
+    movementParams.add(maxSpeed.set("Reported MAX Speed", 0.0, 0.0, 1000.0));
+    movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
+    movementParams.add(targetTCPLerpSpeed.set("targetTCPLerpSpeed", 0.9, 0.01, 0.99));
+    movementParams.add(jointSpeedLerpSpeed.set("jointSpeedLerpSpeed", 0.9, 0.01, 0.99));
+    movementParams.add(jointAccelerationMultipler.set("jointAccelerationMultipler", 200, 1, 1000));
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
@@ -37,8 +40,8 @@ void URMove::setup(){
 void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
-    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, 0.9);
-    targetPoint.rotation.slerp(0.9, targetPoint.rotation, newTargetPoint.rotation);
+    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, targetTCPLerpSpeed);
+    targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.rotation);
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     urKinematics(mat);
@@ -52,7 +55,7 @@ vector<double> URMove::getTargetJointPos(){
     }
 }
 float URMove::getAcceleration(){
-    return avgAccel*200;
+    return avgAccel*jointAccelerationMultipler;
 }
 vector<double> URMove::getCurrentSpeed(){
     computeVelocities();
@@ -73,7 +76,9 @@ void URMove::computeVelocities(){
             lastJointSpeeds = currentJointSpeeds;
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-//                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], 0.9);
+                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
+                minSpeed = MIN(minSpeed.get(), currentJointSpeeds[i]);
+                maxSpeed = MAX(maxSpeed.get(), currentJointSpeeds[i]);
                 if(abs(currentJointSpeeds[i]) > PI){
                     ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }

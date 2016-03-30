@@ -35,6 +35,11 @@ public:
     ofEasyCam cam;
     
 protected:
+    
+    ofParameter<float> targetTCPLerpSpeed;
+    ofParameter<float> jointSpeedLerpSpeed;
+    ofParameter<float> jointAccelerationMultipler;
+    
     float distance;
     int selectSolution();
     vector<ofEasyCam> cams;
@@ -47,9 +52,8 @@ protected:
     ofMatrix4x4 mat;
     ofParameter<float> maxSpeed;
     ofParameter<float> minSpeed;
-    ofParameter<int> timeDiff;
+    ofParameter<int> deltaTime;
     float deltaT;
-    float deltaTime;
     RateTimer deltaTimer;
     vector<double> lastPosition;
     vector<double> currentJointSpeeds;

@@ -37,7 +37,7 @@ public:
     void setRotationY(float x);
     void setRotationZ(float x);
     Joint getTargetPoint(float t);
-    ofParameterGroup workSurfacePrarms;
+    ofParameterGroup workSurfaceParams;
 
     ofMesh mesh;
     ofParameter<ofVec3f> position;
