@@ -261,7 +261,7 @@ void ofApp::exit(){
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("worksurface.xml");
     if(robot.isThreadRunning())
-        robot.stopThread();
+        robot.waitForThread();
 }
 
 //--------------------------------------------------------------

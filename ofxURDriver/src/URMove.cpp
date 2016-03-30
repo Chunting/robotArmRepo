@@ -6,6 +6,7 @@
 //  Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 //
 #include "URMove.h"
+#include "URUtils.h"
 URMove::URMove(){
     
 }
@@ -198,12 +199,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
     double q_sols[8*6];
     double* T = new double[16];
     
-    for(int i = 0; i < 4; i++){
-        T[i] = (double)input._mat[i][0];
-        T[i+(4)] = (double)input._mat[i][1];
-        T[i+(8)] = (double)input._mat[i][2];
-        T[i+(12)] = (double)input._mat[i][3];
-    }
+    T = toUR(input);
     
     int num_sols = kinematics.inverse(T, q_sols);
     inversePosition.clear();
@@ -257,7 +253,6 @@ void URMove::urKinematics(double o, double t, double th, double f, double fi, do
         fooSol.push_back(q_sols[i*6+3]);
         fooSol.push_back(q_sols[i*6+4]);
         fooSol.push_back(q_sols[i*6+5]);
-        //        ofLog()<<ofToString(fooSol)<<endl;
         inversePosition.push_back(fooSol);
     }
 }
