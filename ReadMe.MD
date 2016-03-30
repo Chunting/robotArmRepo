@@ -1,8 +1,8 @@
 #NON-COMMERCIAL USE ONLY
 ### Robotic Arm Research @ [The Frank-Ratchye STUDIO for Creative Inquiry](http://studioforcreativeinquiry.org/)
 
+![Following](data/mocap-follow.gif)
 
-![KinematicModel](data/debug_view_1.gif)
 
 
 #### urModernDriverTest
@@ -33,9 +33,10 @@ _All Apps are built against openFrameworks master branch_
 
 _living on the bleeding edge!_
  
+![KinematicModel](data/debug_view_1.gif)
 
-
-Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry
+#NON-COMMERCIAL USE ONLY
+###Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -54,10 +55,7 @@ modification, are permitted provided that the following conditions are met:
 5. The terms of this License form a binding agreement between you, an individual user or non-commercial organization ("you" or "your"), and us  
    regarding your non-commercial use of this software. By downloading, accessing or otherwise using this software you indicate your agreement to be bound by these License terms.
 
-PLEASE NOTE THAT THIS LICENSE IS INTENDED FOR NON-COMMERCIAL USE ONLY. 
-IF YOU INTEND TO USE THIS SOFTWARE FOR A COMMERCIAL PURPOSE, 
-PLEASE CONTACT dan@makeitdoathing.com TO ARRANGE A COLLABORATION AGREEMENT 
-WITH US BASED ON OUR COMMERCIAL LICENSE TERMS.
+#PLEASE NOTE THAT THIS LICENSE IS INTENDED FOR NON-COMMERCIAL USE ONLY. IF YOU INTEND TO USE THIS SOFTWARE FOR A COMMERCIAL PURPOSE, PLEASE CONTACT dan@makeitdoathing.com TO ARRANGE A COLLABORATION AGREEMENT WITH US BASED ON OUR COMMERCIAL LICENSE TERMS.
 
 
 THIS SOFTWARE IS PROVIDED BY Daniel Moore, Madaline Gannon, 
