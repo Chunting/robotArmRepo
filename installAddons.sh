@@ -10,5 +10,5 @@ ${PREFIX}kylemcdonald/ofxTiming
 ${PREFIX}kylemcdonald/ofxCV
 ${PREFIX}CreativeInquiry/ofxNatNet
 ${PREFIX}julapy/ofxQuadWarp
-
+${PREFIX}danzeeeman/ofxGML
 cd ../apps/robotArmRepo
