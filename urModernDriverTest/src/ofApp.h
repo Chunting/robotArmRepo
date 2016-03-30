@@ -122,7 +122,7 @@ public:
     /* MoCap Stuff */
     bool record;
     /// Stores previous rigid bodies
-    vector<ofxNatNet::RigidBody> toolpath;
+    vector<ofxNatNet::RigidBody> recordedPath;
 
     
     /// \brief Draws the plane, markers, and orientation axes of a given RigidBody.

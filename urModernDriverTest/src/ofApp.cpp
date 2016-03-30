@@ -119,12 +119,26 @@ void ofApp::update(){
     // follow a user-defined position and orientation
     else if(bFollow){
         
-        // go from current to next position
-        targetTCP.position.interpolate(targetTCP_POS.get(), 0.1);
-        // go from current orientation to next orientation (???)
-        targetTCP.rotation *= ofQuaternion(targetTCP_ORIENT);
+        // follow mocap rigid body
+        if (recordedPath.size() > 1){
+            
+//            auto &rb = recordedPath[0];
+//            targetTCP.position = rb.matrix.getTranslation()/1000;
+//            targetTCP.rotation = rb.matrix.getRotate();
+            
+            updateWorksurface(recordedPath[0]);
+            
+        }
+        
+        else{
+            // go from current to next position
+            targetTCP.position.interpolate(targetTCP_POS.get(), 0.1);
+            // go from current orientation to next orientation (???)
+            targetTCP.rotation *= ofQuaternion(targetTCP_ORIENT);
+        }
         
         // update GUI params
+        targetTCP_POS = targetTCP.position;
         TCP_ORIENT_XYZ = targetTCP.rotation.getEuler();
     }
     // follow a pre-defined path
@@ -137,22 +151,11 @@ void ofApp::update(){
         Joint workSrfTarget = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
         targetTCP.position = workSrfTarget.position;
         targetTCP.rotation *= workSrfTarget.rotation;
+        
+        // update GUI params
         targetTCP_POS = targetTCP.position;
+        targetTCP_ORIENT = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
 
-//#ifdef ENABLE_NATNET
-//        // retract if our canvas is moving
-//        if (isMoving && toolpath.size() > 0){
-//            float offset = -25;
-//            ofVec3f retract = ofVec3f(0,0,offset/1000);
-//            
-//            // align to worksurface
-//            retract = retract * toolpath[toolpath.size()-1].matrix.getRotate();
-//            
-//            // modify target point
-//            tcp.position += retract;
-//            targetTCP = tcp.position;
-//        }
-//#endif
     }
     // draw out a figure 8 in mid-air
     else if(bFigure8){
@@ -266,9 +269,25 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         bMove = !bMove;
     }
-    if(key == ' ' ){
-        workSurface.addStrokes(gml.getPath(1.0),-.1);
+    if(key == ' '){
+        vector<ofPolyline> strokes;
+        float retract;
+        if (recordedPath.size() > 0) {
+            // DEBUGGING....testing mocap tracking single point on worksrf
+            ofPolyline temp;
+            temp.addVertex(ofPoint (0,0,0));
+            
+            retract = 0;
+            strokes.push_back(temp);
+        }
+        else{
+            retract = -.1;
+            strokes = gml.getPath(1.0);
+        }
+        
+        workSurface.addStrokes(strokes,retract);
         bTrace = true;
+        bFollow = false;
         tagStartTime = ofGetElapsedTimef(); 
         
     }
@@ -421,21 +440,19 @@ void ofApp::updateNatNet(){
     if (natnet.getNumRigidBody()==1){
         const ofxNatNet::RigidBody &rb = natnet.getRigidBodyAt(0);
         
-      
-        
         // add to the rigid body history
         if (record){
-            toolpath.push_back(rb);
+            recordedPath.push_back(rb);
             
             // store previous 20 rigid bodies
-            if (toolpath.size()>20)
-                toolpath.erase(toolpath.begin());
+            if (recordedPath.size()>20)
+                recordedPath.erase(recordedPath.begin());
             
             // check if the rigid body is moving
-            if (toolpath.size() > 0){
+            if (recordedPath.size() > 0){
                 float dist = .25;
                 ofVec3f curr = rb.matrix.getTranslation();
-                ofVec3f prev = toolpath[toolpath.size()-1].matrix.getTranslation();
+                ofVec3f prev = recordedPath[recordedPath.size()-1].matrix.getTranslation();
                 isMoving = curr.squareDistance(prev) > dist*dist ;
             }
         }
@@ -575,16 +592,27 @@ void ofApp::drawNatNet(){
 void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
     
     
-    if (toolpath.size() > 0){
+    if (recordedPath.size() > 1){
         
         // get the previous transformation matrix
-        ofxNatNet::RigidBody prev = toolpath[toolpath.size()-1];
+        ofxNatNet::RigidBody prev = recordedPath[recordedPath.size()-2];
         
         // find the difference between the current transformation matrix
         ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
         
+        if (bFollow){
+            ofQuaternion tempQ = targetTCP.rotation * 1000;
+            ofVec3f tempP = targetTCP.position * 1000;
+            
+            tempP = tempP * diff;
+            tempQ = rb.getMatrix().getRotate();
+
+            targetTCP.rotation = tempQ / 1000;
+            targetTCP.position = tempP / 1000;
+        }
+        
         // apply matrix to each of the recorded bodies
-        for (auto &tp: toolpath){
+        for (auto &tp: recordedPath){
             tp.matrix *= diff;
             
             // update markers
@@ -622,6 +650,7 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
             
             // override worksurface position and orientation
             workSurface.orientation = rb.getMatrix().getRotate();
+            workSurface.position = rb.getMatrix().getTranslation();
         }
 
         
@@ -638,7 +667,7 @@ void ofApp::drawHistory(){
 
     // show path
     ofPolyline tp;
-    for (auto &path: toolpath){
+    for (auto &path: recordedPath){
         ofSetColor(ofColor::azure);
         tp.addVertex(path.getMatrix().getTranslation());
     }
@@ -647,8 +676,8 @@ void ofApp::drawHistory(){
     // show rigid body
     ofPolyline bodies;
     float alpha = 255;
-    float step = 255 / (toolpath.size()+1);
-    for (auto &rb: toolpath){
+    float step = 255 / (recordedPath.size()+1);
+    for (auto &rb: recordedPath){
         ofSetColor(ofColor::navajoWhite, alpha);
         for (int i = 0; i < rb.markers.size(); i++)
             bodies.addVertex(rb.markers[i]);
