@@ -3,7 +3,7 @@
 //  metTag
 //
 //  Created by Daniel Moore on 12/12/12.
-//  Copyright 2012 File:Print. All rights reserved.
+//  Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 //
 
 #pragma once
