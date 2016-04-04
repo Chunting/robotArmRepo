@@ -50,8 +50,9 @@ void UR5KinematicModel::setup(){
     joints[5].position.set(0, -164.751, 996.802);
     tool.position.set(joints[5].position + ofVec3f(0,-135,0)); // tool tip position
     
-    for(int i = 1; i < joints.size(); i++)
+    for(int i = 1; i < joints.size(); i++){
         joints[i].offset = joints[i].position-joints[i-1].position;
+    }
     tool.offset = joints[5].offset;
     
     
