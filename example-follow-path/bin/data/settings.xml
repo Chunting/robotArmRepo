@@ -1,0 +1,88 @@
+<group>
+    <Target_Point_POS>0.285697, -1.2093, 0.192316</Target_Point_POS>
+    <Target_Point_Angles>0, 0, 0</Target_Point_Angles>
+    <group/>
+    <joint_0>2.14337</joint_0>
+    <joint_1>-2.98469</joint_1>
+    <joint_2>0.649633</joint_2>
+    <joint_3>0.756877</joint_3>
+    <joint_4>1.56606</joint_4>
+    <joint_5>-0.00167782</joint_5>
+    <ToolPoint>0.208464, -0.265582, 0.28225</ToolPoint>
+    <target_joint_0>2.14411</target_joint_0>
+    <target_joint_1>-2.01824</target_joint_1>
+    <target_joint_2>1.92322</target_joint_2>
+    <target_joint_3>-1.47578</target_joint_3>
+    <target_joint_4>1.5708</target_joint_4>
+    <target_joint_5>2.56828</target_joint_5>
+    <Joint_Speed0>0.000357826</Joint_Speed0>
+    <Joint_Speed1>0.390495</Joint_Speed1>
+    <Joint_Speed2>0.427478</Joint_Speed2>
+    <Joint_Speed3>-0.815766</Joint_Speed3>
+    <Joint_Speed4>0.00184166</Joint_Speed4>
+    <Joint_Speed5>0</Joint_Speed5>
+    <Joints>
+        <joint_0>0</joint_0>
+        <target_joint_0>1.90799</target_joint_0>
+        <Joint_Speed0>8.99873</Joint_Speed0>
+        <joint_1>-1.5708</joint_1>
+        <target_joint_1>-1.7403</target_joint_1>
+        <Joint_Speed1>-0.799459</Joint_Speed1>
+        <joint_2>0</joint_2>
+        <target_joint_2>1.97069</target_joint_2>
+        <Joint_Speed2>9.29444</Joint_Speed2>
+        <joint_3>-1.5708</joint_3>
+        <target_joint_3>-1.80118</target_joint_3>
+        <Joint_Speed3>-1.08657</Joint_Speed3>
+        <joint_4>0</joint_4>
+        <target_joint_4>1.5708</target_joint_4>
+        <Joint_Speed4>7.40841</Joint_Speed4>
+        <joint_5>0</joint_5>
+        <target_joint_5>5.94599</target_joint_5>
+        <Joint_Speed5>0</Joint_Speed5>
+        <Move>0</Move>
+        <avgAccel>2.35099e-36</avgAccel>
+        <figure8>0</figure8>
+    </Joints>
+    <Work_Surface>
+        <WS_Position>-0.615619, 0.240441, 0.163748</WS_Position>
+        <WS_size>0, 0, 0</WS_size>
+        <Orientation>0, 0, 360</Orientation>
+        <TP-0>-0.603097, 0.351555, 0.367634</TP-0>
+        <TP-1>-0.704331, 0.0413182, 0.367687</TP-1>
+        <TP-2>-0.704534, 0.0391832, -0.039617</TP-2>
+        <TP-3>-0.450515, 0.529707, -0.040712</TP-3>
+        <WS_Euler>-3.50727, -89.0208, -81.1252</WS_Euler>
+        <qAxis>0.586863, -0.619575, -0.521266</qAxis>
+        <qAngle>122.718</qAngle>
+        <Fix_X>95.4</Fix_X>
+        <Fix_Y>138.6</Fix_Y>
+        <Fix_Z>0</Fix_Z>
+    </Work_Surface>
+    <Follow_TargetPoint>0</Follow_TargetPoint>
+    <bTrace_GML>0</bTrace_GML>
+    <bCopy_Tool_Point>0</bCopy_Tool_Point>
+    <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
+    <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>
+    <Set_TCP_POS>1.16842, -0.63245, -0.236278</Set_TCP_POS>
+    <Set_TCP_ORIENT>0.444194, -0.509782, 0.157245, 0.719784</Set_TCP_ORIENT>
+    <Robot_TCP_POS>0, -299.751, 996.802</Robot_TCP_POS>
+    <Robot_TCP_ORIENT>-1.26504e-05, -1.90804e-05, -5.2296e-05</Robot_TCP_ORIENT>
+    <set_TCP>0</set_TCP>
+    <get_TCP>0</get_TCP>
+    <UR_Movements>
+        <Max_Speed>0</Max_Speed>
+        <Min_Speed>0</Min_Speed>
+        <Delta_T>0.18989</Delta_T>
+        <targetTCPLerpSpeed>0.984709</targetTCPLerpSpeed>
+        <jointSpeedLerpSpeed>0.979612</jointSpeedLerpSpeed>
+        <Reported_MIN_Speed>-11.7227</Reported_MIN_Speed>
+        <Reported_MAX_Speed>43.6339</Reported_MAX_Speed>
+        <jointAccelerationMultipler>200</jointAccelerationMultipler>
+        <MIN_Speed>-52.4517</MIN_Speed>
+        <_MAX_Speed>50.7238</_MAX_Speed>
+        <TCP_LerpSpeed>0.0774541</TCP_LerpSpeed>
+        <Join_LerpSpeed>0.9</Join_LerpSpeed>
+        <Acceleration_M>148.811</Acceleration_M>
+    </UR_Movements>
+</group>

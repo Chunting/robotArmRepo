@@ -10,7 +10,7 @@
 
 void GMLPath::setup(float x, float y, float width, float height){
     reader.setup(x, y, width, height);
-    reader.useTime(false);
+//    reader.useTime(false);
 }
 
 void GMLPath::loadFile(string path){
