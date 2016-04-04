@@ -1,9 +1,9 @@
 <Work_Surface>
-	<WS_Position>1.16842, -0.63245, -0.236278</WS_Position>
+	<WS_Position>0.298452, -0.681842, 0.652649</WS_Position>
 	<WS_size>0, 0, 0</WS_size>
-	<WS_Euler>-112.169, -171.799, -53.108</WS_Euler>
-	<qAxis>0.214135, -0.515656, -0.829605</qAxis>
-	<qAngle>132.127</qAngle>
+	<WS_Euler>0, 0, 0</WS_Euler>
+	<qAxis>0, 0, 1</qAxis>
+	<qAngle>0</qAngle>
 	<Fix_X>0</Fix_X>
 	<Fix_Y>0</Fix_Y>
 	<Fix_Z>0</Fix_Z>

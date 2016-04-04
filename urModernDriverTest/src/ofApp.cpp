@@ -18,8 +18,6 @@ void ofApp::setup(){
     parameters.setup();
     
     panel.setup(parameters.robotArmParams);
-
-
     panel.setPosition(10, 10);
     
     workSurface.setup();
