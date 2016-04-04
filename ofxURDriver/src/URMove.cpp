@@ -129,7 +129,7 @@ void URMove::draw(){
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-    targetLine.draw();
+//    targetLine.draw();
     ofPopMatrix();
     cam.end();
     

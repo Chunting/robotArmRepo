@@ -40,6 +40,7 @@
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
 		B8846EF8E504895A4A9EFEC0 /* ofxAssimpTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6F2EE44AD04FF549AB13699 /* ofxAssimpTexture.cpp */; };
 		C4782ECC372420ACE0615B74 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC8881B3C8C0A1C45F042E7A /* OscPrintReceivedElements.cpp */; };
+		C851AF041CB2E24100600914 /* NatNetController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C851AF021CB2E24100600914 /* NatNetController.cpp */; };
 		C85DEA681CAC648C00518D03 /* tagReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C85DEA631CAC648C00518D03 /* tagReader.cpp */; };
 		C85DEA691CAC648C00518D03 /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C85DEA651CAC648C00518D03 /* tagWriter.cpp */; };
 		C8F50CE41C9F56CC0014E1BD /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50CCD1C9F56CC0014E1BD /* Calibration.cpp */; };
@@ -356,6 +357,9 @@
 		C6937888E126BADC8777423B /* OscTypes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscTypes.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C76DE5C29BDBD2CAA1DD0021 /* ofxCvContourFinder.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvContourFinder.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvContourFinder.cpp; sourceTree = SOURCE_ROOT; };
+		C851AF021CB2E24100600914 /* NatNetController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetController.cpp; sourceTree = "<group>"; };
+		C851AF031CB2E24100600914 /* NatNetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetController.h; sourceTree = "<group>"; };
+		C851AF061CB2E24700600914 /* RobotParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotParameters.h; sourceTree = "<group>"; };
 		C852CBCD1CAC5DB90056BEED /* URUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
 		C85DEA631CAC648C00518D03 /* tagReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tagReader.cpp; sourceTree = "<group>"; };
 		C85DEA641CAC648C00518D03 /* tagReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tagReader.h; sourceTree = "<group>"; };
@@ -1210,6 +1214,23 @@
 			name = src;
 			sourceTree = "<group>";
 		};
+		C851AF011CB2E24100600914 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C851AF021CB2E24100600914 /* NatNetController.cpp */,
+				C851AF031CB2E24100600914 /* NatNetController.h */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		C851AF051CB2E24700600914 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				C851AF061CB2E24700600914 /* RobotParameters.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		C85DEA601CAC648C00518D03 /* ofxGML */ = {
 			isa = PBXGroup;
 			children = (
@@ -1242,6 +1263,8 @@
 		C8F50CCB1C9F56CC0014E1BD /* sharedCode */ = {
 			isa = PBXGroup;
 			children = (
+				C851AF051CB2E24700600914 /* utils */,
+				C851AF011CB2E24100600914 /* controllers */,
 				C8F50CCC1C9F56CC0014E1BD /* calibration */,
 				C8F50CD51C9F56CC0014E1BD /* motioncapture */,
 				C8F50CDC1C9F56CC0014E1BD /* path */,
@@ -1739,6 +1762,7 @@
 				C8F50D491C9F57270014E1BD /* Helpers.cpp in Sources */,
 				C8F50D441C9F57270014E1BD /* fdog.cpp in Sources */,
 				C8F50CE41C9F56CC0014E1BD /* Calibration.cpp in Sources */,
+				C851AF041CB2E24100600914 /* NatNetController.cpp in Sources */,
 				C8F50D141C9F56D60014E1BD /* UR5KinematicModel.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
 				C8F50D121C9F56D60014E1BD /* ur_realtime_communication.cpp in Sources */,
