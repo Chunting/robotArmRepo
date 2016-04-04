@@ -7,6 +7,7 @@
 //
 #pragma once
 #include "ofMain.h"
+#include "RobotStateMachine.h"
 class RobotController{
 public:
     RobotController();
@@ -15,4 +16,5 @@ public:
     void setup();
     void update();
     void draw();
+    RobotStateMachine state;
 };

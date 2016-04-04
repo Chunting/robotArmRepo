@@ -10,8 +10,12 @@
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
+
+#include "RobotController.h"
+#include "PathController.h"
 #include "RobotParameters.h"
 #include "NatNetController.h"
+
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 

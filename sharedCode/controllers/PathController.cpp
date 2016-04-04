@@ -1,8 +1,8 @@
 #include "PathController.h"
 
 
-PathController::PathController(){
-
+PathController::PathController():currentState(NOT_READY){
+    
     
 }
 
@@ -16,7 +16,9 @@ void PathController::setup(){
     
 }
 void PathController::update(){
-    
+    if(currentState == NOT_READY){
+        
+    }
     
 }
 

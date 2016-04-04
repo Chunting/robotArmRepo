@@ -22,7 +22,7 @@ void ofApp::setup(){
     
     workSurface.setup();
     
-     
+    
     panelJoints.setup(parameters.joints);
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
     panelWorkSurface.setup(workSurface.workSurfaceParams);
@@ -45,9 +45,9 @@ void ofApp::setup(){
     gml.loadFile("gml/53520.gml");
     
     /* 3D Navigation */
-//    cams[1] = &movement.cam;
+    //    cams[1] = &movement.cam;
     // need to move URMove camera to ofApp
-
+    
     handleViewportPresets('p');
     
     
@@ -55,7 +55,7 @@ void ofApp::setup(){
     float w = 400;
     float h = 300;
     float offset = 00;//400;
-
+    
     rbWorksrf.addVertex(ofVec3f(-w/2,  h/2 + offset, 0)); // UL
     rbWorksrf.addVertex(ofVec3f( w/2,  h/2 + offset, 0)); // LL
     rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
@@ -69,7 +69,7 @@ void ofApp::update(){
     natNet.update();
 #endif
     
-  
+    
     // pass the current joints from the robot to the kinematic solver
     vector<double> currentJointPos = robot.getJointPositions();
     movement.setCurrentJointPosition(currentJointPos);
@@ -84,7 +84,7 @@ void ofApp::update(){
     targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
     targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
     targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-  
+    
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
         parameters.bCopy = false;
@@ -104,10 +104,10 @@ void ofApp::update(){
         
         // follow mocap rigid body
         if (natNet.recordedPath.size() > 1){
-        
-//            auto &rb = recordedPath[0];
-//            targetTCP.position = rb.matrix.getTranslation()/1000;
-//            targetTCP.rotation = rb.matrix.getRotate();
+            
+            //            auto &rb = recordedPath[0];
+            //            targetTCP.position = rb.matrix.getTranslation()/1000;
+            //            targetTCP.rotation = rb.matrix.getRotate();
             
             updateWorksurface(natNet.getCurrentRigidBody());
             
@@ -136,7 +136,7 @@ void ofApp::update(){
         // update GUI params
         parameters.targetTCPPosition = targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
-
+        
     }
     // draw out a figure 8 in mid-air
     else if(parameters.bFigure8){
@@ -149,7 +149,7 @@ void ofApp::update(){
         targetTCP.position.interpolate(parameters.targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
         
         // update GUI params
-       parameters.tcpOrientation = targetTCP.rotation.getEuler();
+        parameters.tcpOrientation = targetTCP.rotation.getEuler();
     }
     
     
@@ -163,7 +163,7 @@ void ofApp::update(){
     for(int i = 0; i < target.size(); i++){
         parameters.targetJointPos[i] = (float)target[i];
     }
-   
+    
     // set the joint speeds
     vector<double> tempSpeeds;
     tempSpeeds.assign(6, 0);
@@ -206,9 +206,9 @@ void ofApp::draw(){
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     
-    #ifdef ENABLE_NATNET
-        natNet.draw();
-    #endif
+#ifdef ENABLE_NATNET
+    natNet.draw();
+#endif
     
     
     if (!hideRobot)
@@ -270,7 +270,7 @@ void ofApp::keyPressed(int key){
         workSurface.addStrokes(strokes,retract);
         parameters.bTrace = true;
         parameters.bFollow = false;
-        tagStartTime = ofGetElapsedTimef(); 
+        tagStartTime = ofGetElapsedTimef();
         
     }
     if(key == '1'){
@@ -294,7 +294,7 @@ void ofApp::keyPressed(int key){
     
     if (key == 'h')
         hideRobot = !hideRobot;
-
+    
     if (key == 'r')
         natNet.record = !natNet.record;
     
@@ -395,7 +395,7 @@ void ofApp::hightlightViewports(){
     
     // show Viewport info
     
-
+    
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
@@ -422,10 +422,10 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
             
             tempP = tempP * diff;
             tempQ = rb.getMatrix().getRotate();
-
+            
             targetTCP.rotation = toMeters(tempQ);
             targetTCP.position = toMeters(tempP);
-
+            
         }
         
         // apply matrix to each of the recorded bodies

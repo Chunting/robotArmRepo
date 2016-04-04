@@ -73,7 +73,7 @@
     <UR_Movements>
         <Max_Speed>0</Max_Speed>
         <Min_Speed>0</Min_Speed>
-        <Delta_T>0.13091</Delta_T>
+        <Delta_T>0.165202</Delta_T>
         <targetTCPLerpSpeed>0.984709</targetTCPLerpSpeed>
         <jointSpeedLerpSpeed>0.979612</jointSpeedLerpSpeed>
         <Reported_MIN_Speed>-11.7227</Reported_MIN_Speed>
