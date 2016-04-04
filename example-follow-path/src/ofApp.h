@@ -50,6 +50,7 @@ class ofApp : public ofBaseApp{
         // GUI Controls
         RobotParameters parameters;
         ofxPanel panel;
+        ofxPanel panelJoints;
         ofEasyCam cam;
     
         // Path Generator

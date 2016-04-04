@@ -42,6 +42,8 @@ void ofApp::setup(){
     // set up kinematic model
     movement.setup();
     panel.add(movement.movementParams);
+    panelJoints.setup(parameters.joints);
+    panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
 
     // assign speeds and disable movement
     speeds.assign(6, 0);
@@ -52,7 +54,7 @@ void ofApp::setup(){
 
     // build path
     pathIndex = 0;
-    centroid = ofPoint(.5,.3,.5); // position in meters
+    centroid = ofPoint(.4,.3,.25); // position in meters
     path = buildPath();
     
 }
@@ -72,22 +74,36 @@ void ofApp::update(){
     
     // set target TCP to a default orientation, then modify
     targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
+    targetTCP.rotation*= ofQuaternion(90, ofVec3f(1, 0, 0));
+ 
+    
+    // assign the target pose to the current robot pose
+    if(parameters.bCopy){
+        parameters.bCopy = false;
+        
+        // get the robot's position
+        targetTCP.position = robot.getToolPoint();
+        // get the robot's orientation
+        // targetTCP.rotation = .... <-- why is this working without grabbing the current orientation?
+        
+        // update GUI params
+        parameters.targetTCPPosition = targetTCP.position;
+        parameters.targetTCPOrientation = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
+        
+    }
+    
 
     // find the current point on the path
     pathIndex = (pathIndex + 1) % path.getVertices().size();
     targetTCP.position = path.getVertices()[pathIndex];
     
     // check if we are too far away
-    float distThresh = .03;
-    if (robot.getToolPoint().squareDistance(targetTCP.position) > distThresh*distThresh){
-        // if we are too far away, interpolate from the current point towards the
-        // target point
-        targetTCP.position.interpolate(robot.getToolPoint(), .1 );
-    }
-    
-   
+//    float distThresh = .03;
+//    if (robot.getToolPoint().squareDistance(targetTCP.position) > distThresh*distThresh){
+//        // if we are too far away, interpolate from the current point
+//        // towards the target point
+//        targetTCP.position.interpolate(robot.getToolPoint(), .1 );
+//    }
     
     
     // send the target TCP to the kinematic solver
@@ -133,8 +149,7 @@ void ofApp::draw(){
      ofPopStyle();
     
     cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-
-    ofDrawAxis(100);
+    
     // show the realtime robot
     robot.model.draw();
     
@@ -150,8 +165,8 @@ void ofApp::draw(){
     // show the target point
     ofSetColor(ofColor::yellow, 100);
     ofDrawSphere(path.getVertices()[pathIndex], .01);
-    //    ofSetColor(ofColor::red);
-    //    ofDrawSphere(targetTCP.position, .003);
+//    ofSetColor(ofColor::red);
+//    ofDrawSphere(targetTCP.position, .003);
     
     ofDrawLine(robot.getToolPoint(), targetTCP.position);
     
@@ -159,8 +174,12 @@ void ofApp::draw(){
     ofPopMatrix();
     cam.end();
     
+    // draw simulated robot
+    movement.draw();
+    
     // draw the GUI
     panel.draw();
+    panelJoints.draw();
     
     hightlightViewports();
 }
@@ -169,7 +188,7 @@ void ofApp::draw(){
 ofPolyline ofApp::buildPath(){
     
     ofPolyline temp;
-    float freq = .200;  // robot coordinates are in meters
+    float freq = .150;  // robot coordinates are in meters
     float amp  = .075;
     
     ofNode n0;
@@ -203,10 +222,14 @@ ofPolyline ofApp::buildPath(){
 void ofApp::keyPressed(int key){
     float step = .01;   // 10 millimeters
     
-    if (key == OF_KEY_UP){
-        centroid.z += step;
+    if(key == 'm'){
+        parameters.bMove = !parameters.bMove;
+    }
+    
+    else if (key == OF_KEY_UP){
+        centroid.y += step;
     }else if(key == OF_KEY_DOWN){
-        centroid.z -= step;
+        centroid.y -= step;
     }else if(key == OF_KEY_RIGHT){
         centroid.x += step;
     }else if(key == OF_KEY_LEFT){
@@ -216,6 +239,8 @@ void ofApp::keyPressed(int key){
     }
     
     path = buildPath();
+    
+    handleViewportPresets(key);
     
 }
 
@@ -254,7 +279,7 @@ void ofApp::handleViewportPresets(int key){
         ofMatrix4x4 perspective = ofMatrix4x4(0.991627, -0.124872, -0.0329001, 0,
                                               0.055994, 0.186215, 0.980912, 0,
                                               -0.116362, -0.974541, 0.191648, 0,
-                                              -748.61, -1057.62,  376.122, 1);
+                                              200.997, -1244.37,  522.721, 1);
         cam.reset();
         cam.setGlobalPosition(perspective.getTranslation());
         cam.setGlobalOrientation(perspective.getRotate());
