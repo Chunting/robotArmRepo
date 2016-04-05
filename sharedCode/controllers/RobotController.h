@@ -21,10 +21,16 @@ public:
     void update();
     void moveArm();
     void draw();
+    
+    
+    void updatePath(Joint targetPt);
+    
+    
     vector<double> getJointPosition();
     RobotStateMachine state;
     ofxURDriver robot;
     URMove movement;
     RobotParameters * robotParams;
-
+    
+    Joint workSurfaceTargetTCP;
 };

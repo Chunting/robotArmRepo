@@ -12,7 +12,7 @@
 #include "PathController.h"
 #include "RobotParameters.h"
 #include "NatNetController.h"
-
+#include "WorkSurfaceController.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -36,18 +36,8 @@ public:
     void gotMessage(ofMessage msg);
 
     
-    void updateWorksurface(const ofxNatNet::RigidBody &rb);
-    
-    /// \brief set the corners of the work surface using unlabled markers
-    bool useUnlabledMarkers;
-    
-    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
-    /// \param markers
-    ///     List of markers to use as corners (should be 4)
-    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
-    
     /// \brief 3D mesh with paths for robot to follow
-    WorkSurface workSurface;
+    
     RobotParameters parameters;
 
     ofxPanel panel;
@@ -56,10 +46,11 @@ public:
     
     RobotController robot;
     NatNetController natNet;
-    ofPolyline rbWorksrf;
+
     ofEasyCam cam;
 
    
+    WorkSurfaceController workSurface;
 
     float acceleration;
     vector<double> speeds;

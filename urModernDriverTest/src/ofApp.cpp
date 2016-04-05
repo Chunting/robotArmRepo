@@ -20,14 +20,14 @@ void ofApp::setup(){
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
     
-    workSurface.setup();
+    workSurface.setup(parameters);
     
     
     panelJoints.setup(parameters.joints);
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
-    panelWorkSurface.setup(workSurface.workSurfaceParams);
+    panelWorkSurface.setup(workSurface.workSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
-    panelWorkSurface.loadFromFile("worksurface.xml");
+    panelWorkSurface.loadFromFile("workSurface.xml");
     
 #ifdef ENABLE_NATNET
     natNet.setup("en6", "192.168.1.131");
@@ -35,7 +35,7 @@ void ofApp::setup(){
     
     
     robot.setup(parameters);
-
+    
     panel.add(robot.movement.movementParams);
     speeds.assign(6, 0);
     parameters.bMove = false;
@@ -52,17 +52,10 @@ void ofApp::setup(){
     handleViewportPresets('p');
     
     
-    // temp fix ... set up rigid body worksurface for drawing/following mocap
-    float w = 400;
-    float h = 300;
-    float offset = 00;//400;
     
-    rbWorksrf.addVertex(ofVec3f(-w/2,  h/2 + offset, 0)); // UL
-    rbWorksrf.addVertex(ofVec3f( w/2,  h/2 + offset, 0)); // LL
-    rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
-    rbWorksrf.addVertex(ofVec3f(-w/2, -h/2 + offset, 0)); // LL
-    rbWorksrf.close();
-
+    
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -70,11 +63,14 @@ void ofApp::update(){
 #ifdef ENABLE_NATNET
     natNet.update();
 #endif
-    
+    workSurface.update();
+    if(parameters.bTrace){
+        robot.updatePath(workSurface.getNextPoint());
+    }
     robot.update();
-
     
-
+    
+    
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
     {
         activeCam = 0;
@@ -108,7 +104,7 @@ void ofApp::draw(){
     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(toMM(parameters.targetTCP.position), 15);
     ofPopMatrix();
-    workSurface.draw();
+    workSurface.workSurface.draw();
     cams[0].end();
     
     robot.movement.draw();
@@ -129,7 +125,7 @@ void ofApp::draw(){
 void ofApp::exit(){
     parameters.bMove = false;
     panel.saveToFile("settings.xml");
-    panelWorkSurface.saveToFile("worksurface.xml");
+    panelWorkSurface.saveToFile("workSurface.xml");
     if(robot.robot.isThreadRunning()){
         robot.robot.waitForThread();
     }
@@ -155,23 +151,23 @@ void ofApp::keyPressed(int key){
             strokes = gml.getPath(1.0);
         }
         
-        workSurface.addStrokes(strokes,retract);
+        workSurface.workSurface.addStrokes(strokes,retract);
         parameters.bTrace = true;
         parameters.bFollow = false;
-        tagStartTime = ofGetElapsedTimef();
+        workSurface.startTime = ofGetElapsedTimef();
         
     }
     if(key == '1'){
-        workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
     }
     if(key == '2'){
-        workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
     }
     if(key == '3'){
-        workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
     }
     if(key == '4'){
-        workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
     }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
@@ -291,91 +287,6 @@ void ofApp::hightlightViewports(){
     ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
     
     ofPopStyle();
-}
-
-//--------------------------------------------------------------
-void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
-    
-    if (natNet.recordedPath.size() > 1){
-        
-        // get the previous transformation matrix
-        ofxNatNet::RigidBody prev = natNet.recordedPath[natNet.recordedPath.size()-2];
-        
-        // find the difference between the current transformation matrix
-        ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
-        
-        if (parameters.bFollow){
-            ofQuaternion tempQ = toMM(parameters.targetTCP.rotation);
-            ofVec3f tempP = toMM(parameters.targetTCP.position);;
-            
-            tempP = tempP * diff;
-            tempQ = rb.getMatrix().getRotate();
-            
-            parameters.targetTCP.rotation = toMeters(tempQ);
-            parameters.targetTCP.position = toMeters(tempP);
-            
-        }
-        
-        // apply matrix to each of the recorded bodies
-        for (auto &tp: natNet.recordedPath){
-            tp.matrix *= diff;
-            
-            // update markers
-            for (int i=0; i<tp.markers.size(); i++)
-                tp.markers[i] = tp.markers[i] * diff;
-        }
-        
-        
-        // initialize rigidbody worksurface
-        if (rbWorksrf.getVertices()[0].z == 0){
-            // orient worksurface with rigid body
-            rbWorksrf.getVertices()[0] = rbWorksrf.getVertices()[0] * rb.matrix;
-            rbWorksrf.getVertices()[1] = rbWorksrf.getVertices()[1] * rb.matrix;
-            rbWorksrf.getVertices()[2] = rbWorksrf.getVertices()[2] * rb.matrix;
-            rbWorksrf.getVertices()[3] = rbWorksrf.getVertices()[3] * rb.matrix;
-        }
-        else{
-            // update rigidbody worksurface
-            rbWorksrf.getVertices()[0] = rbWorksrf.getVertices()[0] * diff;
-            rbWorksrf.getVertices()[1] = rbWorksrf.getVertices()[1] * diff;
-            rbWorksrf.getVertices()[2] = rbWorksrf.getVertices()[2] * diff;
-            rbWorksrf.getVertices()[3] = rbWorksrf.getVertices()[3] * diff;
-            
-            // update worksurface corner
-            workSurface.targetPoints[0] = toMeters(rbWorksrf.getVertices()[0]);// / 1000;
-            workSurface.targetPoints[1] = toMeters(rbWorksrf.getVertices()[1]);// / 1000;
-            workSurface.targetPoints[2] = toMeters(rbWorksrf.getVertices()[2]);// / 1000;
-            workSurface.targetPoints[3] = toMeters(rbWorksrf.getVertices()[3]);// / 1000;
-            
-            // override worksurface orientation
-            workSurface.orientation = rb.getMatrix().getRotate();
-        }
-        
-    }
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::updateWorksurface(vector<ofxNatNet::Marker> &markers){
-    
-    if (markers.size() != 4)
-        cout << "wrong number of unlabled makers for the worksurface: " << markers.size() << endl;
-    else{
-        
-        // update mocap worksurface
-        rbWorksrf.getVertices()[0] = markers[0];
-        rbWorksrf.getVertices()[1] = markers[1];
-        rbWorksrf.getVertices()[2] = markers[2];
-        rbWorksrf.getVertices()[3] = markers[3];
-        
-        // update worksurface corners
-        workSurface.targetPoints[0] = toMeters(markers[0]);
-        workSurface.targetPoints[1] = toMeters(markers[1]);
-        workSurface.targetPoints[2] = toMeters(markers[2]);
-        workSurface.targetPoints[3] = toMeters(markers[3]);
-    }
-    
-    
 }
 
 

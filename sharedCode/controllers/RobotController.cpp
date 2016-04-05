@@ -25,7 +25,7 @@ vector<double> RobotController::getJointPosition(){
 void RobotController::update(){
     updateData();
     updateMovement();
-
+    
 }
 
 void RobotController::updateMovement(){
@@ -60,7 +60,7 @@ void RobotController::updateMovement(){
     if(robotParams->bMove){
         robot.setSpeed(tempSpeeds, robotParams->avgAccel);
     }
-
+    
 }
 
 void RobotController::updateData(){
@@ -73,6 +73,10 @@ void RobotController::updateData(){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
     robotParams->tcpPosition = robot.getToolPoint();
+}
+
+void RobotController::updatePath(Joint targetTCP){
+    workSurfaceTargetTCP = targetTCP;
 }
 
 void RobotController::moveArm(){
@@ -109,9 +113,9 @@ void RobotController::moveArm(){
         //
         //        }else{
         //            // go from current to next position
-                    robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), 0.1);
+        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), 0.1);
         //            // go from current orientation to next orientation (???)
-                    robotParams->targetTCP.rotation *= ofQuaternion(robotParams->targetTCPOrientation);
+        robotParams->targetTCP.rotation = ofQuaternion(robotParams->targetTCPOrientation);
         //        }
         
         // update GUI params
@@ -121,17 +125,13 @@ void RobotController::moveArm(){
     // follow a pre-defined path
     if(robotParams->bTrace){
         
-        //        // update the worksurface
-        //        workSurface.update();
-        //
-        //        // get the target point on the worksurface
-        //        Joint workSrfTarget = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
-        //        robotParams->targetTCP.position = workSrfTarget.position;
-        //        robotParams->targetTCP.rotation *= workSrfTarget.rotation;
-        //
-        //        // update GUI params
-        //        robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        //        robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
+        
+        robotParams->targetTCP.position = workSurfaceTargetTCP.position;
+        robotParams->targetTCP.rotation *= workSurfaceTargetTCP.rotation;
+        
+        // update GUI params
+        robotParams->targetTCPPosition = robotParams->targetTCP.position;
+        robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
         
     }
     // draw out a figure 8 in mid-air
@@ -147,7 +147,7 @@ void RobotController::moveArm(){
         // update GUI params
         robotParams->tcpOrientation = robotParams->targetTCP.rotation.getEuler();
     }
-
+    
 }
 
 void RobotController::draw(){

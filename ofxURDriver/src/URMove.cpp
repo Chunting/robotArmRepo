@@ -15,6 +15,7 @@ URMove::~URMove(){
 }
 void URMove::setup(){
     movementParams.setName("UR Movements");
+    movementParams.add(reachPoint.set("Step", false));
     movementParams.add(minSpeed.set("MIN Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(maxSpeed.set(" MAX Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
@@ -34,15 +35,24 @@ void URMove::setup(){
     acceleration.assign(6, 0.0);
     lastJointSpeeds.assign(6, 0.0);
     currentJointSpeeds.assign(6, 0);
-    
 }
 
 
 void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
-    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, targetTCPLerpSpeed);
-    targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.rotation);
+    
+    
+    if(reachPoint){
+        if((targetPoint.position - newTargetPoint.front().position).length() < 0.01){
+            newTargetPoint.pop_front();
+        }
+    }
+    if(newTargetPoint.size() > 0){
+        targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
+        targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
+    }
+    
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     urKinematics(mat);
@@ -77,16 +87,16 @@ void URMove::computeVelocities(){
             lastJointSpeeds = currentJointSpeeds;
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-                //                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
+                currentJointSpeeds[5] = 0;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
                 maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
                 if(abs(currentJointSpeeds[i]) > PI){
                     ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }
                 
-                acceleration[i] = abs(currentJointSpeeds[i]-lastJointSpeeds[i]);
+                acceleration[i] = currentJointSpeeds[i]-lastJointSpeeds[i];
                 avgAccel = MAX(acceleration[i], avgAccel);
                 
             }
@@ -95,11 +105,22 @@ void URMove::computeVelocities(){
 }
 
 void URMove::addTargetPoint(Joint target){
-    newTargetPoint = target;
-    targetLine.addVertex(target.position*1000);
-    if(targetLine.getVertices().size() > 1400){
-        targetLine.getVertices().erase(targetLine.getVertices().begin());
+    if(reachPoint){
+        if(newTargetPoint.size() > 0){
+            if((newTargetPoint.back().position-target.position).length() > 0.1){
+                newTargetPoint.push_back(target);
+            }
+        }else{
+            newTargetPoint.push_back(target);
+            
+        }
+    }else{
+        newTargetPoint.push_front(target);
+        if(newTargetPoint.size() > 1){
+            newTargetPoint.pop_back();
+        }
     }
+    targetLine.addVertex(toMM(target.position));
 }
 
 
@@ -115,9 +136,11 @@ void URMove::draw(){
             ofPushMatrix();
             targetLine.draw();
             ofSetColor(255, 0, 255, 200);
-            ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+            ofDrawSphere(toMM(targetPoint.position), 5);
             ofSetColor(255, 255, 0, 200);
-            ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+            if(newTargetPoint.size() > 0){
+                ofDrawSphere(toMM(newTargetPoint.front().position), 5);
+            }
             ofPopMatrix();
             cams[j].end();
             
@@ -132,16 +155,6 @@ void URMove::draw(){
     }
     
     
-    cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    ofPushMatrix();
-    ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-    ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-    //    targetLine.draw();
-    ofPopMatrix();
-    cam.end();
-    
     
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()-100, 0);
@@ -149,7 +162,7 @@ void URMove::draw(){
         ofSetColor(255, 255, 0);
         if(i%2==0)
             ofSetColor(255, 0, 255);
-        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], 0, TWO_PI, 0, 100, true), 50);
+        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], -TWO_PI, TWO_PI, 0, 100, true), 50);
     }
     ofPopMatrix();
 }

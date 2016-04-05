@@ -14,7 +14,7 @@ void WorkSurface::setup(){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
     }
-    warp.setup();
+    
     corners.assign(4, ofPoint(0, 0, 0));
     
     plane.setPosition(0, 0, 0);
@@ -64,6 +64,8 @@ void WorkSurface::update(){
         mesh.setVertex(3, targetPoints[3]);
     }
     
+    calcNormals();
+    
     
     ////      USE RIGID BODY FROM NATNET AS WORKSURFACE
     ////     update the mesh normal as the average of its two face normals
@@ -96,7 +98,7 @@ void WorkSurface::update(){
     // assign new orientation
     ofVec3f axis;
     float angle;
-    orientation.getRotate(angle, axis);
+    orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
@@ -111,8 +113,39 @@ void WorkSurface::update(){
     if (strokes_original.size() != 0)
         addStrokes(strokes_original, 10);
     
-    
 }
+
+void WorkSurface::calcNormals(){
+    mesh.clearNormals();
+    for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
+    
+    for( int i=0; i < mesh.getIndices().size(); i+=3 ){
+        const int ia = mesh.getIndices()[i];
+        const int ib = mesh.getIndices()[i+1];
+        const int ic = mesh.getIndices()[i+2];
+        
+        ofVec3f e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
+        ofVec3f e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+        ofVec3f no = e1.cross( e2 );
+        
+        // depending on your clockwise / winding order, you might want to reverse the e2 / e1 above if your normals are flipped.
+        
+        mesh.getNormals()[ia] += no;
+        mesh.getNormals()[ib] += no;
+        mesh.getNormals()[ic] += no;
+    }
+    
+    ofVec3f norm;
+    for(int i=0; i < mesh.getNormals().size(); i++ ) {
+        mesh.getNormals()[i].normalize();
+        norm+=mesh.getNormals()[i];
+        norm/=2.0;
+    }
+    normal = norm;
+}
+
+
+
 void WorkSurface::addPoint(ofVec3f pt){
     
 }
