@@ -216,10 +216,13 @@ void ofApp::draw(){
     ofSetColor(0, 0, 255);
     ofDrawLine(o, norm);
 
-    
+  
     ofSetColor(ofColor::yellow, 100);
-
-    // how to convert from 3 vector axis to transformation matrix ???
+    for (auto &plane : planes){
+        plane.draw();
+    }
+    
+    // ??? how to convert from 3 vector axis to transformation matrix ???
     ofPushMatrix();
     ofPoint p = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
     u.normalize();
@@ -227,34 +230,24 @@ void ofApp::draw(){
     norm.normalize();
     
     ofMatrix4x4 oriented;
-    oriented.set(u.x, u.y, u.z, 0,
-                 v.x, v.y, v.z, 0,
-                 norm.x, norm.y, norm.z, 0,
-                 p.x, p.y, p.z, 1);
+    oriented.set(u.x, u.y, u.z, 0,          // local X-Axis
+                 v.x, v.y, v.z, 0,          // local Y-Axis
+                 norm.x, norm.y, norm.z, 0, // local Z-Axis
+                 p.x, p.y, p.z, 1);         // global position
     glMultMatrixf(oriented.getPtr());
-    ofDrawAxis(.05);
+//    ofDrawAxis(.03);   // not working ...
     ofPopMatrix();
 
-
     
-//    for (auto &plane : planes){
-//        plane.draw();
-//    }
-
-    ofSetLineWidth(.02);
+    ofSetLineWidth(.03);
     ofSetColor(ofColor::aliceBlue);
     plane3D.draw();
-    
-
-    
+ 
     ofPopStyle();
     ofPopMatrix();
-    
-   
 
-
-    
     cam.end();
+    
     
     // draw simulated robot
     movement.draw();
@@ -368,10 +361,10 @@ void ofApp::handleViewportPresets(int key){
     // PERSPECTIVE VIEW
     else if (key == 'p'){
         // hardcoded perspective camera
-        ofMatrix4x4 perspective = ofMatrix4x4(0.991627, -0.124872, -0.0329001, 0,
-                                              0.055994, 0.186215, 0.980912, 0,
-                                              -0.116362, -0.974541, 0.191648, 0,
-                                              200.997, -1244.37,  522.721, 1);
+        ofMatrix4x4 perspective = ofMatrix4x4(0.721792, 0.689126, -0.0641996, 0,
+                                              -0.0677436, 0.162658, 0.984354, 0,
+                                              0.688787, -0.70615, 0.164089, 0,
+                                              777.021, -719.789,  366.449, 1);
         cam.reset();
         cam.setGlobalPosition(perspective.getTranslation());
         cam.setGlobalOrientation(perspective.getRotate());
