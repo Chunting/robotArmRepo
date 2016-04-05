@@ -63,7 +63,7 @@ void ofApp::setup(){
     
     // build path
     pathIndex = 0;
-    centroid = ofPoint(.4,.3,.25); // position in meters
+    centroid = ofPoint(.4,-.3,.25); // position in meters
     path = buildPath();  
 
 }
@@ -219,16 +219,21 @@ void ofApp::draw(){
     
     ofSetColor(ofColor::yellow, 100);
 
+    // how to convert from 3 vector axis to transformation matrix ???
+    ofPushMatrix();
+    ofPoint p = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
+    u.normalize();
+    v.normalize();
+    norm.normalize();
     
-//    ofPushMatrix();
-//    ofQuaternion q;
-//    q.
-//    q.makeRotate(ofVec3f(0,0,1), norm);
-//    ofMatrix4x4 mat = ofMatrix4x4(q);
-//    mat.setTranslation(plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]));
-//    glMultMatrixf(mat.getPtr());
-//    ofDrawAxis(.05);
-//    ofPopMatrix();
+    ofMatrix4x4 oriented;
+    oriented.set(u.x, u.y, u.z, 0,
+                 v.x, v.y, v.z, 0,
+                 norm.x, norm.y, norm.z, 0,
+                 p.x, p.y, p.z, 1);
+    glMultMatrixf(oriented.getPtr());
+    ofDrawAxis(.05);
+    ofPopMatrix();
 
 
     

@@ -59,8 +59,8 @@ class ofApp : public ofBaseApp{
         int pathIndex;
         /// \brief Draws a 3D curve with a given amplitude and frequency
         ofPolyline buildPath();
-        // lofting plan around path
-        
+    
+        // lofting plane around path
         ofPolyline plane2D;
         ofPolyline plane3D;
         ofVec3f u;
