@@ -4,9 +4,6 @@
 #include "ofMain.h"
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
-#include "URDriver.h"
-#include "URMove.h"
-#include "UR5KinematicModel.h"
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
@@ -57,13 +54,13 @@ public:
     ofxPanel panelWorkSurface;
     ofxPanel panelJoints;
     
- 
+    RobotController robot;
     NatNetController natNet;
     ofPolyline rbWorksrf;
     ofEasyCam cam;
     //Motion Capture OSC Server
     ofxOscSender sender;
-    ofxURDriver robot;
+   
     URMove movement;
     float acceleration;
     vector<double> speeds;
@@ -74,11 +71,7 @@ public:
     /// default TCP is Joint 5
 //    Joint tcp;
     
-    /// \brief Targeted Tool Center Point for Robot
-    ///
-    /// This is the desired TCP for the robot set
-    /// by the user.
-    Joint targetTCP;
+
     
     ofNode parent;
     

@@ -64,7 +64,6 @@
 		C8F50D141C9F56D60014E1BD /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D031C9F56D60014E1BD /* UR5KinematicModel.cpp */; };
 		C8F50D151C9F56D60014E1BD /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D051C9F56D60014E1BD /* URDriver.cpp */; };
 		C8F50D161C9F56D60014E1BD /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D071C9F56D60014E1BD /* URMove.cpp */; };
-		C8F50D171C9F56D60014E1BD /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D091C9F56D60014E1BD /* URRead.cpp */; };
 		C8F50D181C9F56D60014E1BD /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D0B1C9F56D60014E1BD /* URToolHead.cpp */; };
 		C8F50D431C9F57270014E1BD /* ETF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D261C9F57270014E1BD /* ETF.cpp */; };
 		C8F50D441C9F57270014E1BD /* fdog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50D271C9F57270014E1BD /* fdog.cpp */; };
@@ -392,6 +391,7 @@
 		C8895BA61CB2F75F00105DC7 /* RobotStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotStateMachine.h; sourceTree = "<group>"; };
 		C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurfaceController.cpp; sourceTree = "<group>"; };
 		C8895BB31CB2F84B00105DC7 /* WorkSurfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurfaceController.h; sourceTree = "<group>"; };
+		C89B56671CB417A600C69426 /* ofxURDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxURDriver.h; sourceTree = "<group>"; };
 		C8F50CF11C9F56D60014E1BD /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
 		C8F50CF21C9F56D60014E1BD /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
 		C8F50CF31C9F56D60014E1BD /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
@@ -414,8 +414,6 @@
 		C8F50D061C9F56D60014E1BD /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
 		C8F50D071C9F56D60014E1BD /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
 		C8F50D081C9F56D60014E1BD /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
-		C8F50D091C9F56D60014E1BD /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
-		C8F50D0A1C9F56D60014E1BD /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
 		C8F50D0B1C9F56D60014E1BD /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
 		C8F50D0C1C9F56D60014E1BD /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
 		C8F50D1B1C9F57270014E1BD /* ofxCv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCv.h; sourceTree = "<group>"; };
@@ -1369,14 +1367,13 @@
 		C8F50D021C9F56D60014E1BD /* src */ = {
 			isa = PBXGroup;
 			children = (
+				C89B56671CB417A600C69426 /* ofxURDriver.h */,
 				C8F50D031C9F56D60014E1BD /* UR5KinematicModel.cpp */,
 				C8F50D041C9F56D60014E1BD /* UR5KinematicModel.h */,
 				C8F50D051C9F56D60014E1BD /* URDriver.cpp */,
 				C8F50D061C9F56D60014E1BD /* URDriver.h */,
 				C8F50D071C9F56D60014E1BD /* URMove.cpp */,
 				C8F50D081C9F56D60014E1BD /* URMove.h */,
-				C8F50D091C9F56D60014E1BD /* URRead.cpp */,
-				C8F50D0A1C9F56D60014E1BD /* URRead.h */,
 				C8F50D0B1C9F56D60014E1BD /* URToolHead.cpp */,
 				C8F50D0C1C9F56D60014E1BD /* URToolHead.h */,
 				C852CBCD1CAC5DB90056BEED /* URUtils.h */,
@@ -1798,7 +1795,6 @@
 				C85DEA691CAC648C00518D03 /* tagWriter.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
 				72A929D3561B8232A182ABFC /* ofxOscBundle.cpp in Sources */,
-				C8F50D171C9F56D60014E1BD /* URRead.cpp in Sources */,
 				5864AD82E20F15536D054EA3 /* ofxOscMessage.cpp in Sources */,
 				C8895BAD1CB2F75F00105DC7 /* RobotController.cpp in Sources */,
 				C8F50D181C9F56D60014E1BD /* URToolHead.cpp in Sources */,

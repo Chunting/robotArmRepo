@@ -32,8 +32,7 @@ void ofApp::setup(){
 #ifdef ENABLE_NATNET
     natNet.setup("en6", "192.168.1.131");
 #endif
-    robot.setup("192.168.1.9",0, 1);
-    robot.start();
+
     movement.setup();
     panel.add(movement.movementParams);
     speeds.assign(6, 0);
@@ -61,6 +60,9 @@ void ofApp::setup(){
     rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
     rbWorksrf.addVertex(ofVec3f(-w/2, -h/2 + offset, 0)); // LL
     rbWorksrf.close();
+    
+    
+    robot.setup(parameters);
 }
 
 //--------------------------------------------------------------
@@ -69,92 +71,18 @@ void ofApp::update(){
     natNet.update();
 #endif
     
+    robot.update();
     
     // pass the current joints from the robot to the kinematic solver
-    vector<double> currentJointPos = robot.getJointPositions();
+    vector<double> currentJointPos = robot.getJointPosition();
     movement.setCurrentJointPosition(currentJointPos);
     
     // update GUI params
     for(int i = 0; i < currentJointPos.size(); i++){
         parameters.jointPos[i] = (float)currentJointPos[i];
     }
-    parameters.tcpPosition = robot.getToolPoint();
-    
-    // set target TCP to a default orientation, then modify
-    targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-    
-    // assign the target pose to the current robot pose
-    if(parameters.bCopy){
-        parameters.bCopy = false;
-        
-        // get the robot's position
-        targetTCP.position = robot.getToolPoint();
-        // get the robot's orientation
-        // targetTCP.rotation = .... <-- why is this working without grabbing the current orientation?
-        
-        // update GUI params
-        parameters.targetTCPPosition = targetTCP.position;
-        parameters.targetTCPOrientation = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
-        
-    }
-    // follow a user-defined position and orientation
-    else if(parameters.bFollow){
-        
-        // follow mocap rigid body
-        if (natNet.recordedPath.size() > 1){
-            
-            //            auto &rb = recordedPath[0];
-            //            targetTCP.position = rb.matrix.getTranslation()/1000;
-            //            targetTCP.rotation = rb.matrix.getRotate();
-            
-            updateWorksurface(natNet.getCurrentRigidBody());
-            
-        }else{
-            // go from current to next position
-            targetTCP.position.interpolate(parameters.targetTCPPosition.get(), 0.1);
-            // go from current orientation to next orientation (???)
-            targetTCP.rotation *= ofQuaternion(parameters.targetTCPOrientation);
-        }
-        
-        // update GUI params
-        parameters.targetTCPPosition = targetTCP.position;
-        parameters.tcpOrientation = targetTCP.rotation.getEuler();
-    }
-    // follow a pre-defined path
-    else if(parameters.bTrace){
-        
-        // update the worksurface
-        workSurface.update();
-        
-        // get the target point on the worksurface
-        Joint workSrfTarget = workSurface.getTargetPoint(ofGetElapsedTimef()-tagStartTime);
-        targetTCP.position = workSrfTarget.position;
-        targetTCP.rotation *= workSrfTarget.rotation;
-        
-        // update GUI params
-        parameters.targetTCPPosition = targetTCP.position;
-        parameters.targetTCPOrientation = ofVec4f(targetTCP.rotation.x(), targetTCP.rotation.y(), targetTCP.rotation.z(), targetTCP.rotation.w());
-        
-    }
-    // draw out a figure 8 in mid-air
-    else if(parameters.bFigure8){
-        
-        // use a preset orientation
-        targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        
-        // update the target position
-        targetTCP.position.interpolate(parameters.targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-        
-        // update GUI params
-        parameters.tcpOrientation = targetTCP.rotation.getEuler();
-    }
-    
-    
-    // send the target TCP to the kinematic solver
-    movement.addTargetPoint(targetTCP);
+       // send the target TCP to the kinematic solver
+    movement.addTargetPoint(parameters.targetTCP);
     movement.update();
     
     
@@ -174,7 +102,7 @@ void ofApp::update(){
     // move the robot to the target TCP
     parameters.avgAccel = movement.getAcceleration();
     if(parameters.bMove){
-        robot.setSpeed(tempSpeeds, parameters.avgAccel);
+        robot.robot.setSpeed(tempSpeeds, parameters.avgAccel);
     }
     
     
@@ -194,7 +122,7 @@ void ofApp::testMotors(){
     foo.assign(6, 0.0);
     if(!parameters.bStop)
         foo[0] = 1.0;
-    robot.setSpeed(foo, ofRandom(1, 100));
+//    robot.setSpeed(foo, ofRandom(1, 100));
 }
 
 //--------------------------------------------------------------
@@ -203,7 +131,7 @@ void ofApp::draw(){
     
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
-    ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
+    ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     
 #ifdef ENABLE_NATNET
@@ -212,13 +140,13 @@ void ofApp::draw(){
     
     
     if (!hideRobot)
-        robot.model.draw();
+        robot.robot.model.draw();
     ofSetColor(255, 0, 255);
     ofPushMatrix();
     ofSetColor(255, 0, 255, 200);
     ofDrawSphere(toMM(parameters.tcpPosition.get()), 5);
     ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(toMM(targetTCP.position), 15);
+    ofDrawSphere(toMM(parameters.targetTCP.position), 15);
     ofPopMatrix();
     workSurface.draw();
     cams[0].end();
@@ -242,8 +170,8 @@ void ofApp::exit(){
     parameters.bMove = false;
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("worksurface.xml");
-    if(robot.isThreadRunning())
-        robot.waitForThread();
+    if(robot.robot.isThreadRunning())
+        robot.robot.waitForThread();
 }
 
 //--------------------------------------------------------------
@@ -417,14 +345,14 @@ void ofApp::updateWorksurface(const ofxNatNet::RigidBody &rb){
         ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
         
         if (parameters.bFollow){
-            ofQuaternion tempQ = toMM(targetTCP.rotation);
-            ofVec3f tempP = toMM(targetTCP.position);;
+            ofQuaternion tempQ = toMM(parameters.targetTCP.rotation);
+            ofVec3f tempP = toMM(parameters.targetTCP.position);;
             
             tempP = tempP * diff;
             tempQ = rb.getMatrix().getRotate();
             
-            targetTCP.rotation = toMeters(tempQ);
-            targetTCP.position = toMeters(tempP);
+            parameters.targetTCP.rotation = toMeters(tempQ);
+            parameters.targetTCP.position = toMeters(tempP);
             
         }
         

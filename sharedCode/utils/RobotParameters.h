@@ -54,6 +54,10 @@ public :
     ofParameter<bool> bCopy;
     ofParameter<bool> bStop;
     
+    vector<double> currentJointPos;
+    
+    Joint targetTCP;
+    
 
 };
 

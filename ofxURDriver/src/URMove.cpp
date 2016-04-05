@@ -77,7 +77,7 @@ void URMove::computeVelocities(){
             lastJointSpeeds = currentJointSpeeds;
             for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
                 currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-//                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
+                //                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
@@ -104,22 +104,31 @@ void URMove::addTargetPoint(Joint target){
 
 
 void URMove::draw(){
-    int j = 0;
     if(inversePosition.size() > 0){
-        cams[0].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-        ofPushMatrix();
-        previews[0]->draw();
-        ofPopMatrix();
-        ofPushMatrix();
-        targetLine.draw();
-        ofSetColor(255, 0, 255, 200);
-        ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-        ofSetColor(255, 255, 0, 200);
-        ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-        ofPopMatrix();
-        cams[0].end();
-        j+=1;
-        j = j%4;
+        float x = ofGetWindowWidth()/2;
+        float y = 0;
+        for(int j = 0; j < cams.size(); j++){
+            cams[j].begin(ofRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2));
+            ofPushMatrix();
+            previews[j]->draw();
+            ofPopMatrix();
+            ofPushMatrix();
+            targetLine.draw();
+            ofSetColor(255, 0, 255, 200);
+            ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+            ofSetColor(255, 255, 0, 200);
+            ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
+            ofPopMatrix();
+            cams[j].end();
+            
+            x+=ofGetWindowWidth()/2/4;
+            
+            if(x >= ofGetWindowWidth()){
+                x = ofGetWindowWidth()/2;
+                y = ofGetWindowHeight()/2;
+            }
+        }
+        
     }
     
     
@@ -129,7 +138,7 @@ void URMove::draw(){
     ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-//    targetLine.draw();
+    //    targetLine.draw();
     ofPopMatrix();
     cam.end();
     
