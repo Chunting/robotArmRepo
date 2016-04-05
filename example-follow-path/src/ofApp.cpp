@@ -52,11 +52,20 @@ void ofApp::setup(){
     // get the current pose on start up
     parameters.bCopy = true;
 
+    
+    // build 2D perp plane
+    float w = .035;
+    plane2D.addVertex(0,-w/2, w/2);
+    plane2D.addVertex(0, w/2, w/2);
+    plane2D.addVertex(0, w/2, -w/2);
+    plane2D.addVertex(0,-w/2, -w/2);
+    plane2D.close();
+    
     // build path
     pathIndex = 0;
     centroid = ofPoint(.4,.3,.25); // position in meters
-    path = buildPath();
-    
+    path = buildPath();  
+
 }
 
 //--------------------------------------------------------------
@@ -94,16 +103,37 @@ void ofApp::update(){
     
 
     // find the current point on the path
-    pathIndex = (pathIndex + 1) % path.getVertices().size();
-    targetTCP.position = path.getVertices()[pathIndex];
+    if (path.getVertices().size() > 3){
+        pathIndex = (pathIndex + 1) % path.getVertices().size();
+        
+        // set the current perp plane
+        plane3D = planes[pathIndex];
+        
+        // set the orientation
+        ofVec3f orient;
+        if (pathIndex == path.getVertices().size()-1){
+            orient = path.getVertices()[0];
+        }else{
+            orient = path.getVertices()[pathIndex+1];
+        }
     
-    // check if we are too far away
-//    float distThresh = .03;
-//    if (robot.getToolPoint().squareDistance(targetTCP.position) > distThresh*distThresh){
-//        // if we are too far away, interpolate from the current point
-//        // towards the target point
-//        targetTCP.position.interpolate(robot.getToolPoint(), .1 );
-//    }
+    }
+    
+    targetTCP.position = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
+
+    
+    // calculate normal of plane3D
+    u = plane3D.getVertices()[1] - plane3D.getVertices()[2];
+    v = plane3D.getVertices()[1] - plane3D.getVertices()[0];
+    u.normalize();
+    v.normalize();
+    norm = u.getCrossed(v);
+    norm.normalize();
+    
+  
+    
+//    targetTCP.rotation = ofQuaternion(norm);// * ofQuaternion(-90, ofVec3f(1,0,0));
+
     
     
     // send the target TCP to the kinematic solver
@@ -157,21 +187,68 @@ void ofApp::draw(){
     // show the 3D path
     ofPushMatrix();
     ofPushStyle();
-    ofScale(1000); // draw in mm
+    ofScale(1000); // scale from meter to millimeters for visualizing
     
     ofSetColor(ofColor::aqua);
     path.draw();
     
+    
     // show the target point
     ofSetColor(ofColor::yellow, 100);
-    ofDrawSphere(path.getVertices()[pathIndex], .01);
-//    ofSetColor(ofColor::red);
-//    ofDrawSphere(targetTCP.position, .003);
+    if (path.size() > 0)
+        ofDrawSphere(path.getVertices()[pathIndex], .01);
+
     
-    ofDrawLine(robot.getToolPoint(), targetTCP.position);
+    // manually set the perp plane axes
+    ofVec3f o = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
+    u.scale(.03);
+    v.scale(.03);
+    norm.scale(.03);
+    u += o;
+    v += o;
+    norm += o;
+    
+    // manually draw the perp plane axes
+    ofSetColor(255, 0, 0);
+    ofDrawLine(o, u);
+    ofSetColor(0, 255, 0);
+    ofDrawLine(o, v);
+    ofSetColor(0, 0, 255);
+    ofDrawLine(o, norm);
+
+    
+    ofSetColor(ofColor::yellow, 100);
+
+    
+//    ofPushMatrix();
+//    ofQuaternion q;
+//    q.
+//    q.makeRotate(ofVec3f(0,0,1), norm);
+//    ofMatrix4x4 mat = ofMatrix4x4(q);
+//    mat.setTranslation(plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]));
+//    glMultMatrixf(mat.getPtr());
+//    ofDrawAxis(.05);
+//    ofPopMatrix();
+
+
+    
+//    for (auto &plane : planes){
+//        plane.draw();
+//    }
+
+    ofSetLineWidth(.02);
+    ofSetColor(ofColor::aliceBlue);
+    plane3D.draw();
+    
+
     
     ofPopStyle();
     ofPopMatrix();
+    
+   
+
+
+    
     cam.end();
     
     // draw simulated robot
@@ -186,10 +263,10 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
-    
+    planes.clear();
     ofPolyline temp;
     float freq = .150;  // robot coordinates are in meters
-    float amp  = .075;
+    float amp  = .015;
     
     ofNode n0;
     ofNode n1;
@@ -201,16 +278,26 @@ ofPolyline ofApp::buildPath(){
     n2.setParent(n1);
     n2.setPosition(0, amp, 0);
     
-    
-    float totalRotation = 0;
     while (totalRotation < 360){
         float step = .5;
         totalRotation += step;
         n0.pan(step);
         n1.tilt(2);
-        n2.roll(1);
+        n2.tilt(-2);    // counteract spin
         
-        temp.addVertex(n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0)));
+        temp.addVertex(n2.getGlobalPosition());//.rotate(90, ofVec3f(1,0,0)));
+
+        ofPolyline oriented;
+        for (auto &p : plane2D.getVertices()){
+
+            ofVec3f o = ofVec3f(p.x,p.y,p.z);
+            o = o * n2.getGlobalOrientation();
+            o = o + temp.getVertices()[temp.getVertices().size()-1];
+            
+            oriented.addVertex(o);
+        }
+        oriented.close();
+        planes.push_back(oriented);
     }
     
     temp.close();
@@ -238,7 +325,7 @@ void ofApp::keyPressed(int key){
         centroid = ofPoint(0,0,0);
     }
     
-    path = buildPath();
+//    path = buildPath();
     
     handleViewportPresets(key);
     

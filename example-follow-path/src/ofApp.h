@@ -59,6 +59,19 @@ class ofApp : public ofBaseApp{
         int pathIndex;
         /// \brief Draws a 3D curve with a given amplitude and frequency
         ofPolyline buildPath();
+        // lofting plan around path
+        
+        ofPolyline plane2D;
+        ofPolyline plane3D;
+        ofVec3f u;
+        ofVec3f v;
+        ofVec3f norm; // need a lookAt
+        vector<ofPolyline> planes;
+
+    
+    float totalRotation = 0;
+
+    
     
         // 3D Navigation Helpers
         void handleViewportPresets(int key);
