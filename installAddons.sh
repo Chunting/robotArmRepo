@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Dependencies for DepthKit
-#make sure you are in the DepthKit project when you run this script
+# Dependencies for robotArmRepo
+#make sure you are in the robotArmRepo project when you run this script
 
 cd ../../addons
 
