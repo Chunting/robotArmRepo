@@ -34,7 +34,7 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    void testMotors();
+
     
     void updateWorksurface(const ofxNatNet::RigidBody &rb);
     
@@ -58,19 +58,12 @@ public:
     NatNetController natNet;
     ofPolyline rbWorksrf;
     ofEasyCam cam;
-    //Motion Capture OSC Server
-    ofxOscSender sender;
+
    
-    URMove movement;
+
     float acceleration;
     vector<double> speeds;
-    
-    /// \brief Tool Center Point for Robot
-    ///
-    /// Note that if a tool is not defined, the
-    /// default TCP is Joint 5
-//    Joint tcp;
-    
+
 
     
     ofNode parent;
@@ -105,7 +98,4 @@ public:
     void hightlightViewports();
     
     
-
-
-
 };

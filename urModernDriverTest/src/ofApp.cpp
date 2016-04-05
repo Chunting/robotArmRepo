@@ -32,9 +32,11 @@ void ofApp::setup(){
 #ifdef ENABLE_NATNET
     natNet.setup("en6", "192.168.1.131");
 #endif
+    
+    
+    robot.setup(parameters);
 
-    movement.setup();
-    panel.add(movement.movementParams);
+    panel.add(robot.movement.movementParams);
     speeds.assign(6, 0);
     parameters.bMove = false;
     // get the current pose on start up
@@ -60,9 +62,7 @@ void ofApp::setup(){
     rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
     rbWorksrf.addVertex(ofVec3f(-w/2, -h/2 + offset, 0)); // LL
     rbWorksrf.close();
-    
-    
-    robot.setup(parameters);
+
 }
 
 //--------------------------------------------------------------
@@ -72,57 +72,17 @@ void ofApp::update(){
 #endif
     
     robot.update();
+
     
-    // pass the current joints from the robot to the kinematic solver
-    vector<double> currentJointPos = robot.getJointPosition();
-    movement.setCurrentJointPosition(currentJointPos);
-    
-    // update GUI params
-    for(int i = 0; i < currentJointPos.size(); i++){
-        parameters.jointPos[i] = (float)currentJointPos[i];
-    }
-       // send the target TCP to the kinematic solver
-    movement.addTargetPoint(parameters.targetTCP);
-    movement.update();
-    
-    
-    // get back the target joint trajectories
-    vector<double> target = movement.getTargetJointPos();
-    for(int i = 0; i < target.size(); i++){
-        parameters.targetJointPos[i] = (float)target[i];
-    }
-    
-    // set the joint speeds
-    vector<double> tempSpeeds;
-    tempSpeeds.assign(6, 0);
-    tempSpeeds = movement.getCurrentSpeed();
-    for(int i = 0; i < tempSpeeds.size(); i++){
-        parameters.jointVelocities[i] = (float)tempSpeeds[i];
-    }
-    // move the robot to the target TCP
-    parameters.avgAccel = movement.getAcceleration();
-    if(parameters.bMove){
-        robot.robot.setSpeed(tempSpeeds, parameters.avgAccel);
-    }
-    
-    
-    /* 3D Navigation */
-    
-    // update which easyCam is active
+
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+    {
         activeCam = 0;
+    }
     else
+    {
         activeCam = 1;
-    
-}
-
-
-void ofApp::testMotors(){
-    vector<double> foo;
-    foo.assign(6, 0.0);
-    if(!parameters.bStop)
-        foo[0] = 1.0;
-//    robot.setSpeed(foo, ofRandom(1, 100));
+    }
 }
 
 //--------------------------------------------------------------
@@ -151,7 +111,7 @@ void ofApp::draw(){
     workSurface.draw();
     cams[0].end();
     
-    movement.draw();
+    robot.movement.draw();
     
     ofPushMatrix();
     ofSetColor(255, 0, 255);
@@ -170,8 +130,9 @@ void ofApp::exit(){
     parameters.bMove = false;
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("worksurface.xml");
-    if(robot.robot.isThreadRunning())
+    if(robot.robot.isThreadRunning()){
         robot.robot.waitForThread();
+    }
 }
 
 //--------------------------------------------------------------
@@ -182,15 +143,14 @@ void ofApp::keyPressed(int key){
     if(key == ' '){
         vector<ofPolyline> strokes;
         float retract;
-        if (natNet.recordedPath.size() > 0) {
+        if (natNet.recordedPath.size() > 0){
             // DEBUGGING....testing mocap tracking single point on worksrf
             ofPolyline temp;
             temp.addVertex(ofPoint (0,0,0));
             
             retract = 0;
             strokes.push_back(temp);
-        }
-        else{
+        }else{
             retract = -.1;
             strokes = gml.getPath(1.0);
         }
