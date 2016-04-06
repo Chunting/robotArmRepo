@@ -132,8 +132,7 @@ void ofApp::update(){
     
   
     
-//    targetTCP.rotation = ofQuaternion(norm);// * ofQuaternion(-90, ofVec3f(1,0,0));
-
+    targetTCP.rotation.makeRotate(ofVec3f(1,0,0), norm);
     
     
     // send the target TCP to the kinematic solver
