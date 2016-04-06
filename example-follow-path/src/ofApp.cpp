@@ -55,15 +55,17 @@ void ofApp::setup(){
     
     // build 2D perp plane
     float w = .035;
-    plane2D.addVertex(0,-w/2, w/2);
-    plane2D.addVertex(0, w/2, w/2);
-    plane2D.addVertex(0, w/2, -w/2);
-    plane2D.addVertex(0,-w/2, -w/2);
+    plane2D.addVertex(-w/2, w/2);
+    plane2D.addVertex( w/2, w/2);
+    plane2D.addVertex( w/2, -w/2);
+    plane2D.addVertex(-w/2, -w/2);
     plane2D.close();
+    
+    plane3D = plane2D;
     
     // build path
     pathIndex = 0;
-    centroid = ofPoint(.4,-.3,.25); // position in meters
+    centroid = ofPoint(.4,.1,.25); // position in meters
     path = buildPath();  
 
 }
@@ -81,10 +83,6 @@ void ofApp::update(){
     }
     parameters.tcpPosition = robot.getToolPoint();
     
-    // set target TCP to a default orientation, then modify
-    targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    targetTCP.rotation*= ofQuaternion(90, ofVec3f(1, 0, 0));
- 
     
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
@@ -103,38 +101,47 @@ void ofApp::update(){
     
 
     // find the current point on the path
-    if (path.getVertices().size() > 3){
+    if (path.getVertices().size() > 2){
+        
         pathIndex = (pathIndex + 1) % path.getVertices().size();
         
-        // set the current perp plane
-        plane3D = planes[pathIndex];
-        
-        // set the orientation
-        ofVec3f orient;
+        // find the orientation
+        ofVec3f curr = path.getVertices()[pathIndex];
+        ofVec3f next;
         if (pathIndex == path.getVertices().size()-1){
-            orient = path.getVertices()[0];
+            next = path.getVertices()[0];
         }else{
-            orient = path.getVertices()[pathIndex+1];
+            next = path.getVertices()[pathIndex+1];
         }
+        
+        // set the plane normal
+        norm = next - curr;
+        norm.normalize();
     
-    }
-    
-    targetTCP.position = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
+ 
+        // align orientation plane with normal
+        for (int i=0; i<4; i++){
+           ofVec3f p = plane2D.getVertices()[i];
+            ofQuaternion q;
+            q.makeRotate(ofVec3f(0,0,1), norm);
+            
+            p = p * q;
+            p += path.getVertices()[pathIndex];
+            
+            plane3D.getVertices()[i].set(p);
+        }
+        
+        // calculate local axis of plane3D (for visualizing)
+        u = plane3D.getVertices()[3] - plane3D.getVertices()[2];
+        v = plane3D.getVertices()[3] - plane3D.getVertices()[0];
+        u.normalize();
+        v.normalize();
 
-    
-    // calculate normal of plane3D
-    u = plane3D.getVertices()[3] - plane3D.getVertices()[2];
-    v = plane3D.getVertices()[3] - plane3D.getVertices()[0];
-    u.normalize();
-    v.normalize();
-    norm = u.getCrossed(v);
-    norm.normalize();
-    
-  
-    
-    targetTCP.rotation.makeRotate(ofVec3f(1,0,0), norm);
-    
-    
+        // assign position and orientation
+        targetTCP.position = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
+        targetTCP.rotation.makeRotate(ofVec3f(1,0,0), norm);
+    }
+        
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(targetTCP);
     movement.update();
@@ -158,6 +165,7 @@ void ofApp::update(){
     if(parameters.bMove){
         robot.setSpeed(tempSpeeds, parameters.avgAccel);
     }
+    
     
     // update which easyCam is active
     if (ofGetMouseX() < ofGetWindowWidth()/2)
@@ -188,6 +196,7 @@ void ofApp::draw(){
     ofPushStyle();
     ofScale(1000); // scale from meter to millimeters for visualizing
     
+    // show the 3D path
     ofSetColor(ofColor::aqua);
     path.draw();
     
@@ -195,56 +204,26 @@ void ofApp::draw(){
     // show the target point
     ofSetColor(ofColor::yellow, 100);
     if (path.size() > 0)
-        ofDrawSphere(path.getVertices()[pathIndex], .01);
+        ofDrawSphere(path.getVertices()[pathIndex], .005);
 
-    
-    // manually set the perp plane axes
-    ofVec3f o = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
-    u.scale(.03);
-    v.scale(.03);
-    norm.scale(.03);
-    u += o;
-    v += o;
-    norm += o;
-    
-    // manually draw the perp plane axes
-    ofSetColor(255, 0, 0);
-    ofDrawLine(o, u);
-    ofSetColor(0, 255, 0);
-    ofDrawLine(o, v);
-    ofSetColor(0, 0, 255);
-    ofDrawLine(o, norm);
-
-  
-    ofSetColor(ofColor::yellow, 100);
-    for (auto &plane : planes){
-        plane.draw();
-    }
-    
-    // ??? how to convert from 3 vector axis to transformation matrix ???
+    // show the local axes of the 3D plane
+    ofQuaternion q;
+    q.makeRotate(ofVec3f(0,0,1),norm);
+    ofMatrix4x4 m44 = ofMatrix4x4(q);
+    m44.setTranslation(path.getVertices()[pathIndex]);
     ofPushMatrix();
-    ofPoint p = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
-    u.normalize();
-    v.normalize();
-    norm.normalize();
-    
-    ofMatrix4x4 oriented;
-    oriented.set(u.x, u.y, u.z, 0,          // local X-Axis
-                 v.x, v.y, v.z, 0,          // local Y-Axis
-                 norm.x, norm.y, norm.z, 0, // local Z-Axis
-                 p.x, p.y, p.z, 1);         // global position
-    glMultMatrixf(oriented.getPtr());
-//    ofDrawAxis(.03);   // not working ...
+    glMultMatrixf(m44.getPtr());
+    ofDrawAxis(.03);
     ofPopMatrix();
-
-    
+   
+    // draw the perp plane
     ofSetLineWidth(.03);
     ofSetColor(ofColor::aliceBlue);
     plane3D.draw();
  
+    
     ofPopStyle();
     ofPopMatrix();
-
     cam.end();
     
     
@@ -260,10 +239,10 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
-    planes.clear();
+
     ofPolyline temp;
     float freq = .150;  // robot coordinates are in meters
-    float amp  = .015;
+    float amp  = .035;
     
     ofNode n0;
     ofNode n1;
@@ -275,26 +254,16 @@ ofPolyline ofApp::buildPath(){
     n2.setParent(n1);
     n2.setPosition(0, amp, 0);
     
+    float step = .5;
+    float totalRotation = 0;
     while (totalRotation < 360){
-        float step = .5;
+        
         totalRotation += step;
         n0.pan(step);
         n1.tilt(2);
-        n2.tilt(-2);    // counteract spin
+        n2.roll(1);
         
-        temp.addVertex(n2.getGlobalPosition());//.rotate(90, ofVec3f(1,0,0)));
-
-        ofPolyline oriented;
-        for (auto &p : plane2D.getVertices()){
-
-            ofVec3f o = ofVec3f(p.x,p.y,p.z);
-            o = o * n2.getGlobalOrientation();
-            o = o + temp.getVertices()[temp.getVertices().size()-1];
-            
-            oriented.addVertex(o);
-        }
-        oriented.close();
-        planes.push_back(oriented);
+        temp.addVertex(n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0)));
     }
     
     temp.close();
@@ -322,7 +291,7 @@ void ofApp::keyPressed(int key){
         centroid = ofPoint(0,0,0);
     }
     
-//    path = buildPath();
+    path = buildPath();
     
     handleViewportPresets(key);
     

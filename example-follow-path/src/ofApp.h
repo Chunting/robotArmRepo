@@ -39,39 +39,50 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-        // Robot Definitions
+        /* Robot Definitions */
+    
         ofxURDriver robot;
         URMove movement;
         float acceleration;
         vector<double> speeds;
-    
         Joint targetTCP;
     
-        // GUI Controls
+    
+        /* GUI Controls */
+    
         RobotParameters parameters;
         ofxPanel panel;
         ofxPanel panelJoints;
         ofEasyCam cam;
     
-        // Path Generator
+    
+        /* Path Generator */
+    
         ofPoint centroid;
         ofPolyline path;
         int pathIndex;
+        float totalRotation = 0;
+    
         /// \brief Draws a 3D curve with a given amplitude and frequency
+        ///
+        /// Adapted from: <a href="http://openframeworks.cc/ofBook/chapters/lines.html">ofBook/chapters/lines.html</a>
         ofPolyline buildPath();
     
-        // lofting plane around path
+    
+        /* Perpendicular Plane */
+    
+        /// \brief original 2D plane
         ofPolyline plane2D;
+        /// \brief oriented 3D plane
         ofPolyline plane3D;
+    
+        // local X,Y,Z axes of plane3D
         ofVec3f u;
         ofVec3f v;
-        ofVec3f norm; // need a lookAt
-        vector<ofPolyline> planes;
-
+        ofVec3f norm;
     
-    float totalRotation = 0;
 
-    
+
     
         // 3D Navigation Helpers
         void handleViewportPresets(int key);
