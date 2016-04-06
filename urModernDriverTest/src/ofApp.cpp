@@ -8,7 +8,7 @@ void ofApp::setup(){
     ofSetFrameRate(120);
     ofSetVerticalSync(true);
     ofBackground(0);
-    ofSetLogLevel(OF_LOG_SILENT);
+    ofSetLogLevel(OF_LOG_NOTICE);
     
     string interface_name = "en0"; // or network interface name
     

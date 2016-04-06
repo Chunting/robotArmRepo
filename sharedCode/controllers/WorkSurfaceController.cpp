@@ -23,7 +23,7 @@ void WorkSurfaceController::setup(RobotParameters & params){
     workSurface.rbWorksrf.close();
 }
 void WorkSurfaceController::update(){
-    workSurface.update();
+    workSurface.update(robotParams->targetTCPPosition);
 
 }
 void WorkSurfaceController::draw(){

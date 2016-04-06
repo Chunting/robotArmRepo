@@ -42,7 +42,6 @@ void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
     
-    
     if(reachPoint){
         if((targetPoint.position - newTargetPoint.front().position).length() < 0.01){
             newTargetPoint.pop_front();
@@ -55,12 +54,13 @@ void URMove::update(){
     
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
+    selectedSolution = selectSolution();
     urKinematics(mat);
 }
 
 vector<double> URMove::getTargetJointPos(){
     if(selectedSolution > -1){
-        return inversePosition[selectedSolution];
+        return previews[selectedSolution]->jointsProcessed;
     }else{
         return currentPose;
     }
@@ -75,8 +75,7 @@ vector<double> URMove::getCurrentSpeed(){
 
 void URMove::setCurrentJointPosition(vector<double> pose){
     currentPose = pose;
-    urKinematics(currentPose);
-    selectedSolution = selectSolution();
+//    urKinematics(currentPose);
 }
 
 void URMove::computeVelocities(){
@@ -93,13 +92,17 @@ void URMove::computeVelocities(){
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
                 maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
                 if(abs(currentJointSpeeds[i]) > PI){
-                    ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
+                    ofLog(OF_LOG_VERBOSE)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }
                 
                 acceleration[i] = currentJointSpeeds[i]-lastJointSpeeds[i];
                 avgAccel = MAX(acceleration[i], avgAccel);
                 
             }
+        }
+    }else{
+        for(int i = 0; i < currentJointSpeeds.size(); i++){
+            currentJointSpeeds[i] = 0;
         }
     }
 }
@@ -125,13 +128,13 @@ void URMove::addTargetPoint(Joint target){
 
 
 void URMove::draw(){
-    if(inversePosition.size() > 0){
+    if(inversePosition.size() > 0 && selectedSolution >=0){
         float x = ofGetWindowWidth()/2;
         float y = 0;
-        for(int j = 0; j < cams.size(); j++){
-            cams[j].begin(ofRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2));
+//        for(int j = 0; j < cams.size(); j++){
+            cams[0].begin(ofRectangle(x, y, ofGetWindowWidth()/2, ofGetWindowHeight()));
             ofPushMatrix();
-            previews[j]->draw();
+            previews[selectedSolution]->draw();
             ofPopMatrix();
             ofPushMatrix();
             targetLine.draw();
@@ -142,15 +145,15 @@ void URMove::draw(){
                 ofDrawSphere(toMM(newTargetPoint.front().position), 5);
             }
             ofPopMatrix();
-            cams[j].end();
+            cams[0].end();
             
-            x+=ofGetWindowWidth()/2/4;
-            
-            if(x >= ofGetWindowWidth()){
-                x = ofGetWindowWidth()/2;
-                y = ofGetWindowHeight()/2;
-            }
-        }
+//            x+=ofGetWindowWidth()/2/4;
+//            
+//            if(x >= ofGetWindowWidth()){
+//                x = ofGetWindowWidth()/2;
+//                y = ofGetWindowHeight()/2;
+//            }
+//        }
         
     }
     
@@ -206,8 +209,11 @@ int URMove::selectSolution(){
                 max = count[i];
             }
         }
-        ofLog()<<"nearest "<<nearest<<endl;
-        return 0;
+        ofLog(OF_LOG_NOTICE)<<"nearest "<<nearest<<endl;
+        if(inversePosition.size() >= 7)
+            return 7 ;
+        else
+            return 0;
     }else{
         return -1;
     }

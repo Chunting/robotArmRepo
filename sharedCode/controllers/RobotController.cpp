@@ -32,7 +32,7 @@ void RobotController::updateMovement(){
     movement.setCurrentJointPosition(robotParams->currentJointPos);
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
-        robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
+        robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
     }
     
     moveArm();

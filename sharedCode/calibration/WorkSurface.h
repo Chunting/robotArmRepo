@@ -18,7 +18,7 @@ public:
         LR
     };
     void setup();
-    void update();
+    void update(ofVec3f toolPointPos);
     void draw();
     void setCorners(vector<ofPoint> pts);
     void setCorner(CORNER i, ofPoint pt);
@@ -63,4 +63,6 @@ public:
     int targetIndex;
     ofVec3f normal;
     float startTime;
+    ofNode toolPoint;
+    Joint targetToolPoint;
 };

@@ -24,15 +24,22 @@ public :
         joints.add(bMove.set("Move", false));
         joints.add(avgAccel.set("avgAccel", 0, 0, 200));
         joints.add(bFigure8.set("bFigure8", false));
+
+
         for(int i = 0; i < 6; i++){
             jointPos.push_back(ofParameter<float>());
+            joints.add(jointPos.back().set("joint "+ofToString(i), 0, -360, 360));
+        }
+        
+        for(int i = 0; i < 6; i++){
             targetJointPos.push_back(ofParameter<float>());
+            joints.add(targetJointPos.back().set("target joint "+ofToString(i), 0, -360, 360));
+        }
+        
+        for(int i = 0; i < 6; i++){
             jointVelocities.push_back(ofParameter<float>());
-            joints.add(jointPos.back().set("joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
-            joints.add(targetJointPos.back().set("target joint "+ofToString(i), 0, -TWO_PI, TWO_PI));
             joints.add(jointVelocities.back().set("Joint Speed"+ofToString(i), 0, -100, 100));
         }
-
 
     };
     ofParameterGroup robotArmParams;

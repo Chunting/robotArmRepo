@@ -48,7 +48,7 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
     }
 }
 
-void WorkSurface::update(){
+void WorkSurface::update(ofVec3f toolPointPos){
     
     // update the worksurface mesh
     if (mesh.getVertices().size() == 0){
@@ -99,6 +99,10 @@ void WorkSurface::update(){
     ofVec3f axis;
     float angle;
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
+    toolPoint.setPosition(toolPointPos);
+    toolPoint.setOrientation(orientation);
+    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
+    orientation = toolPoint.getOrientationQuat();
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
@@ -135,13 +139,12 @@ void WorkSurface::calcNormals(){
         mesh.getNormals()[ic] += no;
     }
     
-    ofVec3f norm;
+
     for(int i=0; i < mesh.getNormals().size(); i++ ) {
         mesh.getNormals()[i].normalize();
-        norm+=mesh.getNormals()[i];
-        norm/=2.0;
+        normal+=mesh.getNormals()[i];
+        normal/=2.0;
     }
-    normal = norm;
 }
 
 
@@ -204,8 +207,11 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
             first.z += retractDist;
             last.z  += retractDist;
             
+            
             stroke.insertVertex(first, 0);
-            stroke.insertVertex(last, stroke.getVertices().size()-1);
+            stroke.addVertex(last);
+            stroke.addVertex(first);
+          
         }
         
         
@@ -245,15 +251,15 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 }
 
 Joint WorkSurface::getTargetPoint(float t){
-    Joint foo;
+
     if(lines.size() > 0){
         float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.05;
         t = fmodf(t, length)/length;
         
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
-        foo.position = p;
-        foo.rotation = orientation;
+        targetToolPoint.position = p;
+        targetToolPoint.rotation = orientation;
         if(1.0-t < 0.01 || t == 0.0){
             targetIndex++;
             if(targetIndex >=lines.size()){
@@ -261,7 +267,7 @@ Joint WorkSurface::getTargetPoint(float t){
             }
         }
     }
-    return foo;
+    return targetToolPoint;
 }
 void WorkSurface::draw(){
     ofPushMatrix();
