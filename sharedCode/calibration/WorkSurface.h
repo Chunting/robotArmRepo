@@ -2,7 +2,6 @@
 
 #pragma once
 #include "ofMain.h"
-#include "ofxQuadWarp.h"
 #include "UR5KinematicModel.h"
 class WorkSurface{
 public:
@@ -19,7 +18,7 @@ public:
         LR
     };
     void setup();
-    void update();
+    void update(ofVec3f toolPointPos);
     void draw();
     void setCorners(vector<ofPoint> pts);
     void setCorner(CORNER i, ofPoint pt);
@@ -27,7 +26,7 @@ public:
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
     void addStrokes(vector<ofPolyline> strokes);
-    
+    void calcNormals();
     /// Assign a set of strokes to a worksurface and add a
     /// retract/approach distance to the start and end of each stroke.
     /// @param retractDist
@@ -38,7 +37,7 @@ public:
     void setRotationZ(float x);
     Joint getTargetPoint(float t);
     ofParameterGroup workSurfaceParams;
-
+    ofPolyline rbWorksrf;
     ofMesh mesh;
     ofParameter<ofVec3f> position;
     ofParameter<ofVec3f> size;
@@ -54,7 +53,6 @@ public:
     ofQuaternion orientationX;
     ofQuaternion orientationY;
     ofQuaternion orientationZ;
-    ofxQuadWarp warp;
     ofPoint crossed;
     vector<ofPoint > corners;
     ofPlanePrimitive plane;
@@ -63,4 +61,8 @@ public:
     vector<ofPolyline> strokes_original;
     ofPolyline workArea;
     int targetIndex;
+    ofVec3f normal;
+    float startTime;
+    ofNode toolPoint;
+    Joint targetToolPoint;
 };

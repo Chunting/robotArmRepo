@@ -4,14 +4,15 @@
 #include "ofMain.h"
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
-#include "URDriver.h"
-#include "URMove.h"
-#include "UR5KinematicModel.h"
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
+
+#include "RobotController.h"
+#include "PathController.h"
 #include "RobotParameters.h"
 #include "NatNetController.h"
+#include "WorkSurfaceController.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -33,48 +34,28 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    void testMotors();
-    
-    void updateWorksurface(const ofxNatNet::RigidBody &rb);
-    
-    /// \brief set the corners of the work surface using unlabled markers
-    bool useUnlabledMarkers;
-    
-    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
-    /// \param markers
-    ///     List of markers to use as corners (should be 4)
-    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
+
     
     /// \brief 3D mesh with paths for robot to follow
-    WorkSurface workSurface;
+    
     RobotParameters parameters;
 
     ofxPanel panel;
     ofxPanel panelWorkSurface;
     ofxPanel panelJoints;
     
- 
+    RobotController robot;
     NatNetController natNet;
-    ofPolyline rbWorksrf;
+
     ofEasyCam cam;
-    //Motion Capture OSC Server
-    ofxOscSender sender;
-    ofxURDriver robot;
-    URMove movement;
+
+   
+    WorkSurfaceController workSurface;
+
     float acceleration;
     vector<double> speeds;
-    
-    /// \brief Tool Center Point for Robot
-    ///
-    /// Note that if a tool is not defined, the
-    /// default TCP is Joint 5
-//    Joint tcp;
-    
-    /// \brief Targeted Tool Center Point for Robot
-    ///
-    /// This is the desired TCP for the robot set
-    /// by the user.
-    Joint targetTCP;
+
+
     
     ofNode parent;
     
@@ -108,7 +89,4 @@ public:
     void hightlightViewports();
     
     
-
-
-
 };

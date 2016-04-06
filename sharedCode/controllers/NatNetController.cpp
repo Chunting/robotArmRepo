@@ -91,17 +91,18 @@ void NatNetController::draw(){
     
     // show unlabled makers
     ofSetColor(255,0,255);
-    for (int i = 0; i < natnet.getNumFilterdMarker(); i++)
+    for (int i = 0; i < natnet.getNumFilterdMarker(); i++){
         ofDrawBox(natnet.getFilterdMarker(i), 15);
-    
-    
+    }
+
     // show test srf
     ofPushStyle();
     ofSetLineWidth(5);
-    if (isMoving)
+    if (isMoving){
         ofSetColor(255, 0, 0);
-    else
+    }else{
         ofSetColor(ofColor::aqua);
+    }
     rbWorksrf.draw();
     ofPopStyle();
 }

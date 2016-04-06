@@ -33,7 +33,7 @@ _All Apps are built against openFrameworks master branch_
 
 _living on the bleeding edge!_
  
-![KinematicModel](data/debug_view_1.gif)
+![KinematicModel](data/ezgif.com-video-to-gif%20(1).gif)
 
 #NON-COMMERCIAL USE ONLY
 ###Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry

@@ -14,7 +14,7 @@ void WorkSurface::setup(){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
     }
-    warp.setup();
+    
     corners.assign(4, ofPoint(0, 0, 0));
     
     plane.setPosition(0, 0, 0);
@@ -48,7 +48,7 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
     }
 }
 
-void WorkSurface::update(){
+void WorkSurface::update(ofVec3f toolPointPos){
     
     // update the worksurface mesh
     if (mesh.getVertices().size() == 0){
@@ -63,6 +63,8 @@ void WorkSurface::update(){
         mesh.setVertex(2, targetPoints[2]);
         mesh.setVertex(3, targetPoints[3]);
     }
+    
+    calcNormals();
     
     
     ////      USE RIGID BODY FROM NATNET AS WORKSURFACE
@@ -96,7 +98,11 @@ void WorkSurface::update(){
     // assign new orientation
     ofVec3f axis;
     float angle;
-    orientation.getRotate(angle, axis);
+    orientation.makeRotate(ofVec3f(0, 0, 1), normal);
+    toolPoint.setPosition(toolPointPos);
+    toolPoint.setOrientation(orientation);
+    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
+    orientation = toolPoint.getOrientationQuat();
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
@@ -111,8 +117,38 @@ void WorkSurface::update(){
     if (strokes_original.size() != 0)
         addStrokes(strokes_original, 10);
     
-    
 }
+
+void WorkSurface::calcNormals(){
+    mesh.clearNormals();
+    for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
+    
+    for( int i=0; i < mesh.getIndices().size(); i+=3 ){
+        const int ia = mesh.getIndices()[i];
+        const int ib = mesh.getIndices()[i+1];
+        const int ic = mesh.getIndices()[i+2];
+        
+        ofVec3f e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
+        ofVec3f e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+        ofVec3f no = e1.cross( e2 );
+        
+        // depending on your clockwise / winding order, you might want to reverse the e2 / e1 above if your normals are flipped.
+        
+        mesh.getNormals()[ia] += no;
+        mesh.getNormals()[ib] += no;
+        mesh.getNormals()[ic] += no;
+    }
+    
+
+    for(int i=0; i < mesh.getNormals().size(); i++ ) {
+        mesh.getNormals()[i].normalize();
+        normal+=mesh.getNormals()[i];
+        normal/=2.0;
+    }
+}
+
+
+
 void WorkSurface::addPoint(ofVec3f pt){
     
 }
@@ -171,8 +207,11 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
             first.z += retractDist;
             last.z  += retractDist;
             
+            
             stroke.insertVertex(first, 0);
-            stroke.insertVertex(last, stroke.getVertices().size()-1);
+            stroke.addVertex(last);
+            stroke.addVertex(first);
+          
         }
         
         
@@ -212,15 +251,15 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 }
 
 Joint WorkSurface::getTargetPoint(float t){
-    Joint foo;
+
     if(lines.size() > 0){
         float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.05;
         t = fmodf(t, length)/length;
         
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
-        foo.position = p;
-        foo.rotation = orientation;
+        targetToolPoint.position = p;
+        targetToolPoint.rotation = orientation;
         if(1.0-t < 0.01 || t == 0.0){
             targetIndex++;
             if(targetIndex >=lines.size()){
@@ -228,7 +267,7 @@ Joint WorkSurface::getTargetPoint(float t){
             }
         }
     }
-    return foo;
+    return targetToolPoint;
 }
 void WorkSurface::draw(){
     ofPushMatrix();

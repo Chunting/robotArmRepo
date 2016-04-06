@@ -36,6 +36,7 @@ public:
     
 protected:
     
+    ofParameter<bool> reachPoint;
     ofParameter<float> targetTCPLerpSpeed;
     ofParameter<float> jointSpeedLerpSpeed;
     ofParameter<float> jointAccelerationMultipler;
@@ -91,7 +92,7 @@ protected:
     ofVec3f normalAtIndexSin;
     ofVec3f rotationAtIndexSin;
     Joint targetPoint;
-    Joint newTargetPoint;
+    deque<Joint> newTargetPoint;
     unsigned int nearestIndex;
     float rotAngle;
     ofNode node;
