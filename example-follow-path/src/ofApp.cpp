@@ -123,8 +123,8 @@ void ofApp::update(){
 
     
     // calculate normal of plane3D
-    u = plane3D.getVertices()[1] - plane3D.getVertices()[2];
-    v = plane3D.getVertices()[1] - plane3D.getVertices()[0];
+    u = plane3D.getVertices()[3] - plane3D.getVertices()[2];
+    v = plane3D.getVertices()[3] - plane3D.getVertices()[0];
     u.normalize();
     v.normalize();
     norm = u.getCrossed(v);
