@@ -11,10 +11,10 @@
     //
     // This example shows you how to:
     //
-    // 1. Load and interpolate a path for the robot.
+    // 1. Create a 3D path & orientation planes for the robot.
     // 2. Calculate a target TCP from point on path.
     // 3. Move the robot based on a target TCP.
-    // 4. Move the path while moving the robot.
+    // 4. Move the path while moving the robot using keyPressed.
 
 
 #include "ofApp.h"
@@ -53,20 +53,17 @@ void ofApp::setup(){
     parameters.bCopy = true;
 
     
-    // build 2D perp plane
-    float w = .035;
-    plane2D.addVertex(-w/2, w/2);
-    plane2D.addVertex( w/2, w/2);
-    plane2D.addVertex( w/2, -w/2);
-    plane2D.addVertex(-w/2, -w/2);
-    plane2D.close();
-    
-    plane3D = plane2D;
     
     // build path
-    pathIndex = 0;
-    centroid = ofPoint(.4,.1,.25); // position in meters
-    path = buildPath();  
+    ptIndex = 0;
+    centroid = ofPoint(.5,.25,.25); // position in meters
+    
+    // create a 3D path & profile
+    path = buildPath();
+    profile = buildProfile(.025,4);
+    
+    // set the Z axis as the forward axis by default
+    makeZForward = true;
 
 }
 
@@ -83,6 +80,10 @@ void ofApp::update(){
     }
     parameters.tcpPosition = robot.getToolPoint();
     
+    // set target TCP to a default orientation, then modify <-- I don't think this is doing anything.
+    targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+    targetTCP.rotation*= ofQuaternion(90, ofVec3f(1, 0, 0));
+    targetTCP.rotation*= ofQuaternion( 0, ofVec3f(0, 1, 0));
     
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
@@ -101,45 +102,19 @@ void ofApp::update(){
     
 
     // find the current point on the path
-    if (path.getVertices().size() > 2){
+    if (!pause && ptf.framesSize()>0){
+        ptIndex = (ptIndex +1) % ptf.framesSize();
         
-        pathIndex = (pathIndex + 1) % path.getVertices().size();
+        orientation = ptf.frameAt(ptIndex);
         
-        // find the orientation
-        ofVec3f curr = path.getVertices()[pathIndex];
-        ofVec3f next;
-        if (pathIndex == path.getVertices().size()-1){
-            next = path.getVertices()[0];
-        }else{
-            next = path.getVertices()[pathIndex+1];
-        }
+        if (makeZForward)
+            orientation = zForward(orientation);
+        else if (makeZOut)
+            orientation = zOut(orientation);
         
-        // set the plane normal
-        norm = next - curr;
-        norm.normalize();
-    
- 
-        // align orientation plane with normal
-        for (int i=0; i<4; i++){
-           ofVec3f p = plane2D.getVertices()[i];
-            ofQuaternion q;
-            q.makeRotate(ofVec3f(0,0,1), norm);
-            
-            p = p * q;
-            p += path.getVertices()[pathIndex];
-            
-            plane3D.getVertices()[i].set(p);
-        }
-        
-        // calculate local axis of plane3D (for visualizing)
-        u = plane3D.getVertices()[3] - plane3D.getVertices()[2];
-        v = plane3D.getVertices()[3] - plane3D.getVertices()[0];
-        u.normalize();
-        v.normalize();
-
-        // assign position and orientation
-        targetTCP.position = plane3D.getVertices()[0].getMiddle(plane3D.getVertices()[2]);
-        targetTCP.rotation.makeRotate(ofVec3f(1,0,0), norm);
+        // update the target TCP
+        targetTCP.position = orientation.getTranslation();
+        targetTCP.rotation *= orientation.getRotate();
     }
         
     // send the target TCP to the kinematic solver
@@ -195,33 +170,50 @@ void ofApp::draw(){
     ofPushMatrix();
     ofPushStyle();
     ofScale(1000); // scale from meter to millimeters for visualizing
+
     
-    // show the 3D path
-    ofSetColor(ofColor::aqua);
-    path.draw();
-    
+   
+    if (pause){
+        // draw all the perp frames if we are paused
+        for (int i=0; i<ptf.framesSize(); i++){
+            ofMatrix4x4 m44 = ptf.frameAt(i);
+            
+            if (makeZForward)
+                m44 = zForward(m44);
+            else if (makeZOut)
+                m44 = zOut(m44);
+            
+            ofSetColor(ofColor::aqua);
+            ofPushMatrix();
+            ofMultMatrix(m44);
+            profile.draw();
+            ofPopMatrix();
+        }
+    }
+   
+
+    // show the current orientation plane
+    ofSetColor(ofColor::lightYellow);
+    ofSetLineWidth(3);
+    ofPushMatrix();
+    ofMultMatrix(orientation);
+    profile.draw();
+    ofDrawAxis(.010);
+    ofPopMatrix();
     
     // show the target point
-    ofSetColor(ofColor::yellow, 100);
+    ofSetColor(ofColor::yellow);
     if (path.size() > 0)
-        ofDrawSphere(path.getVertices()[pathIndex], .005);
-
-    // show the local axes of the 3D plane
-    ofQuaternion q;
-    q.makeRotate(ofVec3f(0,0,1),norm);
-    ofMatrix4x4 m44 = ofMatrix4x4(q);
-    m44.setTranslation(path.getVertices()[pathIndex]);
-    ofPushMatrix();
-    glMultMatrixf(m44.getPtr());
-    ofDrawAxis(.03);
-    ofPopMatrix();
-   
-    // draw the perp plane
-    ofSetLineWidth(.03);
-    ofSetColor(ofColor::aliceBlue);
-    plane3D.draw();
- 
+        ofDrawSphere(path.getVertices()[ptIndex], .003);
     
+   
+    
+    // show the 3D path
+    ofSetLineWidth(.01);
+    ofSetColor(ofColor::aqua);
+    path.draw();
+
+
     ofPopStyle();
     ofPopMatrix();
     cam.end();
@@ -237,37 +229,95 @@ void ofApp::draw(){
     hightlightViewports();
 }
 
+
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
-
+    ptf.clear();
     ofPolyline temp;
-    float freq = .150;  // robot coordinates are in meters
-    float amp  = .035;
     
     ofNode n0;
     ofNode n1;
     ofNode n2;
     
-    n0.setPosition(centroid);
+    n0.setPosition(centroid.x,centroid.y,centroid.z);
     n1.setParent(n0);
-    n1.setPosition(0, 0, freq);
+    n1.setPosition(0,0,.2);
     n2.setParent(n1);
-    n2.setPosition(0, amp, 0);
+    n2.setPosition(0,.015,0);
     
-    float step = .5;
     float totalRotation = 0;
+    float step = .5;
     while (totalRotation < 360){
         
-        totalRotation += step;
         n0.pan(step);
         n1.tilt(2);
         n2.roll(1);
         
-        temp.addVertex(n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0)));
+        ofPoint p = n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0));
+        
+        // and point to path
+        temp.addVertex(p);
+        
+        // add point to perp frames
+        ptf.addPoint(p);
+        
+        totalRotation += step;
     }
     
     temp.close();
     return temp;
+}
+
+//--------------------------------------------------------------
+ofPolyline ofApp::buildProfile(float radius, int res){
+    ofPolyline temp;
+    
+    // make a plane
+    if (res == 4){
+        temp.addVertex(ofVec3f(-radius/2, radius/2,0));
+        temp.addVertex(ofVec3f( radius/2, radius/2,0));
+        temp.addVertex(ofVec3f( radius/2,-radius/2,0));
+        temp.addVertex(ofVec3f(-radius/2,-radius/2,0));
+    }
+    // make a polygon
+    else{
+        float theta = 360/res;
+        for (int i=0; i<res; i++){
+            ofPoint p = ofPoint(0,0,radius);
+            temp.addVertex(p.rotate(theta*i, ofVec3f(1,0,0)));
+        }
+    }
+    
+    temp.close();
+    return temp;
+}
+
+
+//--------------------------------------------------------------
+ofMatrix4x4 ofApp::zForward(ofMatrix4x4 originalMat){
+    
+    ofVec3f pos  = originalMat.getTranslation();
+    ofVec3f y = originalMat.getRowAsVec3f(1);   // local y-axis
+    
+    originalMat.setTranslation(0,0,0);
+    originalMat.rotate(-90, y.x, y.y, y.z);     // rotate about the y
+    originalMat.setTranslation(pos);
+    
+    return originalMat;
+}
+
+
+//--------------------------------------------------------------
+ofMatrix4x4 ofApp::zOut(ofMatrix4x4 originalMat){
+    
+    ofVec3f pos  = originalMat.getTranslation();
+    ofVec3f x = originalMat.getRowAsVec3f(0);   // local x-axis
+    
+    originalMat.setTranslation(0,0,0);
+    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the y
+    originalMat.setTranslation(pos);
+    
+    return originalMat;
 }
 
 //--------------------------------------------------------------
@@ -281,17 +331,39 @@ void ofApp::keyPressed(int key){
     
     else if (key == OF_KEY_UP){
         centroid.y += step;
+        path = buildPath();
     }else if(key == OF_KEY_DOWN){
         centroid.y -= step;
+        path = buildPath();
     }else if(key == OF_KEY_RIGHT){
         centroid.x += step;
+        path = buildPath();
     }else if(key == OF_KEY_LEFT){
         centroid.x -= step;
+        path = buildPath();
     }else if(key == ' '){
         centroid = ofPoint(0,0,0);
+        path = buildPath();
     }
     
-    path = buildPath();
+    else if (key == OF_KEY_SHIFT)
+        pause = !pause;
+    
+    else if (key == '1'){
+        makeZOut = false;
+        makeZForward = true;
+    }
+    else if (key == '2'){
+        makeZForward = false;
+        makeZOut = true;
+    }
+    else if (key == '3'){
+        makeZForward = false;
+        makeZOut = false;
+    }
+
+    
+   
     
     handleViewportPresets(key);
     

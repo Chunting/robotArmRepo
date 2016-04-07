@@ -3,6 +3,7 @@ ofxGML
 ofxGui
 ofxNatNet
 ofxOpenCv
+ofxPtf
 ofxQuadWarp
 ofxTiming
 ofxXmlSettings
