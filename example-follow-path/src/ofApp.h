@@ -97,8 +97,11 @@ class ofApp : public ofBaseApp{
         /// \brief polygonal profile to loft
         ofPolyline profile;
 
-    
-
+        /* Test Paths for Orientation */
+        ofPolyline path_XZ;
+        ofPolyline path_YZ;
+        ofPolyline path_SPIRAL;
+        ofPolyline parsePts(string filename);
 
     
         /* 3D Navigation Helpers */
