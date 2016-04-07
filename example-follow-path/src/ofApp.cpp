@@ -65,33 +65,36 @@ void ofApp::setup(){
     // set the Z axis as the forward axis by default
     makeZForward = true;
     
-    path_XZ = parsePts("path_XZ.txt");
-
+    parsePts("path_XZ.txt", path_XZ);
+    path = path_XZ;
 }
 
-ofPolyline ofApp::parsePts(string filename){
-//    ofFile file = ofFile(ofToDataPath(filename));
-//   
-//    if(!file.exists()){
-//        ofLogError("The file " + filename + " is missing");
-//    }
-//    ofBuffer buffer(file);
-//    
-//    //Read file line by line
-//    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
-//        string line = *it;
-//        
-//        // remove { }
-//        line = line.substr(1,line.length()-2);
-//        vector<float> coords = ofSplitString(line, <#const string &delimiter#>)
-//        
-//        //Split line into strings
-//        vector<string> words = ofSplitString(line, ",");
-//        
-//            }
-//    
-//    
+void ofApp::parsePts(string filename, ofPolyline &polyline){
+    ofFile file = ofFile(ofToDataPath(filename));
     
+    ptf.clear();
+   
+    if(!file.exists()){
+        ofLogError("The file " + filename + " is missing");
+    }
+    ofBuffer buffer(file);
+    
+    //Read file line by line
+    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
+        string line = *it;
+        
+        float scalar = 10;
+        ofVec3f offset = ofVec3f(0, .25, 0);
+        
+        line = line.substr(1,line.length()-2);              // remove end { }
+        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
+        
+        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
+        p += offset;
+        
+        polyline.addVertex(p);
+        ptf.addPoint(p);
+    }
     
 }
 
@@ -143,12 +146,13 @@ void ofApp::update(){
         // update the target TCP
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
-    }
-        
-    // send the target TCP to the kinematic solver
-    movement.addTargetPoint(targetTCP);
-    movement.update();
     
+    
+    
+        // send the target TCP to the kinematic solver
+        movement.addTargetPoint(targetTCP);
+        movement.update();
+    }
     
     // get back the target joint trajectories
     vector<double> target = movement.getTargetJointPos();
@@ -240,6 +244,9 @@ void ofApp::draw(){
     ofSetLineWidth(.01);
     ofSetColor(ofColor::aqua);
     path.draw();
+    
+    // show debugging paths
+    path_XZ.draw();
 
 
     ofPopStyle();

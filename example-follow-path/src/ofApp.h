@@ -101,7 +101,7 @@ class ofApp : public ofBaseApp{
         ofPolyline path_XZ;
         ofPolyline path_YZ;
         ofPolyline path_SPIRAL;
-        ofPolyline parsePts(string filename);
+        void parsePts(string filename, ofPolyline &polyline);
 
     
         /* 3D Navigation Helpers */
