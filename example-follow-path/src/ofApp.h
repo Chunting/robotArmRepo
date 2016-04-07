@@ -18,6 +18,7 @@
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "RobotParameters.h"
+#include "ofxPtf.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,7 +27,7 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
     
-        /// \brief Move the path using arrow keys
+        /// \brief Use the arrow keys to move the path
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y );
@@ -39,28 +40,69 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-        // Robot Definitions
+        /* Robot Definitions */
+    
         ofxURDriver robot;
         URMove movement;
         float acceleration;
         vector<double> speeds;
-    
         Joint targetTCP;
     
-        // GUI Controls
+    
+        /* GUI Controls */
+    
         RobotParameters parameters;
         ofxPanel panel;
         ofxPanel panelJoints;
         ofEasyCam cam;
     
-        // Path Generator
-        ofPoint centroid;
-        ofPolyline path;
-        int pathIndex;
-        /// \brief Draws a 3D curve with a given amplitude and frequency
-        ofPolyline buildPath();
     
-        // 3D Navigation Helpers
+        /* Path Generator */
+    
+        ofPoint centroid;
+        bool pause;
+        int ptIndex;
+        
+        
+        /// \brief Creates a periodic 3D path.
+        /// Adapted from: <a href="http://openframeworks.cc/ofBook/chapters/lines.html">ofBook/chapters/lines.html</a>
+        ofPolyline buildPath();
+        
+        /// Periodic 3D path
+        ofPolyline path;
+        
+        /// \brief Perpendicular Frame Generator
+        ofxPtf ptf;
+        
+        /// \brief Make the z-axis of the perp frame the forward-facing axis
+        ///
+        /// Note: by default the X-Axis is the forward-facing axis
+        ofMatrix4x4 zForward(ofMatrix4x4 originalMat);
+        bool makeZForward;
+        
+        /// \brief Make the z-axis of the perp frame the outwards-facing axis.
+        ///
+        /// Note: by default the X-Axis is the forward-facing axis
+        ofMatrix4x4 zOut(ofMatrix4x4 originalMat);
+        bool makeZOut;
+        
+        /// \brief orientation of current perp frame
+        ofMatrix4x4 orientation;
+        
+        /// \brief Creates the 2D polygon to loft along the path
+        /// \param radius radius of polygon
+        /// \param res resolution of polygon
+        ofPolyline buildProfile(float radius, int res);
+        
+        /// \brief polygonal profile to loft
+        ofPolyline profile;
+
+    
+
+
+    
+        /* 3D Navigation Helpers */
+    
         void handleViewportPresets(int key);
         void hightlightViewports();
         ofMatrix4x4 savedCamMat;

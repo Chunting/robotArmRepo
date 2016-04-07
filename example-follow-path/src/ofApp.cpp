@@ -11,10 +11,10 @@
     //
     // This example shows you how to:
     //
-    // 1. Load and interpolate a path for the robot.
+    // 1. Create a 3D path & orientation planes for the robot.
     // 2. Calculate a target TCP from point on path.
     // 3. Move the robot based on a target TCP.
-    // 4. Move the path while moving the robot.
+    // 4. Move the path while moving the robot using keyPressed.
 
 
 #include "ofApp.h"
@@ -52,11 +52,19 @@ void ofApp::setup(){
     // get the current pose on start up
     parameters.bCopy = true;
 
-    // build path
-    pathIndex = 0;
-    centroid = ofPoint(.4,.3,.25); // position in meters
-    path = buildPath();
     
+    
+    // build path
+    ptIndex = 0;
+    centroid = ofPoint(.5,.25,.25); // position in meters
+    
+    // create a 3D path & profile
+    path = buildPath();
+    profile = buildProfile(.025,4);
+    
+    // set the Z axis as the forward axis by default
+    makeZForward = true;
+
 }
 
 //--------------------------------------------------------------
@@ -72,10 +80,10 @@ void ofApp::update(){
     }
     parameters.tcpPosition = robot.getToolPoint();
     
-    // set target TCP to a default orientation, then modify
+    // set target TCP to a default orientation, then modify <-- I don't think this is doing anything.
     targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
     targetTCP.rotation*= ofQuaternion(90, ofVec3f(1, 0, 0));
- 
+    targetTCP.rotation*= ofQuaternion( 0, ofVec3f(0, 1, 0));
     
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
@@ -94,18 +102,21 @@ void ofApp::update(){
     
 
     // find the current point on the path
-    pathIndex = (pathIndex + 1) % path.getVertices().size();
-    targetTCP.position = path.getVertices()[pathIndex];
-    
-    // check if we are too far away
-//    float distThresh = .03;
-//    if (robot.getToolPoint().squareDistance(targetTCP.position) > distThresh*distThresh){
-//        // if we are too far away, interpolate from the current point
-//        // towards the target point
-//        targetTCP.position.interpolate(robot.getToolPoint(), .1 );
-//    }
-    
-    
+    if (!pause && ptf.framesSize()>0){
+        ptIndex = (ptIndex +1) % ptf.framesSize();
+        
+        orientation = ptf.frameAt(ptIndex);
+        
+        if (makeZForward)
+            orientation = zForward(orientation);
+        else if (makeZOut)
+            orientation = zOut(orientation);
+        
+        // update the target TCP
+        targetTCP.position = orientation.getTranslation();
+        targetTCP.rotation *= orientation.getRotate();
+    }
+        
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(targetTCP);
     movement.update();
@@ -129,6 +140,7 @@ void ofApp::update(){
     if(parameters.bMove){
         robot.setSpeed(tempSpeeds, parameters.avgAccel);
     }
+    
     
     // update which easyCam is active
     if (ofGetMouseX() < ofGetWindowWidth()/2)
@@ -157,22 +169,55 @@ void ofApp::draw(){
     // show the 3D path
     ofPushMatrix();
     ofPushStyle();
-    ofScale(1000); // draw in mm
+    ofScale(1000); // scale from meter to millimeters for visualizing
+
     
-    ofSetColor(ofColor::aqua);
-    path.draw();
+   
+    if (pause){
+        // draw all the perp frames if we are paused
+        for (int i=0; i<ptf.framesSize(); i++){
+            ofMatrix4x4 m44 = ptf.frameAt(i);
+            
+            if (makeZForward)
+                m44 = zForward(m44);
+            else if (makeZOut)
+                m44 = zOut(m44);
+            
+            ofSetColor(ofColor::aqua);
+            ofPushMatrix();
+            ofMultMatrix(m44);
+            profile.draw();
+            ofPopMatrix();
+        }
+    }
+   
+
+    // show the current orientation plane
+    ofSetColor(ofColor::lightYellow);
+    ofSetLineWidth(3);
+    ofPushMatrix();
+    ofMultMatrix(orientation);
+    profile.draw();
+    ofDrawAxis(.010);
+    ofPopMatrix();
     
     // show the target point
-    ofSetColor(ofColor::yellow, 100);
-    ofDrawSphere(path.getVertices()[pathIndex], .01);
-//    ofSetColor(ofColor::red);
-//    ofDrawSphere(targetTCP.position, .003);
+    ofSetColor(ofColor::yellow);
+    if (path.size() > 0)
+        ofDrawSphere(path.getVertices()[ptIndex], .003);
     
-    ofDrawLine(robot.getToolPoint(), targetTCP.position);
+   
     
+    // show the 3D path
+    ofSetLineWidth(.01);
+    ofSetColor(ofColor::aqua);
+    path.draw();
+
+
     ofPopStyle();
     ofPopMatrix();
     cam.end();
+    
     
     // draw simulated robot
     movement.draw();
@@ -184,37 +229,95 @@ void ofApp::draw(){
     hightlightViewports();
 }
 
+
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
-    
+    ptf.clear();
     ofPolyline temp;
-    float freq = .150;  // robot coordinates are in meters
-    float amp  = .075;
     
     ofNode n0;
     ofNode n1;
     ofNode n2;
     
-    n0.setPosition(centroid);
+    n0.setPosition(centroid.x,centroid.y,centroid.z);
     n1.setParent(n0);
-    n1.setPosition(0, 0, freq);
+    n1.setPosition(0,0,.2);
     n2.setParent(n1);
-    n2.setPosition(0, amp, 0);
-    
+    n2.setPosition(0,.015,0);
     
     float totalRotation = 0;
+    float step = .5;
     while (totalRotation < 360){
-        float step = .5;
-        totalRotation += step;
+        
         n0.pan(step);
         n1.tilt(2);
         n2.roll(1);
         
-        temp.addVertex(n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0)));
+        ofPoint p = n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0));
+        
+        // and point to path
+        temp.addVertex(p);
+        
+        // add point to perp frames
+        ptf.addPoint(p);
+        
+        totalRotation += step;
     }
     
     temp.close();
     return temp;
+}
+
+//--------------------------------------------------------------
+ofPolyline ofApp::buildProfile(float radius, int res){
+    ofPolyline temp;
+    
+    // make a plane
+    if (res == 4){
+        temp.addVertex(ofVec3f(-radius/2, radius/2,0));
+        temp.addVertex(ofVec3f( radius/2, radius/2,0));
+        temp.addVertex(ofVec3f( radius/2,-radius/2,0));
+        temp.addVertex(ofVec3f(-radius/2,-radius/2,0));
+    }
+    // make a polygon
+    else{
+        float theta = 360/res;
+        for (int i=0; i<res; i++){
+            ofPoint p = ofPoint(0,0,radius);
+            temp.addVertex(p.rotate(theta*i, ofVec3f(1,0,0)));
+        }
+    }
+    
+    temp.close();
+    return temp;
+}
+
+
+//--------------------------------------------------------------
+ofMatrix4x4 ofApp::zForward(ofMatrix4x4 originalMat){
+    
+    ofVec3f pos  = originalMat.getTranslation();
+    ofVec3f y = originalMat.getRowAsVec3f(1);   // local y-axis
+    
+    originalMat.setTranslation(0,0,0);
+    originalMat.rotate(-90, y.x, y.y, y.z);     // rotate about the y
+    originalMat.setTranslation(pos);
+    
+    return originalMat;
+}
+
+
+//--------------------------------------------------------------
+ofMatrix4x4 ofApp::zOut(ofMatrix4x4 originalMat){
+    
+    ofVec3f pos  = originalMat.getTranslation();
+    ofVec3f x = originalMat.getRowAsVec3f(0);   // local x-axis
+    
+    originalMat.setTranslation(0,0,0);
+    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the y
+    originalMat.setTranslation(pos);
+    
+    return originalMat;
 }
 
 //--------------------------------------------------------------
@@ -228,17 +331,39 @@ void ofApp::keyPressed(int key){
     
     else if (key == OF_KEY_UP){
         centroid.y += step;
+        path = buildPath();
     }else if(key == OF_KEY_DOWN){
         centroid.y -= step;
+        path = buildPath();
     }else if(key == OF_KEY_RIGHT){
         centroid.x += step;
+        path = buildPath();
     }else if(key == OF_KEY_LEFT){
         centroid.x -= step;
+        path = buildPath();
     }else if(key == ' '){
         centroid = ofPoint(0,0,0);
+        path = buildPath();
     }
     
-    path = buildPath();
+    else if (key == OF_KEY_SHIFT)
+        pause = !pause;
+    
+    else if (key == '1'){
+        makeZOut = false;
+        makeZForward = true;
+    }
+    else if (key == '2'){
+        makeZForward = false;
+        makeZOut = true;
+    }
+    else if (key == '3'){
+        makeZForward = false;
+        makeZOut = false;
+    }
+
+    
+   
     
     handleViewportPresets(key);
     
@@ -276,10 +401,10 @@ void ofApp::handleViewportPresets(int key){
     // PERSPECTIVE VIEW
     else if (key == 'p'){
         // hardcoded perspective camera
-        ofMatrix4x4 perspective = ofMatrix4x4(0.991627, -0.124872, -0.0329001, 0,
-                                              0.055994, 0.186215, 0.980912, 0,
-                                              -0.116362, -0.974541, 0.191648, 0,
-                                              200.997, -1244.37,  522.721, 1);
+        ofMatrix4x4 perspective = ofMatrix4x4(0.721792, 0.689126, -0.0641996, 0,
+                                              -0.0677436, 0.162658, 0.984354, 0,
+                                              0.688787, -0.70615, 0.164089, 0,
+                                              777.021, -719.789,  366.449, 1);
         cam.reset();
         cam.setGlobalPosition(perspective.getTranslation());
         cam.setGlobalOrientation(perspective.getRotate());
