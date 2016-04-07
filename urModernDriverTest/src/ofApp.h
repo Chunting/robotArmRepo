@@ -43,6 +43,10 @@ public:
     ofxPanel panel;
     ofxPanel panelWorkSurface;
     ofxPanel panelJoints;
+    ofxPanel panelTargetJoints;
+    ofxPanel panelJointsIK;
+    ofxPanel panelJointsSpeed;
+    
     
     RobotController robot;
     NatNetController natNet;

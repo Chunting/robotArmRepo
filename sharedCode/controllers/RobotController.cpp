@@ -40,7 +40,10 @@ void RobotController::updateMovement(){
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);
     movement.update();
-    
+    vector<double> rawIK = movement.getRawJointPos();
+    for(int i = 0; i < rawIK.size(); i++){
+        robotParams->jointPosIKRaw[i] = ofRadToDeg((float)rawIK[i]);
+    }
     
     // get back the target joint trajectories
     vector<double> target = movement.getTargetJointPos();
@@ -66,8 +69,8 @@ void RobotController::updateMovement(){
 void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
-    
-    
+//    robotParams->tcpOrientation
+    robotParams->tcpOrientation = robot.model.tool.rotation.getEuler();
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
@@ -120,7 +123,7 @@ void RobotController::moveArm(){
         
         // update GUI params
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        robotParams->tcpOrientation =robotParams->targetTCP.rotation.getEuler();
+//        robotParams->tcpOrientation =robotParams->targetTCP.rotation.getEuler();
     }
     // follow a pre-defined path
     if(robotParams->bTrace){

@@ -24,7 +24,14 @@ void ofApp::setup(){
     
     
     panelJoints.setup(parameters.joints);
+    panelTargetJoints.setup(parameters.targetJoints);
+    panelJointsSpeed.setup(parameters.jointSpeeds);
+    panelJointsIK.setup(parameters.jointsIK);
+    
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
+    panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
+    panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
+    panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelWorkSurface.setup(workSurface.workSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
@@ -35,7 +42,6 @@ void ofApp::setup(){
     
     
     robot.setup(parameters);
-    
     panel.add(robot.movement.movementParams);
     speeds.assign(6, 0);
     parameters.bMove = false;
@@ -50,12 +56,6 @@ void ofApp::setup(){
     // need to move URMove camera to ofApp
     
     handleViewportPresets('p');
-    
-    
-    
-    
-    
-    
 }
 
 //--------------------------------------------------------------
@@ -116,7 +116,10 @@ void ofApp::draw(){
     
     panel.draw();
     panelJoints.draw();
+    panelJointsIK.draw();
     panelWorkSurface.draw();
+    panelJointsSpeed.draw();
+    panelTargetJoints.draw();
     
     /* 3D Navigation */
     hightlightViewports();
@@ -137,24 +140,28 @@ void ofApp::keyPressed(int key){
         parameters.bMove = !parameters.bMove;
     }
     if(key == ' '){
-        vector<ofPolyline> strokes;
-        float retract;
-        if (natNet.recordedPath.size() > 0){
-            // DEBUGGING....testing mocap tracking single point on worksrf
-            ofPolyline temp;
-            temp.addVertex(ofPoint (0,0,0));
-            
-            retract = 0;
-            strokes.push_back(temp);
+        if(parameters.bTrace){
+            parameters.bTrace = false;
         }else{
-            retract = -.1;
-            strokes = gml.getPath(1.0);
+            vector<ofPolyline> strokes;
+            float retract;
+            if (natNet.recordedPath.size() > 0){
+                // DEBUGGING....testing mocap tracking single point on worksrf
+                ofPolyline temp;
+                temp.addVertex(ofPoint (0,0,0));
+                
+                retract = 0;
+                strokes.push_back(temp);
+            }else{
+                retract = -.1;
+                strokes = gml.getPath(1.0);
+            }
+            
+            workSurface.workSurface.addStrokes(strokes,retract);
+            parameters.bTrace = true;
+            parameters.bFollow = false;
+            workSurface.startTime = ofGetElapsedTimef();
         }
-        
-        workSurface.workSurface.addStrokes(strokes,retract);
-        parameters.bTrace = true;
-        parameters.bFollow = false;
-        workSurface.startTime = ofGetElapsedTimef();
         
     }
     if(key == '1'){
