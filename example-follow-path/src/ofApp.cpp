@@ -11,7 +11,7 @@
     //
     // This example shows you how to:
     //
-    // 1. Create a 3D path & orientation planes for the robot.
+    // 1. Create a 3D path & orientation planes for the robot to follow.
     // 2. Calculate a target TCP from point on path.
     // 3. Move the robot based on a target TCP.
     // 4. Move the path while moving the robot using keyPressed.
@@ -70,57 +70,6 @@ void ofApp::setup(){
     profile = buildProfile(.025,4);
     path = path_XZ;
     buildPerpFrames(path);
-}
-
-//--------------------------------------------------------------
-void ofApp::parsePts(string filename, ofPolyline &polyline){
-    ofFile file = ofFile(ofToDataPath(filename));
-   
-    if(!file.exists()){
-        ofLogError("The file " + filename + " is missing");
-    }
-    ofBuffer buffer(file);
-    
-    //Read file
-    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
-        string line = *it;
-        
-        float scalar = 10;
-        
-        ofVec3f offset;
-        if (filename == "path_XZ.txt")
-            offset = ofVec3f(0, .25, 0);
-        else if (filename == "path_YZ.txt")
-            offset = ofVec3f(.25, 0, 0);
-        else
-            offset = ofVec3f(.25, .25, 0);
-        
-        line = line.substr(1,line.length()-2);              // remove end { }
-        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
-        
-        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
-        p += offset;
-        
-        polyline.addVertex(p);
-    }
-    
-    // interpolate points to smooth
-    ofPolyline temp;
-   
-    for (int i=0; i<polyline.getVertices().size()-1; i++){
-        
-        ofVec3f p0 = polyline.getVertices()[i];
-        ofVec3f p1 = polyline.getVertices()[i+1];
-        
-        for (int j=1; j<4; j++){
-            float t = j/4.0;
-            temp.addVertex(p0.interpolate(p1, t));
-        }
-        
-    }
-   
-    polyline.clear();
-    polyline = temp;
 }
 
 //--------------------------------------------------------------
@@ -286,6 +235,56 @@ void ofApp::draw(){
     hightlightViewports();
 }
 
+//--------------------------------------------------------------
+void ofApp::parsePts(string filename, ofPolyline &polyline){
+    ofFile file = ofFile(ofToDataPath(filename));
+    
+    if(!file.exists()){
+        ofLogError("The file " + filename + " is missing");
+    }
+    ofBuffer buffer(file);
+    
+    //Read file
+    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
+        string line = *it;
+        
+        float scalar = 10;
+        
+        ofVec3f offset;
+        if (filename == "path_XZ.txt")
+            offset = ofVec3f(0, .25, 0);
+        else if (filename == "path_YZ.txt")
+            offset = ofVec3f(.25, 0, 0);
+        else
+            offset = ofVec3f(.25, .25, 0);
+        
+        line = line.substr(1,line.length()-2);              // remove end { }
+        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
+        
+        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
+        p += offset;
+        
+        polyline.addVertex(p);
+    }
+    
+    // interpolate points to smooth
+    ofPolyline temp;
+    
+    for (int i=0; i<polyline.getVertices().size()-1; i++){
+        
+        ofVec3f p0 = polyline.getVertices()[i];
+        ofVec3f p1 = polyline.getVertices()[i+1];
+        
+        for (int j=1; j<4; j++){
+            float t = j/4.0;
+            temp.addVertex(p0.interpolate(p1, t));
+        }
+        
+    }
+    
+    polyline.clear();
+    polyline = temp;
+}
 
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
