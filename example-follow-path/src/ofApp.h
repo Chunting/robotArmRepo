@@ -93,14 +93,21 @@ class ofApp : public ofBaseApp{
         /// \param radius radius of polygon
         /// \param res resolution of polygon
         ofPolyline buildProfile(float radius, int res);
-        
+    
+        /// \brief Creates perpendicular frames on a path
+        /// \param polyline path to create frames on
+        void buildPerpFrames(ofPolyline polyline);
+    
         /// \brief polygonal profile to loft
         ofPolyline profile;
+    
+    
 
         /* Test Paths for Orientation */
         ofPolyline path_XZ;
         ofPolyline path_YZ;
         ofPolyline path_SPIRAL;
+        ofPolyline path_PERIODIC;
         void parsePts(string filename, ofPolyline &polyline);
 
     
