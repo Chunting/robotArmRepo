@@ -8,15 +8,19 @@
 
 #pragma once
 #include "ofxGML.h"
-
-class GMLPath {
-    string filepath;
-    
+#include "Path.h"
+class GMLPath : public Path{
 public:
     GMLPath(){};
     ~GMLPath(){};
-
-    void setup(float x = 0, float y = 0, float width = 1, float height = 1);
+    
+    void setup();
+    void addPoint(ofVec3f pt);
+    void addPath(vector<ofVec3f> pts);
+    void addPath(ofPolyline line);
+    void addPaths(vector<ofPolyline> lines);
+    
+    void setup(float x, float y, float width, float height);
     void loadFile(string _filepath);
     void draw();
     vector<ofPolyline> getPath(float scale);
@@ -24,4 +28,7 @@ public:
     vector<ofPolyline> polys;
     vector<ofPolyline> scaledLines;
     float aspectRatio;
+    
+protected:
+    string filepath;
 };

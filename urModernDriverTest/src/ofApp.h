@@ -4,13 +4,15 @@
 #include "ofMain.h"
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
-#include "URDriver.h"
-#include "URMove.h"
-#include "UR5KinematicModel.h"
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
 
+#include "RobotController.h"
+#include "PathController.h"
+#include "RobotParameters.h"
+#include "NatNetController.h"
+#include "WorkSurfaceController.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -32,60 +34,32 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    void testMotors();
+
     
     /// \brief 3D mesh with paths for robot to follow
-    WorkSurface workSurface;
     
-    ofParameterGroup robotArmParams;
-    ofParameter<ofVec3f> targetTCP_POS;
-    ofParameter<ofVec4f> targetTCP_ORIENT;
-    ofParameter<ofVec3f> TCP_ORIENT_XYZ;
-    ofParameter<ofVec3f> TCP_POS;
-    
-    ofParameterGroup joints;
-    ofParameter<float> avgAccel;
-    vector<ofParameter<float> > jointPos;
-    vector<ofParameter<float> > targetJointPos;
-    vector<ofParameter<float> > jointVelocities;
-    
-    ofParameter<bool> bMove;
-    ofParameter<bool> bFigure8;
-    ofParameter<bool> bTrace;
-    ofParameter<bool> bFollow;
-    ofParameter<bool> bCopy;
-    
+    RobotParameters parameters;
+
     ofxPanel panel;
     ofxPanel panelWorkSurface;
     ofxPanel panelJoints;
+    ofxPanel panelTargetJoints;
+    ofxPanel panelJointsIK;
+    ofxPanel panelJointsSpeed;
     
-    bool stop;
     
-    ofxNatNet natnet;
-    bool isMoving;
-    void setupNatNet();
-    void updateNatNet();
-    void drawNatNet();
-    
+    RobotController robot;
+    NatNetController natNet;
+
     ofEasyCam cam;
-    //Motion Capture OSC Server
-    ofxOscSender sender;
-    ofxURDriver robot;
-    URMove movement;
+
+   
+    WorkSurfaceController workSurface;
+
     float acceleration;
     vector<double> speeds;
-    
-    /// \brief Tool Center Point for Robot
-    ///
-    /// Note that if a tool is not defined, the
-    /// default TCP is Joint 5
-//    Joint tcp;
-    
-    /// \brief Targeted Tool Center Point for Robot
-    ///
-    /// This is the desired TCP for the robot set
-    /// by the user.
-    Joint targetTCP;
+
+
     
     ofNode parent;
     
@@ -119,57 +93,4 @@ public:
     void hightlightViewports();
     
     
-    /* MoCap Stuff */
-    
-    /// \brief flag to record the path of rigid body
-    bool record;
-    /// \brief Stores previous rigid bodies
-    vector<ofxNatNet::RigidBody> recordedPath;
-
-    
-    /// \brief Draws the plane, markers, and orientation axes of a given RigidBody.
-    /// \param rb
-    ///     Rigid Body passed by NatNet
-    void drawRigidBody(const ofxNatNet::RigidBody &rb);
-    void drawHistory();
-    ofPolyline rbWorksrf;
-    
-    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
-    /// \param rb
-    ///     Rigid Body that transforms the recorded toolpath
-    void updateWorksurface(const ofxNatNet::RigidBody &rb);
-    
-    /// \brief set the corners of the work surface using unlabled markers
-    bool useUnlabledMarkers;
-    
-    /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
-    /// \param markers
-    ///     List of markers to use as corners (should be 4)
-    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
-    
-    
-    /*
-        Common Quaternion Values
-        from: http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer
-     
-         w          x           y           z           Description
-         
-         1          0           0           0           Identity quaternion, no rotation
-         0          1           0           0           180¡ turn around X axis
-         0          0           1           0           180¡ turn around Y axis
-         0          0           0           1           180¡ turn around Z axis
-         sqrt(0.5)	sqrt(0.5)	0           0           90¡ rotation around X axis
-         sqrt(0.5)	0           sqrt(0.5)	0           90¡ rotation around Y axis
-         sqrt(0.5)	0           0           sqrt(0.5)	90¡ rotation around Z axis
-         sqrt(0.5)	-sqrt(0.5)	0           0           -90¡ rotation around X axis
-         sqrt(0.5)	0           -sqrt(0.5)	0           -90¡ rotation around Y axis
-         sqrt(0.5)	0           0           -sqrt(0.5)	-90¡ rotation around Z axis
-     */
-    
-    //    ofQuaternion POS_90_X = ofQuaternion(.707,   0,  0,  .707);  //  90¼ about X-Axis
-    //    ofQuaternion POS_90_Y = ofQuaternion(0,  .707,   0,  .707);  //  90¼ about Y-Axis
-    //    ofQuaternion POS_90_Z = ofQuaternion(0,  0,  .707,   .707);  //  90¼ about Z-Axis
-    //    ofQuaternion NEG_90_X = ofQuaternion(-.707,   0,  0,  .707); // -90¼ about X-Axis
-    //    ofQuaternion NEG_90_Y = ofQuaternion(0,  -.707,   0,  .707); // -90¼ about Y-Axis
-    //    ofQuaternion NEG_90_Z = ofQuaternion(0,  0,  -.707,   .707); // -90¼ about Z-Axis
 };

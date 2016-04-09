@@ -8,9 +8,25 @@
 
 #include "GMLPath.h"
 
+void GMLPath::setup(){
+    setup(0, 0, 1, 1);
+}
+void GMLPath::addPoint(ofVec3f pt){
+    
+}
+void GMLPath::addPath(vector<ofVec3f> pts){
+    
+}
+void GMLPath::addPath(ofPolyline line){
+    
+}
+void GMLPath::addPaths(vector<ofPolyline> lines){
+    
+}
+
 void GMLPath::setup(float x, float y, float width, float height){
     reader.setup(x, y, width, height);
-    reader.useTime(false);
+//    reader.useTime(false);
 }
 
 void GMLPath::loadFile(string path){

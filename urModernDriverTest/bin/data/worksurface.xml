@@ -1,14 +1,15 @@
 <Work_Surface>
-	<WS_Position>0.5, 0.5, 0.5</WS_Position>
+	<WS_Position>0.0280612, 0.446429, 0.0739798</WS_Position>
 	<WS_size>0, 0, 0</WS_size>
-	<WS_Euler>0, -0, 0</WS_Euler>
-	<qAxis>0, 0, 1</qAxis>
-	<qAngle>0</qAngle>
+	<WS_Euler>-89.5542, 2.42953, -2.4107</WS_Euler>
+	<qAxis>0, 0, 0</qAxis>
+	<qAngle>4.59163e-41</qAngle>
 	<Fix_X>0</Fix_X>
 	<Fix_Y>0</Fix_Y>
 	<Fix_Z>0</Fix_Z>
-	<TP-0>1, 1, 1</TP-0>
-	<TP-1>0, 0, 0</TP-1>
-	<TP-2>0, 0, 0</TP-2>
-	<TP-3>0, 0, 0</TP-3>
+	<TP-0>-0.387755, 0.438776, 0.5</TP-0>
+	<TP-1>0.5, 0.44898, 0.5</TP-1>
+	<TP-2>-0.5, 0.44898, -0.408163</TP-2>
+	<TP-3>0.5, 0.44898, -0.295918</TP-3>
+<Work_Surface/>
 </Work_Surface>

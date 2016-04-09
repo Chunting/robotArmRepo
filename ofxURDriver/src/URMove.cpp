@@ -15,12 +15,14 @@ URMove::~URMove(){
 }
 void URMove::setup(){
     movementParams.setName("UR Movements");
+    movementParams.add(reachPoint.set("Step", false));
     movementParams.add(minSpeed.set("MIN Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(maxSpeed.set(" MAX Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
     movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
     movementParams.add(jointSpeedLerpSpeed.set("Join LerpSpeed", 0.9, 0.001, 1.0));
     movementParams.add(jointAccelerationMultipler.set("Acceleration M", 200, 1, 1000));
+    movementParams.add(speedDivider.set("Speed Divider", 10, 1, 100));
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
@@ -34,23 +36,34 @@ void URMove::setup(){
     acceleration.assign(6, 0.0);
     lastJointSpeeds.assign(6, 0.0);
     currentJointSpeeds.assign(6, 0);
-    
 }
 
 
 void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
-    targetPoint.position = targetPoint.position.interpolate(newTargetPoint.position, targetTCPLerpSpeed);
-    targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.rotation);
+    
+    if(reachPoint){
+        if((targetPoint.position - newTargetPoint.front().position).length() < 0.01){
+            newTargetPoint.pop_front();
+        }
+    }
+    if(newTargetPoint.size() > 0){
+        targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
+        targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
+    }
+    
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
+    selectedSolution = selectSolution();
+    ofMatrix4x4 matX;
     urKinematics(mat);
+    
 }
 
 vector<double> URMove::getTargetJointPos(){
     if(selectedSolution > -1){
-        return inversePosition[selectedSolution];
+        return previews[selectedSolution]->jointsProcessed;
     }else{
         return currentPose;
     }
@@ -65,8 +78,7 @@ vector<double> URMove::getCurrentSpeed(){
 
 void URMove::setCurrentJointPosition(vector<double> pose){
     currentPose = pose;
-    urKinematics(currentPose);
-    selectedSolution = selectSolution();
+    //    urKinematics(currentPose);
 }
 
 void URMove::computeVelocities(){
@@ -75,64 +87,74 @@ void URMove::computeVelocities(){
             lastAvgAccel = avgAccel;
             avgAccel = FLT_MIN;
             lastJointSpeeds = currentJointSpeeds;
-            for(int i = 0; i < inversePosition[selectedSolution].size(); i++){
-                currentJointSpeeds[i] = (inversePosition[selectedSolution][i]-currentPose[i])/deltaTime;
-//                currentJointSpeeds[i] = ofLerp(lastJointSpeeds[i], currentJointSpeeds[i], jointSpeedLerpSpeed);
+            for(int i = 0; i < previews[selectedSolution]->jointsRaw.size(); i++){
+                currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw[i]-currentPose[i])/deltaTime/speedDivider;
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
                 maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
                 if(abs(currentJointSpeeds[i]) > PI){
-                    ofLog(OF_LOG_ERROR)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
+                    ofLog(OF_LOG_VERBOSE)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
                 }
                 
-                acceleration[i] = abs(currentJointSpeeds[i]-lastJointSpeeds[i]);
-                avgAccel = MAX(acceleration[i], avgAccel);
+                acceleration[i] = currentJointSpeeds[i]-lastJointSpeeds[i];
+                avgAccel +=acceleration[i];
+                avgAccel/=2;
                 
             }
+        }
+    }else{
+        for(int i = 0; i < currentJointSpeeds.size(); i++){
+            currentJointSpeeds[i] = 0;
         }
     }
 }
 
 void URMove::addTargetPoint(Joint target){
-    newTargetPoint = target;
-    targetLine.addVertex(target.position*1000);
-    if(targetLine.getVertices().size() > 1400){
-        targetLine.getVertices().erase(targetLine.getVertices().begin());
+    if(reachPoint){
+        if(newTargetPoint.size() > 0){
+            if((newTargetPoint.back().position-target.position).length() > 0.1){
+                newTargetPoint.push_back(target);
+            }
+        }else{
+            newTargetPoint.push_back(target);
+            
+        }
+    }else{
+        
+        newTargetPoint.push_front(target);
+        if(newTargetPoint.size() > 1){
+            newTargetPoint.pop_back();
+        }
+        
+    }
+    targetLine.addVertex(toMM(target.position));
+    if(targetLine.size() > 400){
+        targetLine.getVertices().erase(targetLine.getVertices().begin(), targetLine.getVertices().begin()+1);
     }
 }
 
 
 void URMove::draw(){
-    int j = 0;
-    if(inversePosition.size() > 0){
-        cams[0].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-        ofPushMatrix();
-        previews[0]->draw();
-        ofPopMatrix();
-        ofPushMatrix();
-        targetLine.draw();
-        ofSetColor(255, 0, 255, 200);
-        ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-        ofSetColor(255, 255, 0, 200);
-        ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-        ofPopMatrix();
-        cams[0].end();
-        j+=1;
-        j = j%4;
+    if(inversePosition.size() > 0 && selectedSolution >=0){
+        for(int j = 0; j < cams.size(); j++){
+            if(j == selectedSolution){
+                ofSetColor(255, 0, 255, 150);
+                ofDrawRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
+                cams[j].begin(ofRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2));
+                previews[j]->draw();
+                targetLine.draw();
+                ofSetColor(255, 0, 255, 200);
+                ofDrawSphere(toMM(targetPoint.position), 5);
+                ofSetColor(255, 255, 0, 200);
+                if(newTargetPoint.size() > 0){
+                    ofDrawSphere(toMM(newTargetPoint.front().position), 5);
+                }
+                ofPopMatrix();
+                cams[j].end();
+            }
+        }
     }
-    
-    
-    cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    ofPushMatrix();
-    ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(targetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-    ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(newTargetPoint.position*ofVec3f(1000, 1000, 1000), 5);
-    targetLine.draw();
-    ofPopMatrix();
-    cam.end();
-    
     
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()-100, 0);
@@ -140,7 +162,7 @@ void URMove::draw(){
         ofSetColor(255, 255, 0);
         if(i%2==0)
             ofSetColor(255, 0, 255);
-        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], 0, TWO_PI, 0, 100, true), 50);
+        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], -TWO_PI, TWO_PI, 0, 100, true), 50);
     }
     ofPopMatrix();
 }
@@ -184,8 +206,12 @@ int URMove::selectSolution(){
                 max = count[i];
             }
         }
-        ofLog()<<"nearest "<<nearest<<endl;
+        ofLog(OF_LOG_VERBOSE)<<"nearest "<<nearest<<endl;
+        //        if(inversePosition.size() >= 7)
+        //            return nearest;
+        //        else
         return 0;
+        //        return nearest;
     }else{
         return -1;
     }
@@ -204,6 +230,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
     T = toUR(input);
     
     int num_sols = kinematics.inverse(T, q_sols);
+    preInversePosition = inversePosition;
     inversePosition.clear();
     for(int i=0;i<num_sols;i++){
         vector<double> fooSol;
@@ -219,27 +246,46 @@ void URMove::urKinematics(ofMatrix4x4 input){
     if(inversePosition.size() > 0){
         for(int i = 0; i < inversePosition.size(); i++){
             previews[i]->jointsRaw = inversePosition[i];
-            //            cout<<ofToString(previews[i]->jointsRaw)<<endl;
             previews[i]->jointsProcessed.resize(previews[i]->jointsRaw.size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
-                    inversePosition[i][j] = inversePosition[i][j]-PI;
-                    previews[i]->jointsRaw[j]= inversePosition[i][j];
+                    previews[i]->jointsRaw[j] = inversePosition[i][j]-PI;
                 }
                 if(j == 1 || j == 3){
-                    inversePosition[i][j] = inversePosition[i][j]-TWO_PI;
-                    previews[i]->jointsRaw[j]= inversePosition[i][j];
+                    if(inversePosition[i][j] > PI){
+                        inversePosition[i][j]  = ofMap(inversePosition[i][j], PI, TWO_PI, -PI, 0, true);
+                    }
+                    previews[i]->jointsRaw[j] = inversePosition[i][j];
                 }
+                if(preInversePosition.size() > 0){
+                    if(i == selectedSolution){
+                        if(preInversePosition[i][j]-inversePosition[i][j] > PI){
+                            ofLog()<<"JOINT WRAPS SOL "<<ofToString(i)<<" Joint "<<ofToString(j)<<endl;
+                        }
+                    }
+                }
+                
                 previews[i]->jointsProcessed[j] = ofRadToDeg(previews[i]->jointsRaw[j]);
+                
                 if(j == 1 || j == 3){
                     previews[i]->jointsProcessed[j]+=90;
                 }
+                
                 previews[i]->joints[j].rotation.makeRotate(previews[i]->jointsProcessed[j], previews[i]->joints[j].axis);
             }
         }
     }
-    
 }
+
+
+vector<double> URMove::getRawJointPos(){
+    if(selectedSolution > -1){
+        return inversePosition[selectedSolution];
+    }else{
+        return currentPose;
+    }
+}
+
 void URMove::urKinematics(double o, double t, double th, double f, double fi, double s){
     double q[6] = {o, t, th, f, fi, s};
     double* T = new double[16];

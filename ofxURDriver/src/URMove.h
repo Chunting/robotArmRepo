@@ -32,10 +32,12 @@ public:
     ofParameterGroup movementParams;
     vector<double> getTargetJointPos();
     vector<double> getCurrentSpeed();
+    vector<double> getRawJointPos();
     ofEasyCam cam;
     
 protected:
-    
+    ofParameter<float> speedDivider;
+    ofParameter<bool> reachPoint;
     ofParameter<float> targetTCPLerpSpeed;
     ofParameter<float> jointSpeedLerpSpeed;
     ofParameter<float> jointAccelerationMultipler;
@@ -49,6 +51,7 @@ protected:
     URKinematics kinematics;
     vector<double> currentPose;
     vector<vector<double> > inversePosition;
+    vector<vector<double> > preInversePosition;
     ofMatrix4x4 mat;
     ofParameter<float> maxSpeed;
     ofParameter<float> minSpeed;
@@ -91,7 +94,7 @@ protected:
     ofVec3f normalAtIndexSin;
     ofVec3f rotationAtIndexSin;
     Joint targetPoint;
-    Joint newTargetPoint;
+    deque<Joint> newTargetPoint;
     unsigned int nearestIndex;
     float rotAngle;
     ofNode node;
