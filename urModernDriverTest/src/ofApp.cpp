@@ -5,7 +5,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetFrameRate(120);
+    ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_NOTICE);
@@ -95,8 +95,9 @@ void ofApp::draw(){
 #endif
     
     
-    if (!hideRobot)
+    if (!hideRobot){
         robot.robot.model.draw();
+    }
     ofSetColor(255, 0, 255);
     ofPushMatrix();
     ofSetColor(255, 0, 255, 200);

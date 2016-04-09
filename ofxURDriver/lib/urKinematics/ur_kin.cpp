@@ -252,14 +252,15 @@ int URKinematics::inverse(const double* T, double* q_sols, double q6_des) {
                 pos = 0.0;
             if(fabs(neg) < ZERO_THRESH)
                 neg = 0.0;
-            if(pos >= 0.0)
-                q1[0] = pos;
-            else
-                q1[0] = 2.0*PI + pos;
             if(neg >= 0.0)
                 q1[1] = neg;
             else
                 q1[1] = 2.0*PI + neg;
+            if(pos >= 0.0)
+                q1[0] = pos;
+            else
+                q1[0] = 2.0*PI + pos;
+
         }
     }
     ////////////////////////////////////////////////////////////////////////////////

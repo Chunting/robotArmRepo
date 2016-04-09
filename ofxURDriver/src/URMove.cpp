@@ -56,7 +56,9 @@ void URMove::update(){
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
     selectedSolution = selectSolution();
+    ofMatrix4x4 matX;
     urKinematics(mat);
+    
 }
 
 vector<double> URMove::getTargetJointPos(){
@@ -135,40 +137,24 @@ void URMove::addTargetPoint(Joint target){
 
 void URMove::draw(){
     if(inversePosition.size() > 0 && selectedSolution >=0){
-        float x = ofGetWindowWidth()/2;
-        float y = 0;
         for(int j = 0; j < cams.size(); j++){
             if(j == selectedSolution){
                 ofSetColor(255, 0, 255, 150);
-                ofDrawRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2);
-            }
-            ofSetColor(255, 255, 255);
-            cams[j].begin(ofRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2));
-            ofPushMatrix();
-            previews[j]->draw();
-            ofPopMatrix();
-            ofPushMatrix();
-            targetLine.draw();
-            ofSetColor(255, 0, 255, 200);
-            ofDrawSphere(toMM(targetPoint.position), 5);
-            ofSetColor(255, 255, 0, 200);
-            if(newTargetPoint.size() > 0){
-                ofDrawSphere(toMM(newTargetPoint.front().position), 5);
-            }
-            ofPopMatrix();
-            cams[j].end();
-            
-            x+=ofGetWindowWidth()/2/4;
-            
-            if(x >= ofGetWindowWidth()){
-                x = ofGetWindowWidth()/2;
-                y = ofGetWindowHeight()/2;
+                ofDrawRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
+                cams[j].begin(ofRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2));
+                previews[j]->draw();
+                targetLine.draw();
+                ofSetColor(255, 0, 255, 200);
+                ofDrawSphere(toMM(targetPoint.position), 5);
+                ofSetColor(255, 255, 0, 200);
+                if(newTargetPoint.size() > 0){
+                    ofDrawSphere(toMM(newTargetPoint.front().position), 5);
+                }
+                ofPopMatrix();
+                cams[j].end();
             }
         }
-        
     }
-    
-    
     
     ofPushMatrix();
     ofTranslate(ofGetWindowWidth()-100, 0);
@@ -224,8 +210,8 @@ int URMove::selectSolution(){
         //        if(inversePosition.size() >= 7)
         //            return nearest;
         //        else
-                    return 0;
-//        return nearest;
+        return 0;
+        //        return nearest;
     }else{
         return -1;
     }
