@@ -44,8 +44,12 @@ class ofApp : public ofBaseApp{
         /// \param path resulting 3D projected toolpath
         void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
     
-        ofPolyline toolpath;
-        vector<ofVec3f> toolpathNormals;
+        /// \brief 2D toolpath to project onto surface
         ofPolyline toolpath2D;
+        /// \brief 3D toolpath on surface
+        ofPolyline toolpath;
+        /// \brief Orientation quaternions at each 3D toolpath point
+        vector<ofQuaternion> toolpathOrients;
+    
     
 };

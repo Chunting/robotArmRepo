@@ -86,10 +86,16 @@ void ofApp::draw(){
     
     // show toolpath normals
     ofSetColor(ofColor::blue);
-    for (int i=0; i<toolpathNormals.size(); i++){
-        ofVec3f n = toolpathNormals[i];
-        n /= -100; // scale to meters & flip
-        ofDrawLine(toolpath[i], toolpath[i]+n);
+    for (int i=0; i<toolpathOrients.size(); i++){
+        
+        ofQuaternion q = toolpathOrients[i];
+        ofMatrix4x4 m44 = ofMatrix4x4(q);
+        m44.setTranslation(toolpath[i]);
+        ofPushMatrix();
+        glMultMatrixf(m44.getPtr());
+        ofDrawAxis(.01);
+        ofPopMatrix();
+        
     }
     ofSetLineWidth(1);
     
@@ -122,6 +128,7 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
     
     path.clear();
     toolpath.clear();
+    toolpathOrients.clear();
     
     for (auto &v : path2D.getVertices()){
         
@@ -154,8 +161,11 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
                 
                 // save the projected point and face normal
                 toolpath.addVertex(projectedPt);
-                toolpathNormals.push_back(face.getFaceNormal().getNormalized());
+                ofQuaternion q;
+                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
+                toolpathOrients.push_back(q);
             }
+            
         }
     }
     
