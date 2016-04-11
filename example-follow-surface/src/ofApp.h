@@ -35,13 +35,17 @@ class ofApp : public ofBaseApp{
     
         ofMesh srf;
     
+        /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
+    
+        /// \brief orthogonal projection of a 2D curve onto a 3D surface
+        /// \param mesh 3D surface for proection
+        /// \param path2D 2D toolpath to project
+        /// \param path resulting 3D projected toolpath
         void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
-        vector<ofMeshFace> testFaces;
-        vector<ofVec3f> testPts;
-        vector<ofVec3f> testPtNormals;
     
         ofPolyline toolpath;
+        vector<ofVec3f> toolpathNormals;
         ofPolyline toolpath2D;
     
 };
