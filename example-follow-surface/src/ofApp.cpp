@@ -62,29 +62,36 @@ void ofApp::draw(){
     ofScale(1000);
     ofDrawAxis(.05);
     
-    
+    // show the surface
     ofSetColor(100);
     srf.draw();
     ofSetColor(250,100);
     srf.drawWireframe();
     
-    ofSetColor(ofColor::aqua);
+    // show surface normals
+    ofSetColor(ofColor::aqua,100);
     for (auto &face : srf.getUniqueFaces()){
         ofVec3f n = face.getFaceNormal();
         n /= -100; // scale to meters & flip
         ofVec3f pos = (face.getVertex(0) + face.getVertex(1) + face.getVertex(2)) / 3;
-        
         ofDrawLine(pos, pos+n);
     }
     
+    // draw 2D & 3D toolpaths
     ofSetColor(200, 0, 0);
     toolpath2D.draw();
     ofSetColor(ofColor::chartreuse);
     ofSetLineWidth(3);
     toolpath.draw();
-    ofSetLineWidth(1);
     
-
+    // show toolpath normals
+    ofSetColor(ofColor::blue);
+    for (int i=0; i<toolpathNormals.size(); i++){
+        ofVec3f n = toolpathNormals[i];
+        n /= -100; // scale to meters & flip
+        ofDrawLine(toolpath[i], toolpath[i]+n);
+    }
+    ofSetLineWidth(1);
     
     ofPopMatrix();
     cam.end();
