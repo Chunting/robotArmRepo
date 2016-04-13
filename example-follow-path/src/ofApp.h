@@ -88,7 +88,8 @@ class ofApp : public ofBaseApp{
         
         /// \brief orientation of current perp frame
         ofMatrix4x4 orientation;
-        
+        ofVec3f normal;
+    
         /// \brief Creates the 2D polygon to loft along the path
         /// \param radius radius of polygon
         /// \param res resolution of polygon

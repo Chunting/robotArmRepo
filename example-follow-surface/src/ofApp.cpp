@@ -30,7 +30,7 @@ void ofApp::setup(){
     loader.loadModel(ofToDataPath("mesh_srf.stl"));
     srf = loader.getMesh(0);
     
-    // scale surface from to meters
+    // scale surface to meters
     for (auto &v : srf.getVertices()){
         v /= 100;
     }
@@ -59,7 +59,7 @@ void ofApp::draw(){
     
     cam.begin();
     ofPushMatrix();
-    ofScale(1000);
+    ofScale(1000);      // draw in mm
     ofDrawAxis(.05);
     
     // show the surface

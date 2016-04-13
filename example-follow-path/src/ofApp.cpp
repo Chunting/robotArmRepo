@@ -121,7 +121,9 @@ void ofApp::update(){
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
     
-    
+//        ofQuaternion q;
+//        q.makeRotate_original(ofVec3f(0,0,1), ptf.calcCurrentNormal());
+//        targetTCP.rotation = q;
     
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);
