@@ -11,6 +11,7 @@
 #include "ur_driver.h"
 #include "UR5KinematicModel.h"
 #include "ofxTiming.h"
+#include "URRecorder.h"
 class ofxURDriver : public ofThread{
 public:
     ofxURDriver();
@@ -53,4 +54,6 @@ public:
     deque<vector<double> > speedBuffers;
 
     bool bMove;
+    
+    URRecorder recorder;
 };

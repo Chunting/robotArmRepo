@@ -54,6 +54,7 @@
 		C8895BB01CB2F75F00105DC7 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BA11CB2F75F00105DC7 /* Path.cpp */; };
 		C8895BB11CB2F75F00105DC7 /* RobotStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BA51CB2F75F00105DC7 /* RobotStateMachine.cpp */; };
 		C8895BB41CB2F84B00105DC7 /* WorkSurfaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */; };
+		C8B3D6F01CB97C220000C135 /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */; };
 		C8E450DB1CB5872D001C9894 /* ofxStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E450D91CB5872D001C9894 /* ofxStrip.cpp */; };
 		C8F50D0D1C9F56D60014E1BD /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50CF11C9F56D60014E1BD /* do_output.cpp */; };
 		C8F50D0E1C9F56D60014E1BD /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50CF41C9F56D60014E1BD /* robot_state.cpp */; };
@@ -393,6 +394,8 @@
 		C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurfaceController.cpp; sourceTree = "<group>"; };
 		C8895BB31CB2F84B00105DC7 /* WorkSurfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurfaceController.h; sourceTree = "<group>"; };
 		C89B56671CB417A600C69426 /* ofxURDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxURDriver.h; sourceTree = "<group>"; };
+		C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRecorder.cpp; sourceTree = "<group>"; };
+		C8B3D6EF1CB97C220000C135 /* URRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRecorder.h; sourceTree = "<group>"; };
 		C8E450D91CB5872D001C9894 /* ofxStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStrip.cpp; sourceTree = "<group>"; };
 		C8E450DA1CB5872D001C9894 /* ofxStrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxStrip.h; sourceTree = "<group>"; };
 		C8F50CF11C9F56D60014E1BD /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
@@ -1372,6 +1375,8 @@
 		C8F50D021C9F56D60014E1BD /* src */ = {
 			isa = PBXGroup;
 			children = (
+				C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */,
+				C8B3D6EF1CB97C220000C135 /* URRecorder.h */,
 				C89B56671CB417A600C69426 /* ofxURDriver.h */,
 				C8F50D031C9F56D60014E1BD /* UR5KinematicModel.cpp */,
 				C8F50D041C9F56D60014E1BD /* UR5KinematicModel.h */,
@@ -1794,6 +1799,7 @@
 				C8F50D4D1C9F57270014E1BD /* Tracker.cpp in Sources */,
 				E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */,
 				C8F50D161C9F56D60014E1BD /* URMove.cpp in Sources */,
+				C8B3D6F01CB97C220000C135 /* URRecorder.cpp in Sources */,
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				C8895BAC1CB2F75F00105DC7 /* PathController.cpp in Sources */,
 				C8895BAA1CB2F75F00105DC7 /* WorldObject.cpp in Sources */,
