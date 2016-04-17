@@ -11,4 +11,5 @@ ${PREFIX}kylemcdonald/ofxCV
 ${PREFIX}CreativeInquiry/ofxNatNet
 ${PREFIX}julapy/ofxQuadWarp
 ${PREFIX}danzeeeman/ofxGML
+${PREFIX}Flightphase/ofxGameCamera
 cd ../apps/robotArmRepo

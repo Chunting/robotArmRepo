@@ -3,6 +3,8 @@ ofxGui
 ofxNatNet
 ofxOpenCv
 ofxOsc
-ofxQuadWarp
 ofxTiming
 ofxXmlSettings
+ofxGameCamera
+ofxGML
+
