@@ -27,8 +27,6 @@ void URMove::setup(){
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
         previews.back()->setup();
-        cams.push_back(ofEasyCam());
-        
     }
     selectedSolution = -1;
     deltaTimer.setSmoothing(true);
@@ -136,34 +134,16 @@ void URMove::addTargetPoint(Joint target){
 
 void URMove::draw(){
     if(inversePosition.size() > 0 && selectedSolution >=0){
-        for(int j = 0; j < cams.size(); j++){
-            if(j == selectedSolution){
-                ofSetColor(255, 0, 255, 150);
-                ofDrawRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2);
-                cams[j].begin(ofRectangle(ofGetWindowWidth()/2, 200, ofGetWindowWidth()/2, ofGetWindowHeight()/2));
-                previews[j]->draw();
-                targetLine.draw();
-                ofSetColor(255, 0, 255, 200);
-                ofDrawSphere(toMM(targetPoint.position), 5);
-                ofSetColor(255, 255, 0, 200);
-                if(newTargetPoint.size() > 0){
-                    ofDrawSphere(toMM(newTargetPoint.front().position), 5);
-                }
-                ofPopMatrix();
-                cams[j].end();
-            }
+        ofSetColor(255, 0, 255, 150);
+        previews[selectedSolution]->draw();
+        targetLine.draw();
+        ofSetColor(255, 0, 255, 200);
+        ofDrawSphere(toMM(targetPoint.position), 5);
+        ofSetColor(255, 255, 0, 200);
+        if(newTargetPoint.size() > 0){
+            ofDrawSphere(toMM(newTargetPoint.front().position), 5);
         }
     }
-    
-    ofPushMatrix();
-    ofTranslate(ofGetWindowWidth()-100, 0);
-    for(int i = 0; i < currentJointSpeeds.size(); i++){
-        ofSetColor(255, 255, 0);
-        if(i%2==0)
-            ofSetColor(255, 0, 255);
-        ofDrawRectangle(0, i*50, ofMap(currentJointSpeeds[i], -TWO_PI, TWO_PI, 0, 100, true), 50);
-    }
-    ofPopMatrix();
 }
 
 int URMove::selectSolution(){

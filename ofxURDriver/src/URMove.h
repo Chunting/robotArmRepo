@@ -44,7 +44,6 @@ protected:
     
     float distance;
     int selectSolution();
-    vector<ofEasyCam> cams;
     vector<UR5KinematicModel*> previews;
     //Motion Capture Visualization
     int selectedSolution;

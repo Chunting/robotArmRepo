@@ -60,9 +60,11 @@ void ofApp::setup(){
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
         cams[i].autosavePosition = true;
+        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
         cams[i].loadCameraPosition();
     }
-
+    
 }
 
 //--------------------------------------------------------------
@@ -115,8 +117,9 @@ void ofApp::draw(){
     workSurface.workSurface.draw();
     cams[0].end();
     
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.movement.draw();
-    
+    cams[1].end();
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     gml.draw();
@@ -176,18 +179,18 @@ void ofApp::keyPressed(int key){
         }
         
     }
-//    if(key == '1'){
-//        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
-//    }
-//    if(key == '2'){
-//        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
-//    }
-//    if(key == '3'){
-//        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
-//    }
-//    if(key == '4'){
-//        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
-//    }
+    //    if(key == '1'){
+    //        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+    //    }
+    //    if(key == '2'){
+    //        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+    //    }
+    //    if(key == '3'){
+    //        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+    //    }
+    //    if(key == '4'){
+    //        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+    //    }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
     }
@@ -195,11 +198,13 @@ void ofApp::keyPressed(int key){
     
     handleViewportPresets(key);
     
-    if (key == 'h')
+    if (key == 'h'){
         hideRobot = !hideRobot;
+    }
     
-    if (key == 'r')
+    if (key == 'n'){
         natNet.record = !natNet.record;
+    }
 }
 
 //--------------------------------------------------------------
@@ -213,20 +218,23 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "TOP VIEW";
     }
     // LEFT VIEW
     else if (key == '2'){
         cams[activeCam].reset();
-        cams[activeCam].setPosition(0, dist, 0);
+        cams[activeCam].setPosition(dist, 0, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "LEFT VIEW";
     }
     // FRONT VIEW
     else if (key == '3'){
         cams[activeCam].reset();
-        cams[activeCam].setPosition(dist, 0, 0);
+        cams[activeCam].setPosition(0, dist, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
@@ -234,21 +242,22 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
-//    // CUSTOM  VIEW
-//    else if (key == '5'){
-//        cams[activeCam].reset();
-//        cams[activeCam].setGlobalPosition(savedCamMats[activeCam].getTranslation());
-//        cams[activeCam].setGlobalOrientation(savedCamMats[activeCam].getRotate());
-//        viewportLabels[activeCam] = "SAVED VIEW";
-//    }
-//    // Record custom view port
-//    if (key == '+'){
-//        savedCamMats[activeCam] = cams[activeCam].getGlobalTransformMatrix();
-//        viewportLabels[activeCam] = "New Viewport Saved!";
-//        cout << ofToString(savedCamMats[activeCam]) << endl;
-//    }
+    //    // CUSTOM  VIEW
+    //    else if (key == '5'){
+    //        cams[activeCam].reset();
+    //        cams[activeCam].setGlobalPosition(savedCamMats[activeCam].getTranslation());
+    //        cams[activeCam].setGlobalOrientation(savedCamMats[activeCam].getRotate());
+    //        viewportLabels[activeCam] = "SAVED VIEW";
+    //    }
+    //    // Record custom view port
+    //    if (key == '+'){
+    //        savedCamMats[activeCam] = cams[activeCam].getGlobalTransformMatrix();
+    //        viewportLabels[activeCam] = "New Viewport Saved!";
+    //        cout << ofToString(savedCamMats[activeCam]) << endl;
+    //    }
 }
 
 //--------------------------------------------------------------
