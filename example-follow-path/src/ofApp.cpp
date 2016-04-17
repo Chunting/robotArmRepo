@@ -11,7 +11,7 @@
     //
     // This example shows you how to:
     //
-    // 1. Create a 3D path & orientation planes for the robot.
+    // 1. Create a 3D path & orientation planes for the robot to follow.
     // 2. Calculate a target TCP from point on path.
     // 3. Move the robot based on a target TCP.
     // 4. Move the path while moving the robot using keyPressed.
@@ -52,50 +52,24 @@ void ofApp::setup(){
     // get the current pose on start up
     parameters.bCopy = true;
 
-    
-    
-    // build path
-    ptIndex = 0;
-    centroid = ofPoint(.5,.25,.25); // position in meters
-    
-    // create a 3D path & profile
-    path = buildPath();
-    profile = buildProfile(.025,4);
+ 
     
     // set the Z axis as the forward axis by default
     makeZForward = true;
     
+    ptIndex = 0;
+    centroid = ofPoint(.5,.25,.25); // all coordinates are in meters
+    
+    // load/create different paths
     parsePts("path_XZ.txt", path_XZ);
+    parsePts("path_YZ.txt", path_YZ);
+    parsePts("path_SPIRAL.txt", path_SPIRAL);
+    path_PERIODIC = buildPath();
+    
+    // assign path and make profile
+    profile = buildProfile(.025,4);
     path = path_XZ;
-}
-
-void ofApp::parsePts(string filename, ofPolyline &polyline){
-    ofFile file = ofFile(ofToDataPath(filename));
-    
-    ptf.clear();
-   
-    if(!file.exists()){
-        ofLogError("The file " + filename + " is missing");
-    }
-    ofBuffer buffer(file);
-    
-    //Read file line by line
-    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
-        string line = *it;
-        
-        float scalar = 10;
-        ofVec3f offset = ofVec3f(0, .25, 0);
-        
-        line = line.substr(1,line.length()-2);              // remove end { }
-        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
-        
-        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
-        p += offset;
-        
-        polyline.addVertex(p);
-        ptf.addPoint(p);
-    }
-    
+    buildPerpFrames(path);
 }
 
 //--------------------------------------------------------------
@@ -143,7 +117,7 @@ void ofApp::update(){
         else if (makeZOut)
             orientation = zOut(orientation);
         
-        // update the target TCP
+        // update the target TCP <-- from "bTrace" example
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
     
@@ -245,9 +219,6 @@ void ofApp::draw(){
     ofSetColor(ofColor::aqua);
     path.draw();
     
-    // show debugging paths
-    path_XZ.draw();
-
 
     ofPopStyle();
     ofPopMatrix();
@@ -264,10 +235,60 @@ void ofApp::draw(){
     hightlightViewports();
 }
 
+//--------------------------------------------------------------
+void ofApp::parsePts(string filename, ofPolyline &polyline){
+    ofFile file = ofFile(ofToDataPath(filename));
+    
+    if(!file.exists()){
+        ofLogError("The file " + filename + " is missing");
+    }
+    ofBuffer buffer(file);
+    
+    //Read file
+    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
+        string line = *it;
+        
+        float scalar = 10;
+        
+        ofVec3f offset;
+        if (filename == "path_XZ.txt")
+            offset = ofVec3f(0, .25, 0);
+        else if (filename == "path_YZ.txt")
+            offset = ofVec3f(.25, 0, 0);
+        else
+            offset = ofVec3f(.25, .25, 0);
+        
+        line = line.substr(1,line.length()-2);              // remove end { }
+        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
+        
+        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
+        p += offset;
+        
+        polyline.addVertex(p);
+    }
+    
+    // interpolate points to smooth
+    ofPolyline temp;
+    
+    for (int i=0; i<polyline.getVertices().size()-1; i++){
+        
+        ofVec3f p0 = polyline.getVertices()[i];
+        ofVec3f p1 = polyline.getVertices()[i+1];
+        
+        for (int j=1; j<4; j++){
+            float t = j/4.0;
+            temp.addVertex(p0.interpolate(p1, t));
+        }
+        
+    }
+    
+    polyline.clear();
+    polyline = temp;
+}
 
 //--------------------------------------------------------------
 ofPolyline ofApp::buildPath(){
-    ptf.clear();
+    
     ofPolyline temp;
     
     ofNode n0;
@@ -301,6 +322,17 @@ ofPolyline ofApp::buildPath(){
     
     temp.close();
     return temp;
+}
+
+//--------------------------------------------------------------
+void ofApp::buildPerpFrames(ofPolyline polyline){
+    
+    // reset the perp frames
+    ptf.clear();
+    
+    for (auto &p : polyline)
+        ptf.addPoint(p);
+    
 }
 
 //--------------------------------------------------------------
@@ -365,23 +397,24 @@ void ofApp::keyPressed(int key){
     }
     
     else if (key == OF_KEY_UP){
-        centroid.y += step;
-        path = buildPath();
+        for (auto &p : path.getVertices())
+            p.y += step;
+        buildPerpFrames(path);
     }else if(key == OF_KEY_DOWN){
-        centroid.y -= step;
-        path = buildPath();
+        for (auto &p : path.getVertices())
+            p.y -= step;
+        buildPerpFrames(path);
     }else if(key == OF_KEY_RIGHT){
-        centroid.x += step;
-        path = buildPath();
+        for (auto &p : path.getVertices())
+            p.x += step;
+        buildPerpFrames(path);
     }else if(key == OF_KEY_LEFT){
-        centroid.x -= step;
-        path = buildPath();
-    }else if(key == ' '){
-        centroid = ofPoint(0,0,0);
-        path = buildPath();
+        for (auto &p : path.getVertices())
+            p.x -= step;
+        buildPerpFrames(path);
     }
     
-    else if (key == OF_KEY_SHIFT)
+    else if (key == ' ')
         pause = !pause;
     
     else if (key == '1'){
@@ -397,10 +430,25 @@ void ofApp::keyPressed(int key){
         makeZOut = false;
     }
 
-    
+    else if (key == '7'){
+        path = path_XZ;
+        buildPerpFrames(path);
+    }
+    else if (key == '8'){
+        path = path_YZ;
+        buildPerpFrames(path);
+    }
+    else if (key == '9'){
+        path = path_SPIRAL;
+        buildPerpFrames(path);
+    }
+    else if (key == '0'){
+        path = path_PERIODIC;
+        buildPerpFrames(path);
+    }
    
-    
-    handleViewportPresets(key);
+    else
+        handleViewportPresets(key);
     
 }
 
