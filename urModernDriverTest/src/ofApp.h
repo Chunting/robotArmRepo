@@ -7,7 +7,7 @@
 #include "ofxGui.h"
 #include "GMLPath.h"
 #include "WorkSurface.h"
-
+#include "ofxGameCamera.h"
 #include "RobotController.h"
 #include "PathController.h"
 #include "RobotParameters.h"
@@ -51,8 +51,6 @@ public:
     RobotController robot;
     NatNetController natNet;
 
-    ofEasyCam cam;
-
    
     WorkSurfaceController workSurface;
 
@@ -72,7 +70,7 @@ public:
     float tagStartTime;
     
     // 3D Navigation
-    ofEasyCam cams[N_CAMERAS];
+    ofxGameCamera cams[N_CAMERAS];
     ofMatrix4x4 savedCamMats[N_CAMERAS];
     string viewportLabels[N_CAMERAS];
     int activeCam;

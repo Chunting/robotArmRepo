@@ -54,6 +54,8 @@
 		C8895BB01CB2F75F00105DC7 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BA11CB2F75F00105DC7 /* Path.cpp */; };
 		C8895BB11CB2F75F00105DC7 /* RobotStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BA51CB2F75F00105DC7 /* RobotStateMachine.cpp */; };
 		C8895BB41CB2F84B00105DC7 /* WorkSurfaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */; };
+		C8A2A10B1CC3F84D00E0F1BF /* NatNetWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A2A1091CC3F84D00E0F1BF /* NatNetWorkSurface.cpp */; };
+		C8A2A1101CC3FA1F00E0F1BF /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A2A10E1CC3FA1F00E0F1BF /* ofxGameCamera.cpp */; };
 		C8B3D6F01CB97C220000C135 /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */; };
 		C8E450DB1CB5872D001C9894 /* ofxStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E450D91CB5872D001C9894 /* ofxStrip.cpp */; };
 		C8F50D0D1C9F56D60014E1BD /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50CF11C9F56D60014E1BD /* do_output.cpp */; };
@@ -394,6 +396,10 @@
 		C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurfaceController.cpp; sourceTree = "<group>"; };
 		C8895BB31CB2F84B00105DC7 /* WorkSurfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurfaceController.h; sourceTree = "<group>"; };
 		C89B56671CB417A600C69426 /* ofxURDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxURDriver.h; sourceTree = "<group>"; };
+		C8A2A1091CC3F84D00E0F1BF /* NatNetWorkSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetWorkSurface.cpp; sourceTree = "<group>"; };
+		C8A2A10A1CC3F84D00E0F1BF /* NatNetWorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetWorkSurface.h; sourceTree = "<group>"; };
+		C8A2A10E1CC3FA1F00E0F1BF /* ofxGameCamera.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
+		C8A2A10F1CC3FA1F00E0F1BF /* ofxGameCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
 		C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRecorder.cpp; sourceTree = "<group>"; };
 		C8B3D6EF1CB97C220000C135 /* URRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRecorder.h; sourceTree = "<group>"; };
 		C8E450D91CB5872D001C9894 /* ofxStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStrip.cpp; sourceTree = "<group>"; };
@@ -1161,6 +1167,7 @@
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				C8F50D191C9F57270014E1BD /* ofxCv */,
 				C85DEA601CAC648C00518D03 /* ofxGML */,
+				C8A2A10C1CC3FA1F00E0F1BF /* ofxGameCamera */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1273,6 +1280,8 @@
 			children = (
 				C8895B8C1CB2F75F00105DC7 /* Calibration.cpp */,
 				C8895B8D1CB2F75F00105DC7 /* Calibration.h */,
+				C8A2A1091CC3F84D00E0F1BF /* NatNetWorkSurface.cpp */,
+				C8A2A10A1CC3F84D00E0F1BF /* NatNetWorkSurface.h */,
 				C8895B8E1CB2F75F00105DC7 /* WorkSurface.cpp */,
 				C8895B8F1CB2F75F00105DC7 /* WorkSurface.h */,
 				C8895B901CB2F75F00105DC7 /* World.cpp */,
@@ -1321,6 +1330,24 @@
 				C8895BA61CB2F75F00105DC7 /* RobotStateMachine.h */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		C8A2A10C1CC3FA1F00E0F1BF /* ofxGameCamera */ = {
+			isa = PBXGroup;
+			children = (
+				C8A2A10D1CC3FA1F00E0F1BF /* src */,
+			);
+			name = ofxGameCamera;
+			sourceTree = "<group>";
+		};
+		C8A2A10D1CC3FA1F00E0F1BF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C8A2A10E1CC3FA1F00E0F1BF /* ofxGameCamera.cpp */,
+				C8A2A10F1CC3FA1F00E0F1BF /* ofxGameCamera.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxGameCamera/src;
 			sourceTree = "<group>";
 		};
 		C8F50CEE1C9F56D60014E1BD /* ofxURDriver */ = {
@@ -1820,6 +1847,7 @@
 				8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */,
 				ADE367465D2A8EBAD4C7A8D9 /* IpEndpointName.cpp in Sources */,
 				C8895BB11CB2F75F00105DC7 /* RobotStateMachine.cpp in Sources */,
+				C8A2A1101CC3FA1F00E0F1BF /* ofxGameCamera.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				C8F50D481C9F57270014E1BD /* Flow.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
@@ -1837,6 +1865,7 @@
 				C85DEA681CAC648C00518D03 /* tagReader.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
+				C8A2A10B1CC3F84D00E0F1BF /* NatNetWorkSurface.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				C8F50D471C9F57270014E1BD /* Distance.cpp in Sources */,
 				C8F50D0E1C9F56D60014E1BD /* robot_state.cpp in Sources */,

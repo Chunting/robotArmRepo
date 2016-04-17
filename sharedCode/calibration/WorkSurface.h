@@ -25,13 +25,12 @@ public:
     void setRotation(float x, float y, float z);
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
-    void addStrokes(vector<ofPolyline> strokes);
     void calcNormals();
     /// Assign a set of strokes to a worksurface and add a
     /// retract/approach distance to the start and end of each stroke.
     /// @param retractDist
     ///     distance (in meters) to retract
-    void addStrokes(vector<ofPolyline> strokes, float retractDist);
+    void addStrokes(vector<ofPolyline> strokes, float retractDist = 1);
     void setRotationX(float x);
     void setRotationY(float x);
     void setRotationZ(float x);
@@ -44,6 +43,10 @@ public:
     ofParameter<ofVec3f> rotation;
     ofParameter<ofVec3f> qAxis;
     ofParameter<float> qAngle;
+    ofParameter<float> retractDistance;
+    ofParameter<float> drawingScale;
+    ofParameter<float> rotateDrawing;
+    ofParameter<ofVec3f> drawingOffset;
     vector<ofParameter<ofPoint> > targetPoints;
     ofParameter<float> fixOrientationX;
     ofParameter<float> fixOrientationY;

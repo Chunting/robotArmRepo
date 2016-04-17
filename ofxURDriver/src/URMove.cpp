@@ -78,7 +78,6 @@ vector<double> URMove::getCurrentSpeed(){
 
 void URMove::setCurrentJointPosition(vector<double> pose){
     currentPose = pose;
-    //    urKinematics(currentPose);
 }
 
 void URMove::computeVelocities(){

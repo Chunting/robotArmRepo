@@ -7,9 +7,10 @@ void WorkSurface::setup(){
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
     workSurfaceParams.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
     workSurfaceParams.add(qAngle.set("qAngle",0, 0, 360));
-    workSurfaceParams.add(fixOrientationX.set("Fix X", 0, 0, 360));
-    workSurfaceParams.add(fixOrientationY.set("Fix Y", 0, 0, 360));
-    workSurfaceParams.add(fixOrientationZ.set("Fix Z", 0, 0, 360));
+    workSurfaceParams.add(retractDistance.set("retractDistance", 4, 0, 100));
+    workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
+    workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
+    workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -52,8 +53,9 @@ void WorkSurface::update(ofVec3f toolPointPos){
     
     // update the worksurface mesh
     if (mesh.getVertices().size() == 0){
-        for (int i=0; i<targetPoints.size(); i++)
+        for (int i=0; i<targetPoints.size(); i++){
             mesh.addVertex(targetPoints[i].get());
+        }
         mesh.addTriangle(0, 1, 2);
         mesh.addTriangle(0, 2, 3);
     }
@@ -65,6 +67,7 @@ void WorkSurface::update(ofVec3f toolPointPos){
     }
     
     calcNormals();
+    
     
     
     ////      USE RIGID BODY FROM NATNET AS WORKSURFACE
@@ -101,8 +104,11 @@ void WorkSurface::update(ofVec3f toolPointPos){
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     toolPoint.setPosition(toolPointPos);
     toolPoint.setOrientation(orientation);
-    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
-    orientation = toolPoint.getOrientationQuat();
+//    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
+//    orientation = toolPoint.getOrientationQuat();
+    
+
+    
     rotation = orientation.getEuler();
     qAxis = axis;
     qAngle = angle;
@@ -115,7 +121,7 @@ void WorkSurface::update(ofVec3f toolPointPos){
     
     // update GML
     if (strokes_original.size() != 0)
-        addStrokes(strokes_original, 10);
+        addStrokes(strokes_original, 4);
     
 }
 
@@ -145,6 +151,7 @@ void WorkSurface::calcNormals(){
         normal+=mesh.getNormals()[i];
         normal/=2.0;
     }
+    
 }
 
 
@@ -155,45 +162,6 @@ void WorkSurface::addPoint(ofVec3f pt){
 void WorkSurface::addStroke(ofPolyline stroke){
     
 }
-void WorkSurface::addStrokes(vector<ofPolyline> strokes){
-    
-    // add retract/approach points & store the original linework
-    if (strokes_original.size() == 0){
-        ofPolyline pl;
-        for (auto &stroke : strokes){
-            for (auto &v : stroke.getVertices())
-                pl.addVertex(v);
-        }
-        strokes_original.push_back(pl);
-    }
-    
-    
-    // get the centroid of the line drawing
-    ofVec3f centroid;
-    for (auto &pl : strokes)
-        centroid += pl.getCentroid2D();
-    centroid /= strokes.size();
-    
-    // scale & align linework
-    float height = (targetPoints[0].get() - targetPoints[3].get()).length();
-    float width = (targetPoints[0].get() - targetPoints[1].get()).length();
-    float multiply = width;
-    lines.clear();
-    ofMatrix4x4 mat;
-    mat.setRotate(orientation);
-    mat.setTranslation(position);//targetPoints[3]); // center stroke on canvas
-    for(int i = 0; i < strokes.size(); i++){
-        ofPolyline fooLine;
-        for(int j = 0; j < strokes[i].getVertices().size(); j++){
-            // center stroke on canvas
-            //            strokes[i].getVertices()[j] -= centroid;
-            
-            fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
-        }
-        lines.push_back(fooLine);
-    }
-}
-
 void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     
     // add retract/approach points & store the original linework
@@ -230,21 +198,18 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
         centroid += pl.getCentroid2D();
     centroid /= strokes.size();
     
-    // scale & align linework
-    //    float height = (targetPoints[0].get() - targetPoints[2].get()).length();
-    float width = (targetPoints[0].get() - targetPoints[2].get()).length();
-    float multiply = width;
+
     lines.clear();
     ofMatrix4x4 mat;
     mat.setRotate(orientation);
-    mat.setTranslation(position);//targetPoints[3]); // center stroke on canvas
+    mat.setTranslation(position.get()-drawingOffset.get());
     for(int i = 0; i < strokes.size(); i++){
         ofPolyline fooLine;
         for(int j = 0; j < strokes[i].getVertices().size(); j++){
             // center stroke on canvas
             //            strokes[i].getVertices()[j] -= centroid;
             
-            fooLine.addVertex(strokes[i].getVertices()[j]*multiply*mat);
+            fooLine.addVertex(strokes[i].getVertices()[j]*drawingScale*mat);
         }
         lines.push_back(fooLine);
     }
@@ -253,7 +218,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 Joint WorkSurface::getTargetPoint(float t){
 
     if(lines.size() > 0){
-        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.05;
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.025;
         t = fmodf(t, length)/length;
         
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
@@ -277,6 +242,7 @@ void WorkSurface::draw(){
     orientation.getRotate(angle, axis);
     ofRotate(angle, axis.x, axis.y, axis.z);
     ofDrawAxis(100);
+    toolPoint.draw();
     ofPopMatrix();
     ofPushMatrix();
     ofScale(1000, 1000, 1000);
@@ -286,19 +252,21 @@ void WorkSurface::draw(){
     mesh.drawWireframe();
     ofPopMatrix();
     
+    
+    
     ofPushMatrix();
     {
         ofSetColor(255, 0, 255);
-        ofDrawSphere(targetPoints[0], 10);
+        ofDrawSphere(targetPoints[0].get()*1000, 10);
         ofDrawLine(targetPoints[0].get()*1000,targetPoints[1].get()*1000);
         ofSetColor(255, 255, 0);
-        ofDrawSphere(targetPoints[1], 10);
+        ofDrawSphere(targetPoints[1].get()*1000, 10);
         ofDrawLine(targetPoints[1].get()*1000,targetPoints[2].get()*1000);
         ofSetColor(255, 0, 255);
-        ofDrawSphere(targetPoints[2], 10);
+        ofDrawSphere(targetPoints[2].get()*1000, 10);
         ofDrawLine(targetPoints[2].get()*1000,targetPoints[3].get()*1000);
         ofSetColor(255, 255, 0);
-        ofDrawSphere(targetPoints[3], 10);
+        ofDrawSphere(targetPoints[3].get()*1000, 10);
         ofDrawLine(targetPoints[3].get()*1000,targetPoints[0].get()*1000);
     }
     ofPopMatrix();
