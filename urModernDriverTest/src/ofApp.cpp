@@ -49,7 +49,7 @@ void ofApp::setup(){
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
     gml.setup();
-    gml.loadFile("gml/53514.gml");
+    gml.loadFile("gml/53513.gml");
     
     /* 3D Navigation */
     //    cams[1] = &movement.cam;
@@ -60,6 +60,7 @@ void ofApp::setup(){
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
         cams[i].autosavePosition = true;
+        
         cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
         cams[i].loadCameraPosition();
@@ -197,7 +198,7 @@ void ofApp::keyPressed(int key){
     
     
     handleViewportPresets(key);
-    
+
     if (key == 'h'){
         hideRobot = !hideRobot;
     }
@@ -244,6 +245,9 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
         cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
+    }
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
     }
     //    // CUSTOM  VIEW
     //    else if (key == '5'){
@@ -308,7 +312,9 @@ void ofApp::hightlightViewports(){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-    
+    if(key == '5'){
+        cams[activeCam].usemouse = false;
+    }
 }
 
 //--------------------------------------------------------------
