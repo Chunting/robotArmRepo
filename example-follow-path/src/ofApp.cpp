@@ -94,17 +94,7 @@ void ofApp::update(){
         ofMatrix4x4 orientation = path.getNextPoint();
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
-<<<<<<< HEAD
-    
-//        ofQuaternion q;
-//        q.makeRotate_original(ofVec3f(0,0,1), ptf.calcCurrentNormal());
-//        targetTCP.rotation = q;
-    
-=======
-        
-        
-        
->>>>>>> master
+
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);
         movement.update();
