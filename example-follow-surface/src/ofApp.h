@@ -12,6 +12,7 @@
 
 #include "ofMain.h"
 
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -34,6 +35,7 @@ class ofApp : public ofBaseApp{
         ofEasyCam cam;
     
         ofMesh srf;
+  
     
         /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
