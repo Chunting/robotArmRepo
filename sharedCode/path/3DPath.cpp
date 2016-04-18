@@ -93,7 +93,7 @@ void ThreeDPath::draw(){
         else if (makeZOut)
             m44 = zOut(m44);
         
-        ofSetColor(ofColor::aqua,100);
+        ofSetColor(ofColor::aqua);
         ofPushMatrix();
         ofMultMatrix(m44);
         profile.draw();
@@ -271,7 +271,7 @@ ofMatrix4x4 ThreeDPath::zOut(ofMatrix4x4 originalMat){
     ofVec3f x = originalMat.getRowAsVec3f(0);   // local x-axis
     
     originalMat.setTranslation(0,0,0);
-    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the x
+    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the y
     originalMat.setTranslation(pos);
     
     return originalMat;
