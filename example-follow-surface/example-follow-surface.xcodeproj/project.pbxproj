@@ -36,7 +36,6 @@
 		0000AF641CC5319C006537FF /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0000AF531CC5319C006537FF /* URRead.cpp */; };
 		0000AF651CC5319C006537FF /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0000AF551CC5319C006537FF /* URRecorder.cpp */; };
 		0000AF661CC5319C006537FF /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0000AF571CC5319C006537FF /* URToolHead.cpp */; };
-		0000AF6D1CC54F09006537FF /* WorkSurface3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0000AF6B1CC54F09006537FF /* WorkSurface3D.cpp */; };
 		03B14860C85545A54080C30A /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7DB470D57A91A0701B9FCD /* tagWriter.cpp */; };
 		0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BF3AA0D4FAA89D0F8A0E545 /* OscReceivedElements.cpp */; };
 		169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A03390302D5A2C9F0E4AB /* ofxCvFloatImage.cpp */; };
@@ -175,8 +174,6 @@
 		0000AF571CC5319C006537FF /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
 		0000AF581CC5319C006537FF /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
 		0000AF591CC5319C006537FF /* URUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
-		0000AF6B1CC54F09006537FF /* WorkSurface3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurface3D.cpp; sourceTree = "<group>"; };
-		0000AF6C1CC54F09006537FF /* WorkSurface3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface3D.h; sourceTree = "<group>"; };
 		002DD489BECC92AE370E9D50 /* types.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = types.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/types.hpp; sourceTree = SOURCE_ROOT; };
 		00AD08BCC48245F20EC29129 /* core.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = core.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core.hpp; sourceTree = SOURCE_ROOT; };
 		00D6D32B84B099226431108C /* ofxOsc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOsc.h; path = ../../../addons/ofxOsc/src/ofxOsc.h; sourceTree = SOURCE_ROOT; };
@@ -546,8 +543,6 @@
 		0000AF011CC5318E006537FF /* calibration */ = {
 			isa = PBXGroup;
 			children = (
-				0000AF6B1CC54F09006537FF /* WorkSurface3D.cpp */,
-				0000AF6C1CC54F09006537FF /* WorkSurface3D.h */,
 				0000AF021CC5318E006537FF /* Calibration.cpp */,
 				0000AF031CC5318E006537FF /* Calibration.h */,
 				0000AF041CC5318E006537FF /* NatNetWorkSurface.cpp */,
@@ -1646,7 +1641,6 @@
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
-				0000AF6D1CC54F09006537FF /* WorkSurface3D.cpp in Sources */,
 				2EB82731E35103D1E16BAFCF /* ofxNatNet.cpp in Sources */,
 				0000AF5A1CC5319C006537FF /* do_output.cpp in Sources */,
 				0000AF5F1CC5319C006537FF /* ur_realtime_communication.cpp in Sources */,

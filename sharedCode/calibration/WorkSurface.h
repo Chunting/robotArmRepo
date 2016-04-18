@@ -3,12 +3,12 @@
 #pragma once
 #include "ofMain.h"
 #include "UR5KinematicModel.h"
-class WorkSurface3D{
+class WorkSurface{
 public:
-    WorkSurface3D(){
+    WorkSurface(){
         
     };
-    ~WorkSurface3D(){
+    ~WorkSurface(){
         
     };
     enum CORNER{
