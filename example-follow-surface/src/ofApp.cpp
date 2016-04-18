@@ -49,12 +49,12 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    // update the robot to draw on the surface
     if(parameters.bTrace){
         Joint pose;
         pose.position = toolpath.getVertices()[pathIndex];
         pose.rotation = toolpathOrients[pathIndex];
         robot.updatePath(pose);
-        
         
         // update the path index
         pathIndex = (pathIndex+1)%toolpath.getVertices().size();
@@ -96,6 +96,9 @@ void ofApp::setupUserPanel(){
     
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
+    
+    // remove unneccesary variables from panel
+//    panel.getToggle("bTrace").???
 }
 
 //--------------------------------------------------------------
@@ -116,6 +119,7 @@ void ofApp::setupCameras(){
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
         cams[i].autosavePosition = true;
+        cams[i].useArrowKeys = false;
         cams[i].usemouse = false;
         cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
@@ -137,7 +141,7 @@ void ofApp::setupGeometry(){
     buildToolpath(toolpath2D);
     
     // move toolpath surface to be in a more reachable position (temp fix)
-    ofVec3f offset = ofVec3f(0,.5,.35);
+    ofVec3f offset = ofVec3f(0,.5,.25);
     for (auto &v : srf.getVertices()){
         v += offset;
     }
@@ -280,7 +284,7 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
                 // save the projected point and face normal
                 toolpath.addVertex(projectedPt);
                 ofQuaternion q;
-                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
+                q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
                 toolpathOrients.push_back(q);
             }
             
@@ -388,26 +392,26 @@ void ofApp::keyPressed(int key){
     
     handleViewportPresets(key);
     
-//     if (key == OF_KEY_RIGHT){
-//        for (auto &p : toolpath2D)
-//            p.x += offset;
-//        projectToolpath(srf,toolpath2D,toolpath);
-//    }
-//    else if (key == OF_KEY_LEFT){
-//        for (auto &p : toolpath2D)
-//            p.x -= offset;
-//        projectToolpath(srf,toolpath2D,toolpath);
-//    }
-//    else if (key == OF_KEY_UP){
-//        for (auto &p : toolpath2D)
-//            p.y += offset;
-//        projectToolpath(srf,toolpath2D,toolpath);
-//    }
-//    else if (key == OF_KEY_DOWN){
-//        for (auto &p : toolpath2D)
-//            p.y -= offset;
-//        projectToolpath(srf,toolpath2D,toolpath);
-//    }
+     if (key == OF_KEY_RIGHT){
+        for (auto &p : toolpath2D)
+            p.x += offset;
+        projectToolpath(srf,toolpath2D,toolpath);
+    }
+    else if (key == OF_KEY_LEFT){
+        for (auto &p : toolpath2D)
+            p.x -= offset;
+        projectToolpath(srf,toolpath2D,toolpath);
+    }
+    else if (key == OF_KEY_UP){
+        for (auto &p : toolpath2D)
+            p.y += offset;
+        projectToolpath(srf,toolpath2D,toolpath);
+    }
+    else if (key == OF_KEY_DOWN){
+        for (auto &p : toolpath2D)
+            p.y -= offset;
+        projectToolpath(srf,toolpath2D,toolpath);
+    }
     
 }
 
