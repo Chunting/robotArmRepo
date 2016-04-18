@@ -47,10 +47,9 @@ class ofApp : public ofBaseApp{
         void setupCameras();
         void setupGeometry();
         void drawGeometry();
-    
+        void drawGUI();
     
         ofxPanel panel;
-        ofxPanel panelWorkSurface;
         ofxPanel panelJoints;
         ofxPanel panelTargetJoints;
         ofxPanel panelJointsIK;
@@ -78,6 +77,11 @@ class ofApp : public ofBaseApp{
         ofPolyline toolpath;
         /// \brief Orientation quaternions at each 3D toolpath point
         vector<ofQuaternion> toolpathOrients;
+    
+        int pathIndex;
+    
+    
+        /* 3D Navigation */
     
         void updateActiveCamera();
         ofxGameCamera cams[N_CAMERAS];

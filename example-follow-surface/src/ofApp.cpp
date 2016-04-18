@@ -50,6 +50,15 @@ void ofApp::setup(){
 void ofApp::update(){
     
     robot.update();
+    
+    if(parameters.bTrace){
+        Joint pose;
+        pose.position = toolpath.getVertices()[pathIndex];
+        pose.rotation = toolpathOrients[pathIndex];
+        robot.updatePath(pose);
+        
+        pathIndex = (pathIndex+1)%toolpath.getVertices().size();
+    }
    
     updateActiveCamera();
 }
@@ -74,6 +83,8 @@ void ofApp::draw(){
     drawGeometry();
     cams[1].end();
     
+    
+    drawGUI();
     hightlightViewports();
 }
 
@@ -121,9 +132,20 @@ void ofApp::setupGeometry(){
         v /= 100;
     }
     
-    
     buildToolpath(toolpath2D);
+    
+    // move toolpath surface to be in a more reachable position (temp fix)
+    ofVec3f offset = ofVec3f(0,.5,.35);
+    for (auto &v : srf.getVertices()){
+        v += offset;
+    }
+    for (auto &v : toolpath2D.getVertices()){
+        v += offset;
+    }
+    
     projectToolpath(srf,toolpath2D,toolpath);
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -173,6 +195,15 @@ void ofApp::drawGeometry(){
     
     ofPushStyle();
     ofPopMatrix();
+}
+
+//--------------------------------------------------------------
+void ofApp::drawGUI(){
+    panel.draw();
+    panelJoints.draw();
+    panelJointsIK.draw();
+    panelJointsSpeed.draw();
+    panelTargetJoints.draw();
 }
 
 
@@ -256,6 +287,49 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
     
     toolpath.close();
 }
+//--------------------------------------------------------------
+void ofApp::handleViewportPresets(int key){
+    
+    float dist = 2000;
+    float zOffset = 450;
+    
+    // TOP VIEW
+    if (key == '1'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, 0, dist);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "TOP VIEW";
+    }
+    // LEFT VIEW
+    else if (key == '2'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(dist, 0, 0);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "LEFT VIEW";
+    }
+    // FRONT VIEW
+    else if (key == '3'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, dist, 0);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "FRONT VIEW";
+    }
+    // PERSPECTIVE VIEW
+    else if (key == '4'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(dist, dist, dist/4);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
+    }
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
+    }
+
+}
 
 //--------------------------------------------------------------
 void ofApp::hightlightViewports(){
@@ -306,27 +380,32 @@ void ofApp::hightlightViewports(){
 void ofApp::keyPressed(int key){
     float offset = .005;
 
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
+    }
     
-     if (key == OF_KEY_RIGHT){
-        for (auto &p : toolpath2D)
-            p.x += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_LEFT){
-        for (auto &p : toolpath2D)
-            p.x -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_UP){
-        for (auto &p : toolpath2D)
-            p.y += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_DOWN){
-        for (auto &p : toolpath2D)
-            p.y -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
+    handleViewportPresets(key);
+    
+//     if (key == OF_KEY_RIGHT){
+//        for (auto &p : toolpath2D)
+//            p.x += offset;
+//        projectToolpath(srf,toolpath2D,toolpath);
+//    }
+//    else if (key == OF_KEY_LEFT){
+//        for (auto &p : toolpath2D)
+//            p.x -= offset;
+//        projectToolpath(srf,toolpath2D,toolpath);
+//    }
+//    else if (key == OF_KEY_UP){
+//        for (auto &p : toolpath2D)
+//            p.y += offset;
+//        projectToolpath(srf,toolpath2D,toolpath);
+//    }
+//    else if (key == OF_KEY_DOWN){
+//        for (auto &p : toolpath2D)
+//            p.y -= offset;
+//        projectToolpath(srf,toolpath2D,toolpath);
+//    }
     
 }
 
