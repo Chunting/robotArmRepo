@@ -23,7 +23,6 @@
   - [X] Fix Orientation with ofMatrix4x4
   - [ ] Add in accel & speed controls
   - [ ] Add in path interpolation based on time
-  
   - Follow Surface
   - [ ] Integrate Robut with Geometry
   - [ ] Add in accel & speed controls
