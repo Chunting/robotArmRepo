@@ -3,12 +3,12 @@
 #pragma once
 #include "ofMain.h"
 #include "UR5KinematicModel.h"
-class WorkSurface{
+class NatNetWorkSurface{
 public:
-    WorkSurface(){
+    NatNetWorkSurface(){
         
     };
-    ~WorkSurface(){
+    ~NatNetWorkSurface(){
         
     };
     enum CORNER{
@@ -26,7 +26,7 @@ public:
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
     void calcNormals();
-    /// Assign a set of strokes to a worksurface and add a
+    /// Assign a set of strokes to a NatNetWorkSurface and add a
     /// retract/approach distance to the start and end of each stroke.
     /// @param retractDist
     ///     distance (in meters) to retract
@@ -35,7 +35,7 @@ public:
     void setRotationY(float x);
     void setRotationZ(float x);
     Joint getTargetPoint(float t);
-    ofParameterGroup workSurfaceParams;
+    ofParameterGroup NatNetWorkSurfaceParams;
     ofPolyline rbWorksrf;
     ofMesh mesh;
     ofParameter<ofVec3f> position;

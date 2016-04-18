@@ -1,19 +1,19 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
-#include "WorkSurface.h"
-void WorkSurface::setup(){
-    workSurfaceParams.setName("Work Surface");
-    workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    workSurfaceParams.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfaceParams.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfaceParams.add(qAngle.set("qAngle",0, 0, 360));
-    workSurfaceParams.add(retractDistance.set("retractDistance", 4, 0, 100));
-    workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
-    workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
-    workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
+#include "NatNetWorkSurface.h"
+void NatNetWorkSurface::setup(){
+    NatNetWorkSurfaceParams.setName("Work Surface");
+    NatNetWorkSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    NatNetWorkSurfaceParams.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+    NatNetWorkSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
+    NatNetWorkSurfaceParams.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
+    NatNetWorkSurfaceParams.add(qAngle.set("qAngle",0, 0, 360));
+    NatNetWorkSurfaceParams.add(retractDistance.set("retractDistance", 4, 0, 100));
+    NatNetWorkSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
+    NatNetWorkSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
+    NatNetWorkSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
-        workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
+        NatNetWorkSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
     }
     
     corners.assign(4, ofPoint(0, 0, 0));
@@ -24,11 +24,11 @@ void WorkSurface::setup(){
     targetIndex = 0;
     
 }
-void WorkSurface::setCorners(vector<ofPoint> pts){
+void NatNetWorkSurface::setCorners(vector<ofPoint> pts){
     corners = pts;
     
 }
-void WorkSurface::setCorner(CORNER i, ofPoint pt){
+void NatNetWorkSurface::setCorner(CORNER i, ofPoint pt){
     switch (i) {
         case UL:
             corners[0] = pt;
@@ -49,9 +49,9 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
     }
 }
 
-void WorkSurface::update(ofVec3f toolPointPos){
+void NatNetWorkSurface::update(ofVec3f toolPointPos){
     
-    // update the worksurface mesh
+    // update the NatNetWorkSurface mesh
     if (mesh.getVertices().size() == 0){
         for (int i=0; i<targetPoints.size(); i++){
             mesh.addVertex(targetPoints[i].get());
@@ -70,13 +70,13 @@ void WorkSurface::update(ofVec3f toolPointPos){
     
     
     
-    ////      USE RIGID BODY FROM NATNET AS WORKSURFACE
+    ////      USE RIGID BODY FROM NATNET AS NatNetWorkSurface
     ////     update the mesh normal as the average of its two face normals
     //    ofVec3f n = ((mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2).normalize();
     //
     //    orientation.set(n);
     //
-    ////    // realign the local axis of the worksurface
+    ////    // realign the local axis of the NatNetWorkSurface
     ////    //      this is a bit hacky ... I don't think it works for everything
     //    ofQuaternion conj = orientation.conj();
     ////    orientation *= conj;
@@ -104,8 +104,8 @@ void WorkSurface::update(ofVec3f toolPointPos){
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     toolPoint.setPosition(toolPointPos);
     toolPoint.setOrientation(orientation);
-//    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
-//    orientation = toolPoint.getOrientationQuat();
+    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
+    orientation = toolPoint.getOrientationQuat();
     
 
     
@@ -125,7 +125,7 @@ void WorkSurface::update(ofVec3f toolPointPos){
     
 }
 
-void WorkSurface::calcNormals(){
+void NatNetWorkSurface::calcNormals(){
     mesh.clearNormals();
     for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
     
@@ -156,13 +156,13 @@ void WorkSurface::calcNormals(){
 
 
 
-void WorkSurface::addPoint(ofVec3f pt){
+void NatNetWorkSurface::addPoint(ofVec3f pt){
     
 }
-void WorkSurface::addStroke(ofPolyline stroke){
+void NatNetWorkSurface::addStroke(ofPolyline stroke){
     
 }
-void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
+void NatNetWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     
     // add retract/approach points & store the original linework
     if (strokes_original.size() == 0){
@@ -215,7 +215,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     }
 }
 
-Joint WorkSurface::getTargetPoint(float t){
+Joint NatNetWorkSurface::getTargetPoint(float t){
 
     if(lines.size() > 0){
         float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.025;
@@ -234,7 +234,7 @@ Joint WorkSurface::getTargetPoint(float t){
     }
     return targetToolPoint;
 }
-void WorkSurface::draw(){
+void NatNetWorkSurface::draw(){
     ofPushMatrix();
     ofTranslate(position.get()*1000);
     float angle;
@@ -242,7 +242,6 @@ void WorkSurface::draw(){
     orientation.getRotate(angle, axis);
     ofRotate(angle, axis.x, axis.y, axis.z);
     ofDrawAxis(100);
-    toolPoint.draw();
     ofPopMatrix();
     ofPushMatrix();
     ofScale(1000, 1000, 1000);
@@ -252,35 +251,33 @@ void WorkSurface::draw(){
     mesh.drawWireframe();
     ofPopMatrix();
     
-    
-    
     ofPushMatrix();
     {
         ofSetColor(255, 0, 255);
-        ofDrawSphere(targetPoints[0].get()*1000, 10);
+        ofDrawSphere(targetPoints[0], 10);
         ofDrawLine(targetPoints[0].get()*1000,targetPoints[1].get()*1000);
         ofSetColor(255, 255, 0);
-        ofDrawSphere(targetPoints[1].get()*1000, 10);
+        ofDrawSphere(targetPoints[1], 10);
         ofDrawLine(targetPoints[1].get()*1000,targetPoints[2].get()*1000);
         ofSetColor(255, 0, 255);
-        ofDrawSphere(targetPoints[2].get()*1000, 10);
+        ofDrawSphere(targetPoints[2], 10);
         ofDrawLine(targetPoints[2].get()*1000,targetPoints[3].get()*1000);
         ofSetColor(255, 255, 0);
-        ofDrawSphere(targetPoints[3].get()*1000, 10);
+        ofDrawSphere(targetPoints[3], 10);
         ofDrawLine(targetPoints[3].get()*1000,targetPoints[0].get()*1000);
     }
     ofPopMatrix();
 }
-void WorkSurface::setRotationX(float x){
+void NatNetWorkSurface::setRotationX(float x){
     orientationX.makeRotate(x, 1, 0, 0);
 }
-void WorkSurface::setRotationY(float y){
+void NatNetWorkSurface::setRotationY(float y){
     orientationY.makeRotate(y, 0, 1, 0);
 }
-void WorkSurface::setRotationZ(float z){
+void NatNetWorkSurface::setRotationZ(float z){
     orientationZ.makeRotate(z, 0, 0, 1);
 }
-void WorkSurface::setRotation(float x, float y, float z){
+void NatNetWorkSurface::setRotation(float x, float y, float z){
     orientationX.makeRotate(x, 1, 0, 0);
     orientationY.makeRotate(y, 0, 1, 0);
     orientationZ.makeRotate(z, 0, 0, 1);

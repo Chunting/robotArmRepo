@@ -40,7 +40,10 @@ void RobotController::updateMovement(){
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);
     movement.update();
-    
+    vector<double> rawIK = movement.getRawJointPos();
+    for(int i = 0; i < rawIK.size(); i++){
+        robotParams->jointPosIKRaw[i] = ofRadToDeg((float)rawIK[i]);
+    }
     
     // get back the target joint trajectories
     vector<double> target = movement.getTargetJointPos();
@@ -66,8 +69,8 @@ void RobotController::updateMovement(){
 void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
-    
-    
+//    robotParams->tcpOrientation
+    robotParams->tcpOrientation = robot.model.tool.rotation.getEuler();
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
@@ -119,11 +122,10 @@ void RobotController::moveArm(){
         //        }
         
         // update GUI params
+        robotParams->bTrace = false;
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        robotParams->tcpOrientation =robotParams->targetTCP.rotation.getEuler();
-    }
-    // follow a pre-defined path
-    if(robotParams->bTrace){
+
+    }else if(robotParams->bTrace){
         
         
         robotParams->targetTCP.position = workSurfaceTargetTCP.position;
@@ -133,9 +135,7 @@ void RobotController::moveArm(){
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
         robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
         
-    }
-    // draw out a figure 8 in mid-air
-    if(robotParams->bFigure8){
+    }else if(robotParams->bFigure8){
         
         // use a preset orientation
         robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));

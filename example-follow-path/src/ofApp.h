@@ -19,46 +19,37 @@
 #include "GMLPath.h"
 #include "RobotParameters.h"
 #include "ofxPtf.h"
-
+#include "3DPath.h"
 class ofApp : public ofBaseApp{
-
-	public:
-		void setup();
-		void update();
-		void draw();
     
-        /// \brief Use the arrow keys to move the path
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+public:
+    void setup();
+    void update();
+    void draw();
     
-        /* Robot Definitions */
+    /// \brief Use the arrow keys to move the path
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y );
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
     
-        ofxURDriver robot;
-        URMove movement;
-        float acceleration;
-        vector<double> speeds;
-        Joint targetTCP;
+    /* Robot Definitions */
     
-    
-        /* GUI Controls */
-    
-        RobotParameters parameters;
-        ofxPanel panel;
-        ofxPanel panelJoints;
-        ofEasyCam cam;
+    ofxURDriver robot;
+    URMove movement;
+    float acceleration;
+    vector<double> speeds;
+    Joint targetTCP;
     
     
-        /* Path Generator */
-    
+<<<<<<< HEAD
         ofPoint centroid;
         bool pause;
         int ptIndex;
@@ -94,29 +85,23 @@ class ofApp : public ofBaseApp{
         /// \param radius radius of polygon
         /// \param res resolution of polygon
         ofPolyline buildProfile(float radius, int res);
+=======
+    /* GUI Controls */
+>>>>>>> master
     
-        /// \brief Creates perpendicular frames on a path
-        /// \param polyline path to create frames on
-        void buildPerpFrames(ofPolyline polyline);
+    RobotParameters parameters;
+    ofxPanel panel;
+    ofxPanel panelJoints;
+    ofEasyCam cam;
     
-        /// \brief polygonal profile to loft
-        ofPolyline profile;
+    ThreeDPath path;
     
+    bool pause;
+    /* 3D Navigation Helpers */
     
-
-        /* Test Paths for Orientation */
-        ofPolyline path_XZ;
-        ofPolyline path_YZ;
-        ofPolyline path_SPIRAL;
-        ofPolyline path_PERIODIC;
-        void parsePts(string filename, ofPolyline &polyline);
-
-    
-        /* 3D Navigation Helpers */
-    
-        void handleViewportPresets(int key);
-        void hightlightViewports();
-        ofMatrix4x4 savedCamMat;
-        string viewportLabel;
-        int activeCam;
+    void handleViewportPresets(int key);
+    void hightlightViewports();
+    ofMatrix4x4 savedCamMat;
+    string viewportLabel;
+    int activeCam;
 };

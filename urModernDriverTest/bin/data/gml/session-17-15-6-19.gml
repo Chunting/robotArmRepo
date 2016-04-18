@@ -1,0 +1,64 @@
+<gml>
+    <spec>1.0</spec>
+    <tag>
+        <header>
+            <client>
+                <name>metTag</name>
+                <version>1.000000000</version>
+                <username>FILL THIS IN</username>
+                <keywords>ofxGML</keywords>
+                <name>metTag</name>
+                <version>1.000000000</version>
+                <username>FILL THIS IN</username>
+                <keywords>ofxGML</keywords>
+            </client>
+            <client></client>
+        </header>
+        <envrionment>
+            <offset>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+                <x>0</x>
+                <y>0</y>
+                <z>0</z>
+            </offset>
+            <up>
+                <x>0</x>
+                <y>-1</y>
+                <z>0</z>
+                <x>0</x>
+                <y>-1</y>
+                <z>0</z>
+            </up>
+            <screenBounds>
+                <x>1280</x>
+                <y>720</y>
+                <z>0</z>
+                <x>1280</x>
+                <y>720</y>
+                <z>0</z>
+            </screenBounds>
+            <offset></offset>
+            <up></up>
+            <screenBounds></screenBounds>
+        </envrionment>
+        <header></header>
+        <envrionment></envrionment>
+        <drawing>
+            <brush>
+                <color>
+                    <red>239</red>
+                    <blue>255</blue>
+                    <green>248</green>
+                </color>
+                <number>9</number>
+                <size>20</size>
+                <time>0.020530164</time>
+            </brush>
+        </drawing>
+    </tag>
+    <spec>1.0</spec>
+    <tag></tag>
+</gml>
+<gml></gml>

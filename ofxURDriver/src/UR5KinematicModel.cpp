@@ -65,12 +65,12 @@ void UR5KinematicModel::setup(){
     joints[5].axis.set(0, 1, 0);
     tool.axis.set(joints[5].axis);
     
-    joints[0].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
-    joints[1].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
-    joints[2].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
-    joints[3].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
-    joints[4].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
-    joints[5].rotation.makeRotate(0, ofVec3f(1, 0, 0), 0, ofVec3f(0, 1, 0), 0, ofVec3f(0, 0, 1));
+    joints[0].rotation.makeRotate(0, joints[0].axis);
+    joints[1].rotation.makeRotate(-90, joints[1].axis);
+    joints[2].rotation.makeRotate(0, joints[2].axis);
+    joints[3].rotation.makeRotate(-90, joints[3].axis);
+    joints[4].rotation.makeRotate(0, joints[4].axis);
+    joints[5].rotation.makeRotate(0, joints[5].axis);
     tool.rotation = joints[5].rotation;
     
     shader.load("shaders/model");
@@ -117,7 +117,7 @@ void UR5KinematicModel::draw(){
     if(bDrawModel){
         ofEnableDepthTest();
         shader.begin();
-        shader.setUniform1f("elapsedTime", abs(sin(ofGetElapsedTimef()*0.01)));
+        shader.setUniform1f("elapsedTime", 0.1);
         shader.setUniform1f("stage", 3.0);
         shader.setUniform1f("alpha", 1.0);
         float x;
