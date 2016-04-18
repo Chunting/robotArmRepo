@@ -56,6 +56,7 @@
 		C8895BB41CB2F84B00105DC7 /* WorkSurfaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895BB21CB2F84B00105DC7 /* WorkSurfaceController.cpp */; };
 		C8A2A10B1CC3F84D00E0F1BF /* NatNetWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A2A1091CC3F84D00E0F1BF /* NatNetWorkSurface.cpp */; };
 		C8A2A1131CC409A200E0F1BF /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A2A1111CC409A200E0F1BF /* ofxGameCamera.cpp */; };
+		C8A2A1221CC4651C00E0F1BF /* ParallelTransportFrames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A2A1201CC4651C00E0F1BF /* ParallelTransportFrames.cpp */; };
 		C8B3D6F01CB97C220000C135 /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */; };
 		C8E450DB1CB5872D001C9894 /* ofxStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8E450D91CB5872D001C9894 /* ofxStrip.cpp */; };
 		C8F50D0D1C9F56D60014E1BD /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8F50CF11C9F56D60014E1BD /* do_output.cpp */; };
@@ -400,6 +401,9 @@
 		C8A2A10A1CC3F84D00E0F1BF /* NatNetWorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetWorkSurface.h; sourceTree = "<group>"; };
 		C8A2A1111CC409A200E0F1BF /* ofxGameCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
 		C8A2A1121CC409A200E0F1BF /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
+		C8A2A11F1CC4651C00E0F1BF /* ofxPtf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxPtf.h; sourceTree = "<group>"; };
+		C8A2A1201CC4651C00E0F1BF /* ParallelTransportFrames.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParallelTransportFrames.cpp; sourceTree = "<group>"; };
+		C8A2A1211CC4651C00E0F1BF /* ParallelTransportFrames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParallelTransportFrames.h; sourceTree = "<group>"; };
 		C8B3D6EE1CB97C220000C135 /* URRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRecorder.cpp; sourceTree = "<group>"; };
 		C8B3D6EF1CB97C220000C135 /* URRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRecorder.h; sourceTree = "<group>"; };
 		C8E450D91CB5872D001C9894 /* ofxStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStrip.cpp; sourceTree = "<group>"; };
@@ -1167,6 +1171,7 @@
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				C8F50D191C9F57270014E1BD /* ofxCv */,
 				C85DEA601CAC648C00518D03 /* ofxGML */,
+				C8A2A11D1CC4651C00E0F1BF /* ofxPtf */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1331,6 +1336,25 @@
 				C8895BA61CB2F75F00105DC7 /* RobotStateMachine.h */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		C8A2A11D1CC4651C00E0F1BF /* ofxPtf */ = {
+			isa = PBXGroup;
+			children = (
+				C8A2A11E1CC4651C00E0F1BF /* src */,
+			);
+			name = ofxPtf;
+			sourceTree = "<group>";
+		};
+		C8A2A11E1CC4651C00E0F1BF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C8A2A11F1CC4651C00E0F1BF /* ofxPtf.h */,
+				C8A2A1201CC4651C00E0F1BF /* ParallelTransportFrames.cpp */,
+				C8A2A1211CC4651C00E0F1BF /* ParallelTransportFrames.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxPtf/src;
 			sourceTree = "<group>";
 		};
 		C8F50CEE1C9F56D60014E1BD /* ofxURDriver */ = {
@@ -1833,6 +1857,7 @@
 				C8A2A1131CC409A200E0F1BF /* ofxGameCamera.cpp in Sources */,
 				67FE4C7B15C2F0478C8126C2 /* NetworkingUtils.cpp in Sources */,
 				C8F50D481C9F57270014E1BD /* Flow.cpp in Sources */,
+				C8A2A1221CC4651C00E0F1BF /* ParallelTransportFrames.cpp in Sources */,
 				510CAFE035E576A4E1502D52 /* UdpSocket.cpp in Sources */,
 				C8895BAF1CB2F75F00105DC7 /* GMLPath.cpp in Sources */,
 				C8F50D4C1C9F57270014E1BD /* RunningBackground.cpp in Sources */,

@@ -122,11 +122,10 @@ void RobotController::moveArm(){
         //        }
         
         // update GUI params
+        robotParams->bTrace = false;
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
-//        robotParams->tcpOrientation =robotParams->targetTCP.rotation.getEuler();
-    }
-    // follow a pre-defined path
-    if(robotParams->bTrace){
+
+    }else if(robotParams->bTrace){
         
         
         robotParams->targetTCP.position = workSurfaceTargetTCP.position;
@@ -136,9 +135,7 @@ void RobotController::moveArm(){
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
         robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
         
-    }
-    // draw out a figure 8 in mid-air
-    if(robotParams->bFigure8){
+    }else if(robotParams->bFigure8){
         
         // use a preset orientation
         robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));

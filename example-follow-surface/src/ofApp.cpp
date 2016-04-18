@@ -21,7 +21,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofSetFrameRate(120);
+    ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);

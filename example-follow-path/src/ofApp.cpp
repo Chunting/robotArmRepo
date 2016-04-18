@@ -1,20 +1,20 @@
-    //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
+//Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 
-    //--------------------------------------------------------------
-    //
-    //
-    // Robot following targets on a path EXAMPLE
-    //
-    //
-    //--------------------------------------------------------------
+//--------------------------------------------------------------
+//
+//
+// Robot following targets on a path EXAMPLE
+//
+//
+//--------------------------------------------------------------
 
-    //
-    // This example shows you how to:
-    //
-    // 1. Create a 3D path & orientation planes for the robot to follow.
-    // 2. Calculate a target TCP from point on path.
-    // 3. Move the robot based on a target TCP.
-    // 4. Move the path while moving the robot using keyPressed.
+//
+// This example shows you how to:
+//
+// 1. Create a 3D path & orientation planes for the robot to follow.
+// 2. Calculate a target TCP from point on path.
+// 3. Move the robot based on a target TCP.
+// 4. Move the path while moving the robot using keyPressed.
 
 
 #include "ofApp.h"
@@ -34,47 +34,30 @@ void ofApp::setup(){
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
     panel.loadFromFile("settings.xml");
-
+    
     // connect to the robot
     robot.setup("192.168.1.9",0, 1); // use the IP address of your robot here
     robot.start();
-
+    
     // set up kinematic model
     movement.setup();
     panel.add(movement.movementParams);
     panelJoints.setup(parameters.joints);
     panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
-
+    
     // assign speeds and disable movement
     speeds.assign(6, 0);
     parameters.bMove = false;
-
+    
     // get the current pose on start up
     parameters.bCopy = true;
-
- 
+    path.setup();
     
-    // set the Z axis as the forward axis by default
-    makeZForward = true;
-    
-    ptIndex = 0;
-    centroid = ofPoint(.5,.25,.25); // all coordinates are in meters
-    
-    // load/create different paths
-    parsePts("path_XZ.txt", path_XZ);
-    parsePts("path_YZ.txt", path_YZ);
-    parsePts("path_SPIRAL.txt", path_SPIRAL);
-    path_PERIODIC = buildPath();
-    
-    // assign path and make profile
-    profile = buildProfile(.025,4);
-    path = path_XZ;
-    buildPerpFrames(path);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-   
+    
     // pass the current joints from the robot to the kinematic solver
     vector<double> currentJointPos = robot.getJointPositions();
     movement.setCurrentJointPosition(currentJointPos);
@@ -105,24 +88,15 @@ void ofApp::update(){
         
     }
     
-
     // find the current point on the path
-    if (!pause && ptf.framesSize()>0){
-        ptIndex = (ptIndex +1) % ptf.framesSize();
-        
-        orientation = ptf.frameAt(ptIndex);
-        
-        if (makeZForward)
-            orientation = zForward(orientation);
-        else if (makeZOut)
-            orientation = zOut(orientation);
-        
+    if (!pause){
         // update the target TCP <-- from "bTrace" example
+        ofMatrix4x4 orientation = path.getNextPoint();
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
-    
-    
-    
+        
+        
+        
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);
         movement.update();
@@ -164,70 +138,31 @@ void ofApp::draw(){
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-     ofPopStyle();
+    ofPopStyle();
     
     cam.begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     
     // show the realtime robot
     robot.model.draw();
     
-   
+    
     // show the 3D path
     ofPushMatrix();
     ofPushStyle();
     ofScale(1000); // scale from meter to millimeters for visualizing
-
     
-   
-    if (pause){
-        // draw all the perp frames if we are paused
-        for (int i=0; i<ptf.framesSize(); i++){
-            ofMatrix4x4 m44 = ptf.frameAt(i);
-            
-            if (makeZForward)
-                m44 = zForward(m44);
-            else if (makeZOut)
-                m44 = zOut(m44);
-            
-            ofSetColor(ofColor::aqua);
-            ofPushMatrix();
-            ofMultMatrix(m44);
-            profile.draw();
-            ofPopMatrix();
-        }
-    }
-   
-
-    // show the current orientation plane
-    ofSetColor(ofColor::lightYellow);
-    ofSetLineWidth(3);
-    ofPushMatrix();
-    ofMultMatrix(orientation);
-    profile.draw();
-    ofDrawAxis(.010);
-    ofPopMatrix();
     
-    // show the target point
-    ofSetColor(ofColor::yellow);
-    if (path.size() > 0)
-        ofDrawSphere(path.getVertices()[ptIndex], .003);
     
-   
-    
-    // show the 3D path
-    ofSetLineWidth(.01);
-    ofSetColor(ofColor::aqua);
     path.draw();
     
-
     ofPopStyle();
     ofPopMatrix();
     cam.end();
     
-    
+    cam.begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     // draw simulated robot
     movement.draw();
-    
+    cam.end();
     // draw the GUI
     panel.draw();
     panelJoints.draw();
@@ -235,220 +170,17 @@ void ofApp::draw(){
     hightlightViewports();
 }
 
-//--------------------------------------------------------------
-void ofApp::parsePts(string filename, ofPolyline &polyline){
-    ofFile file = ofFile(ofToDataPath(filename));
-    
-    if(!file.exists()){
-        ofLogError("The file " + filename + " is missing");
-    }
-    ofBuffer buffer(file);
-    
-    //Read file
-    for (ofBuffer::Line it = buffer.getLines().begin(), end = buffer.getLines().end(); it != end; ++it) {
-        string line = *it;
-        
-        float scalar = 10;
-        
-        ofVec3f offset;
-        if (filename == "path_XZ.txt")
-            offset = ofVec3f(0, .25, 0);
-        else if (filename == "path_YZ.txt")
-            offset = ofVec3f(.25, 0, 0);
-        else
-            offset = ofVec3f(.25, .25, 0);
-        
-        line = line.substr(1,line.length()-2);              // remove end { }
-        vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates
-        
-        ofVec3f p = ofVec3f(ofToFloat(coords[0])*scalar,ofToFloat(coords[1])*scalar,ofToFloat(coords[2])*scalar);
-        p += offset;
-        
-        polyline.addVertex(p);
-    }
-    
-    // interpolate points to smooth
-    ofPolyline temp;
-    
-    for (int i=0; i<polyline.getVertices().size()-1; i++){
-        
-        ofVec3f p0 = polyline.getVertices()[i];
-        ofVec3f p1 = polyline.getVertices()[i+1];
-        
-        for (int j=1; j<4; j++){
-            float t = j/4.0;
-            temp.addVertex(p0.interpolate(p1, t));
-        }
-        
-    }
-    
-    polyline.clear();
-    polyline = temp;
-}
-
-//--------------------------------------------------------------
-ofPolyline ofApp::buildPath(){
-    
-    ofPolyline temp;
-    
-    ofNode n0;
-    ofNode n1;
-    ofNode n2;
-    
-    n0.setPosition(centroid.x,centroid.y,centroid.z);
-    n1.setParent(n0);
-    n1.setPosition(0,0,.2);
-    n2.setParent(n1);
-    n2.setPosition(0,.015,0);
-    
-    float totalRotation = 0;
-    float step = .5;
-    while (totalRotation < 360){
-        
-        n0.pan(step);
-        n1.tilt(2);
-        n2.roll(1);
-        
-        ofPoint p = n2.getGlobalPosition().rotate(90, ofVec3f(1,0,0));
-        
-        // and point to path
-        temp.addVertex(p);
-        
-        // add point to perp frames
-        ptf.addPoint(p);
-        
-        totalRotation += step;
-    }
-    
-    temp.close();
-    return temp;
-}
-
-//--------------------------------------------------------------
-void ofApp::buildPerpFrames(ofPolyline polyline){
-    
-    // reset the perp frames
-    ptf.clear();
-    
-    for (auto &p : polyline)
-        ptf.addPoint(p);
-    
-}
-
-//--------------------------------------------------------------
-ofPolyline ofApp::buildProfile(float radius, int res){
-    ofPolyline temp;
-    
-    // make a plane
-    if (res == 4){
-        temp.addVertex(ofVec3f(-radius/2, radius/2,0));
-        temp.addVertex(ofVec3f( radius/2, radius/2,0));
-        temp.addVertex(ofVec3f( radius/2,-radius/2,0));
-        temp.addVertex(ofVec3f(-radius/2,-radius/2,0));
-    }
-    // make a polygon
-    else{
-        float theta = 360/res;
-        for (int i=0; i<res; i++){
-            ofPoint p = ofPoint(0,0,radius);
-            temp.addVertex(p.rotate(theta*i, ofVec3f(1,0,0)));
-        }
-    }
-    
-    temp.close();
-    return temp;
-}
-
-
-//--------------------------------------------------------------
-ofMatrix4x4 ofApp::zForward(ofMatrix4x4 originalMat){
-    
-    ofVec3f pos  = originalMat.getTranslation();
-    ofVec3f y = originalMat.getRowAsVec3f(1);   // local y-axis
-    
-    originalMat.setTranslation(0,0,0);
-    originalMat.rotate(-90, y.x, y.y, y.z);     // rotate about the y
-    originalMat.setTranslation(pos);
-    
-    return originalMat;
-}
-
-
-//--------------------------------------------------------------
-ofMatrix4x4 ofApp::zOut(ofMatrix4x4 originalMat){
-    
-    ofVec3f pos  = originalMat.getTranslation();
-    ofVec3f x = originalMat.getRowAsVec3f(0);   // local x-axis
-    
-    originalMat.setTranslation(0,0,0);
-    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the y
-    originalMat.setTranslation(pos);
-    
-    return originalMat;
-}
 
 //--------------------------------------------------------------
 
 void ofApp::keyPressed(int key){
-    float step = .01;   // 10 millimeters
-    
     if(key == 'm'){
         parameters.bMove = !parameters.bMove;
-    }
-    
-    else if (key == OF_KEY_UP){
-        for (auto &p : path.getVertices())
-            p.y += step;
-        buildPerpFrames(path);
-    }else if(key == OF_KEY_DOWN){
-        for (auto &p : path.getVertices())
-            p.y -= step;
-        buildPerpFrames(path);
-    }else if(key == OF_KEY_RIGHT){
-        for (auto &p : path.getVertices())
-            p.x += step;
-        buildPerpFrames(path);
-    }else if(key == OF_KEY_LEFT){
-        for (auto &p : path.getVertices())
-            p.x -= step;
-        buildPerpFrames(path);
-    }
-    
-    else if (key == ' ')
+    }else if(key == ' '){
         pause = !pause;
-    
-    else if (key == '1'){
-        makeZOut = false;
-        makeZForward = true;
     }
-    else if (key == '2'){
-        makeZForward = false;
-        makeZOut = true;
-    }
-    else if (key == '3'){
-        makeZForward = false;
-        makeZOut = false;
-    }
-
-    else if (key == '7'){
-        path = path_XZ;
-        buildPerpFrames(path);
-    }
-    else if (key == '8'){
-        path = path_YZ;
-        buildPerpFrames(path);
-    }
-    else if (key == '9'){
-        path = path_SPIRAL;
-        buildPerpFrames(path);
-    }
-    else if (key == '0'){
-        path = path_PERIODIC;
-        buildPerpFrames(path);
-    }
-   
-    else
-        handleViewportPresets(key);
+    path.keyPressed(key);
+    handleViewportPresets(key);
     
 }
 
@@ -600,6 +332,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
     
 }

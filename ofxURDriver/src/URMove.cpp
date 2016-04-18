@@ -22,7 +22,7 @@ void URMove::setup(){
     movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
     movementParams.add(jointSpeedLerpSpeed.set("Join LerpSpeed", 0.9, 0.001, 1.0));
     movementParams.add(jointAccelerationMultipler.set("Acceleration M", 200, 1, 1000));
-    movementParams.add(speedDivider.set("Speed Divider", 10, 1, 100));
+    movementParams.add(speedDivider.set("Speed Divider", 1, 1, 10));
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());

@@ -19,6 +19,7 @@ class RobotParameters{
         robotArmParams.add(bFollow.set("set TCP", false));
         robotArmParams.add(bTrace.set("bTrace GML", false));
         robotArmParams.add(bCopy.set("get TCP", false));
+        robotArmParams.add(b3DPath.set("3DPath", false));
         robotArmParams.add(bMove.set("Move", false));
         robotArmParams.add(avgAccel.set("avgAccel", 0, 0, 200));
         robotArmParams.add(bFigure8.set("bFigure8", false));
@@ -67,6 +68,7 @@ class RobotParameters{
     ofParameter<bool> bFollow;
     ofParameter<bool> bCopy;
     ofParameter<bool> bStop;
+    ofParameter<bool> b3DPath;
     
     vector<double> currentJointPos;
     

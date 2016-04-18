@@ -49,7 +49,7 @@ void ofApp::setup(){
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
     gml.setup();
-    gml.loadFile("gml/53513.gml");
+    gml.loadFile("gml/session-17-15-5-38.gml");
     
     /* 3D Navigation */
     //    cams[1] = &movement.cam;
@@ -60,7 +60,7 @@ void ofApp::setup(){
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
         cams[i].autosavePosition = true;
-        
+        cams[i].usemouse = false;
         cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
         cams[i].loadCameraPosition();
@@ -154,6 +154,7 @@ void ofApp::keyPressed(int key){
     if(key == ' '){
         if(parameters.bTrace){
             parameters.bTrace = false;
+            parameters.bFollow = true;
         }else{
             vector<ofPolyline> strokes;
             float retract;

@@ -19,103 +19,51 @@
 #include "GMLPath.h"
 #include "RobotParameters.h"
 #include "ofxPtf.h"
-
+#include "3DPath.h"
 class ofApp : public ofBaseApp{
-
-	public:
-		void setup();
-		void update();
-		void draw();
     
-        /// \brief Use the arrow keys to move the path
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+public:
+    void setup();
+    void update();
+    void draw();
     
-        /* Robot Definitions */
+    /// \brief Use the arrow keys to move the path
+    void keyPressed(int key);
+    void keyReleased(int key);
+    void mouseMoved(int x, int y );
+    void mouseDragged(int x, int y, int button);
+    void mousePressed(int x, int y, int button);
+    void mouseReleased(int x, int y, int button);
+    void mouseEntered(int x, int y);
+    void mouseExited(int x, int y);
+    void windowResized(int w, int h);
+    void dragEvent(ofDragInfo dragInfo);
+    void gotMessage(ofMessage msg);
     
-        ofxURDriver robot;
-        URMove movement;
-        float acceleration;
-        vector<double> speeds;
-        Joint targetTCP;
+    /* Robot Definitions */
     
-    
-        /* GUI Controls */
-    
-        RobotParameters parameters;
-        ofxPanel panel;
-        ofxPanel panelJoints;
-        ofEasyCam cam;
+    ofxURDriver robot;
+    URMove movement;
+    float acceleration;
+    vector<double> speeds;
+    Joint targetTCP;
     
     
-        /* Path Generator */
+    /* GUI Controls */
     
-        ofPoint centroid;
-        bool pause;
-        int ptIndex;
-        
-        
-        /// \brief Creates a periodic 3D path.
-        /// Adapted from: <a href="http://openframeworks.cc/ofBook/chapters/lines.html">ofBook/chapters/lines.html</a>
-        ofPolyline buildPath();
-        
-        /// Periodic 3D path
-        ofPolyline path;
-        
-        /// \brief Perpendicular Frame Generator
-        ofxPtf ptf;
-        
-        /// \brief Make the z-axis of the perp frame the forward-facing axis
-        ///
-        /// Note: by default the X-Axis is the forward-facing axis
-        ofMatrix4x4 zForward(ofMatrix4x4 originalMat);
-        bool makeZForward;
-        
-        /// \brief Make the z-axis of the perp frame the outwards-facing axis.
-        ///
-        /// Note: by default the X-Axis is the forward-facing axis
-        ofMatrix4x4 zOut(ofMatrix4x4 originalMat);
-        bool makeZOut;
-        
-        /// \brief orientation of current perp frame
-        ofMatrix4x4 orientation;
-        
-        /// \brief Creates the 2D polygon to loft along the path
-        /// \param radius radius of polygon
-        /// \param res resolution of polygon
-        ofPolyline buildProfile(float radius, int res);
+    RobotParameters parameters;
+    ofxPanel panel;
+    ofxPanel panelJoints;
+    ofEasyCam cam;
     
-        /// \brief Creates perpendicular frames on a path
-        /// \param polyline path to create frames on
-        void buildPerpFrames(ofPolyline polyline);
+    ThreeDPath path;
     
-        /// \brief polygonal profile to loft
-        ofPolyline profile;
+    bool pause;
+    /* 3D Navigation Helpers */
     
-    
-
-        /* Test Paths for Orientation */
-        ofPolyline path_XZ;
-        ofPolyline path_YZ;
-        ofPolyline path_SPIRAL;
-        ofPolyline path_PERIODIC;
-        void parsePts(string filename, ofPolyline &polyline);
-
-    
-        /* 3D Navigation Helpers */
-    
-        void handleViewportPresets(int key);
-        void hightlightViewports();
-        ofMatrix4x4 savedCamMat;
-        string viewportLabel;
-        int activeCam;
+    void handleViewportPresets(int key);
+    void hightlightViewports();
+    ofMatrix4x4 savedCamMat;
+    string viewportLabel;
+    int activeCam;
 };
