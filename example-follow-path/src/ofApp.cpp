@@ -149,8 +149,6 @@ void ofApp::draw(){
     ofPushStyle();
     ofScale(1000); // scale from meter to millimeters for visualizing
     
-    
-    
     path.draw();
     
     ofPopStyle();
