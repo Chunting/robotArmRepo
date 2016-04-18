@@ -11,6 +11,11 @@
 //--------------------------------------------------------------
 
 #include "ofMain.h"
+#include "ofxGui.h"
+#include "ofxGameCamera.h"
+#include "RobotController.h"
+#include "RobotParameters.h"
+#define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
 
@@ -30,18 +35,68 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
-        ofEasyCam cam;
+
+    
     
         ofMesh srf;
     
+        RobotParameters parameters;
+    
+        void setupUserPanel();
+        void setupDebugPanel();
+        void setupCameras();
+        void setupGeometry();
+        void drawGeometry();
+    
+    
+        ofxPanel panel;
+        ofxPanel panelWorkSurface;
+        ofxPanel panelJoints;
+        ofxPanel panelTargetJoints;
+        ofxPanel panelJointsIK;
+        ofxPanel panelJointsSpeed;
+        
+        
+        RobotController robot;
+        float acceleration;
+        vector<double> speeds;
+
+    
+    
+        /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
+    
+        /// \brief orthogonal projection of a 2D curve onto a 3D surface
+        /// \param mesh 3D surface for proection
+        /// \param path2D 2D toolpath to project
+        /// \param path resulting 3D projected toolpath
         void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
-        vector<ofMeshFace> testFaces;
-        vector<ofVec3f> testPts;
-        vector<ofVec3f> testPtNormals;
     
-        ofPolyline toolpath;
+        /// \brief 2D toolpath to project onto surface
         ofPolyline toolpath2D;
+        /// \brief 3D toolpath on surface
+        ofPolyline toolpath;
+        /// \brief Orientation quaternions at each 3D toolpath point
+        vector<ofQuaternion> toolpathOrients;
     
+        void updateActiveCamera();
+        ofxGameCamera cams[N_CAMERAS];
+        ofMatrix4x4 savedCamMats[N_CAMERAS];
+        string viewportLabels[N_CAMERAS];
+        int activeCam;
+        
+        /**
+         Use hotkeys to cyle through preset viewports.
+         @param key
+         't' = Top View      <br/>
+         'l' = Left View     <br/>
+         'f' = Front View    <br/>
+         'p' = Perspective   <br/>
+         'c' = Custom View   <br/>
+         's' = Save current for Custom View
+         */
+        void handleViewportPresets(int key);
+        
+        /// Highlights the active viewport.
+        void hightlightViewports();
 };

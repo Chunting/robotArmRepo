@@ -68,7 +68,7 @@ void ThreeDPath::keyPressed(int key){
         }
 }
 
-ofMatrix4x4 ThreeDPath::getNextPoint(){
+ofMatrix4x4 ThreeDPath::getNextPose(){
     if(ptf.framesSize()>0){
         ptIndex = (ptIndex +1) % ptf.framesSize();
         
@@ -82,6 +82,7 @@ ofMatrix4x4 ThreeDPath::getNextPoint(){
         return orientation;
     }
 }
+
 void ThreeDPath::draw(){
     
     // draw all the perp frames if we are paused
