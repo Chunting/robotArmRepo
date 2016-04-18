@@ -49,16 +49,18 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    robot.update();
-    
     if(parameters.bTrace){
         Joint pose;
         pose.position = toolpath.getVertices()[pathIndex];
         pose.rotation = toolpathOrients[pathIndex];
         robot.updatePath(pose);
         
+        
+        // update the path index
         pathIndex = (pathIndex+1)%toolpath.getVertices().size();
     }
+    
+    robot.update();
    
     updateActiveCamera();
 }
@@ -73,14 +75,14 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.robot.model.draw();
     drawGeometry();
+    robot.robot.model.draw();
     cams[0].end();
     
     // show simulated robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+        drawGeometry();
     robot.movement.draw();
-    drawGeometry();
     cams[1].end();
     
     
