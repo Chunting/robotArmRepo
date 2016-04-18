@@ -18,5 +18,13 @@
   - [ ] Rename Toolpoint -> TCP & targetTCP
   - [ ] Remove redundant variables (e.g, targetPointPos -> tartgetTCP.position)
   - [ ] Synchronize world scalar for Mocap & Robot
-- Release Prep
-  - [ ] Example Project(s)
+- Examples
+  - Follow Path
+  - [X] Fix Orientation with ofMatrix4x4
+  - [ ] Add in accel & speed controls
+  - [ ] Add in path interpolation based on time
+  
+  - Follow Surface
+  - [ ] Integrate Robut with Geometry
+  - [ ] Add in accel & speed controls
+  - [ ] Add in path interpolation based on time
