@@ -3,7 +3,8 @@
 #include "WorkSurface.h"
 #include "ofxNatNet.h"
 #include "RobotParameters.h"
-
+#include "TwoDWorkSurface.h"
+#include "ThreeDWorkSurface.h"
 class WorkSurfaceController{
 public:
     WorkSurfaceController();
@@ -15,8 +16,9 @@ public:
     void updateWorksurface(ofxNatNet::RigidBody &rb);
     Joint getNextPoint();
     
+    ThreeDWorkSurface threeDSurface;
     RobotParameters * robotParams;
-    WorkSurface workSurface;
+    TwoDWorkSurface twoDSurface;
     ofxNatNet::RigidBody prev;
     Joint currentPt;
     float startTime;

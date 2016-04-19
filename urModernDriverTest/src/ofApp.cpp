@@ -35,15 +35,15 @@ void ofApp::setup(){
     gml.setup();
     gml.loadFile("gml/53514.gml");
     
-    
-    for(int i = 0; i < N_CAMERAS; i++){
-        cams[i].setup();
-        cams[i].autosavePosition = true;
-        cams[i].usemouse = false;
-        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        cams[i].loadCameraPosition();
-    }
+//    
+//    for(int i = 0; i < N_CAMERAS; i++){
+//        cams[i].setup();
+//        cams[i].autosavePosition = true;
+//        cams[i].usemouse = false;
+//        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+//        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+//        cams[i].loadCameraPosition();
+//    }
     path.setup();
 }
 
@@ -66,7 +66,7 @@ void ofApp::setupGUI(){
     panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelWorkSurface.setup(workSurface.workSurface.workSurfaceParams);
+    panelWorkSurface.setup(workSurface.twoDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
@@ -117,7 +117,7 @@ void ofApp::draw(){
     ofSetColor(255, 255, 0, 200);
     ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
     ofPopMatrix();
-    workSurface.workSurface.draw();
+    workSurface.draw();
     ofPushMatrix();
     parent.draw();
     ofScale(1000, 1000, 1000);
@@ -136,7 +136,7 @@ void ofApp::draw(){
     ofPopMatrix();
     ofPushMatrix();
     parent.draw();
-    workSurface.workSurface.draw();
+    workSurface.draw();
     ofScale(1000, 1000, 1000);
     path.draw();
     ofPopMatrix();
@@ -198,7 +198,7 @@ void ofApp::keyPressed(int key){
                 strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*2.0);
             }
             
-            workSurface.workSurface.addStrokes(strokes,retract);
+            workSurface.twoDSurface.addStrokes(strokes,retract);
             parameters.bTrace = true;
             parameters.bFollow = false;
             workSurface.startTime = ofGetElapsedTimef();
@@ -206,16 +206,16 @@ void ofApp::keyPressed(int key){
         
     }
     if(key == 'u'){
-        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+        workSurface.twoDSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
     }
     if(key == 'i'){
-        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+        workSurface.twoDSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
     }
     if(key == 'o'){
-        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+        workSurface.twoDSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
     }
     if(key == 'p'){
-        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+        workSurface.twoDSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
     }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
@@ -246,7 +246,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+//        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "TOP VIEW";
     }
     // LEFT VIEW
@@ -254,7 +254,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, 0, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+//        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "LEFT VIEW";
     }
     // FRONT VIEW
@@ -262,7 +262,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, dist, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+//        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
@@ -270,18 +270,18 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+//        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
     else if (key == '6'){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, -dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+//        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
     if(key == '5'){
-        cams[activeCam].usemouse = true;
+//        cams[activeCam].usemouse = true;
     }
     //    // CUSTOM  VIEW
     //    else if (key == '5'){
@@ -347,7 +347,7 @@ void ofApp::hightlightViewports(){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
     if(key == '5'){
-        cams[activeCam].usemouse = false;
+//        cams[activeCam].usemouse = false;
     }
 }
 

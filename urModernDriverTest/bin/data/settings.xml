@@ -1,10 +1,10 @@
 <group>
-	<Set_TCP_POS>0.395584, -0.338415, -0.112621</Set_TCP_POS>
+	<Set_TCP_POS>0.392836, -0.330166, -0.0994865</Set_TCP_POS>
 	<Set_TCP_ORIENT>0.5, -0.5, 0.5, 0.5</Set_TCP_ORIENT>
-	<Robot_TCP_POS>0.395584, -0.338415, -0.112621</Robot_TCP_POS>
-	<Robot_TCP_ORIENT>0.00530207, -3.14071, 0.000213433</Robot_TCP_ORIENT>
+	<Robot_TCP_POS>0.392836, -0.330166, -0.0994865</Robot_TCP_POS>
+	<Robot_TCP_ORIENT>0.00526903, -3.1407, 0.000275369</Robot_TCP_ORIENT>
 	<tcpOffset>0, 0, 0</tcpOffset>
-	<avgAccel>-0.0102835</avgAccel>
+	<avgAccel>0.0172082</avgAccel>
 	<followLerp>1</followLerp>
 	<set_TCP>0</set_TCP>
 	<bTrace_GML>0</bTrace_GML>
@@ -14,9 +14,9 @@
 	<bFigure8>0</bFigure8>
 	<UR_Movements>
 		<Step>0</Step>
-		<MIN_Speed>-21.6029</MIN_Speed>
-		<_MAX_Speed>14.4509</_MAX_Speed>
-		<Delta_T>0.173885</Delta_T>
+		<MIN_Speed>-0.0877767</MIN_Speed>
+		<_MAX_Speed>13.0451</_MAX_Speed>
+		<Delta_T>0.193103</Delta_T>
 		<TCP_LerpSpeed>0.9</TCP_LerpSpeed>
 		<Join_LerpSpeed>0.9</Join_LerpSpeed>
 		<Acceleration_M>200</Acceleration_M>

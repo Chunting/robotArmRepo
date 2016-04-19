@@ -73,7 +73,7 @@ public:
     float tagStartTime;
     
     // 3D Navigation
-    ofxGameCamera cams[N_CAMERAS];
+    ofEasyCam cams[N_CAMERAS];
     ofMatrix4x4 savedCamMats[N_CAMERAS];
     string viewportLabels[N_CAMERAS];
     int activeCam;

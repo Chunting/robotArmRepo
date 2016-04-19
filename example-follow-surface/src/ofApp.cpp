@@ -51,19 +51,20 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-
+    Joint pose;
+    pose.position = parameters.tcpPosition;
+    pose.rotation = ofQuaternion(parameters.targetTCPOrientation);
     // update the robot to draw on the surface
     if(parameters.bTrace){
-        Joint pose;
+    
         pose.position = toolpath.getVertices()[pathIndex];
         pose.rotation = toolpathOrients[pathIndex];
-        robot.updatePath(pose);
         
         // update the path index
         pathIndex = (pathIndex+1)%toolpath.getVertices().size();
     }
     
-    robot.update();
+    robot.update(pose);
    
     updateActiveCamera();
 
@@ -87,7 +88,7 @@ void ofApp::draw(){
     // show simulated robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
         drawGeometry();
-    robot.movement.draw();
+    robot.movement.draw(0);
     cams[1].end();
     
     
