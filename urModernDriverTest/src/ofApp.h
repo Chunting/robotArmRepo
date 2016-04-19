@@ -36,12 +36,10 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    
-    
     void setupGUI();
     
     /// \brief 3D mesh with paths for robot to follow
-    
+
     RobotParameters parameters;
 
     ofxPanel panel;

@@ -90,10 +90,11 @@ void ofApp::update(){
     
     // find the current point on the path
     if (!pause){
+        
         // update the target TCP <-- from "bTrace" example
-        ofMatrix4x4 orientation = path.getNextPoint();
+        ofMatrix4x4 orientation = path.getNextPose();
         targetTCP.position = orientation.getTranslation();
-        targetTCP.rotation *= orientation.getRotate();
+
 
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);

@@ -74,7 +74,9 @@ void ThreeDPath::keyPressed(int key){
             buildPerpFrames(path);
         }
 }
-ofVec3f ThreeDPath::getNextNormal(){
+
+ofMatrix4x4 ThreeDPath::getNextPose(){
+
     if(ptf.framesSize()>0){
         ptIndex = (ptIndex +1) % ptf.framesSize();
         
@@ -84,41 +86,14 @@ ofVec3f ThreeDPath::getNextNormal(){
             orientation = zForward(orientation);
         else if (makeZOut)
             orientation = zOut(orientation);
-        
-        return ptf.calcCurrentNormal();
-    }
-}
-
-ofMatrix4x4 ThreeDPath::getNextPoint(){
-    if(ptf.framesSize()>0){
-        if(!reverse){
-            ptIndex++;
-        }else{
-            ptIndex--;
-        }
-        if(ptIndex >= ptf.framesSize()){
-            reverse = true;
-            ptIndex = ptf.framesSize()-1;
-        }
-        if(ptIndex < 0){
-            reverse = false;
-            ptIndex = 0;
-        }
-        
-        orientation = ptf.frameAt(ptIndex);
-//        
-        if (makeZForward)
-            orientation = zForward(orientation);
-        else if (makeZOut)
-            orientation = zOut(orientation);
         else
             orientation = flip(orientation);
+        
         return orientation;
     }
 }
-void ThreeDPath::draw(){
-    
 
+void ThreeDPath::draw(){
     
     // show the current orientation plane
     ofSetColor(ofColor::lightYellow);

@@ -5,8 +5,9 @@ class ThreeDPath{
 public:
     /* Path Generator */
     void setup();
-    ofMatrix4x4 getNextPoint();
+
     ofVec3f getNextNormal();
+    ofMatrix4x4 getNextPose();
     void draw();
     void keyPressed(int key);
     

@@ -166,7 +166,7 @@ void ofApp::exit(){
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("workSurface.xml");
     if(robot.robot.isThreadRunning()){
-        robot.robot.waitForThread();
+        robot.robot.disconnect();
     }
 }
 
