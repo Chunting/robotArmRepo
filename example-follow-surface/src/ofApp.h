@@ -12,6 +12,7 @@
 
 #include "ofMain.h"
 
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -34,14 +35,23 @@ class ofApp : public ofBaseApp{
         ofEasyCam cam;
     
         ofMesh srf;
+  
     
+        /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
-        void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
-        vector<ofMeshFace> testFaces;
-        vector<ofVec3f> testPts;
-        vector<ofVec3f> testPtNormals;
     
-        ofPolyline toolpath;
+        /// \brief orthogonal projection of a 2D curve onto a 3D surface
+        /// \param mesh 3D surface for proection
+        /// \param path2D 2D toolpath to project
+        /// \param path resulting 3D projected toolpath
+        void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
+    
+        /// \brief 2D toolpath to project onto surface
         ofPolyline toolpath2D;
+        /// \brief 3D toolpath on surface
+        ofPolyline toolpath;
+        /// \brief Orientation quaternions at each 3D toolpath point
+        vector<ofQuaternion> toolpathOrients;
+    
     
 };

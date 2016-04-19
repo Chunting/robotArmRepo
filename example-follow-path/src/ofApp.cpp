@@ -94,9 +94,7 @@ void ofApp::update(){
         ofMatrix4x4 orientation = path.getNextPoint();
         targetTCP.position = orientation.getTranslation();
         targetTCP.rotation *= orientation.getRotate();
-        
-        
-        
+
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);
         movement.update();
