@@ -15,7 +15,7 @@ void ofApp::setup(){
     //    tcp.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
     //    tcp.setParent(parent);
-
+    
     setupGUI();
 #ifdef ENABLE_NATNET
     natNet.setup("en6", "192.168.1.131");
@@ -23,10 +23,18 @@ void ofApp::setup(){
     
     
     robot.setup(parameters);
-
+    
+    panel.add(robot.movement.movementParams);
+    speeds.assign(6, 0);
+    parameters.bMove = false;
+    // get the current pose on start up
+    parameters.bCopy = true;
+    panel.loadFromFile("settings.xml");
+    
+    
     gml.setup();
     gml.loadFile("gml/53516.gml");
-
+    
     
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
@@ -62,12 +70,6 @@ void ofApp::setupGUI(){
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
-    panel.add(robot.movement.movementParams);
-    speeds.assign(6, 0);
-    parameters.bMove = false;
-    // get the current pose on start up
-    parameters.bCopy = true;
-    panel.loadFromFile("settings.xml");
 }
 
 
@@ -134,12 +136,13 @@ void ofApp::draw(){
     ofPopMatrix();
     ofPushMatrix();
     parent.draw();
+    workSurface.workSurface.draw();
     ofScale(1000, 1000, 1000);
     path.draw();
     ofPopMatrix();
     cams[1].end();
     
-
+    
     
     
     ofPushMatrix();
@@ -202,25 +205,25 @@ void ofApp::keyPressed(int key){
         }
         
     }
-        if(key == 'u'){
-            workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
-        }
-        if(key == 'i'){
-            workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
-        }
-        if(key == 'o'){
-            workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
-        }
-        if(key == 'p'){
-            workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
-        }
+    if(key == 'u'){
+        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+    }
+    if(key == 'i'){
+        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+    }
+    if(key == 'o'){
+        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+    }
+    if(key == 'p'){
+        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+    }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
     }
     
     
     handleViewportPresets(key);
-
+    
     if (key == 'h'){
         hideRobot = !hideRobot;
     }

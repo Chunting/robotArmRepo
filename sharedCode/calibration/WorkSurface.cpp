@@ -2,6 +2,7 @@
 #include "WorkSurface.h"
 void WorkSurface::setup(){
     workSurfaceParams.setName("Work Surface");
+    workSurfaceParams.add(feedRate.set("feedRate", 0.001, 0.00001, 0.01));
     workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
@@ -11,7 +12,7 @@ void WorkSurface::setup(){
     workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
     workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
     workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
-    workSurfaceParams.add(feedRate.set("feedRate", 0.001, 1, 0.0001));
+
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
