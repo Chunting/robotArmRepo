@@ -26,32 +26,22 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);
-    
-    // setup GUI
+
     setupUserPanel();
-    setupDebuggingPanel();
+    setupDebugPanel();
     setupCameras();
+    setupGeometry();
     
-    // setup Robot
+    // setup robot
     robot.setup(parameters);
     panel.add(robot.movement.movementParams);
+    
     speeds.assign(6, 0);
+    parameters.bMove = false;
     parameters.bCopy = true;
+    
     panel.loadFromFile("settings.xml");
-        
-    // setup Geometry`
-    ofxAssimpModelLoader loader;
-    loader.loadModel(ofToDataPath("mesh_srf.stl"));
-    srf = loader.getMesh(0);
     
-    // scale surface to meters
-    for (auto &v : srf.getVertices()){
-        v /= 100;
-    }
-    
-    buildToolpath(toolpath2D);
-    projectToolpath(srf,toolpath2D,toolpath);
-   
     ofEnableAlphaBlending();
 }
 
@@ -61,42 +51,65 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    robot.update();
 
-    updateCameras();
+    // update the robot to draw on the surface
+    if(parameters.bTrace){
+        Joint pose;
+        pose.position = toolpath.getVertices()[pathIndex];
+        pose.rotation = toolpathOrients[pathIndex];
+        robot.updatePath(pose);
+        
+        // update the path index
+        pathIndex = (pathIndex+1)%toolpath.getVertices().size();
+    }
+    
+    robot.update();
+   
+    updateActiveCamera();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(0);
 
+    
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-   
-    // draw realtime robot
-//    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-//    robot.robot.model.draw();
-//    drawGeometry();
-//    cams[0].end();
-//    
-//    // draw simulated robot
-//    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-//    robot.movement.draw();
-//    drawGeometry();
-//    cams[1].end();
+    
+    // show realtime robot
+    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    drawGeometry();
+    robot.robot.model.draw();
+    cams[0].end();
+    
+    // show simulated robot
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+        drawGeometry();
+    robot.movement.draw();
+    cams[1].end();
+    
+    
+    drawGUI();
+    hightlightViewports();
 }
 
 //--------------------------------------------------------------
 void ofApp::setupUserPanel(){
+
+    parameters.setup();
+    
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
+    
+    // remove unneccesary variables from panel
+//    panel.getToggle("bTrace").???
 }
 
-
-
 //--------------------------------------------------------------
-void ofApp::setupDebuggingPanel(){
+void ofApp::setupDebugPanel(){
+
     panelJoints.setup(parameters.joints);
     panelTargetJoints.setup(parameters.targetJoints);
     panelJointsSpeed.setup(parameters.jointSpeeds);
@@ -108,11 +121,12 @@ void ofApp::setupDebuggingPanel(){
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
 }
 
-
 void ofApp::setupCameras(){
+    
     for(int i = 0; i < N_CAMERAS; i++){
         cams[i].setup();
         cams[i].autosavePosition = true;
+        cams[i].useArrowKeys = false;
         cams[i].usemouse = false;
         cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
@@ -120,24 +134,41 @@ void ofApp::setupCameras(){
     }
 }
 
-void ofApp::updateCameras(){
-    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
-    {
-        activeCam = 0;
+//--------------------------------------------------------------
+void ofApp::setupGeometry(){
+    ofxAssimpModelLoader loader;
+    loader.loadModel(ofToDataPath("mesh_srf.stl"));
+    srf = loader.getMesh(0);
+    
+    // scale surface to meters
+    for (auto &v : srf.getVertices()){
+        v /= 100;
     }
-    else
-    {
-        activeCam = 1;
+    
+    buildToolpath(toolpath2D);
+    
+    // move toolpath surface to be in a more reachable position (temp fix)
+    ofVec3f offset = ofVec3f(0,.5,.25);
+    for (auto &v : srf.getVertices()){
+        v += offset;
     }
+    for (auto &v : toolpath2D.getVertices()){
+        v += offset;
+    }
+    
+    projectToolpath(srf,toolpath2D,toolpath);
+    
+    
 }
 
+//--------------------------------------------------------------
 void ofApp::drawGeometry(){
-
     ofPushMatrix();
-    ofPushStyle();
+    ofPopStyle();
+    
     ofScale(1000);      // draw in mm
     ofDrawAxis(.05);
-    
+
     // show the surface
     ofSetColor(100);
     srf.draw();
@@ -174,17 +205,42 @@ void ofApp::drawGeometry(){
         
     }
     ofSetLineWidth(1);
-    ofPopStyle();
-    ofPopMatrix();
     
+    ofPushStyle();
+    ofPopMatrix();
+
 }
 
+//--------------------------------------------------------------
+void ofApp::drawGUI(){
+    panel.draw();
+    panelJoints.draw();
+    panelJointsIK.draw();
+    panelJointsSpeed.draw();
+    panelTargetJoints.draw();
+}
+
+
+//--------------------------------------------------------------
+void ofApp::updateActiveCamera(){
+    
+    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+    {
+        activeCam = 0;
+    }
+    else
+    {
+        activeCam = 1;
+    }
+}
 //--------------------------------------------------------------
 void ofApp::buildToolpath(ofPolyline &path){
     
     path.clear();
     
-    // make an XY circle as a toolpath ...
+
+    // make an XY circle as a toolpath ...    
+
     float res = 60;
     float radius = .05;
     float theta = 360/res;
@@ -239,7 +295,9 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
                 // save the projected point and face normal
                 toolpath.addVertex(projectedPt);
                 ofQuaternion q;
-                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
+
+                q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
+
                 toolpathOrients.push_back(q);
             }
             
@@ -247,12 +305,107 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
     }
     
     toolpath.close();
+
+}
+//--------------------------------------------------------------
+void ofApp::handleViewportPresets(int key){
+    
+    float dist = 2000;
+    float zOffset = 450;
+    
+    // TOP VIEW
+    if (key == '1'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, 0, dist);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "TOP VIEW";
+    }
+    // LEFT VIEW
+    else if (key == '2'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(dist, 0, 0);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "LEFT VIEW";
+    }
+    // FRONT VIEW
+    else if (key == '3'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, dist, 0);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "FRONT VIEW";
+    }
+    // PERSPECTIVE VIEW
+    else if (key == '4'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(dist, dist, dist/4);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
+    }
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
+    }
+
+}
+
+//--------------------------------------------------------------
+void ofApp::hightlightViewports(){
+    ofPushStyle();
+    
+    float w = 6;
+    ofSetLineWidth(w);
+    
+    // highlight right viewport
+    if (activeCam == 1){
+        ofSetColor(ofColor::white,80);
+        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
+        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
+        ofSetColor(ofColor::white,40);
+        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
+        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
+        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
+    }
+    // hightligh left viewport
+    else{
+        ofSetLineWidth(w);
+        ofSetColor(ofColor::white,80);
+        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
+        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
+        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
+        ofSetColor(ofColor::white,40);
+        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
+        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
+        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
+    }
+    
+    // show Viewport info
+    
+    
+    ofSetColor(ofColor::white,200);
+    ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
+    ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
+    ofDrawBitmapString(viewportLabels[1], ofGetWindowWidth()/2+30, ofGetWindowHeight()-30);
+    ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
+    
+    ofPopStyle();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     float offset = .005;
 
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
+    }
+    
+    handleViewportPresets(key);
     
      if (key == OF_KEY_RIGHT){
         for (auto &p : toolpath2D)

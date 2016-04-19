@@ -12,9 +12,10 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxGameCamera.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
-#include "ofxGameCamera.h"
+
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -35,30 +36,32 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+
     
         ofMesh srf;
     
         RobotParameters parameters;
     
         void setupUserPanel();
-        void setupDebuggingPanel();
+
+        void setupDebugPanel();
         void setupCameras();
-        void updateCameras();
+        void setupGeometry();
+        void drawGeometry();
+        void drawGUI();
+    
         ofxPanel panel;
-        ofxPanel panelWorkSurface;
         ofxPanel panelJoints;
         ofxPanel panelTargetJoints;
         ofxPanel panelJointsIK;
         ofxPanel panelJointsSpeed;
-    
+        
+        
         RobotController robot;
         float acceleration;
         vector<double> speeds;
-    
-        bool move;
-  
-        void drawGeometry();
+
+
     
         /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
@@ -75,9 +78,14 @@ class ofApp : public ofBaseApp{
         ofPolyline toolpath;
         /// \brief Orientation quaternions at each 3D toolpath point
         vector<ofQuaternion> toolpathOrients;
+
+    
+        int pathIndex;
     
     
-        // 3D Navigation
+        /* 3D Navigation */
+    
+        void updateActiveCamera();
         ofxGameCamera cams[N_CAMERAS];
         ofMatrix4x4 savedCamMats[N_CAMERAS];
         string viewportLabels[N_CAMERAS];

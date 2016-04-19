@@ -74,14 +74,23 @@
     <UR_Movements>
         <Max_Speed>0</Max_Speed>
         <Min_Speed>0</Min_Speed>
+<<<<<<< HEAD
         <Delta_T>0.548773</Delta_T>
+=======
+        <Delta_T>0.236681</Delta_T>
+>>>>>>> master
         <targetTCPLerpSpeed>0.984709</targetTCPLerpSpeed>
         <jointSpeedLerpSpeed>0.979612</jointSpeedLerpSpeed>
         <Reported_MIN_Speed>-11.7227</Reported_MIN_Speed>
         <Reported_MAX_Speed>43.6339</Reported_MAX_Speed>
         <jointAccelerationMultipler>200</jointAccelerationMultipler>
+<<<<<<< HEAD
         <MIN_Speed>nan</MIN_Speed>
         <_MAX_Speed>nan</_MAX_Speed>
+=======
+        <MIN_Speed>-9.20143</MIN_Speed>
+        <_MAX_Speed>15.3742</_MAX_Speed>
+>>>>>>> master
         <TCP_LerpSpeed>0.959225</TCP_LerpSpeed>
         <Join_LerpSpeed>0.964321</Join_LerpSpeed>
         <Acceleration_M>240.556</Acceleration_M>
@@ -89,7 +98,12 @@
 	<Speed_Divider>1</Speed_Divider>
 	</UR_Movements>
 <Move>0</Move>
+<<<<<<< HEAD
 	<avgAccel>nan</avgAccel>
 	<bFigure8>0</bFigure8>
 <3DPath>0</3DPath>
+=======
+	<avgAccel>4.41832e-38</avgAccel>
+	<bFigure8>0</bFigure8>
+>>>>>>> master
 </group>
