@@ -33,7 +33,7 @@ void ofApp::setup(){
     
     
     gml.setup();
-    gml.loadFile("gml/53516.gml");
+    gml.loadFile("gml/53514.gml");
     
     
     for(int i = 0; i < N_CAMERAS; i++){
@@ -269,6 +269,13 @@ void ofApp::handleViewportPresets(int key){
     else if (key == '4'){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
+    }
+    else if (key == '6'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, 0, -dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
         cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
