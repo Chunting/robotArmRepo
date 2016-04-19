@@ -47,7 +47,7 @@ void ofApp::setup(){
     // setup mocap
     string localIP  = "127.0.0.1";
     string serverIP = "127.0.0.1";
-    mocap.setup(localIP,serverIP);
+    mocap.setup(localIP,serverIP,1);
     
     
     ofEnableAlphaBlending();
@@ -58,15 +58,63 @@ void ofApp::setup(){
 void ofApp::update(){
 
     mocap.update();
+
+
+    // Update the robot with the current rigid body.
+    //
+    // Assumes any offsets from the actual rigid body in world space
+    // are configured before streaming
+    if(mocap.natnet.getNumRigidBody() > 0 ){
+        const ofxNatNet::RigidBody &rb = mocap.getCurrentRigidBody();
+        
+        Joint pose;
+        pose.position = rb.getMatrix().getTranslation();
+        pose.rotation = rb.getMatrix().getRotate(); // this will have the same error as example-follow-path
+        robot.updatePath(pose);
+    }
+    
+    robot.update();
+    
+    updateActiveCamera();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofBackground(0);
+    
+    
+    ofSetColor(255,160);
+    ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
+    ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
+    
+    // show realtime robot
+    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    
     ofPushMatrix();
     ofScale(1000);
     mocap.draw();
     ofPopMatrix();
+    
+    robot.robot.model.draw();
+    cams[0].end();
+    
+    
+    // show simulated robot
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    
+    ofPushMatrix();
+    ofScale(1000);
+    mocap.draw();
+    ofPopMatrix();
+    
+    robot.movement.draw();
+    cams[1].end();
+    
+    
     drawGUI();
+    hightlightViewports();
+    
 }
 
 //--------------------------------------------------------------

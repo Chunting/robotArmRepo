@@ -73,12 +73,10 @@ class ofApp : public ofBaseApp{
         /**
          Use hotkeys to cyle through preset viewports.
          @param key
-         't' = Top View      <br/>
-         'l' = Left View     <br/>
-         'f' = Front View    <br/>
-         'p' = Perspective   <br/>
-         'c' = Custom View   <br/>
-         's' = Save current for Custom View
+         '1' = Top View      <br/>
+         '2' = Left View     <br/>
+         '3' = Front View    <br/>
+         '4' = Perspective   <br/>
          */
         void handleViewportPresets(int key);
         
