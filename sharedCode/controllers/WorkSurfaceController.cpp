@@ -36,7 +36,7 @@ void WorkSurfaceController::draw(){
 }
 
 Joint WorkSurfaceController::getNextPoint(){
-    return twoDSurface.getTargetPoint(ofGetElapsedTimef()-startTime);
+    return threeDSurface.getTargetPoint(ofGetElapsedTimef()-startTime);
 }
 
 void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers){

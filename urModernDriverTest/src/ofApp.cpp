@@ -198,7 +198,7 @@ void ofApp::keyPressed(int key){
                 strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*2.0);
             }
             
-            workSurface.twoDSurface.addStrokes(strokes,retract);
+            workSurface.threeDSurface.addStrokes(strokes,retract);
             parameters.bTrace = true;
             parameters.bFollow = false;
             workSurface.startTime = ofGetElapsedTimef();

@@ -45,4 +45,12 @@ protected:
     
     vector<ofPolyline> lines;
     vector<ofPolyline> strokes_original;
+    
+    ofPolyline workArea;
+    float targetIndex;
+    ofVec3f normal;
+    float startTime;
+    ofNode toolPoint;
+    Joint targetToolPoint;
+    RateTimer timer;
 };
