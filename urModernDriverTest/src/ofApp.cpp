@@ -49,7 +49,7 @@ void ofApp::setup(){
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
     gml.setup();
-    gml.loadFile("gml/session-17-15-5-38.gml");
+    gml.loadFile("gml/53514.gml");
     
     /* 3D Navigation */
     //    cams[1] = &movement.cam;
@@ -65,7 +65,7 @@ void ofApp::setup(){
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
         cams[i].loadCameraPosition();
     }
-    
+    path.setup();
 }
 
 //--------------------------------------------------------------
@@ -99,7 +99,7 @@ void ofApp::draw(){
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    
+    path.draw();
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -116,11 +116,43 @@ void ofApp::draw(){
     ofDrawSphere(toMM(parameters.targetTCP.position), 15);
     ofPopMatrix();
     workSurface.workSurface.draw();
+    ofPushMatrix();
+    parent.draw();
+    ofScale(1000, 1000, 1000);
+    path.draw();
+    ofPopMatrix();
     cams[0].end();
     
-    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.movement.draw();
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()/2));
+    robot.movement.draw(robot.movement.selectedSolution);
+    ofPushMatrix();
+    parent.draw();
+    ofScale(1000, 1000, 1000);
+    path.draw();
+
+    ofPopMatrix();
     cams[1].end();
+    
+    int x= ofGetWindowWidth()/2;
+    int y = ofGetWindowHeight()/2;
+    for(int i = 0; i < 8; i++){
+        cams[1].begin(ofRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2/2));
+        robot.movement.draw(i);
+        ofPushMatrix();
+        parent.draw();
+        ofScale(1000, 1000, 1000);
+        path.draw();
+        
+        ofPopMatrix();
+        cams[1].end();
+        x+=ofGetWindowWidth()/2/4;
+        if(x >= ofGetWindowWidth()){
+            x = ofGetWindowWidth()/2;
+            y+= ofGetWindowHeight()/2/2;
+        }
+    }
+    
+    
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     gml.draw();
@@ -181,18 +213,18 @@ void ofApp::keyPressed(int key){
         }
         
     }
-    //    if(key == '1'){
-    //        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
-    //    }
-    //    if(key == '2'){
-    //        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
-    //    }
-    //    if(key == '3'){
-    //        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
-    //    }
-    //    if(key == '4'){
-    //        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
-    //    }
+        if(key == 'u'){
+            workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+        }
+        if(key == 'i'){
+            workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+        }
+        if(key == 'o'){
+            workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+        }
+        if(key == 'p'){
+            workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+        }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
     }
@@ -207,6 +239,8 @@ void ofApp::keyPressed(int key){
     if (key == 'n'){
         natNet.record = !natNet.record;
     }
+    
+    path.keyPressed(key);
 }
 
 //--------------------------------------------------------------

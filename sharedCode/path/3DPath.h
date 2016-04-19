@@ -6,6 +6,7 @@ public:
     /* Path Generator */
     void setup();
     ofMatrix4x4 getNextPoint();
+    ofVec3f getNextNormal();
     void draw();
     void keyPressed(int key);
     
@@ -36,6 +37,8 @@ public:
     ofMatrix4x4 zOut(ofMatrix4x4 originalMat);
     bool makeZOut;
     
+    ofMatrix4x4 flip(ofMatrix4x4 originalMat);
+    
     /// \brief orientation of current perp frame
     ofMatrix4x4 orientation;
     
@@ -51,7 +54,7 @@ public:
     /// \brief polygonal profile to loft
     ofPolyline profile;
     
-    
+    bool reverse;
     
     /* Test Paths for Orientation */
     ofPolyline path_XZ;

@@ -13,6 +13,7 @@
 #include "RobotParameters.h"
 #include "NatNetController.h"
 #include "WorkSurfaceController.h"
+#include "3DPath.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -48,6 +49,7 @@ public:
     ofxPanel panelJointsSpeed;
     
     
+    ThreeDPath path;
     RobotController robot;
     NatNetController natNet;
 

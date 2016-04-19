@@ -48,7 +48,7 @@ void RobotController::updateMovement(){
     // get back the target joint trajectories
     vector<double> target = movement.getTargetJointPos();
     for(int i = 0; i < target.size(); i++){
-        robotParams->targetJointPos[i] = (float)target[i];
+        robotParams->targetJointPos[i] = ofRadToDeg((float)target[i]);
     }
     
     // set the joint speeds
@@ -116,7 +116,7 @@ void RobotController::moveArm(){
         //
         //        }else{
         //            // go from current to next position
-        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), 0.1);
+        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), robotParams->followLerp);
         //            // go from current orientation to next orientation (???)
         robotParams->targetTCP.rotation = ofQuaternion(robotParams->targetTCPOrientation);
         //        }
@@ -125,7 +125,7 @@ void RobotController::moveArm(){
         robotParams->bTrace = false;
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
 
-    }else if(robotParams->bTrace){
+    }else if(robotParams->bTrace || robotParams->b3DPath){
         
         
         robotParams->targetTCP.position = workSurfaceTargetTCP.position;

@@ -104,10 +104,8 @@ void WorkSurface::update(ofVec3f toolPointPos){
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     toolPoint.setPosition(toolPointPos);
     toolPoint.setOrientation(orientation);
-//    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
-//    orientation = toolPoint.getOrientationQuat();
     
-
+    
     
     rotation = orientation.getEuler();
     qAxis = axis;
@@ -115,17 +113,16 @@ void WorkSurface::update(ofVec3f toolPointPos){
     
     // update the position
     ofVec3f centroid;
-    for (auto &p : targetPoints)
+    for (auto &p : targetPoints){
         centroid += p;
-    position = centroid/4;//targetPoints[2].get().getMiddle(targetPoints[0].get());
-    
-    // update GML
+    }
+    position = centroid/4;
     if (strokes_original.size() != 0)
         addStrokes(strokes_original, 4);
     
 }
 
-void WorkSurface::calcNormals(){
+void WorkSurface::calcNormals(bool flip){
     mesh.clearNormals();
     for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
     
@@ -133,9 +130,14 @@ void WorkSurface::calcNormals(){
         const int ia = mesh.getIndices()[i];
         const int ib = mesh.getIndices()[i+1];
         const int ic = mesh.getIndices()[i+2];
-        
-        ofVec3f e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
-        ofVec3f e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+        ofVec3f e1, e2;
+        if(flip){
+            e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
+            e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+        }else{
+            e1 = mesh.getVertices()[ia] - mesh.getVertices()[ib];
+            e2 = mesh.getVertices()[ic] - mesh.getVertices()[ib];
+        }
         ofVec3f no = e1.cross( e2 );
         
         // depending on your clockwise / winding order, you might want to reverse the e2 / e1 above if your normals are flipped.
@@ -145,7 +147,7 @@ void WorkSurface::calcNormals(){
         mesh.getNormals()[ic] += no;
     }
     
-
+    
     for(int i=0; i < mesh.getNormals().size(); i++ ) {
         mesh.getNormals()[i].normalize();
         normal+=mesh.getNormals()[i];
@@ -179,7 +181,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
             stroke.insertVertex(first, 0);
             stroke.addVertex(last);
             stroke.addVertex(first);
-          
+            
         }
         
         
@@ -198,7 +200,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
         centroid += pl.getCentroid2D();
     centroid /= strokes.size();
     
-
+    
     lines.clear();
     ofMatrix4x4 mat;
     mat.setRotate(orientation);
@@ -216,9 +218,9 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 }
 
 Joint WorkSurface::getTargetPoint(float t){
-
+    
     if(lines.size() > 0){
-        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.025;
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.0025;
         t = fmodf(t, length)/length;
         
         float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);

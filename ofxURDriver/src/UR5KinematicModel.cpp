@@ -48,7 +48,7 @@ void UR5KinematicModel::setup(){
     joints[3].position.set(0, -70.608, 903.192);
     joints[4].position.set(0, -117.242, 950.973);
     joints[5].position.set(0, -164.751, 996.802);
-    tool.position.set(joints[5].position + ofVec3f(0,-135,0)); // tool tip position
+    tool.position.set(joints[5].position + ofVec3f(0,-0.135,0)); // tool tip position
     
     for(int i = 1; i < joints.size(); i++){
         joints[i].offset = joints[i].position-joints[i-1].position;
@@ -116,10 +116,10 @@ void UR5KinematicModel::draw(){
     
     if(bDrawModel){
         ofEnableDepthTest();
-        shader.begin();
-        shader.setUniform1f("elapsedTime", 0.1);
-        shader.setUniform1f("stage", 3.0);
-        shader.setUniform1f("alpha", 1.0);
+//        shader.begin();
+//        shader.setUniform1f("elapsedTime", 0.1);
+//        shader.setUniform1f("stage", 3.0);
+//        shader.setUniform1f("alpha", 1.0);
         float x;
         ofVec3f axis;
         ofQuaternion q;
@@ -157,7 +157,7 @@ void UR5KinematicModel::draw(){
         }
         ofPopMatrix();
             
-        shader.end();
+//        shader.end();
         ofDisableDepthTest();
         
         ofPushMatrix();

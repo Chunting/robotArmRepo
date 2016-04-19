@@ -24,7 +24,6 @@ void WorkSurfaceController::setup(RobotParameters & params){
 }
 void WorkSurfaceController::update(){
     workSurface.update(robotParams->targetTCPPosition);
-
 }
 void WorkSurfaceController::draw(){
     
@@ -61,13 +60,13 @@ void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
     ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
     
     if (robotParams->bFollow){
-        ofQuaternion tempQ = toMM(robotParams->targetTCP.rotation);
-        ofVec3f tempP = toMM(robotParams->targetTCP.position);;
+        ofQuaternion tempQ = robotParams->targetTCP.rotation;
+        ofVec3f tempP = toMM(robotParams->targetTCP.position);
         
         tempP = tempP * diff;
         tempQ = rb.getMatrix().getRotate();
         
-        robotParams->targetTCP.rotation = toMeters(tempQ);
+        robotParams->targetTCP.rotation = tempQ;
         robotParams->targetTCP.position = toMeters(tempP);
         
     }

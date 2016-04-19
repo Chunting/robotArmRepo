@@ -25,7 +25,7 @@ public:
     void setRotation(float x, float y, float z);
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
-    void calcNormals();
+    void calcNormals(bool flip = false);
     /// Assign a set of strokes to a worksurface and add a
     /// retract/approach distance to the start and end of each stroke.
     /// @param retractDist
