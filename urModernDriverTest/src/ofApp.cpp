@@ -15,6 +15,32 @@ void ofApp::setup(){
     //    tcp.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
     //    tcp.setParent(parent);
+
+    setupGUI();
+#ifdef ENABLE_NATNET
+    natNet.setup("en6", "192.168.1.131");
+#endif
+    
+    
+    robot.setup(parameters);
+
+    gml.setup();
+    gml.loadFile("gml/53516.gml");
+
+    
+    for(int i = 0; i < N_CAMERAS; i++){
+        cams[i].setup();
+        cams[i].autosavePosition = true;
+        cams[i].usemouse = false;
+        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        cams[i].loadCameraPosition();
+    }
+    path.setup();
+}
+
+
+void ofApp::setupGUI(){
     parameters.setup();
     
     panel.setup(parameters.robotArmParams);
@@ -36,37 +62,14 @@ void ofApp::setup(){
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
-#ifdef ENABLE_NATNET
-    natNet.setup("en6", "192.168.1.131");
-#endif
-    
-    
-    robot.setup(parameters);
     panel.add(robot.movement.movementParams);
     speeds.assign(6, 0);
     parameters.bMove = false;
     // get the current pose on start up
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
-    gml.setup();
-    gml.loadFile("gml/53514.gml");
-    
-    /* 3D Navigation */
-    //    cams[1] = &movement.cam;
-    // need to move URMove camera to ofApp
-    
-    handleViewportPresets('p');
-    
-    for(int i = 0; i < N_CAMERAS; i++){
-        cams[i].setup();
-        cams[i].autosavePosition = true;
-        cams[i].usemouse = false;
-        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        cams[i].loadCameraPosition();
-    }
-    path.setup();
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -74,10 +77,7 @@ void ofApp::update(){
     natNet.update();
 #endif
     workSurface.update();
-    if(parameters.bTrace){
-        robot.updatePath(workSurface.getNextPoint());
-    }
-    robot.update();
+    robot.update(workSurface.getNextPoint());
     
     
     
@@ -113,7 +113,7 @@ void ofApp::draw(){
     ofSetColor(255, 0, 255, 200);
     ofDrawSphere(toMM(parameters.tcpPosition.get()), 5);
     ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(toMM(parameters.targetTCP.position), 15);
+    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
     ofPopMatrix();
     workSurface.workSurface.draw();
     ofPushMatrix();
@@ -123,34 +123,23 @@ void ofApp::draw(){
     ofPopMatrix();
     cams[0].end();
     
-    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()/2));
+    
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.movement.draw(robot.movement.selectedSolution);
+    ofPushMatrix();
+    ofSetColor(255, 0, 255, 200);
+    ofDrawSphere(toMM(parameters.tcpPosition.get()-parameters.tcpOffset), 5);
+    ofSetColor(255, 255, 0, 200);
+    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
+    ofPopMatrix();
     ofPushMatrix();
     parent.draw();
     ofScale(1000, 1000, 1000);
     path.draw();
-
     ofPopMatrix();
     cams[1].end();
     
-    int x= ofGetWindowWidth()/2;
-    int y = ofGetWindowHeight()/2;
-    for(int i = 0; i < 8; i++){
-        cams[1].begin(ofRectangle(x, y, ofGetWindowWidth()/2/4, ofGetWindowHeight()/2/2));
-        robot.movement.draw(i);
-        ofPushMatrix();
-        parent.draw();
-        ofScale(1000, 1000, 1000);
-        path.draw();
-        
-        ofPopMatrix();
-        cams[1].end();
-        x+=ofGetWindowWidth()/2/4;
-        if(x >= ofGetWindowWidth()){
-            x = ofGetWindowWidth()/2;
-            y+= ofGetWindowHeight()/2/2;
-        }
-    }
+
     
     
     ofPushMatrix();

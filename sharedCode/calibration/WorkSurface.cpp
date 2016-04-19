@@ -11,6 +11,7 @@ void WorkSurface::setup(){
     workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
     workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
     workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
+    workSurfaceParams.add(feedRate.set("feedRate", 0.001, 1, 0.0001));
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -22,6 +23,7 @@ void WorkSurface::setup(){
     plane.setWidth(1);
     plane.setHeight(1);
     targetIndex = 0;
+    timer.setSmoothing(true);
     
 }
 void WorkSurface::setCorners(vector<ofPoint> pts){
@@ -50,7 +52,7 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
 }
 
 void WorkSurface::update(ofVec3f toolPointPos){
-    
+    timer.tick();
     // update the worksurface mesh
     if (mesh.getVertices().size() == 0){
         for (int i=0; i<targetPoints.size(); i++){
@@ -218,21 +220,26 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 }
 
 Joint WorkSurface::getTargetPoint(float t){
-    
+  
     if(lines.size() > 0){
-        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.0025;
-        t = fmodf(t, length)/length;
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1);
+        float dist = feedRate*t;
+        cout<<dist/length<<endl;
+        float indexInterpolated = lines[targetIndex].getIndexAtPercent(dist/length);
         
-        float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
-        ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
+
+        ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexInterpolated);
+        
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
-        if(1.0-t < 0.01 || t == 0.0){
+
+        if(indexInterpolated > lines[targetIndex].getVertices().size()-1){
             targetIndex++;
-            if(targetIndex >=lines.size()){
-                targetIndex = 0;
-            }
         }
+        if(targetIndex > lines.size()-1.){
+            targetIndex = 0;
+        }
+        
     }
     return targetToolPoint;
 }

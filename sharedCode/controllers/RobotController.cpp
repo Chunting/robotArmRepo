@@ -22,7 +22,8 @@ vector<double> RobotController::getJointPosition(){
     return robotParams->currentJointPos;
 }
 
-void RobotController::update(){
+void RobotController::update(Joint targetTCP){
+    updatePath(targetTCP);
     updateData();
     updateMovement();
     
@@ -36,6 +37,8 @@ void RobotController::updateMovement(){
     }
     
     moveArm();
+    
+    robotParams->targetTCP.position+=robotParams->tcpOffset;
     
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);

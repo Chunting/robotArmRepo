@@ -116,10 +116,10 @@ void UR5KinematicModel::draw(){
     
     if(bDrawModel){
         ofEnableDepthTest();
-//        shader.begin();
-//        shader.setUniform1f("elapsedTime", 0.1);
-//        shader.setUniform1f("stage", 3.0);
-//        shader.setUniform1f("alpha", 1.0);
+        shader.begin();
+        shader.setUniform1f("elapsedTime", 0.1);
+        shader.setUniform1f("stage", 3.0);
+        shader.setUniform1f("alpha", 1.0);
         float x;
         ofVec3f axis;
         ofQuaternion q;
@@ -157,7 +157,7 @@ void UR5KinematicModel::draw(){
         }
         ofPopMatrix();
             
-//        shader.end();
+        shader.end();
         ofDisableDepthTest();
         
         ofPushMatrix();

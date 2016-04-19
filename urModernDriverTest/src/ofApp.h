@@ -37,6 +37,9 @@ public:
     void gotMessage(ofMessage msg);
 
     
+    
+    void setupGUI();
+    
     /// \brief 3D mesh with paths for robot to follow
     
     RobotParameters parameters;

@@ -2,6 +2,7 @@
 
 #pragma once
 #include "ofMain.h"
+#include "ofxTiming.h"
 #include "UR5KinematicModel.h"
 class WorkSurface{
 public:
@@ -46,6 +47,7 @@ public:
     ofParameter<float> retractDistance;
     ofParameter<float> drawingScale;
     ofParameter<float> rotateDrawing;
+    ofParameter<float> feedRate;
     ofParameter<ofVec3f> drawingOffset;
     vector<ofParameter<ofPoint> > targetPoints;
     ofParameter<float> fixOrientationX;
@@ -63,9 +65,11 @@ public:
     vector<ofPolyline> lines;
     vector<ofPolyline> strokes_original;
     ofPolyline workArea;
-    int targetIndex;
+    float targetIndex;
     ofVec3f normal;
     float startTime;
     ofNode toolPoint;
     Joint targetToolPoint;
+    RateTimer timer;
+    
 };
