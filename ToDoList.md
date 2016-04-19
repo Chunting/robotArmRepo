@@ -28,4 +28,7 @@
   - [ ] Fix tool to be TCP on surface
   - [ ] Add in accel & speed controls
   - [ ] Add in path interpolation based on time
+  - Follow Mocap
+  - [ ] Fix Orientation with ofMatrix4x4
+  - [ ] Add in accel & speed controls
   
