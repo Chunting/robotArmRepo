@@ -1,4 +1,4 @@
-#pragma once
+		#pragma once
 
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 
@@ -14,6 +14,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxGameCamera.h"
+#include "NatNetController.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
 #define N_CAMERAS 2
@@ -57,9 +58,8 @@ class ofApp : public ofBaseApp{
         vector<double> speeds;
 		
         // MOCAP
-        void setupMocap(string localIP, string serverIP);
-    
-    
+        NatNetController mocap;
+        bool attach; // attach/detach geometry to rigid body
     
     
         /* 3D Navigation */

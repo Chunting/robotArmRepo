@@ -13,6 +13,7 @@
 // This example shows you how to:
 //
 // 1. Use real-time motion capture data to move & reorient a robot
+// 2. Use real-time motion capture data to move & reorient geometry for robot
 
 
 #include "ofApp.h"
@@ -26,6 +27,7 @@ void ofApp::setup(){
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);
     
+    // setup GUI
     setupUserPanel();
     setupDebugPanel();
     setupCameras();
@@ -35,14 +37,18 @@ void ofApp::setup(){
     robot.setup(parameters);
     panel.add(robot.movement.movementParams);
     
-    // setup mocap
-    setupMocap("127.0.0.1","127.0.0.1");
-    
     speeds.assign(6, 0);
     parameters.bMove = false;
     parameters.bCopy = true;
     
     panel.loadFromFile("settings.xml");
+    
+    
+    // setup mocap
+    string localIP  = "127.0.0.1";
+    string serverIP = "127.0.0.1";
+    mocap.setup(localIP,serverIP);
+    
     
     ofEnableAlphaBlending();
   
@@ -51,11 +57,15 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
+    mocap.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    ofPushMatrix();
+    ofScale(1000);
+    mocap.draw();
+    ofPopMatrix();
     drawGUI();
 }
 
@@ -99,11 +109,6 @@ void ofApp::setupCameras(){
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::setupMocap(string localIP, string serverIP){
-   
-}
-
 
 //--------------------------------------------------------------
 void ofApp::drawGUI(){
@@ -125,6 +130,18 @@ void ofApp::updateActiveCamera(){
     {
         activeCam = 1;
     }
+}
+
+//--------------------------------------------------------------
+void ofApp::keyPressed(int key){
+    float offset = .005;
+    
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
+    }
+    
+    handleViewportPresets(key);
+    
 }
 
 //--------------------------------------------------------------
@@ -217,38 +234,6 @@ void ofApp::hightlightViewports(){
     
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-    float offset = .005;
-    
-    if(key == '5'){
-        cams[activeCam].usemouse = true;
-    }
-    
-    handleViewportPresets(key);
-    
-    if (key == OF_KEY_RIGHT){
-        for (auto &p : toolpath2D)
-            p.x += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_LEFT){
-        for (auto &p : toolpath2D)
-            p.x -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_UP){
-        for (auto &p : toolpath2D)
-            p.y += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_DOWN){
-        for (auto &p : toolpath2D)
-            p.y -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    
-}
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){

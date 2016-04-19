@@ -14,6 +14,7 @@ public:
     NatNetController();
     ~NatNetController();
     void setup(string myIP, string serverIP);
+    void setup(string myIP, string serverIP, int scale);
     void update();
     void draw();
     bool isFrameNew();
