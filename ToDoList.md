@@ -34,4 +34,6 @@
   - [ ] Fix Orientation with ofMatrix4x4
   - [ ] Add in accel & speed controls
   - [ ] Remove unncessary panels from GUI
+  - Basic
+  - [ ] Remove unncessary panels from GUI
   
