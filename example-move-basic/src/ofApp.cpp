@@ -7,13 +7,21 @@ void ofApp::setup(){
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);
     
+    parameters.setTCPPanel = true;
+    parameters.getTCPPanel = true;
+    parameters.debugPanel  = true;
+    parameters.setToolOffset = false;
+    parameters.drawPaths = false;
+    parameters.recordPanel = false;
+    
     // setup GUI
     setupUserPanel();
     setupDebugPanel();
     setupCameras();
-    
+
     // setup robot
     robot.setup(parameters);
+    
     panel.add(robot.movement.movementParams);
     
     speeds.assign(6, 0);
@@ -28,29 +36,9 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 
-    // get the current robot tcp pose
-    if (parameters.bCopy){
-        parameters.bCopy = false;
-        
-        // get the robot's position
-        Joint pose = robot.robot.model.tool;
-
-        // update GUI params
-        parameters.targetTCPPosition =  pose.position;
-        parameters.targetTCPOrientation = ofVec4f(pose.rotation.x(),  pose.rotation.y(),  pose.rotation.z(),  pose.rotation.w());
-
-    }
-    
-    // set the current robot tcp pose
-    else if(parameters.bFollow){
-        Joint pose;
-        pose.position = parameters.targetTCPPosition;
-        pose.rotation = ofQuaternion(parameters.targetTCPOrientation);
-        robot.update(pose);
-    }
+    robot.update();
     
     updateActiveCamera();
-
 }
 
 //--------------------------------------------------------------
