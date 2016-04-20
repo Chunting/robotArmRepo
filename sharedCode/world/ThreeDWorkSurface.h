@@ -35,7 +35,6 @@ public:
     /// \brief Orientation quaternions at each 3D toolpath point
     vector<ofQuaternion> toolpathOrients;
     vector<ofPolyline> lines2D;
-    ofPolyline toolpathOrientation;
     ofQuaternion targetOrientation;
     int pathIndex;
     

@@ -56,8 +56,6 @@ void ThreeDWorkSurface::draw(){
         
     
     ofPopMatrix();
-    
-    toolpathOrientation.draw();
 }
 
 Joint ThreeDWorkSurface::getTargetPoint(float t){
@@ -67,8 +65,9 @@ Joint ThreeDWorkSurface::getTargetPoint(float t){
         float indexInterpolated = toolpath.getIndexAtPercent(dist/length);
         
         ofPoint p = toolpath.getPointAtIndexInterpolated(indexInterpolated);
-        ofPoint q = toolpathOrientation.getPointAtIndexInterpolated(toolpathOrientation.getIndexAtPercent(dist/length));
-        orientation = toolpathOrients[(int)indexInterpolated];
+        orientation.slerp(0.5, orientation, toolpathOrients[(int)indexInterpolated]);
+        orientation.slerp(0.5, orientation, toolpathOrients[(int)(indexInterpolated-1)%toolpathOrients.size()]);
+
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
     }
