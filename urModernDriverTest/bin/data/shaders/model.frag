@@ -52,7 +52,7 @@ void main() {
     	float d = mod(dot(position, abs(normal))/abs(normal.x) * abs(cos(elapsedTime*20.))*1.55, t) / (t);
     	float a = sin(d * TWO_PI) * 0.5 + 0.5;
         vec3 col = (vec3(0.5)/abs(normal))*dot(vec3(1., 0, 1.), normal)+vec3(0.75, 0, 0.75);
-        //if(sin(dot(position.z, normal.z)/position.y) > 0.0){
+//        if(sin(dot(position.z, normal.z)/position.y) > 0.0){
         if (a > abs(sin(elapsedTime/60.))*.125){
             gl_FragColor = vec4(col, 1.);
         }else{

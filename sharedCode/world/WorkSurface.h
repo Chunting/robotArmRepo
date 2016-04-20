@@ -43,6 +43,7 @@ protected:
     Joint currentTCP;
     Joint targetTCP;
     
+    ofQuaternion orientation;
     vector<ofPolyline> lines;
     vector<ofPolyline> strokes_original;
     

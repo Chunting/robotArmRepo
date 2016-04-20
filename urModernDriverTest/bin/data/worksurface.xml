@@ -1,20 +1,22 @@
-<Work_Surface>
-	<WS_Position>0.395901, -0.337996, -0.102041</WS_Position>
-	<WS_size>0, 0, 0</WS_size>
-	<WS_Euler>0, 180, 0</WS_Euler>
-	<qAxis>0, 0, 0</qAxis>
-	<qAngle>4.59163e-41</qAngle>
-	<Fix_X>0</Fix_X>
-	<Fix_Y>0</Fix_Y>
-	<Fix_Z>0</Fix_Z>
-	<TP-0>0.506347, -0.308091, -0.102041</TP-0>
-	<TP-1>0.377361, -0.444434, -0.102041</TP-1>
-	<TP-2>0.404176, -0.219034, -0.102041</TP-2>
-	<TP-3>0.295721, -0.380425, -0.102041</TP-3>
-<Work_Surface/>
-<retractDistance>4</retractDistance>
-	<rotateDrawing>360</rotateDrawing>
-	<drawingScale>0.07</drawingScale>
-<drawingOffset>0, 0, 0</drawingOffset>
-<feedRate>0.0043057</feedRate>
-</Work_Surface>
+<2D_Work_Surface>
+	<feedRate>0.001</feedRate>
+	<WS_Position>0.25, 0.25, 0.25</WS_Position>
+	<WS_Euler>0, 0, 0</WS_Euler>
+	<retractDistance>4</retractDistance>
+	<rotateDrawing>0</rotateDrawing>
+	<drawingScale>1</drawingScale>
+	<drawingOffset>0, 0, 0</drawingOffset>
+	<TP-0>1, 1, 1</TP-0>
+	<TP-1>0, 0, 0</TP-1>
+	<TP-2>0, 0, 0</TP-2>
+	<TP-3>0, 0, 0</TP-3>
+	<3D_Work_Surface>
+		<feedRate>0.001</feedRate>
+		<WS_Position>0.2, 0.2, 0</WS_Position>
+		<WS_Euler>0, 0, 0</WS_Euler>
+		<retractDistance>4</retractDistance>
+		<rotateDrawing>0</rotateDrawing>
+		<drawingScale>0.306122</drawingScale>
+		<drawingOffset>0, 0, 0</drawingOffset>
+	</3D_Work_Surface>
+</2D_Work_Surface>

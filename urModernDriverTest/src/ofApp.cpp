@@ -35,15 +35,15 @@ void ofApp::setup(){
     gml.setup();
     gml.loadFile("gml/53514.gml");
     
-//    
-//    for(int i = 0; i < N_CAMERAS; i++){
-//        cams[i].setup();
-//        cams[i].autosavePosition = true;
-//        cams[i].usemouse = false;
-//        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-//        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-//        cams[i].loadCameraPosition();
-//    }
+    //
+    //    for(int i = 0; i < N_CAMERAS; i++){
+    //        cams[i].setup();
+    //        cams[i].autosavePosition = true;
+    //        cams[i].usemouse = false;
+    //        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+    //        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+    //        cams[i].loadCameraPosition();
+    //    }
     path.setup();
 }
 
@@ -67,6 +67,7 @@ void ofApp::setupGUI(){
     panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelWorkSurface.setup(workSurface.twoDSurface.workSurfaceParams);
+    panelWorkSurface.add(workSurface.threeDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
@@ -111,13 +112,9 @@ void ofApp::draw(){
         robot.robot.model.draw();
     }
     ofSetColor(255, 0, 255);
-    ofPushMatrix();
-    ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(toMM(parameters.tcpPosition.get()), 5);
-    ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
-    ofPopMatrix();
+    ofEnableDepthTest();
     workSurface.draw();
+    ofDisableDepthTest();;
     ofPushMatrix();
     parent.draw();
     ofScale(1000, 1000, 1000);
@@ -127,16 +124,14 @@ void ofApp::draw(){
     
     
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.movement.draw(robot.movement.selectedSolution);
-    ofPushMatrix();
-    ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(toMM(parameters.tcpPosition.get()-parameters.tcpOffset), 5);
-    ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
-    ofPopMatrix();
-    ofPushMatrix();
-    parent.draw();
+    ofEnableDepthTest();
     workSurface.draw();
+    ofDisableDepthTest();
+    if (!hideRobot){
+        robot.movement.draw(robot.movement.selectedSolution);
+    }
+    
+    ofPushMatrix();
     ofScale(1000, 1000, 1000);
     path.draw();
     ofPopMatrix();
@@ -195,10 +190,11 @@ void ofApp::keyPressed(int key){
             }
             
             for(int i = 0; i < strokes.size(); i++){
-                strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*2.0);
+                strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*4.0);
             }
             
             workSurface.threeDSurface.addStrokes(strokes,retract);
+            workSurface.twoDSurface.addStrokes(strokes,retract);
             parameters.bTrace = true;
             parameters.bFollow = false;
             workSurface.startTime = ofGetElapsedTimef();
@@ -246,7 +242,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-//        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "TOP VIEW";
     }
     // LEFT VIEW
@@ -254,7 +250,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, 0, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-//        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "LEFT VIEW";
     }
     // FRONT VIEW
@@ -262,7 +258,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, dist, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-//        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
@@ -270,18 +266,18 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-//        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
     else if (key == '6'){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, -dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-//        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
     if(key == '5'){
-//        cams[activeCam].usemouse = true;
+        //        cams[activeCam].usemouse = true;
     }
     //    // CUSTOM  VIEW
     //    else if (key == '5'){
@@ -347,7 +343,7 @@ void ofApp::hightlightViewports(){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
     if(key == '5'){
-//        cams[activeCam].usemouse = false;
+        //        cams[activeCam].usemouse = false;
     }
 }
 

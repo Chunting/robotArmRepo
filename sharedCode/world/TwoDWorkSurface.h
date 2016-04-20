@@ -20,7 +20,7 @@ public:
     Joint getTargetPoint(float t);
     void setCorners(vector<ofPoint> pts);
     void setCorner(CORNER i, ofPoint pt);
-    void setRotation(float x, float y, float z);
+ 
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
     void calcNormals(bool flip = false);
@@ -29,20 +29,14 @@ public:
     /// @param retractDist
     ///     distance (in meters) to retract
     void addStrokes(vector<ofPolyline> strokes, float retractDist = 1);
-    void setRotationX(float x);
-    void setRotationY(float x);
-    void setRotationZ(float x);
+
    
   
     ofPolyline rbWorksrf;
     
     vector<ofParameter<ofPoint> > targetPoints;
     
-    ofQuaternion fix;
-    ofQuaternion orientation;
-    ofQuaternion orientationX;
-    ofQuaternion orientationY;
-    ofQuaternion orientationZ;
+
     ofPoint crossed;
     vector<ofPoint > corners;
     ofPlanePrimitive plane;

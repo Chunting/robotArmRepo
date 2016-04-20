@@ -1,7 +1,7 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 #include "TwoDWorkSurface.h"
 void TwoDWorkSurface::setup(RobotParameters * parameters){
-    workSurfaceParams.setName("Work Surface");
+    workSurfaceParams.setName("2D Work Surface");
     workSurfaceParams.add(feedRate.set("feedRate", 0.001, 0.00001, 0.01));
     workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
@@ -197,8 +197,9 @@ void TwoDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     
     // get the centroid of the line drawing
     ofVec3f centroid;
-    for (auto &pl : strokes)
+    for (auto &pl : strokes){
         centroid += pl.getCentroid2D();
+    }
     centroid /= strokes.size();
     
     
@@ -276,18 +277,4 @@ void TwoDWorkSurface::draw(){
         ofDrawLine(targetPoints[3].get()*1000,targetPoints[0].get()*1000);
     }
     ofPopMatrix();
-}
-void TwoDWorkSurface::setRotationX(float x){
-    orientationX.makeRotate(x, 1, 0, 0);
-}
-void TwoDWorkSurface::setRotationY(float y){
-    orientationY.makeRotate(y, 0, 1, 0);
-}
-void TwoDWorkSurface::setRotationZ(float z){
-    orientationZ.makeRotate(z, 0, 0, 1);
-}
-void TwoDWorkSurface::setRotation(float x, float y, float z){
-    orientationX.makeRotate(x, 1, 0, 0);
-    orientationY.makeRotate(y, 0, 1, 0);
-    orientationZ.makeRotate(z, 0, 0, 1);
 }

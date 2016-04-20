@@ -248,7 +248,7 @@ void ofApp::buildToolpath(ofPolyline &path){
     
     for (int i=0; i<res; i++){
         ofPoint p = ofPoint(radius,0,0);
-        p.rotate(theta*i, ofVec3f(0,0,1));
+        p.rotate(theta*i, ofVec3f(0,1,1));
         p.x += .0;
         path.addVertex(p);
     }

@@ -45,6 +45,7 @@ public:
     
     ofEasyCam cam;
     
+    ofParameter<float> stage;
     ofParameter<bool> bDrawModel;
     ofParameter<bool> bDrawTargetModel;
 };

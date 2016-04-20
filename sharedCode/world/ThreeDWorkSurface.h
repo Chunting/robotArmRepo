@@ -17,7 +17,7 @@ public:
     void setCorner(CORNER i, ofPoint pt);
     void addStrokes(vector<ofPolyline> strokes, float retractDist = 1);
     
-    
+    ofQuaternion eulerToQuat(ofVec3f rotationEuler) ;
     /// \brief example toolpath for projecting
     void buildToolpath(ofPolyline &path);
     
@@ -25,8 +25,8 @@ public:
     /// \param mesh 3D surface for proection
     /// \param path2D 2D toolpath to project
     /// \param path resulting 3D projected toolpath
-    void projectToolpath(ofMesh mesh, vector<ofPolyline> &path2D, vector<ofPolyline> &path);
-    void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
+    void projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2D, vector<ofPolyline> &path);
+    void projectToolpath(ofMesh & mesh, ofPolyline &path2D, ofPolyline &path);
     
     /// \brief 2D toolpath to project onto surface
     ofPolyline toolpath2D;
@@ -34,10 +34,9 @@ public:
     ofPolyline toolpath;
     /// \brief Orientation quaternions at each 3D toolpath point
     vector<ofQuaternion> toolpathOrients;
-    
-
-    vector<ofPolyline> strokes3D;
-    
+    vector<ofPolyline> lines2D;
+    ofPolyline toolpathOrientation;
+    ofQuaternion targetOrientation;
     int pathIndex;
-
+    
 };
