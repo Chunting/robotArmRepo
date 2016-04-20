@@ -69,7 +69,8 @@ void ofApp::update(){
     natNet.update();
 #endif
     workSurface.update();
-    robot.update(workSurface.getNextPose());
+    robot.updatePose(workSurface.getNextPose());
+    robot.update();
     
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
     {
