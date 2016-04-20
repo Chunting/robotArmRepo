@@ -33,10 +33,8 @@ void ofApp::update(){
         Joint pose;
         pose.position = parameters.targetTCPPosition;
         pose.rotation = ofQuaternion(parameters.targetTCPOrientation);
-        robot.updatePath(pose);
+        robot.update(pose);
     }
-    
-    robot.update();
     
     updateActiveCamera();
 
@@ -59,7 +57,7 @@ void ofApp::draw(){
     
     // show simulated robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.movement.draw();
+    robot.movement.draw(0);
     cams[1].end();
     
     
