@@ -23,10 +23,10 @@ vector<double> RobotController::getJointPosition(){
 }
 
 void RobotController::update(Joint targetTCP){
+    toggleRecord();
     updatePath(targetTCP);
     updateData();
     updateMovement();
-    
 }
 
 void RobotController::updateMovement(){
@@ -79,6 +79,10 @@ void RobotController::updateData(){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
     robotParams->tcpPosition = robot.getToolPoint();
+    
+     if(robotParams->bRecord){
+         recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
+     }
 }
 
 void RobotController::updatePath(Joint targetTCP){
@@ -151,6 +155,14 @@ void RobotController::moveArm(){
         robotParams->tcpOrientation = robotParams->targetTCP.rotation.getEuler();
     }
     
+}
+
+void RobotController::toggleRecord(){
+    if(robotParams->bRecord){
+        recorder.startRecording();
+    }else{
+        recorder.endRecording();
+    }
 }
 
 void RobotController::draw(){

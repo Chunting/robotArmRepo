@@ -32,7 +32,6 @@ public:
     ofMesh toolMesh;
     
     ofShader shader;
-    
     float elapsed_time, last_time;
     ofVec3f pt;
     vector<Joint> joints;

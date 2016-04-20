@@ -14,7 +14,7 @@ public:
     void draw();
     void updateWorksurface(vector<ofxNatNet::Marker> &markers);
     void updateWorksurface(ofxNatNet::RigidBody &rb);
-    Joint getNextPoint();
+    Joint getNextPose();
     
     ThreeDWorkSurface threeDSurface;
     RobotParameters * robotParams;

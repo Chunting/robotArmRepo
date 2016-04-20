@@ -50,14 +50,19 @@ class RobotParameters{
             jointSpeeds.add(jointVelocities.back().set("Joint Speed"+ofToString(i), 0, -100, 100));
         }
         
+        pathRecorderParams.setName("Path Recording");
+        pathRecorderParams.add(bRecord.set("Record", false));
+        
     };
     ofParameterGroup robotArmParams;
     ofParameter<ofVec3f> targetTCPPosition;
     ofParameter<ofVec4f> targetTCPOrientation;
     ofParameter<ofVec3f> tcpOrientation;
     ofParameter<ofVec3f> tcpPosition;
-    
     ofParameter<ofVec3f> tcpOffset;
+    
+    ofParameter<bool> bRecord;
+    ofParameterGroup pathRecorderParams;
     
     ofParameterGroup joints;
     ofParameterGroup targetJoints;

@@ -86,11 +86,6 @@ ofQuaternion UR5KinematicModel::getToolPointMatrix(){
 }
 
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
-    
-//    // add an initial 34.5 offset to place on the end of joint 5
-//    for (auto &v : mesh.getVertices())
-//        v.y -= 34.5;
-    
     toolMesh = mesh;
 }
 void UR5KinematicModel::update(){
@@ -101,18 +96,8 @@ void UR5KinematicModel::draw(){
     ofEnableDepthTest();
     ofSetColor(255, 255, 0);
     ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 10);
-    
-    
     ofSetColor(255, 0, 255);
-    //    targetPoint.draw();
     ofDisableDepthTest();
-    
-    //
-    //    for(int i = 0; i < joints.size(); i++){
-    //        jointsNode[i].draw();
-    //    }
-    
-    
     
     if(bDrawModel){
         ofEnableDepthTest();

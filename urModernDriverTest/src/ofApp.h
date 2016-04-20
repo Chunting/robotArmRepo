@@ -49,7 +49,6 @@ public:
     ofxPanel panelJointsSpeed;
     
     
-    ThreeDPath path;
     RobotController robot;
     NatNetController natNet;
 

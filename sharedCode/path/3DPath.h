@@ -1,7 +1,8 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxPtf.h"
-class ThreeDPath{
+#include "Path.h"
+class ThreeDPath : public Path{
 public:
     /* Path Generator */
     void setup();

@@ -58,7 +58,7 @@ void ThreeDWorkSurface::draw(){
     ofPopMatrix();
 }
 
-Joint ThreeDWorkSurface::getTargetPoint(float t){
+Joint ThreeDWorkSurface::getTargetPose(float t){
     if(toolpath.getVertices().size() > 0){
         float length = toolpath.getLengthAtIndex(toolpath.getVertices().size()-1);
         float dist = feedRate*t;

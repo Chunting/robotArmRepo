@@ -18,11 +18,7 @@ void WorkSurfaceController::setup(RobotParameters & params){
     float w = 400;
     float h = 300;
     float offset = 00;//400;
-//    twoDSurface.rbWorksrf.addVertex(ofVec3f(-w/2,  h/2 + offset, 0)); // UL
-//    twoDSurface.rbWorksrf.addVertex(ofVec3f( w/2,  h/2 + offset, 0)); // LL
-//    twoDSurface.rbWorksrf.addVertex(ofVec3f( w/2, -h/2 + offset, 0)); // LR
-//    twoDSurface.rbWorksrf.addVertex(ofVec3f(-w/2, -h/2 + offset, 0)); // LL
-//    twoDSurface.rbWorksrf.close();
+
 }
 void WorkSurfaceController::update(){
     if(robotParams != NULL){
@@ -35,8 +31,8 @@ void WorkSurfaceController::draw(){
     threeDSurface.draw();
 }
 
-Joint WorkSurfaceController::getNextPoint(){
-    return threeDSurface.getTargetPoint(ofGetElapsedTimef()-startTime);
+Joint WorkSurfaceController::getNextPose(){
+    return threeDSurface.getTargetPose(ofGetElapsedTimef()-startTime);
 }
 
 void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers){

@@ -34,23 +34,13 @@ void ofApp::setup(){
     
     gml.setup();
     gml.loadFile("gml/53514.gml");
-    
-    //
-    //    for(int i = 0; i < N_CAMERAS; i++){
-    //        cams[i].setup();
-    //        cams[i].autosavePosition = true;
-    //        cams[i].usemouse = false;
-    //        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-    //        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-    //        cams[i].loadCameraPosition();
-    //    }
-    path.setup();
 }
 
 void ofApp::setupGUI(){
     parameters.setup();
     
     panel.setup(parameters.robotArmParams);
+    panel.add(parameters.pathRecorderParams);
     panel.setPosition(10, 10);
     
     workSurface.setup(parameters);
@@ -79,9 +69,7 @@ void ofApp::update(){
     natNet.update();
 #endif
     workSurface.update();
-    robot.update(workSurface.getNextPoint());
-    
-    
+    robot.update(workSurface.getNextPose());
     
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
     {
@@ -101,7 +89,6 @@ void ofApp::draw(){
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    path.draw();
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -114,11 +101,6 @@ void ofApp::draw(){
     ofEnableDepthTest();
     workSurface.draw();
     ofDisableDepthTest();;
-    ofPushMatrix();
-    parent.draw();
-    ofScale(1000, 1000, 1000);
-    path.draw();
-    ofPopMatrix();
     cams[0].end();
     
     
@@ -129,10 +111,6 @@ void ofApp::draw(){
     if (!hideRobot){
         robot.movement.draw(robot.movement.selectedSolution);
     }
-    ofPushMatrix();
-    ofScale(1000, 1000, 1000);
-    path.draw();
-    ofPopMatrix();
     cams[1].end();
     
     
@@ -225,8 +203,6 @@ void ofApp::keyPressed(int key){
     if (key == 'n'){
         natNet.record = !natNet.record;
     }
-    
-    path.keyPressed(key);
 }
 
 //--------------------------------------------------------------

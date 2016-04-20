@@ -72,6 +72,7 @@
 		C876CB221CC8004400B69A25 /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB121CC8004400B69A25 /* URRecorder.cpp */; };
 		C876CB231CC8004400B69A25 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB141CC8004400B69A25 /* URToolHead.cpp */; };
 		C876CB291CC8010900B69A25 /* ParallelTransportFrames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB271CC8010900B69A25 /* ParallelTransportFrames.cpp */; };
+		C878558D1CC80DB400707D96 /* PathRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C878558B1CC80DB400707D96 /* PathRecorder.cpp */; };
 		D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DD23693DFAB8EC05FAA5D /* ofxCvShortImage.cpp */; };
 		E212C821D1064B92DD953A42 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A16CBF2E8CFE43AF54FE6F5 /* ofxCvHaarFinder.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -423,6 +424,8 @@
 		C876CB261CC8010900B69A25 /* ofxPtf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxPtf.h; sourceTree = "<group>"; };
 		C876CB271CC8010900B69A25 /* ParallelTransportFrames.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParallelTransportFrames.cpp; sourceTree = "<group>"; };
 		C876CB281CC8010900B69A25 /* ParallelTransportFrames.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParallelTransportFrames.h; sourceTree = "<group>"; };
+		C878558B1CC80DB400707D96 /* PathRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathRecorder.cpp; sourceTree = "<group>"; };
+		C878558C1CC80DB400707D96 /* PathRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathRecorder.h; sourceTree = "<group>"; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
 		CBDE84185E2969BA4AB209FC /* general.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = general.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/general.h; sourceTree = SOURCE_ROOT; };
 		CCC89CA785CFCE1FE8D78F26 /* cvstd.inl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cvstd.inl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cvstd.inl.hpp; sourceTree = SOURCE_ROOT; };
@@ -1274,6 +1277,8 @@
 		C876CAD11CC8003500B69A25 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				C878558B1CC80DB400707D96 /* PathRecorder.cpp */,
+				C878558C1CC80DB400707D96 /* PathRecorder.h */,
 				C876CAD21CC8003500B69A25 /* ofxGameCamera.cpp */,
 				C876CAD31CC8003500B69A25 /* ofxGameCamera.h */,
 				C876CAD41CC8003500B69A25 /* RobotParameters.h */,
@@ -1645,6 +1650,7 @@
 				C876CAEE1CC8003500B69A25 /* Calibration.cpp in Sources */,
 				C876CB211CC8004400B69A25 /* URRead.cpp in Sources */,
 				C876CB291CC8010900B69A25 /* ParallelTransportFrames.cpp in Sources */,
+				C878558D1CC80DB400707D96 /* PathRecorder.cpp in Sources */,
 				C876CAE41CC8003500B69A25 /* PathController.cpp in Sources */,
 				C876CB1D1CC8004400B69A25 /* ur_kin.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,

@@ -10,7 +10,7 @@ public:
     void update(Joint currentTCP);
     void draw();
     
-    Joint getTargetPoint(float t);
+    Joint getTargetPose(float t);
     void addPoint(ofVec3f pt);
     void addStroke(ofPolyline stroke);
     void setCorners(vector<ofPoint> pts);
