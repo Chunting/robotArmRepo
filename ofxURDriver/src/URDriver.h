@@ -55,5 +55,4 @@ public:
 
     bool bMove;
     
-    URRecorder recorder;
 };
