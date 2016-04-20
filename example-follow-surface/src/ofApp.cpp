@@ -32,9 +32,22 @@ void ofApp::setup(){
     setupCameras();
     setupGeometry();
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     // setup robot
     robot.setup(parameters);
     panel.add(robot.movement.movementParams);
+=======
+=======
+>>>>>>> origin/master
+    // scale surface to meters
+    for (auto &v : srf.getVertices()){
+        v /= 100;
+    }
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
     
     speeds.assign(6, 0);
     parameters.bMove = false;
@@ -165,11 +178,27 @@ void ofApp::setupGeometry(){
 //--------------------------------------------------------------
 void ofApp::drawGeometry(){
     ofPushMatrix();
+<<<<<<< HEAD
+<<<<<<< HEAD
     ofPopStyle();
     
     ofScale(1000);      // draw in mm
     ofDrawAxis(.05);
+<<<<<<< Updated upstream
 
+=======
+    
+=======
+    ofScale(1000);      // draw in mm
+    ofDrawAxis(.05);
+    
+>>>>>>> origin/master
+=======
+    ofScale(1000);      // draw in mm
+    ofDrawAxis(.05);
+    
+>>>>>>> origin/master
+>>>>>>> Stashed changes
     // show the surface
     ofSetColor(100);
     srf.draw();
@@ -207,7 +236,13 @@ void ofApp::drawGeometry(){
     }
     ofSetLineWidth(1);
     
+<<<<<<< HEAD
+<<<<<<< HEAD
     ofPushStyle();
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
     ofPopMatrix();
 
 }
@@ -296,9 +331,21 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
                 // save the projected point and face normal
                 toolpath.addVertex(projectedPt);
                 ofQuaternion q;
+<<<<<<< Updated upstream
 
                 q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
 
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+                q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
+=======
+                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
+>>>>>>> origin/master
+=======
+                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
+>>>>>>> origin/master
+>>>>>>> Stashed changes
                 toolpathOrients.push_back(q);
             }
             
@@ -306,7 +353,12 @@ void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
     }
     
     toolpath.close();
+<<<<<<< Updated upstream
 
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> Stashed changes
 }
 //--------------------------------------------------------------
 void ofApp::handleViewportPresets(int key){
@@ -395,18 +447,31 @@ void ofApp::hightlightViewports(){
     ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
     
     ofPopStyle();
+<<<<<<< Updated upstream
 
+=======
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     float offset = .005;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
     if(key == '5'){
         cams[activeCam].usemouse = true;
     }
     
     handleViewportPresets(key);
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
     
      if (key == OF_KEY_RIGHT){
         for (auto &p : toolpath2D)

@@ -1,7 +1,13 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
 #include "TwoDWorkSurface.h"
 void TwoDWorkSurface::setup(RobotParameters * parameters){
     workSurfaceParams.setName("2D Work Surface");
+=======
+#include "WorkSurface.h"
+void WorkSurface::setup(){
+    workSurfaceParams.setName("Work Surface");
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
     workSurfaceParams.add(feedRate.set("feedRate", 0.001, 0.00001, 0.01));
     workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
@@ -9,7 +15,11 @@ void TwoDWorkSurface::setup(RobotParameters * parameters){
     workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
     workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
     workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
     
+=======
+
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -22,8 +32,11 @@ void TwoDWorkSurface::setup(RobotParameters * parameters){
     plane.setHeight(1);
     targetIndex = 0;
     timer.setSmoothing(true);
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
     
     this->parameters = parameters;
+=======
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
     
 }
 void TwoDWorkSurface::setCorners(vector<ofPoint> pts){
@@ -51,10 +64,17 @@ void TwoDWorkSurface::setCorner(CORNER i, ofPoint pt){
     }
 }
 
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
 void TwoDWorkSurface::update(Joint toolPointPos){
     timer.tick();
     // update the TwoDWorkSurface mesh
     if (surfaceMesh.getVertices().size() == 0){
+=======
+void WorkSurface::update(ofVec3f toolPointPos){
+    timer.tick();
+    // update the worksurface mesh
+    if (mesh.getVertices().size() == 0){
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
         for (int i=0; i<targetPoints.size(); i++){
             surfaceMesh.addVertex(targetPoints[i].get());
         }
@@ -106,7 +126,13 @@ void TwoDWorkSurface::update(Joint toolPointPos){
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     toolPoint.setPosition(toolPointPos.position);
     toolPoint.setOrientation(orientation);
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
 
+=======
+    
+    
+    
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
     rotation = orientation.getEuler();
 
     
@@ -121,6 +147,7 @@ void TwoDWorkSurface::update(Joint toolPointPos){
     
 }
 
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
 void TwoDWorkSurface::calcNormals(bool flip){
     surfaceMesh.clearNormals();
     for( int i=0; i < surfaceMesh.getVertices().size(); i++ ){
@@ -138,6 +165,23 @@ void TwoDWorkSurface::calcNormals(bool flip){
         }else{
             e1 = surfaceMesh.getVertices()[ia] - surfaceMesh.getVertices()[ib];
             e2 = surfaceMesh.getVertices()[ic] - surfaceMesh.getVertices()[ib];
+=======
+void WorkSurface::calcNormals(bool flip){
+    mesh.clearNormals();
+    for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
+    
+    for( int i=0; i < mesh.getIndices().size(); i+=3 ){
+        const int ia = mesh.getIndices()[i];
+        const int ib = mesh.getIndices()[i+1];
+        const int ic = mesh.getIndices()[i+2];
+        ofVec3f e1, e2;
+        if(flip){
+            e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
+            e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+        }else{
+            e1 = mesh.getVertices()[ia] - mesh.getVertices()[ib];
+            e2 = mesh.getVertices()[ic] - mesh.getVertices()[ib];
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
         }
         ofVec3f no = e1.cross( e2 );
         
@@ -149,9 +193,15 @@ void TwoDWorkSurface::calcNormals(bool flip){
     }
     
     
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
     for(int i=0; i < surfaceMesh.getNormals().size(); i++ ) {
         surfaceMesh.getNormals()[i].normalize();
         normal+=surfaceMesh.getNormals()[i];
+=======
+    for(int i=0; i < mesh.getNormals().size(); i++ ) {
+        mesh.getNormals()[i].normalize();
+        normal+=mesh.getNormals()[i];
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
         normal/=2.0;
     }
     
@@ -219,6 +269,7 @@ void TwoDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     }
 }
 
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
 Joint TwoDWorkSurface::getTargetPoint(float t){
     
     if(lines.size() > 0){
@@ -226,11 +277,26 @@ Joint TwoDWorkSurface::getTargetPoint(float t){
         float dist = feedRate*t;
         float indexInterpolated = lines[targetIndex].getIndexAtPercent(dist/length);
         
+=======
+Joint WorkSurface::getTargetPoint(float t){
+  
+    if(lines.size() > 0){
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1);
+        float dist = feedRate*t;
+        cout<<dist/length<<endl;
+        float indexInterpolated = lines[targetIndex].getIndexAtPercent(dist/length);
+        
+
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexInterpolated);
         
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
+<<<<<<< Updated upstream:sharedCode/world/TwoDWorkSurface.cpp
         
+=======
+
+>>>>>>> Stashed changes:sharedCode/calibration/WorkSurface.cpp
         if(indexInterpolated > lines[targetIndex].getVertices().size()-1){
             targetIndex++;
         }

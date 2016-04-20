@@ -74,9 +74,20 @@ void ThreeDPath::keyPressed(int key){
             buildPerpFrames(path);
         }
 }
+<<<<<<< HEAD
+<<<<<<< HEAD
 
 ofMatrix4x4 ThreeDPath::getNextPose(){
+<<<<<<< Updated upstream
 
+=======
+=======
+ofVec3f ThreeDPath::getNextNormal(){
+>>>>>>> origin/master
+=======
+ofVec3f ThreeDPath::getNextNormal(){
+>>>>>>> origin/master
+>>>>>>> Stashed changes
     if(ptf.framesSize()>0){
         ptIndex = (ptIndex +1) % ptf.framesSize();
         
@@ -89,12 +100,58 @@ ofMatrix4x4 ThreeDPath::getNextPose(){
         else
             orientation = flip(orientation);
         
-        return orientation;
+        return ptf.calcCurrentNormal();
     }
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 void ThreeDPath::draw(){
     
+<<<<<<< Updated upstream
+=======
+    // draw all the perp frames if we are paused
+    for (int i=0; i<ptf.framesSize(); i++){
+        ofMatrix4x4 m44 = ptf.frameAt(i);
+=======
+=======
+>>>>>>> origin/master
+ofMatrix4x4 ThreeDPath::getNextPoint(){
+    if(ptf.framesSize()>0){
+        if(!reverse){
+            ptIndex++;
+        }else{
+            ptIndex--;
+        }
+        if(ptIndex >= ptf.framesSize()){
+            reverse = true;
+            ptIndex = ptf.framesSize()-1;
+        }
+        if(ptIndex < 0){
+            reverse = false;
+            ptIndex = 0;
+        }
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
+        
+        orientation = ptf.frameAt(ptIndex);
+//        
+        if (makeZForward)
+            orientation = zForward(orientation);
+        else if (makeZOut)
+            orientation = zOut(orientation);
+        else
+            orientation = flip(orientation);
+        return orientation;
+    }
+}
+void ThreeDPath::draw(){
+    
+
+    
+>>>>>>> Stashed changes
     // show the current orientation plane
     ofSetColor(ofColor::lightYellow);
     ofSetLineWidth(3);

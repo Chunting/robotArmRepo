@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <2D_Work_Surface>
 	<feedRate>0.001</feedRate>
 	<WS_Position>0.25, 0.25, 0.25</WS_Position>
@@ -20,3 +21,29 @@
 		<3d_drawingOffset>0, 0, 0</3d_drawingOffset>
 	</3D_Work_Surface>
 </2D_Work_Surface>
+=======
+<group>
+	<Set_TCP_POS>0.394111, -0.337779, -0.095041</Set_TCP_POS>
+	<Set_TCP_ORIENT>0.5, 0.5, -0.5, 0.5</Set_TCP_ORIENT>
+	<Robot_TCP_POS>0, -164.886, 996.802</Robot_TCP_POS>
+	<Robot_TCP_ORIENT>0, 0, 0</Robot_TCP_ORIENT>
+	<avgAccel>3.67342e-38</avgAccel>
+	<followLerp>1</followLerp>
+	<set_TCP>0</set_TCP>
+	<bTrace_GML>1</bTrace_GML>
+	<get_TCP>0</get_TCP>
+	<3DPath>0</3DPath>
+	<Move>0</Move>
+	<bFigure8>0</bFigure8>
+	<UR_Movements>
+		<Step>0</Step>
+		<MIN_Speed>0</MIN_Speed>
+		<_MAX_Speed>15.5974</_MAX_Speed>
+		<Delta_T>0.243553</Delta_T>
+		<TCP_LerpSpeed>0.9</TCP_LerpSpeed>
+		<Join_LerpSpeed>0.9</Join_LerpSpeed>
+		<Acceleration_M>200</Acceleration_M>
+		<Speed_Divider>1</Speed_Divider>
+	</UR_Movements>
+</group>
+>>>>>>> Stashed changes

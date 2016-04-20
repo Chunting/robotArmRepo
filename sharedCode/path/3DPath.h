@@ -5,9 +5,20 @@ class ThreeDPath{
 public:
     /* Path Generator */
     void setup();
+<<<<<<< Updated upstream
 
     ofVec3f getNextNormal();
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
     ofMatrix4x4 getNextPose();
+=======
+    ofMatrix4x4 getNextPoint();
+    ofVec3f getNextNormal();
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
     void draw();
     void keyPressed(int key);
     

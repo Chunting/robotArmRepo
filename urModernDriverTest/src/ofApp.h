@@ -38,6 +38,9 @@ public:
 
     void setupGUI();
     
+    
+    void setupGUI();
+    
     /// \brief 3D mesh with paths for robot to follow
 
     RobotParameters parameters;

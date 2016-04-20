@@ -15,6 +15,7 @@ void ofApp::setup(){
     //    tcp.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
     //    tcp.setParent(parent);
+<<<<<<< Updated upstream
     
     setupGUI();
 #ifdef ENABLE_NATNET
@@ -71,6 +72,63 @@ void ofApp::setupGUI(){
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
+=======
+    
+    setupGUI();
+#ifdef ENABLE_NATNET
+    natNet.setup("en6", "192.168.1.131");
+#endif
+    
+    
+    robot.setup(parameters);
+    
+    panel.add(robot.movement.movementParams);
+    speeds.assign(6, 0);
+    parameters.bMove = false;
+    // get the current pose on start up
+    parameters.bCopy = true;
+    panel.loadFromFile("settings.xml");
+    
+    
+    gml.setup();
+    gml.loadFile("gml/53516.gml");
+    
+    
+    for(int i = 0; i < N_CAMERAS; i++){
+        cams[i].setup();
+        cams[i].autosavePosition = true;
+        cams[i].usemouse = false;
+        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+        cams[i].loadCameraPosition();
+    }
+    path.setup();
+}
+
+
+void ofApp::setupGUI(){
+    parameters.setup();
+    
+    panel.setup(parameters.robotArmParams);
+    panel.setPosition(10, 10);
+    
+    workSurface.setup(parameters);
+    
+    
+    panelJoints.setup(parameters.joints);
+    panelTargetJoints.setup(parameters.targetJoints);
+    panelJointsSpeed.setup(parameters.jointSpeeds);
+    panelJointsIK.setup(parameters.jointsIK);
+    
+    panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
+    panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
+    panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
+    panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
+    panelWorkSurface.setup(workSurface.workSurface.workSurfaceParams);
+    panelWorkSurface.setPosition(panel.getWidth()+10, 10);
+    panelWorkSurface.loadFromFile("workSurface.xml");
+    
+>>>>>>> Stashed changes
 }
 
 
@@ -116,14 +174,29 @@ void ofApp::draw(){
     workSurface.draw();
     ofDisableDepthTest();;
     ofPushMatrix();
+<<<<<<< Updated upstream
     parent.draw();
     ofScale(1000, 1000, 1000);
     path.draw();
     ofPopMatrix();
+=======
+    ofSetColor(255, 0, 255, 200);
+    ofDrawSphere(toMM(parameters.tcpPosition.get()), 5);
+    ofSetColor(255, 255, 0, 200);
+    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
+    ofPopMatrix();
+    workSurface.workSurface.draw();
+    ofPushMatrix();
+    parent.draw();
+    ofScale(1000, 1000, 1000);
+    path.draw();
+    ofPopMatrix();
+>>>>>>> Stashed changes
     cams[0].end();
     
     
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+<<<<<<< Updated upstream
     ofEnableDepthTest();
     workSurface.draw();
     ofDisableDepthTest();
@@ -132,6 +205,18 @@ void ofApp::draw(){
     }
     
     ofPushMatrix();
+=======
+    robot.movement.draw(robot.movement.selectedSolution);
+    ofPushMatrix();
+    ofSetColor(255, 0, 255, 200);
+    ofDrawSphere(toMM(parameters.tcpPosition.get()-parameters.tcpOffset), 5);
+    ofSetColor(255, 255, 0, 200);
+    ofDrawSphere(toMM(parameters.targetTCP.position-parameters.tcpOffset), 15);
+    ofPopMatrix();
+    ofPushMatrix();
+    parent.draw();
+    workSurface.workSurface.draw();
+>>>>>>> Stashed changes
     ofScale(1000, 1000, 1000);
     path.draw();
     ofPopMatrix();
@@ -202,6 +287,7 @@ void ofApp::keyPressed(int key){
         
     }
     if(key == 'u'){
+<<<<<<< Updated upstream
         workSurface.twoDSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
     }
     if(key == 'i'){
@@ -212,6 +298,18 @@ void ofApp::keyPressed(int key){
     }
     if(key == 'p'){
         workSurface.twoDSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+=======
+        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+    }
+    if(key == 'i'){
+        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+    }
+    if(key == 'o'){
+        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+    }
+    if(key == 'p'){
+        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+>>>>>>> Stashed changes
     }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;

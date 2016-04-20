@@ -43,11 +43,18 @@
 		C845AD921CC5C3170049732E /* NatNetController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C845AD901CC5C3170049732E /* NatNetController.cpp */; };
 		C85DEA681CAC648C00518D03 /* tagReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C85DEA631CAC648C00518D03 /* tagReader.cpp */; };
 		C85DEA691CAC648C00518D03 /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C85DEA651CAC648C00518D03 /* tagWriter.cpp */; };
+<<<<<<< Updated upstream
 		C876CA981CC6838200B69A25 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CA8E1CC6838200B69A25 /* Calibration.cpp */; };
 		C876CA9B1CC6838200B69A25 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CA941CC6838200B69A25 /* World.cpp */; };
 		C876CA9C1CC6838200B69A25 /* WorldObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CA961CC6838200B69A25 /* WorldObject.cpp */; };
 		C876CAA11CC683D200B69A25 /* ThreeDWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CA9D1CC683D200B69A25 /* ThreeDWorkSurface.cpp */; };
 		C876CAA21CC683D200B69A25 /* TwoDWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CA9F1CC683D200B69A25 /* TwoDWorkSurface.cpp */; };
+=======
+		C8895BA71CB2F75F00105DC7 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B8C1CB2F75F00105DC7 /* Calibration.cpp */; };
+		C8895BA81CB2F75F00105DC7 /* WorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B8E1CB2F75F00105DC7 /* WorkSurface.cpp */; };
+		C8895BA91CB2F75F00105DC7 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B901CB2F75F00105DC7 /* World.cpp */; };
+		C8895BAA1CB2F75F00105DC7 /* WorldObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B921CB2F75F00105DC7 /* WorldObject.cpp */; };
+>>>>>>> Stashed changes
 		C8895BAC1CB2F75F00105DC7 /* PathController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B971CB2F75F00105DC7 /* PathController.cpp */; };
 		C8895BAD1CB2F75F00105DC7 /* RobotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B991CB2F75F00105DC7 /* RobotController.cpp */; };
 		C8895BAE1CB2F75F00105DC7 /* 3DPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8895B9D1CB2F75F00105DC7 /* 3DPath.cpp */; };
@@ -384,6 +391,17 @@
 		C876CA9F1CC683D200B69A25 /* TwoDWorkSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwoDWorkSurface.cpp; sourceTree = "<group>"; };
 		C876CAA01CC683D200B69A25 /* TwoDWorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoDWorkSurface.h; sourceTree = "<group>"; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
+<<<<<<< Updated upstream
+=======
+		C8895B8C1CB2F75F00105DC7 /* Calibration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Calibration.cpp; sourceTree = "<group>"; };
+		C8895B8D1CB2F75F00105DC7 /* Calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
+		C8895B8E1CB2F75F00105DC7 /* WorkSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurface.cpp; sourceTree = "<group>"; };
+		C8895B8F1CB2F75F00105DC7 /* WorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface.h; sourceTree = "<group>"; };
+		C8895B901CB2F75F00105DC7 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
+		C8895B911CB2F75F00105DC7 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		C8895B921CB2F75F00105DC7 /* WorldObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldObject.cpp; sourceTree = "<group>"; };
+		C8895B931CB2F75F00105DC7 /* WorldObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldObject.h; sourceTree = "<group>"; };
+>>>>>>> Stashed changes
 		C8895B971CB2F75F00105DC7 /* PathController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathController.cpp; sourceTree = "<group>"; };
 		C8895B981CB2F75F00105DC7 /* PathController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathController.h; sourceTree = "<group>"; };
 		C8895B991CB2F75F00105DC7 /* RobotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotController.cpp; sourceTree = "<group>"; };

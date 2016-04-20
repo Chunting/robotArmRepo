@@ -16,7 +16,11 @@ class RobotParameters{
         robotArmParams.add(tcpPosition.set("Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
         robotArmParams.add(tcpOrientation.set("Robot TCP ORIENT", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
         
+<<<<<<< Updated upstream
         robotArmParams.add(tcpOffset.set("tcpOffset", ofVec3f(0, 0, 0), ofVec3f(-0.2, -0.2, -0.2), ofVec3f(0.2, 0.2, 0.2)));
+=======
+        robotArmParams.add(tcpOffset.set("tcpOffset", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+>>>>>>> Stashed changes
         
         robotArmParams.add(avgAccel.set("avgAccel", 0, 0, 200));
         robotArmParams.add(followLerp.set("followLerp", 1, 0, 1.0));

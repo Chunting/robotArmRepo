@@ -25,10 +25,14 @@ void WorkSurfaceController::setup(RobotParameters & params){
 //    twoDSurface.rbWorksrf.close();
 }
 void WorkSurfaceController::update(){
+<<<<<<< Updated upstream
     if(robotParams != NULL){
         twoDSurface.update(robotParams->targetTCP);
         threeDSurface.update(robotParams->targetTCP);
     }
+=======
+    workSurface.update(robotParams->targetTCPPosition);
+>>>>>>> Stashed changes
 }
 void WorkSurfaceController::draw(){
     twoDSurface.draw();
@@ -62,6 +66,7 @@ void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers
 
 void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
     
+<<<<<<< Updated upstream
 //    // find the difference between the current transformation matrix
 //    ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
 //    
@@ -113,4 +118,57 @@ void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
 //    }
 //    
 //    prev = rb;
+=======
+    // find the difference between the current transformation matrix
+    ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
+    
+    if (robotParams->bFollow){
+        ofQuaternion tempQ = robotParams->targetTCP.rotation;
+        ofVec3f tempP = toMM(robotParams->targetTCP.position);
+        
+        tempP = tempP * diff;
+        tempQ = rb.getMatrix().getRotate();
+        
+        robotParams->targetTCP.rotation = tempQ;
+        robotParams->targetTCP.position = toMeters(tempP);
+        
+    }
+    
+    //    // apply matrix to each of the recorded bodies
+    //    for (auto &tp: natNet.recordedPath){
+    //        tp.matrix *= diff;
+    //
+    //        // update markers
+    //        for (int i=0; i<tp.markers.size(); i++)
+    //            tp.markers[i] = tp.markers[i] * diff;
+    //    }
+    
+    
+    // initialize rigidbody worksurface
+    if (workSurface.rbWorksrf.getVertices()[0].z == 0){
+        // orient worksurface with rigid body
+        workSurface.rbWorksrf.getVertices()[0] = workSurface.rbWorksrf.getVertices()[0] * rb.matrix;
+        workSurface.rbWorksrf.getVertices()[1] = workSurface.rbWorksrf.getVertices()[1] * rb.matrix;
+        workSurface.rbWorksrf.getVertices()[2] = workSurface.rbWorksrf.getVertices()[2] * rb.matrix;
+        workSurface.rbWorksrf.getVertices()[3] = workSurface.rbWorksrf.getVertices()[3] * rb.matrix;
+    }
+    else{
+        // update rigidbody worksurface
+        workSurface.rbWorksrf.getVertices()[0] = workSurface.rbWorksrf.getVertices()[0] * diff;
+        workSurface.rbWorksrf.getVertices()[1] = workSurface.rbWorksrf.getVertices()[1] * diff;
+        workSurface.rbWorksrf.getVertices()[2] = workSurface.rbWorksrf.getVertices()[2] * diff;
+        workSurface.rbWorksrf.getVertices()[3] = workSurface.rbWorksrf.getVertices()[3] * diff;
+        
+        // update worksurface corner
+        workSurface.targetPoints[0] = toMeters(workSurface.rbWorksrf.getVertices()[0]);// / 1000;
+        workSurface.targetPoints[1] = toMeters(workSurface.rbWorksrf.getVertices()[1]);// / 1000;
+        workSurface.targetPoints[2] = toMeters(workSurface.rbWorksrf.getVertices()[2]);// / 1000;
+        workSurface.targetPoints[3] = toMeters(workSurface.rbWorksrf.getVertices()[3]);// / 1000;
+        
+        // override worksurface orientation
+        workSurface.orientation = rb.getMatrix().getRotate();
+    }
+    
+    prev = rb;
+>>>>>>> Stashed changes
 }
