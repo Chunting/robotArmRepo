@@ -71,17 +71,18 @@ void RobotController::updateMovement(){
 void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
-//    robotParams->tcpOrientation
+    //    robotParams->tcpOrientation
     robotParams->tcpOrientation = robot.model.tool.rotation.getEuler();
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
-    robotParams->targetTCP = robot.getToolPose();
-    
-     if(robotParams->bRecord){
-         recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
-     }
+    robotParams->actualTCP = robot.getToolPose();
+    robotParams->tcpPosition = robotParams->actualTCP.position;
+    robotParams->tcpOrientation = robotParams->actualTCP.rotation.getEuler();
+    if(robotParams->bRecord){
+        recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
+    }
 }
 
 void RobotController::updatePath(Joint targetTCP){
@@ -100,7 +101,7 @@ void RobotController::moveArm(){
         
         // get the robot's position
         robotParams->targetTCP = robot.getToolPose();
-
+        
         
         // update GUI params
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
@@ -129,7 +130,7 @@ void RobotController::moveArm(){
         // update GUI params
         robotParams->bTrace = false;
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
-
+        
     }else if(robotParams->bTrace || robotParams->b3DPath){
         
         
