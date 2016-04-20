@@ -15,6 +15,40 @@ void ofApp::setup(){
     //    tcp.setPosition(0, 0, 0);
     parent.setPosition(0, 0, 0);
     //    tcp.setParent(parent);
+    
+    setupGUI();
+#ifdef ENABLE_NATNET
+    natNet.setup("en6", "192.168.1.131");
+#endif
+    
+    
+    robot.setup(parameters);
+    
+    panel.add(robot.movement.movementParams);
+    speeds.assign(6, 0);
+    parameters.bMove = false;
+    // get the current pose on start up
+    parameters.bCopy = true;
+    panel.loadFromFile("settings.xml");
+    
+    
+    gml.setup();
+    gml.loadFile("gml/53514.gml");
+    
+    //
+    //    for(int i = 0; i < N_CAMERAS; i++){
+    //        cams[i].setup();
+    //        cams[i].autosavePosition = true;
+    //        cams[i].usemouse = false;
+    //        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
+    //        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
+    //        cams[i].loadCameraPosition();
+    //    }
+    path.setup();
+}
+
+
+void ofApp::setupGUI(){
     parameters.setup();
     
     panel.setup(parameters.robotArmParams);
@@ -32,41 +66,13 @@ void ofApp::setup(){
     panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelWorkSurface.setup(workSurface.workSurface.workSurfaceParams);
+    panelWorkSurface.setup(workSurface.twoDSurface.workSurfaceParams);
+    panelWorkSurface.add(workSurface.threeDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
-#ifdef ENABLE_NATNET
-    natNet.setup("en6", "192.168.1.131");
-#endif
-    
-    
-    robot.setup(parameters);
-    panel.add(robot.movement.movementParams);
-    speeds.assign(6, 0);
-    parameters.bMove = false;
-    // get the current pose on start up
-    parameters.bCopy = true;
-    panel.loadFromFile("settings.xml");
-    gml.setup();
-    gml.loadFile("gml/session-17-15-5-38.gml");
-    
-    /* 3D Navigation */
-    //    cams[1] = &movement.cam;
-    // need to move URMove camera to ofApp
-    
-    handleViewportPresets('p');
-    
-    for(int i = 0; i < N_CAMERAS; i++){
-        cams[i].setup();
-        cams[i].autosavePosition = true;
-        cams[i].usemouse = false;
-        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        cams[i].loadCameraPosition();
-    }
-    
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -74,10 +80,7 @@ void ofApp::update(){
     natNet.update();
 #endif
     workSurface.update();
-    if(parameters.bTrace){
-        robot.updatePath(workSurface.getNextPoint());
-    }
-    robot.update();
+    robot.update(workSurface.getNextPoint());
     
     
     
@@ -99,7 +102,7 @@ void ofApp::draw(){
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    
+    path.draw();
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -109,18 +112,34 @@ void ofApp::draw(){
         robot.robot.model.draw();
     }
     ofSetColor(255, 0, 255);
+    ofEnableDepthTest();
+    workSurface.draw();
+    ofDisableDepthTest();;
     ofPushMatrix();
-    ofSetColor(255, 0, 255, 200);
-    ofDrawSphere(toMM(parameters.tcpPosition.get()), 5);
-    ofSetColor(255, 255, 0, 200);
-    ofDrawSphere(toMM(parameters.targetTCP.position), 15);
+    parent.draw();
+    ofScale(1000, 1000, 1000);
+    path.draw();
     ofPopMatrix();
-    workSurface.workSurface.draw();
     cams[0].end();
     
+    
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.movement.draw();
+    ofEnableDepthTest();
+    workSurface.draw();
+    ofDisableDepthTest();
+    if (!hideRobot){
+        robot.movement.draw(robot.movement.selectedSolution);
+    }
+    
+    ofPushMatrix();
+    ofScale(1000, 1000, 1000);
+    path.draw();
+    ofPopMatrix();
     cams[1].end();
+    
+    
+    
+    
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     gml.draw();
@@ -142,7 +161,7 @@ void ofApp::exit(){
     panel.saveToFile("settings.xml");
     panelWorkSurface.saveToFile("workSurface.xml");
     if(robot.robot.isThreadRunning()){
-        robot.robot.waitForThread();
+        robot.robot.disconnect();
     }
 }
 
@@ -171,35 +190,36 @@ void ofApp::keyPressed(int key){
             }
             
             for(int i = 0; i < strokes.size(); i++){
-                strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*2.0);
+                strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*4.0);
             }
             
-            workSurface.workSurface.addStrokes(strokes,retract);
+            workSurface.threeDSurface.addStrokes(strokes,retract);
+            workSurface.twoDSurface.addStrokes(strokes,retract);
             parameters.bTrace = true;
             parameters.bFollow = false;
             workSurface.startTime = ofGetElapsedTimef();
         }
         
     }
-    //    if(key == '1'){
-    //        workSurface.workSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
-    //    }
-    //    if(key == '2'){
-    //        workSurface.workSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
-    //    }
-    //    if(key == '3'){
-    //        workSurface.workSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
-    //    }
-    //    if(key == '4'){
-    //        workSurface.workSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
-    //    }
+    if(key == 'u'){
+        workSurface.twoDSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
+    }
+    if(key == 'i'){
+        workSurface.twoDSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
+    }
+    if(key == 'o'){
+        workSurface.twoDSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
+    }
+    if(key == 'p'){
+        workSurface.twoDSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
+    }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
     }
     
     
     handleViewportPresets(key);
-
+    
     if (key == 'h'){
         hideRobot = !hideRobot;
     }
@@ -207,6 +227,8 @@ void ofApp::keyPressed(int key){
     if (key == 'n'){
         natNet.record = !natNet.record;
     }
+    
+    path.keyPressed(key);
 }
 
 //--------------------------------------------------------------
@@ -220,7 +242,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "TOP VIEW";
     }
     // LEFT VIEW
@@ -228,7 +250,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, 0, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "LEFT VIEW";
     }
     // FRONT VIEW
@@ -236,7 +258,7 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, dist, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
@@ -244,11 +266,18 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
+        //        cams[activeCam].movedManually();
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
+    }
+    else if (key == '6'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, 0, -dist);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        //        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
     if(key == '5'){
-        cams[activeCam].usemouse = true;
+        //        cams[activeCam].usemouse = true;
     }
     //    // CUSTOM  VIEW
     //    else if (key == '5'){
@@ -312,7 +341,7 @@ void ofApp::hightlightViewports(){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
     if(key == '5'){
-        cams[activeCam].usemouse = false;
+        //        cams[activeCam].usemouse = false;
     }
 }
 

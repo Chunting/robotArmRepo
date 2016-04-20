@@ -1,16 +1,15 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
-#include "WorkSurface.h"
-void WorkSurface::setup(){
-    workSurfaceParams.setName("Work Surface");
+#include "TwoDWorkSurface.h"
+void TwoDWorkSurface::setup(RobotParameters * parameters){
+    workSurfaceParams.setName("2D Work Surface");
+    workSurfaceParams.add(feedRate.set("feedRate", 0.001, 0.00001, 0.01));
     workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-    workSurfaceParams.add(size.set("WS size", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfaceParams.add(qAxis.set("qAxis", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
-    workSurfaceParams.add(qAngle.set("qAngle",0, 0, 360));
     workSurfaceParams.add(retractDistance.set("retractDistance", 4, 0, 100));
     workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
     workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
     workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
+    
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -22,13 +21,16 @@ void WorkSurface::setup(){
     plane.setWidth(1);
     plane.setHeight(1);
     targetIndex = 0;
+    timer.setSmoothing(true);
+    
+    this->parameters = parameters;
     
 }
-void WorkSurface::setCorners(vector<ofPoint> pts){
+void TwoDWorkSurface::setCorners(vector<ofPoint> pts){
     corners = pts;
     
 }
-void WorkSurface::setCorner(CORNER i, ofPoint pt){
+void TwoDWorkSurface::setCorner(CORNER i, ofPoint pt){
     switch (i) {
         case UL:
             corners[0] = pt;
@@ -49,34 +51,34 @@ void WorkSurface::setCorner(CORNER i, ofPoint pt){
     }
 }
 
-void WorkSurface::update(ofVec3f toolPointPos){
-    
-    // update the worksurface mesh
-    if (mesh.getVertices().size() == 0){
+void TwoDWorkSurface::update(Joint toolPointPos){
+    timer.tick();
+    // update the TwoDWorkSurface mesh
+    if (surfaceMesh.getVertices().size() == 0){
         for (int i=0; i<targetPoints.size(); i++){
-            mesh.addVertex(targetPoints[i].get());
+            surfaceMesh.addVertex(targetPoints[i].get());
         }
-        mesh.addTriangle(0, 1, 2);
-        mesh.addTriangle(0, 2, 3);
+        surfaceMesh.addTriangle(0, 1, 2);
+        surfaceMesh.addTriangle(0, 2, 3);
     }
     else{
-        mesh.setVertex(0, targetPoints[0]);
-        mesh.setVertex(1, targetPoints[1]);
-        mesh.setVertex(2, targetPoints[2]);
-        mesh.setVertex(3, targetPoints[3]);
+        surfaceMesh.setVertex(0, targetPoints[0]);
+        surfaceMesh.setVertex(1, targetPoints[1]);
+        surfaceMesh.setVertex(2, targetPoints[2]);
+        surfaceMesh.setVertex(3, targetPoints[3]);
     }
     
     calcNormals();
     
     
     
-    ////      USE RIGID BODY FROM NATNET AS WORKSURFACE
+    ////      USE RIGID BODY FROM NATNET AS TwoDWorkSurface
     ////     update the mesh normal as the average of its two face normals
     //    ofVec3f n = ((mesh.getFace(0).getFaceNormal() + mesh.getFace(1).getFaceNormal())/2).normalize();
     //
     //    orientation.set(n);
     //
-    ////    // realign the local axis of the worksurface
+    ////    // realign the local axis of the TwoDWorkSurface
     ////    //      this is a bit hacky ... I don't think it works for everything
     //    ofQuaternion conj = orientation.conj();
     ////    orientation *= conj;
@@ -102,53 +104,54 @@ void WorkSurface::update(ofVec3f toolPointPos){
     ofVec3f axis;
     float angle;
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
-    toolPoint.setPosition(toolPointPos);
+    toolPoint.setPosition(toolPointPos.position);
     toolPoint.setOrientation(orientation);
-//    toolPoint.lookAt(targetToolPoint.position, ofVec3f(0, 0, 1));
-//    orientation = toolPoint.getOrientationQuat();
-    
 
-    
     rotation = orientation.getEuler();
-    qAxis = axis;
-    qAngle = angle;
+
     
     // update the position
     ofVec3f centroid;
-    for (auto &p : targetPoints)
+    for (auto &p : targetPoints){
         centroid += p;
-    position = centroid/4;//targetPoints[2].get().getMiddle(targetPoints[0].get());
-    
-    // update GML
+    }
+    position = centroid/4;
     if (strokes_original.size() != 0)
         addStrokes(strokes_original, 4);
     
 }
 
-void WorkSurface::calcNormals(){
-    mesh.clearNormals();
-    for( int i=0; i < mesh.getVertices().size(); i++ ) mesh.addNormal(ofPoint(0,0,0));
+void TwoDWorkSurface::calcNormals(bool flip){
+    surfaceMesh.clearNormals();
+    for( int i=0; i < surfaceMesh.getVertices().size(); i++ ){
+       surfaceMesh.addNormal(ofPoint(0,0,0));
+    }
     
-    for( int i=0; i < mesh.getIndices().size(); i+=3 ){
-        const int ia = mesh.getIndices()[i];
-        const int ib = mesh.getIndices()[i+1];
-        const int ic = mesh.getIndices()[i+2];
-        
-        ofVec3f e1 = mesh.getVertices()[ib] - mesh.getVertices()[ia];
-        ofVec3f e2 = mesh.getVertices()[ib] - mesh.getVertices()[ic];
+    for( int i=0; i < surfaceMesh.getIndices().size(); i+=3 ){
+        const int ia = surfaceMesh.getIndices()[i];
+        const int ib = surfaceMesh.getIndices()[i+1];
+        const int ic = surfaceMesh.getIndices()[i+2];
+        ofVec3f e1, e2;
+        if(flip){
+            e1 = surfaceMesh.getVertices()[ib] - surfaceMesh.getVertices()[ia];
+            e2 = surfaceMesh.getVertices()[ib] - surfaceMesh.getVertices()[ic];
+        }else{
+            e1 = surfaceMesh.getVertices()[ia] - surfaceMesh.getVertices()[ib];
+            e2 = surfaceMesh.getVertices()[ic] - surfaceMesh.getVertices()[ib];
+        }
         ofVec3f no = e1.cross( e2 );
         
         // depending on your clockwise / winding order, you might want to reverse the e2 / e1 above if your normals are flipped.
         
-        mesh.getNormals()[ia] += no;
-        mesh.getNormals()[ib] += no;
-        mesh.getNormals()[ic] += no;
+        surfaceMesh.getNormals()[ia] += no;
+        surfaceMesh.getNormals()[ib] += no;
+        surfaceMesh.getNormals()[ic] += no;
     }
     
-
-    for(int i=0; i < mesh.getNormals().size(); i++ ) {
-        mesh.getNormals()[i].normalize();
-        normal+=mesh.getNormals()[i];
+    
+    for(int i=0; i < surfaceMesh.getNormals().size(); i++ ) {
+        surfaceMesh.getNormals()[i].normalize();
+        normal+=surfaceMesh.getNormals()[i];
         normal/=2.0;
     }
     
@@ -156,13 +159,13 @@ void WorkSurface::calcNormals(){
 
 
 
-void WorkSurface::addPoint(ofVec3f pt){
+void TwoDWorkSurface::addPoint(ofVec3f pt){
     
 }
-void WorkSurface::addStroke(ofPolyline stroke){
+void TwoDWorkSurface::addStroke(ofPolyline stroke){
     
 }
-void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
+void TwoDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     
     // add retract/approach points & store the original linework
     if (strokes_original.size() == 0){
@@ -179,7 +182,7 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
             stroke.insertVertex(first, 0);
             stroke.addVertex(last);
             stroke.addVertex(first);
-          
+            
         }
         
         
@@ -194,11 +197,12 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     
     // get the centroid of the line drawing
     ofVec3f centroid;
-    for (auto &pl : strokes)
+    for (auto &pl : strokes){
         centroid += pl.getCentroid2D();
+    }
     centroid /= strokes.size();
     
-
+    
     lines.clear();
     ofMatrix4x4 mat;
     mat.setRotate(orientation);
@@ -215,26 +219,29 @@ void WorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
     }
 }
 
-Joint WorkSurface::getTargetPoint(float t){
-
+Joint TwoDWorkSurface::getTargetPoint(float t){
+    
     if(lines.size() > 0){
-        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1)/0.025;
-        t = fmodf(t, length)/length;
+        float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1);
+        float dist = feedRate*t;
+        float indexInterpolated = lines[targetIndex].getIndexAtPercent(dist/length);
         
-        float indexAtLenght = lines[targetIndex].getIndexAtPercent(t);
-        ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexAtLenght);
+        ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexInterpolated);
+        
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
-        if(1.0-t < 0.01 || t == 0.0){
+        
+        if(indexInterpolated > lines[targetIndex].getVertices().size()-1){
             targetIndex++;
-            if(targetIndex >=lines.size()){
-                targetIndex = 0;
-            }
         }
+        if(targetIndex > lines.size()-1.){
+            targetIndex = 0;
+        }
+        
     }
     return targetToolPoint;
 }
-void WorkSurface::draw(){
+void TwoDWorkSurface::draw(){
     ofPushMatrix();
     ofTranslate(position.get()*1000);
     float angle;
@@ -249,7 +256,7 @@ void WorkSurface::draw(){
     for(int i = 0; i < lines.size(); i++){
         lines[i].draw();
     }
-    mesh.drawWireframe();
+    surfaceMesh.drawWireframe();
     ofPopMatrix();
     
     
@@ -270,18 +277,4 @@ void WorkSurface::draw(){
         ofDrawLine(targetPoints[3].get()*1000,targetPoints[0].get()*1000);
     }
     ofPopMatrix();
-}
-void WorkSurface::setRotationX(float x){
-    orientationX.makeRotate(x, 1, 0, 0);
-}
-void WorkSurface::setRotationY(float y){
-    orientationY.makeRotate(y, 0, 1, 0);
-}
-void WorkSurface::setRotationZ(float z){
-    orientationZ.makeRotate(z, 0, 0, 1);
-}
-void WorkSurface::setRotation(float x, float y, float z){
-    orientationX.makeRotate(x, 1, 0, 0);
-    orientationY.makeRotate(y, 0, 1, 0);
-    orientationZ.makeRotate(z, 0, 0, 1);
 }

@@ -18,7 +18,7 @@ public:
     ~URMove();
     void setup();
     void update();
-    void draw();
+    void draw(int i);
     void computeVelocities();
     void updatePathDebug();
 
@@ -34,7 +34,7 @@ public:
     vector<double> getCurrentSpeed();
     vector<double> getRawJointPos();
     ofEasyCam cam;
-    
+    int selectedSolution;
 protected:
     ofParameter<float> speedDivider;
     ofParameter<bool> reachPoint;
@@ -46,7 +46,7 @@ protected:
     int selectSolution();
     vector<UR5KinematicModel*> previews;
     //Motion Capture Visualization
-    int selectedSolution;
+ 
     URKinematics kinematics;
     vector<double> currentPose;
     vector<vector<double> > inversePosition;

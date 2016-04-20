@@ -18,7 +18,7 @@ public:
     void setup(RobotParameters & params);
     void updateMovement();
     void updateData();
-    void update();
+    void update(Joint targetPt);
     void moveArm();
     void draw();
     

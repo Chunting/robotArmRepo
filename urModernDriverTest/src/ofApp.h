@@ -13,6 +13,7 @@
 #include "RobotParameters.h"
 #include "NatNetController.h"
 #include "WorkSurfaceController.h"
+#include "3DPath.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -35,7 +36,10 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
+    void setupGUI();
     
+    /// \brief 3D mesh with paths for robot to follow
+
     RobotParameters parameters;
 
     ofxPanel panel;
@@ -46,6 +50,7 @@ public:
     ofxPanel panelJointsSpeed;
     
     
+    ThreeDPath path;
     RobotController robot;
     NatNetController natNet;
 
@@ -68,7 +73,7 @@ public:
     float tagStartTime;
     
     // 3D Navigation
-    ofxGameCamera cams[N_CAMERAS];
+    ofEasyCam cams[N_CAMERAS];
     ofMatrix4x4 savedCamMats[N_CAMERAS];
     string viewportLabels[N_CAMERAS];
     int activeCam;

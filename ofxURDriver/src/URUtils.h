@@ -35,17 +35,3 @@ ofVec3f toMeters(ofVec3f v){
 ofVec3f toMM(ofVec3f v){
     return ofVec3f(v*ofVec3f(1000, 1000, 1000));
 }
-
-/// \brief Converts an orientation from meters to millimeters
-/// \param v ofQuaternion to convert
-/// \return copy of the orientation in millimeters
-ofQuaternion toMM(ofQuaternion q){
-    return ofQuaternion(q*1000);
-}
-
-/// \brief Converts an orientation from millimeters to meters
-/// \param v ofQuaternion to convert
-/// \return copy of the orientation in meters
-ofQuaternion toMeters(ofQuaternion q){
-    return ofQuaternion(q/1000);
-}

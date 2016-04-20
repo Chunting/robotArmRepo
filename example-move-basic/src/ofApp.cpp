@@ -31,10 +31,9 @@ void ofApp::update(){
     // update the robot to draw on the surface
     if(parameters.bFollow){
         Joint pose;
-        pose.position = parameters.;
-        pose.rotation = toolpathOrients[pathIndex];
+        pose.position = parameters.targetTCPPosition;
+        pose.rotation = ofQuaternion(parameters.targetTCPOrientation);
         robot.updatePath(pose);
-      
     }
     
     robot.update();
@@ -105,6 +104,15 @@ void ofApp::setupCameras(){
         cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
         cams[i].loadCameraPosition();
     }
+}
+
+//--------------------------------------------------------------
+void ofApp::drawGUI(){
+    panel.draw();
+    panelJoints.draw();
+    panelJointsIK.draw();
+    panelJointsSpeed.draw();
+    panelTargetJoints.draw();
 }
 
 //--------------------------------------------------------------

@@ -41,14 +41,12 @@ void URMove::update(){
     deltaTimer.tick();
     deltaTime = deltaTimer.getPeriod();
     
-    if(reachPoint){
-        if((targetPoint.position - newTargetPoint.front().position).length() < 0.01){
-            newTargetPoint.pop_front();
-        }
-    }
+    
+    
     if(newTargetPoint.size() > 0){
         targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
         targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
+        newTargetPoint.pop_front();
     }
     
     mat.setTranslation(targetPoint.position);
@@ -61,7 +59,7 @@ void URMove::update(){
 
 vector<double> URMove::getTargetJointPos(){
     if(selectedSolution > -1){
-        return previews[selectedSolution]->jointsProcessed;
+        return previews[selectedSolution]->jointsRaw;
     }else{
         return currentPose;
     }
@@ -108,23 +106,9 @@ void URMove::computeVelocities(){
 }
 
 void URMove::addTargetPoint(Joint target){
-    if(reachPoint){
-        if(newTargetPoint.size() > 0){
-            if((newTargetPoint.back().position-target.position).length() > 0.1){
-                newTargetPoint.push_back(target);
-            }
-        }else{
-            newTargetPoint.push_back(target);
-            
-        }
-    }else{
-        
-        newTargetPoint.push_front(target);
-        if(newTargetPoint.size() > 1){
-            newTargetPoint.pop_back();
-        }
-        
-    }
+    
+    newTargetPoint.push_back(target);
+    
     targetLine.addVertex(toMM(target.position));
     if(targetLine.size() > 400){
         targetLine.getVertices().erase(targetLine.getVertices().begin(), targetLine.getVertices().begin()+1);
@@ -132,10 +116,10 @@ void URMove::addTargetPoint(Joint target){
 }
 
 
-void URMove::draw(){
-    if(inversePosition.size() > 0 && selectedSolution >=0){
+void URMove::draw(int i){
+    if(inversePosition.size() > 0 && i <inversePosition.size()){
         ofSetColor(255, 0, 255, 150);
-        previews[selectedSolution]->draw();
+        previews[i]->draw();
         targetLine.draw();
         ofSetColor(255, 0, 255, 200);
         ofDrawSphere(toMM(targetPoint.position), 5);
@@ -185,7 +169,7 @@ int URMove::selectSolution(){
                 max = count[i];
             }
         }
-        ofLog(OF_LOG_VERBOSE)<<"nearest "<<nearest<<endl;
+        ofLog(OF_LOG_NOTICE)<<"nearest "<<nearest<<endl;
         //        if(inversePosition.size() >= 7)
         //            return nearest;
         //        else
@@ -228,7 +212,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
             previews[i]->jointsProcessed.resize(previews[i]->jointsRaw.size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
-                    previews[i]->jointsRaw[j] = inversePosition[i][j]-PI;
+                    inversePosition[i][j] = inversePosition[i][j]-PI;
                 }
                 if(j == 1 || j == 3){
                     if(inversePosition[i][j] > PI){
@@ -236,6 +220,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
                     }
                     previews[i]->jointsRaw[j] = inversePosition[i][j];
                 }
+                previews[i]->jointsRaw[j] = inversePosition[i][j];
                 if(preInversePosition.size() > 0){
                     if(i == selectedSolution){
                         if(preInversePosition[i][j]-inversePosition[i][j] > PI){

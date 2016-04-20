@@ -36,7 +36,7 @@ ofxGameCamera::ofxGameCamera() {
     invertControls = false;
     usemouse = true;
     autosavePosition = false;
-    useArrowKeys = true;
+    useArrowKeys = false;
     
     applyRotation = true;
     applyTranslation = true;

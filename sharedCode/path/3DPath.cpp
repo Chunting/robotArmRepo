@@ -12,10 +12,17 @@ void ThreeDPath::setup(){
     parsePts("path_SPIRAL.txt", path_SPIRAL);
     path_PERIODIC = buildPath();
     
+    ofPath p;
+    p.setCircleResolution(2000);
+    p.circle(0., 0., 0.3, 0.325);
+
+    vector<ofPolyline> fooCircle = p.getOutline();
+    
     // assign path and make profile
     profile = buildProfile(.025,4);
-    path = path_XZ;
+    path = fooCircle[0];
     buildPerpFrames(path);
+    reverse = false;
 }
 
 void ThreeDPath::keyPressed(int key){
@@ -37,38 +44,39 @@ void ThreeDPath::keyPressed(int key){
             for (auto &p : path.getVertices())
                 p.x -= step;
             buildPerpFrames(path);
-        }else if (key == '1'){
+        }else if (key == '!'){
             makeZOut = false;
             makeZForward = true;
         }
-        else if (key == '2'){
+        else if (key == '@'){
             makeZForward = false;
             makeZOut = true;
         }
-        else if (key == '3'){
+        else if (key == '#'){
             makeZForward = false;
             makeZOut = false;
         }
         
-        else if (key == '7'){
+        else if (key == '$'){
             path = path_XZ;
             buildPerpFrames(path);
         }
-        else if (key == '8'){
+        else if (key == '%'){
             path = path_YZ;
             buildPerpFrames(path);
         }
-        else if (key == '9'){
+        else if (key == '^'){
             path = path_SPIRAL;
             buildPerpFrames(path);
         }
-        else if (key == '0'){
+        else if (key == '&'){
             path = path_PERIODIC;
             buildPerpFrames(path);
         }
 }
 
 ofMatrix4x4 ThreeDPath::getNextPose(){
+
     if(ptf.framesSize()>0){
         ptIndex = (ptIndex +1) % ptf.framesSize();
         
@@ -78,30 +86,14 @@ ofMatrix4x4 ThreeDPath::getNextPose(){
             orientation = zForward(orientation);
         else if (makeZOut)
             orientation = zOut(orientation);
+        else
+            orientation = flip(orientation);
         
         return orientation;
     }
 }
 
 void ThreeDPath::draw(){
-    
-    // draw all the perp frames if we are paused
-    for (int i=0; i<ptf.framesSize(); i++){
-        ofMatrix4x4 m44 = ptf.frameAt(i);
-        
-        if (makeZForward)
-            m44 = zForward(m44);
-        else if (makeZOut)
-            m44 = zOut(m44);
-        
-        ofSetColor(ofColor::aqua);
-        ofPushMatrix();
-        ofMultMatrix(m44);
-        profile.draw();
-        ofPopMatrix();
-    }
-    
-    
     
     // show the current orientation plane
     ofSetColor(ofColor::lightYellow);
@@ -114,9 +106,9 @@ void ThreeDPath::draw(){
     
     // show the target point
     ofSetColor(ofColor::yellow);
-    if (path.size() > 0)
+    if (path.size() > 0){
         ofDrawSphere(path.getVertices()[ptIndex], .003);
-    
+    }
     
     
     // show the 3D path
@@ -188,12 +180,12 @@ ofPolyline ThreeDPath::buildPath(){
     
     n0.setPosition(centroid.x,centroid.y,centroid.z);
     n1.setParent(n0);
-    n1.setPosition(0,0,.2);
+    n1.setPosition(0,0,.1);
     n2.setParent(n1);
-    n2.setPosition(0,.015,0);
+    n2.setPosition(0,.0015,0);
     
     float totalRotation = 0;
-    float step = .5;
+    float step = .25;
     while (totalRotation < 360){
         
         n0.pan(step);
@@ -221,8 +213,9 @@ void ThreeDPath::buildPerpFrames(ofPolyline polyline){
     // reset the perp frames
     ptf.clear();
     
-    for (auto &p : polyline)
+    for (auto &p : polyline){
         ptf.addPoint(p);
+    }
     
 }
 
@@ -250,6 +243,19 @@ ofPolyline ThreeDPath::buildProfile(float radius, int res){
     return temp;
 }
 
+//--------------------------------------------------------------
+ofMatrix4x4 ThreeDPath::flip(ofMatrix4x4 originalMat){
+    
+    ofVec3f pos  = originalMat.getTranslation();
+    ofVec3f z = originalMat.getRowAsVec3f(2);   // local y-axis
+    
+    originalMat.setTranslation(0,0,0);
+    originalMat.rotate(180, z.x, z.y, z.z);     // rotate about the y
+    originalMat.setTranslation(pos);
+    
+    return originalMat;
+}
+
 
 //--------------------------------------------------------------
 ofMatrix4x4 ThreeDPath::zForward(ofMatrix4x4 originalMat){
@@ -258,7 +264,7 @@ ofMatrix4x4 ThreeDPath::zForward(ofMatrix4x4 originalMat){
     ofVec3f y = originalMat.getRowAsVec3f(1);   // local y-axis
     
     originalMat.setTranslation(0,0,0);
-    originalMat.rotate(-90, y.x, y.y, y.z);     // rotate about the y
+    originalMat.rotate(90, y.x, y.y, y.z);     // rotate about the y
     originalMat.setTranslation(pos);
     
     return originalMat;
@@ -272,7 +278,7 @@ ofMatrix4x4 ThreeDPath::zOut(ofMatrix4x4 originalMat){
     ofVec3f x = originalMat.getRowAsVec3f(0);   // local x-axis
     
     originalMat.setTranslation(0,0,0);
-    originalMat.rotate(90, x.x, x.y, x.z);      // rotate about the y
+    originalMat.rotate(-90, x.x, x.y, x.z);      // rotate about the y
     originalMat.setTranslation(pos);
     
     return originalMat;
