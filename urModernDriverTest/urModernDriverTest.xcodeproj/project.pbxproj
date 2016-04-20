@@ -355,7 +355,6 @@
 		C6937888E126BADC8777423B /* OscTypes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscTypes.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C76DE5C29BDBD2CAA1DD0021 /* ofxCvContourFinder.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvContourFinder.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvContourFinder.cpp; sourceTree = SOURCE_ROOT; };
-		C876CABC1CC8003500B69A25 /* WorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface.h; sourceTree = "<group>"; };
 		C876CABE1CC8003500B69A25 /* NatNetController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetController.cpp; sourceTree = "<group>"; };
 		C876CABF1CC8003500B69A25 /* NatNetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetController.h; sourceTree = "<group>"; };
 		C876CAC01CC8003500B69A25 /* PathController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathController.cpp; sourceTree = "<group>"; };
@@ -1231,7 +1230,6 @@
 		C876CABA1CC8003500B69A25 /* sharedCode */ = {
 			isa = PBXGroup;
 			children = (
-				C876CABB1CC8003500B69A25 /* calibration */,
 				C876CABD1CC8003500B69A25 /* controllers */,
 				C876CAC81CC8003500B69A25 /* path */,
 				C876CAD11CC8003500B69A25 /* utils */,
@@ -1239,14 +1237,6 @@
 			);
 			name = sharedCode;
 			path = ../../sharedCode;
-			sourceTree = "<group>";
-		};
-		C876CABB1CC8003500B69A25 /* calibration */ = {
-			isa = PBXGroup;
-			children = (
-				C876CABC1CC8003500B69A25 /* WorkSurface.h */,
-			);
-			path = calibration;
 			sourceTree = "<group>";
 		};
 		C876CABD1CC8003500B69A25 /* controllers */ = {
