@@ -69,9 +69,6 @@ class RobotParametersBasic : public RobotParameters{
     ofParameterGroup jointsIK;
     
     
-    
-    ofParameter<float> followLerp;
-    ofParameter<float> avgAccel;
     vector<ofParameter<float> > jointPosIKRaw;
     vector<ofParameter<float> > jointPos;
     vector<ofParameter<float> > targetJointPos;

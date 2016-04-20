@@ -64,8 +64,8 @@
     <bCopy_Tool_Point>0</bCopy_Tool_Point>
     <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
     <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>
-    <Set_TCP_POS>0.816326, -0.63245, -0.236278</Set_TCP_POS>
-    <Set_TCP_ORIENT>0.444194, -0.509782, 0.157245, 0.719784</Set_TCP_ORIENT>
+    <Set_TCP_POS>0, -0.438776, 0.306122</Set_TCP_POS>
+    <Set_TCP_ORIENT>0, 0, 0, 1</Set_TCP_ORIENT>
     <Robot_TCP_POS>0.673469, -0.693878, -0.214286</Robot_TCP_POS>
     <Robot_TCP_ORIENT>-1.26504e-05, -1.90804e-05, -5.2296e-05</Robot_TCP_ORIENT>
     <set_TCP>0</set_TCP>
@@ -86,9 +86,14 @@
         <Acceleration_M>148.811</Acceleration_M>
     <Step>0</Step>
 		<Speed_Divider>1</Speed_Divider>
+	<Joint_LerpSpeed>0.9</Joint_LerpSpeed>
+		<avgAcceleration>0</avgAcceleration>
+		<followLerp>1</followLerp>
 	</UR_Movements>
 <tcpOffset>0, 0, 0</tcpOffset>
 	<avgAccel>0</avgAccel>
 	<followLerp>1</followLerp>
 	<Move>0</Move>
+<Actual_Robot_TCP_POS>0, 0, 0</Actual_Robot_TCP_POS>
+	<Actual_Robot_TCP_ORIENT>0, 0, 0</Actual_Robot_TCP_ORIENT>
 </group>
