@@ -22,9 +22,8 @@ vector<double> RobotController::getJointPosition(){
     return robotParams->currentJointPos;
 }
 
-void RobotController::update(Joint targetTCP){
+void RobotController::update(){
     toggleRecord();
-    updatePath(targetTCP);
     updateData();
     updateMovement();
 }
@@ -84,7 +83,7 @@ void RobotController::updateData(){
      }
 }
 
-void RobotController::updatePath(Joint targetTCP){
+void RobotController::updatePose(Joint targetTCP){
     workSurfaceTargetTCP = targetTCP;
 }
 

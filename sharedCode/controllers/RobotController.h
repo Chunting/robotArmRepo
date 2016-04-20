@@ -19,10 +19,10 @@ public:
     void setup(RobotParameters & params);
     void updateMovement();
     void updateData();
-    void update(Joint targetPt);
+    void update();
     void moveArm();
     void draw();
-    void updatePath(Joint targetPt);
+    void updatePose(Joint targetPt);
     void toggleRecord();
     
     vector<double> getJointPosition();
