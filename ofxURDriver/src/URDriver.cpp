@@ -65,23 +65,23 @@ bool ofxURDriver::isDataReady(){
     }
 }
 vector<double> ofxURDriver::getToolPointRaw(){
-    lock();
-    vector<double> fooR = model.toolPointRaw;
-    unlock();
-    return fooR;
+//    lock();
+//    vector<double> fooR = model.toolPointRaw;
+//    unlock();
+    return model.toolPointRaw;
 }
 
 vector<double> ofxURDriver::getJointPositions(){
-    lock();
-    vector<double> fooR = model.jointsRaw;
-    unlock();
-    return fooR;
+//    lock();
+////    vector<double> fooR = model.jointsRaw;
+//    unlock();
+    return model.jointsRaw;
 }
 vector<double> ofxURDriver::getJointAngles(){
-    lock();
-    vector<double> fooR = model.jointsRaw;
-    unlock();
-    return fooR;
+//    lock();
+//    vector<double> fooR = model.jointsRaw;
+//    unlock();
+    return model.jointsProcessed;
 }
 
 float ofxURDriver::getThreadFPS(){
