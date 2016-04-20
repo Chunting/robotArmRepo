@@ -90,9 +90,9 @@ void RobotController::updatePose(Joint targetTCP){
 
 void RobotController::moveArm(){
     // set target TCP to a default orientation, then modify
-    robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    robotParams->targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
+//    robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+//    robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+//    robotParams->targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
     
     // assign the target pose to the current robot pose
     if(robotParams->bCopy){
