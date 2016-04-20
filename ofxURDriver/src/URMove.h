@@ -35,12 +35,14 @@ public:
     vector<double> getRawJointPos();
     ofEasyCam cam;
     int selectedSolution;
+    ofParameter<float> followLerp;
 protected:
     ofParameter<float> speedDivider;
     ofParameter<bool> reachPoint;
     ofParameter<float> targetTCPLerpSpeed;
     ofParameter<float> jointSpeedLerpSpeed;
     ofParameter<float> jointAccelerationMultipler;
+    ofParameter<float> avgAcceleration;
     
     float distance;
     int selectSolution();

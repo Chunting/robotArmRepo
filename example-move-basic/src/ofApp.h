@@ -4,7 +4,7 @@
 #include "ofxGui.h"
 #include "ofxGameCamera.h"
 #include "RobotController.h"
-#include "RobotParameters.h"
+#include "RobotParametersBasic.h"
 
 #define N_CAMERAS 2
 
@@ -28,7 +28,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
         // GUI
-        RobotParameters parameters;
+        RobotParametersBasic parameters;
         
         void setupUserPanel();
         void setupDebugPanel();

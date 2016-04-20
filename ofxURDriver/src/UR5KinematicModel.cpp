@@ -19,11 +19,6 @@ void UR5KinematicModel::setup(){
     dir.listDir(ofToDataPath("models"));
     dir.sort();
     dir.allowExt("dae");
-    //
-//    for(int i = 0; i < dir.size(); i++){
-//        loader.loadModel(dir.getPath(i));
-//        meshs.push_back(loader.getMesh(0));
-//    }
     
     // load robot mesh
     loader.loadModel(ofToDataPath("models/ur5.dae"));
@@ -31,10 +26,7 @@ void UR5KinematicModel::setup(){
         meshs.push_back(loader.getMesh(i));
     }
     
-    // load default tool ... right now exporting with 34.5 offset
-    loader.loadModel(ofToDataPath("models/myTool.dae"));
-    setToolMesh(loader.getMesh(loader.getNumMeshes()-1));
-    tool.offset = ofVec3f(0,-135,0);    // is this doing anything?
+
     
     jointsRaw.assign(6, 0.0);
     jointsRaw[1] = -PI/2.0;
