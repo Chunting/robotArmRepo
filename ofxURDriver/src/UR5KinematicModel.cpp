@@ -19,12 +19,14 @@ void UR5KinematicModel::setup(){
     dir.listDir(ofToDataPath("models"));
     dir.sort();
     dir.allowExt("dae");
-    //
-//    for(int i = 0; i < dir.size(); i++){
-//        loader.loadModel(dir.getPath(i));
-//        meshs.push_back(loader.getMesh(0));
-//    }
     
+    // load robot mesh
+    loader.loadModel(ofToDataPath("models/ur5.dae"));
+    for(int i = 0; i < loader.getNumMeshes(); i++){
+        meshs.push_back(loader.getMesh(i));
+    }
+    
+
     
     jointsRaw.assign(6, 0.0);
     jointsRaw[1] = -PI/2.0;

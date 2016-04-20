@@ -62,9 +62,8 @@ void RobotController::updateMovement(){
         robotParams->jointVelocities[i] = (float)tempSpeeds[i];
     }
     // move the robot to the target TCP
-    robotParams->avgAccel = movement.getAcceleration();
     if(robotParams->bMove){
-        robot.setSpeed(tempSpeeds, robotParams->avgAccel);
+        robot.setSpeed(tempSpeeds, movement.getAcceleration());
     }
     
 }
@@ -119,7 +118,7 @@ void RobotController::moveArm(){
         //
         //        }else{
         //            // go from current to next position
-        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), robotParams->followLerp);
+        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), movement.followLerp);
         //            // go from current orientation to next orientation (???)
         robotParams->targetTCP.rotation = ofQuaternion(robotParams->targetTCPOrientation);
         //        }

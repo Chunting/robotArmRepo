@@ -13,16 +13,16 @@
 class RobotParametersBasic : public RobotParameters{
     public :
     void setup(){
+        
+        robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+        robotArmParams.add(tcpOrientation.set("Actual Robot TCP ORIENT", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
         robotArmParams.add(targetTCPPosition.set("Set TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
         robotArmParams.add(targetTCPOrientation.set("Set TCP ORIENT",ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
-        robotArmParams.add(tcpPosition.set("Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-        robotArmParams.add(tcpOrientation.set("Robot TCP ORIENT", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
         
-        robotArmParams.add(tcpOffset.set("tcpOffset", ofVec3f(0, 0, 0), ofVec3f(-0.2, -0.2, -0.2), ofVec3f(0.2, 0.2, 0.2)));
+//        robotArmParams.add(tcpOffset.set("tcpOffset", ofVec3f(0, 0, 0), ofVec3f(-0.2, -0.2, -0.2), ofVec3f(0.2, 0.2, 0.2)));
         
-        robotArmParams.add(avgAccel.set("avgAccel", 0, 0, 200));
-        robotArmParams.add(followLerp.set("followLerp", 1, 0, 1.0));
         
+
         
        
 //        robotArmParams.add(bTrace.set("bTrace GML", false));
@@ -35,6 +35,7 @@ class RobotParametersBasic : public RobotParameters{
         joints.setName("Joints");
         targetJoints.setName("Target Joints");
         jointSpeeds.setName("Joint Speeds");
+        
         
         for(int i = 0; i < 6; i++){
             jointPos.push_back(ofParameter<float>());

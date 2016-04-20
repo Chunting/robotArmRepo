@@ -20,9 +20,13 @@ void URMove::setup(){
     movementParams.add(maxSpeed.set(" MAX Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
     movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
-    movementParams.add(jointSpeedLerpSpeed.set("Join LerpSpeed", 0.9, 0.001, 1.0));
+    movementParams.add(jointSpeedLerpSpeed.set("Joint LerpSpeed", 0.9, 0.001, 1.0));
+    
+    movementParams.add(avgAcceleration.set("avgAcceleration", 0, 0, 200));
     movementParams.add(jointAccelerationMultipler.set("Acceleration M", 200, 1, 1000));
     movementParams.add(speedDivider.set("Speed Divider", 1, 1, 10));
+    movementParams.add(followLerp.set("followLerp", 1, 0, 1.0));
+    
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
@@ -65,6 +69,7 @@ vector<double> URMove::getTargetJointPos(){
     }
 }
 float URMove::getAcceleration(){
+    avgAcceleration = avgAccel*jointAccelerationMultipler;
     return avgAccel*jointAccelerationMultipler;
 }
 vector<double> URMove::getCurrentSpeed(){
