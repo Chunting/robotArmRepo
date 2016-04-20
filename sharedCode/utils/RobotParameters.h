@@ -10,16 +10,16 @@
 #include "ofMain.h"
 class RobotParameters{
     public :
-    void setup(){
-        if (getTCPPanel){
+    void setup(bool getTCP = true, bool setTCP = true, bool toolOffset = true, bool drawpath = true){
+        if (getTCP){
             robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
-            robotArmParams.add(tcpOrientation.set("Actual Robot TCP ORIENT", ofVec3f(0, 0, 0), ofVec3f(-TWO_PI, -TWO_PI, -TWO_PI), ofVec3f(TWO_PI, TWO_PI, TWO_PI)));
+            robotArmParams.add(tcpOrientation.set("Actual Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
         }
-        if (setTCPPanel){
+        if (setTCP){
             robotArmParams.add(targetTCPPosition.set("Set TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
             robotArmParams.add(targetTCPOrientation.set("Set TCP ORIENT",ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
         }
-        if (setToolOffset){
+        if (toolOffset){
             robotArmParams.add(tcpOffset.set("tcpOffset", ofVec3f(0, 0, 0), ofVec3f(-0.2, -0.2, -0.2), ofVec3f(0.2, 0.2, 0.2)));
         }
         
@@ -27,12 +27,12 @@ class RobotParameters{
         robotArmParams.add(avgAccel.set("avgAccel", 0, 0, 200));
         robotArmParams.add(followLerp.set("followLerp", 1, 0, 1.0));
        
-        if (getTCPPanel)
+        if (getTCP)
             robotArmParams.add(bCopy.set("get TCP", false));
-        if (setTCPPanel)
+        if (setTCP)
             robotArmParams.add(bFollow.set("set TCP", false));
         
-        if (drawPaths){
+        if (drawpath){
             robotArmParams.add(bTrace.set("bTrace GML", false));
             robotArmParams.add(b3DPath.set("3DPath", false));
             robotArmParams.add(bFigure8.set("bFigure8", false));
@@ -71,7 +71,7 @@ class RobotParameters{
     ofParameterGroup robotArmParams;
     ofParameter<ofVec3f> targetTCPPosition;
     ofParameter<ofVec4f> targetTCPOrientation;
-    ofParameter<ofVec3f> tcpOrientation;
+    ofParameter<ofVec4f> tcpOrientation;
     ofParameter<ofVec3f> tcpPosition;
     ofParameter<ofVec3f> tcpOffset;
     
