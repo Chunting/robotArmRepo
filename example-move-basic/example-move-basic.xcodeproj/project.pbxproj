@@ -122,6 +122,7 @@
 		0039A1191CC6A70500773E5A /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
 		0039A11A1CC6A70500773E5A /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
 		0039A11B1CC6A70500773E5A /* URUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
+		00AF3C391CC8040600A7D7BE /* RobotParametersBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotParametersBasic.h; sourceTree = "<group>"; };
 		00D04A1B1CC7F58A000D855B /* NatNetController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetController.cpp; sourceTree = "<group>"; };
 		00D04A1C1CC7F58A000D855B /* NatNetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetController.h; sourceTree = "<group>"; };
 		00D04A1D1CC7F58A000D855B /* PathController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathController.cpp; sourceTree = "<group>"; };
@@ -385,6 +386,7 @@
 				00D04A311CC7F58A000D855B /* RobotParameters.h */,
 				00D04A321CC7F58A000D855B /* RobotStateMachine.cpp */,
 				00D04A331CC7F58A000D855B /* RobotStateMachine.h */,
+				00AF3C391CC8040600A7D7BE /* RobotParametersBasic.h */,
 			);
 			path = utils;
 			sourceTree = "<group>";
