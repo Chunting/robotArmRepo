@@ -87,7 +87,7 @@ class RobotParameters{
     ofParameter<bool> b3DPath;
     
     vector<double> currentJointPos;
-    
+    Joint actualTCP;
     Joint targetTCP;
     
     
