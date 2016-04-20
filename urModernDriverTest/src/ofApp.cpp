@@ -47,7 +47,6 @@ void ofApp::setup(){
     path.setup();
 }
 
-
 void ofApp::setupGUI(){
     parameters.setup();
     
@@ -66,11 +65,11 @@ void ofApp::setupGUI(){
     panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelWorkSurface.setup(workSurface.twoDSurface.workSurfaceParams);
-    panelWorkSurface.add(workSurface.threeDSurface.workSurfaceParams);
+    panelWorkSurface.setup(workSurface.threeDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     panelWorkSurface.loadFromFile("workSurface.xml");
     
+
 }
 
 
@@ -130,7 +129,6 @@ void ofApp::draw(){
     if (!hideRobot){
         robot.movement.draw(robot.movement.selectedSolution);
     }
-    
     ofPushMatrix();
     ofScale(1000, 1000, 1000);
     path.draw();
@@ -327,9 +325,7 @@ void ofApp::hightlightViewports(){
         ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
     }
     
-    // show Viewport info
-    
-    
+    // show Viewport info 
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);

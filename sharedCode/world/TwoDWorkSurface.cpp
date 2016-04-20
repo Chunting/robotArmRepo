@@ -1,7 +1,7 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 #include "TwoDWorkSurface.h"
 void TwoDWorkSurface::setup(RobotParameters * parameters){
-    workSurfaceParams.setName("2D Work Surface");
+    workSurfaceParams.setName("Work Surface");
     workSurfaceParams.add(feedRate.set("feedRate", 0.001, 0.00001, 0.01));
     workSurfaceParams.add(position.set("WS Position", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
     workSurfaceParams.add(rotation.set("WS Euler", ofVec3f(0, 0, 0), ofVec3f(-360, -360, -360), ofVec3f(360, 360, 360)));
@@ -9,7 +9,6 @@ void TwoDWorkSurface::setup(RobotParameters * parameters){
     workSurfaceParams.add(rotateDrawing.set("rotateDrawing", 0, 0, 360));
     workSurfaceParams.add(drawingScale.set("drawingScale", 1, 0, 2));
     workSurfaceParams.add(drawingOffset.set("drawingOffset", ofVec3f(0, 0, 0), ofVec3f(-100, -100, -100), ofVec3f(100, 100, 100)));
-    
     for(int i = 0; i < 4; i++){
         targetPoints.push_back(ofParameter<ofPoint>());
         workSurfaceParams.add(targetPoints.back().set("TP-"+ofToString(i), ofPoint(1/(i+1), 1/(i+1), 1/(i+1)), ofPoint(-1, -1, -1), ofPoint(1, 1, 1)));
@@ -22,6 +21,7 @@ void TwoDWorkSurface::setup(RobotParameters * parameters){
     plane.setHeight(1);
     targetIndex = 0;
     timer.setSmoothing(true);
+
     
     this->parameters = parameters;
     
@@ -106,7 +106,6 @@ void TwoDWorkSurface::update(Joint toolPointPos){
     orientation.makeRotate(ofVec3f(0, 0, 1), normal);
     toolPoint.setPosition(toolPointPos.position);
     toolPoint.setOrientation(orientation);
-
     rotation = orientation.getEuler();
 
     
@@ -121,11 +120,10 @@ void TwoDWorkSurface::update(Joint toolPointPos){
     
 }
 
+
 void TwoDWorkSurface::calcNormals(bool flip){
     surfaceMesh.clearNormals();
-    for( int i=0; i < surfaceMesh.getVertices().size(); i++ ){
-       surfaceMesh.addNormal(ofPoint(0,0,0));
-    }
+    for( int i=0; i < surfaceMesh.getVertices().size(); i++ ) surfaceMesh.addNormal(ofPoint(0,0,0));
     
     for( int i=0; i < surfaceMesh.getIndices().size(); i+=3 ){
         const int ia = surfaceMesh.getIndices()[i];
@@ -147,7 +145,6 @@ void TwoDWorkSurface::calcNormals(bool flip){
         surfaceMesh.getNormals()[ib] += no;
         surfaceMesh.getNormals()[ic] += no;
     }
-    
     
     for(int i=0; i < surfaceMesh.getNormals().size(); i++ ) {
         surfaceMesh.getNormals()[i].normalize();
@@ -220,17 +217,14 @@ void TwoDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
 }
 
 Joint TwoDWorkSurface::getTargetPoint(float t){
-    
     if(lines.size() > 0){
         float length = lines[targetIndex].getLengthAtIndex(lines[targetIndex].getVertices().size()-1);
         float dist = feedRate*t;
         float indexInterpolated = lines[targetIndex].getIndexAtPercent(dist/length);
-        
         ofPoint p = lines[targetIndex].getPointAtIndexInterpolated(indexInterpolated);
         
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
-        
         if(indexInterpolated > lines[targetIndex].getVertices().size()-1){
             targetIndex++;
         }
@@ -278,3 +272,4 @@ void TwoDWorkSurface::draw(){
     }
     ofPopMatrix();
 }
+    

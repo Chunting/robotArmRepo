@@ -23,12 +23,16 @@
   - [X] Fix Orientation with ofMatrix4x4
   - [ ] Add in accel & speed controls
   - [ ] Add in path interpolation based on time
+<<<<<<< Updated upstream
   - [ ] Remove unncessary panels from GUI
+=======
+>>>>>>> Stashed changes
   - Follow Surface
   - [X] Integrate Robut with Geometry
   - [ ] Fix tool to be TCP on surface
   - [ ] Add in accel & speed controls
   - [ ] Add in path interpolation based on time
+<<<<<<< Updated upstream
   - [ ] Remove unncessary panels from GUI
   - Follow Mocap
   - [ ] Fix Orientation with ofMatrix4x4
@@ -36,4 +40,6 @@
   - [ ] Remove unncessary panels from GUI
   - Basic
   - [ ] Remove unncessary panels from GUI
+=======
+>>>>>>> Stashed changes
   

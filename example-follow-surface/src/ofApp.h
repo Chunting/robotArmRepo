@@ -18,6 +18,8 @@
 
 #define N_CAMERAS 2
 
+
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -39,11 +41,13 @@ class ofApp : public ofBaseApp{
 
     
         ofMesh srf;
+  
+<<<<<<< HEAD
     
+<<<<<<< HEAD
         RobotParameters parameters;
     
         void setupUserPanel();
-
         void setupDebugPanel();
         void setupCameras();
         void setupGeometry();
@@ -63,6 +67,11 @@ class ofApp : public ofBaseApp{
 
 
     
+=======
+>>>>>>> origin/master
+=======
+    
+>>>>>>> origin/master
         /// \brief example toolpath for projecting
         void buildToolpath(ofPolyline &path);
     
@@ -80,10 +89,16 @@ class ofApp : public ofBaseApp{
         vector<ofQuaternion> toolpathOrients;
 
     
+<<<<<<< HEAD
+<<<<<<< HEAD
         int pathIndex;
     
     
         /* 3D Navigation */
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
     
         void updateActiveCamera();
         ofxGameCamera cams[N_CAMERAS];

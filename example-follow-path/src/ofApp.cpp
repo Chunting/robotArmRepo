@@ -94,7 +94,18 @@ void ofApp::update(){
         // update the target TCP <-- from "bTrace" example
         ofMatrix4x4 orientation = path.getNextPose();
         targetTCP.position = orientation.getTranslation();
+<<<<<<< Updated upstream
 
+=======
+<<<<<<< HEAD
+        targetTCP.rotation *= orientation.getRotate().conj();
+=======
+        targetTCP.rotation *= orientation.getRotate();
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 
         // send the target TCP to the kinematic solver
         movement.addTargetPoint(targetTCP);

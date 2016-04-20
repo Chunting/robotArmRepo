@@ -76,7 +76,6 @@ void ThreeDPath::keyPressed(int key){
 }
 
 ofMatrix4x4 ThreeDPath::getNextPose(){
-
     if(ptf.framesSize()>0){
         ptIndex = (ptIndex +1) % ptf.framesSize();
         
@@ -89,12 +88,13 @@ ofMatrix4x4 ThreeDPath::getNextPose(){
         else
             orientation = flip(orientation);
         
-        return orientation;
+        return flip(orientation);
     }
 }
 
+
 void ThreeDPath::draw(){
-    
+
     // show the current orientation plane
     ofSetColor(ofColor::lightYellow);
     ofSetLineWidth(3);

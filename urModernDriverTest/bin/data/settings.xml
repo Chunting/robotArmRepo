@@ -8,6 +8,28 @@
 	<followLerp>1</followLerp>
 	<set_TCP>0</set_TCP>
 	<bTrace_GML>0</bTrace_GML>
+<2D_Work_Surface>
+	<feedRate>0.001</feedRate>
+	<WS_Position>0.25, 0.25, 0.25</WS_Position>
+	<WS_Euler>0, 0, 0</WS_Euler>
+	<retractDistance>4</retractDistance>
+	<rotateDrawing>0</rotateDrawing>
+	<drawingScale>0.15</drawingScale>
+	<drawingOffset>0, 0, 0</drawingOffset>
+	<TP-0>1, 1, 1</TP-0>
+	<TP-1>0, 0, 0</TP-1>
+	<TP-2>0, 0, 0</TP-2>
+	<TP-3>0, 0, 0</TP-3>
+	<3D_Work_Surface>
+		<3d_feedRate>0.001</3d_feedRate>
+		<3d_WS_Position>0.2, 0.2, 0</3d_WS_Position>
+		<3d_WS_Euler>0, 0, 0</3d_WS_Euler>
+		<3d_retractDistance>4</3d_retractDistance>
+		<3d_rotateDrawing>0</3d_rotateDrawing>
+		<3d_drawingScale>0.255102</3d_drawingScale>
+		<3d_drawingOffset>0, 0, 0</3d_drawingOffset>
+	</3D_Work_Surface>
+</2D_Work_Surface>
 	<get_TCP>0</get_TCP>
 	<3DPath>0</3DPath>
 	<Move>0</Move>

@@ -1,10 +1,9 @@
 ofxAssimpModelLoader
+ofxGML
+ofxGameCamera
 ofxGui
 ofxNatNet
 ofxOpenCv
 ofxOsc
 ofxTiming
 ofxXmlSettings
-ofxGameCamera
-ofxGML
-

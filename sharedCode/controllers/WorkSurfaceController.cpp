@@ -61,7 +61,7 @@ void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers
 }
 
 void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
-    
+
 //    // find the difference between the current transformation matrix
 //    ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
 //    
@@ -113,4 +113,5 @@ void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
 //    }
 //    
 //    prev = rb;
+
 }

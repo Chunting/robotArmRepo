@@ -155,7 +155,6 @@ void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2
                     q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
                     
                     toolpathOrients.push_back(q);
-                    toolpathOrientation.addVertex(face.getFaceNormal().getNormalized());
                 }
                 
             }

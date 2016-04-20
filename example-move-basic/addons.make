@@ -1,0 +1,7 @@
+ofxAssimpModelLoader
+ofxGML
+ofxGui
+ofxNatNet
+ofxPtf
+ofxTiming
+ofxXmlSettings

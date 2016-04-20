@@ -17,8 +17,15 @@ NatNetController::~NatNetController(){
 ///This needs to read from a file;
 void NatNetController::setup(string myIP, string serverIP){
     natnet.setup(myIP, serverIP);  // interface name, server ip
-    natnet.setScale(1000);
-    natnet.setDuplicatedPointRemovalDistance(20);
+    natnet.setScale(1);
+    natnet.setDuplicatedPointRemovalDistance(.020);
+}
+
+///This needs to read from a file;
+void NatNetController::setup(string myIP, string serverIP, int scale){
+    natnet.setup(myIP, serverIP);  // interface name, server ip
+    natnet.setScale(scale);
+    natnet.setDuplicatedPointRemovalDistance(.020);
 }
 void NatNetController::update(){
     natnet.update();
