@@ -78,7 +78,7 @@ void RobotController::updateData(){
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
-    robotParams->tcpPosition = robot.getToolPoint();
+    robotParams->targetTCP = robot.getToolPose();
     
      if(robotParams->bRecord){
          recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
@@ -100,9 +100,8 @@ void RobotController::moveArm(){
         robotParams->bCopy = false;
         
         // get the robot's position
-        robotParams->targetTCP.position = robot.getToolPoint();
-        // get the robot's orientation
-        // targetTCP.rotation = .... <-- why is this working without grabbing the current orientation?
+        robotParams->targetTCP = robot.getToolPose();
+
         
         // update GUI params
         robotParams->targetTCPPosition = robotParams->targetTCP.position;

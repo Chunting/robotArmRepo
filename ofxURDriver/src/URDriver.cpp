@@ -92,14 +92,13 @@ float ofxURDriver::getThreadFPS(){
     }
     return fps;
 }
-ofVec3f ofxURDriver::getToolPoint(){
+
+Joint ofxURDriver::getToolPose(){
     lock();
-    ofVec3f foo = model.tool.position;
+    Joint foo = model.tool;
     unlock();
     return foo;
 }
-
-
 
 void ofxURDriver::moveJoints(vector<double> pos){
     posBuffer.push_back(pos);

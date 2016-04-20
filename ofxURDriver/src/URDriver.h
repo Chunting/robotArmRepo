@@ -29,7 +29,7 @@ public:
     bool bStarted;
     void moveJoints(vector<double> pos);
     void setSpeed(vector<double> speeds, double acceleration = 100.0);
-    ofVec3f getToolPoint();
+    Joint getToolPose();
     // Robot Arm
     UrDriver* robot;
     std::condition_variable rt_msg_cond_;
