@@ -3,7 +3,8 @@
 //--------------------------------------------------------------
 //
 //
-// Robot following targets on a surface EXAMPLE
+// Robot following a Rigid Body from an
+// Optitrack Motion Capture system.
 //
 //
 //--------------------------------------------------------------
@@ -11,43 +12,30 @@
 //
 // This example shows you how to:
 //
-// 1. Load a mesh surface.
-// 2. Make paths on the surface for the robot to follow.
-// 3. Use the surface normals as the orientation plane for the robot.
+// 1. Use real-time motion capture data to move & reorient a robot
+// 2. Use real-time motion capture data to move & reorient geometry for robot
 
 
 #include "ofApp.h"
-#include "ofxAssimpModelLoader.h"
-#include "URUtils.h"
+#include "ofxNatNet.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);
-
+    
+    // setup GUI
     setupUserPanel();
     setupDebugPanel();
     setupCameras();
-    setupGeometry();
+
     
-<<<<<<< HEAD
-<<<<<<< HEAD
     // setup robot
     robot.setup(parameters);
     panel.add(robot.movement.movementParams);
-=======
-=======
->>>>>>> origin/master
-    // scale surface to meters
-    for (auto &v : srf.getVertices()){
-        v /= 100;
-    }
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
     
     speeds.assign(6, 0);
     parameters.bMove = false;
@@ -55,30 +43,38 @@ void ofApp::setup(){
     
     panel.loadFromFile("settings.xml");
     
+    
+    // setup mocap
+    string localIP  = "127.0.0.1";
+    string serverIP = "127.0.0.1";
+    mocap.setup(localIP,serverIP,1);
+    
+    
     ofEnableAlphaBlending();
+  
 }
-
-
-
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    Joint pose;
-    pose.position = parameters.tcpPosition;
-    pose.rotation = ofQuaternion(parameters.targetTCPOrientation);
-    // update the robot to draw on the surface
-    if(parameters.bTrace){
-    
-        pose.position = toolpath.getVertices()[pathIndex];
-        pose.rotation = toolpathOrients[pathIndex];
+
+    mocap.update();
+
+
+    // Update the robot with the current rigid body.
+    //
+    // Assumes any offsets from the actual rigid body in world space
+    // are configured before streaming
+    if(mocap.natnet.getNumRigidBody() > 0 ){
+        const ofxNatNet::RigidBody &rb = mocap.getCurrentRigidBody();
         
-        // update the path index
-        pathIndex = (pathIndex+1)%toolpath.getVertices().size();
+        Joint pose;
+        pose.position = rb.getMatrix().getTranslation();
+        pose.rotation = rb.getMatrix().getRotate(); // this will have the same error as example-follow-path
+        robot.updatePath(pose);
     }
     
-    robot.update(pose);
-   
+    robot.update();
+    
     updateActiveCamera();
 
 }
@@ -86,45 +82,56 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(0);
-
+    
+    
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     
-    
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    drawGeometry();
+    
+    ofPushMatrix();
+    ofScale(1000);
+    mocap.draw();
+    ofPopMatrix();
+    
     robot.robot.model.draw();
     cams[0].end();
     
     
     // show simulated robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-        drawGeometry();
-    robot.movement.draw(0);
+    
+    ofPushMatrix();
+    ofScale(1000);
+    mocap.draw();
+    ofPopMatrix();
+    
+    robot.movement.draw();
     cams[1].end();
     
     
     drawGUI();
     hightlightViewports();
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::setupUserPanel(){
-
+    
     parameters.setup();
     
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
     
     // remove unneccesary variables from panel
-//    panel.getToggle("bTrace").???
+    //    panel.getToggle("bTrace").???
 }
 
 //--------------------------------------------------------------
 void ofApp::setupDebugPanel(){
-
+    
     panelJoints.setup(parameters.joints);
     panelTargetJoints.setup(parameters.targetJoints);
     panelJointsSpeed.setup(parameters.jointSpeeds);
@@ -136,6 +143,7 @@ void ofApp::setupDebugPanel(){
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
 }
 
+//--------------------------------------------------------------
 void ofApp::setupCameras(){
     
     for(int i = 0; i < N_CAMERAS; i++){
@@ -149,104 +157,6 @@ void ofApp::setupCameras(){
     }
 }
 
-//--------------------------------------------------------------
-void ofApp::setupGeometry(){
-    ofxAssimpModelLoader loader;
-    loader.loadModel(ofToDataPath("mesh_srf.stl"));
-    srf = loader.getMesh(0);
-    
-    // scale surface to meters
-    for (auto &v : srf.getVertices()){
-        v /= 100;
-    }
-    
-    buildToolpath(toolpath2D);
-    
-    // move toolpath surface to be in a more reachable position (temp fix)
-    ofVec3f offset = ofVec3f(0,.5,.25);
-    for (auto &v : srf.getVertices()){
-        v += offset;
-    }
-    for (auto &v : toolpath2D.getVertices()){
-        v += offset;
-    }
-    
-    projectToolpath(srf,toolpath2D,toolpath);
-    
-    
-}
-
-//--------------------------------------------------------------
-void ofApp::drawGeometry(){
-    ofPushMatrix();
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ofPopStyle();
-    
-    ofScale(1000);      // draw in mm
-    ofDrawAxis(.05);
-<<<<<<< Updated upstream
-
-=======
-    
-=======
-    ofScale(1000);      // draw in mm
-    ofDrawAxis(.05);
-    
->>>>>>> origin/master
-=======
-    ofScale(1000);      // draw in mm
-    ofDrawAxis(.05);
-    
->>>>>>> origin/master
->>>>>>> Stashed changes
-    // show the surface
-    ofSetColor(100);
-    srf.draw();
-    ofSetColor(250,100);
-    srf.drawWireframe();
-    
-    // show surface normals
-    ofSetColor(ofColor::aqua,100);
-    for (auto &face : srf.getUniqueFaces()){
-        ofVec3f n = face.getFaceNormal();
-        n /= -100; // scale to meters & flip
-        ofVec3f pos = (face.getVertex(0) + face.getVertex(1) + face.getVertex(2)) / 3;
-        ofDrawLine(pos, pos+n);
-    }
-    
-    // draw 2D & 3D toolpaths
-    ofSetColor(200, 0, 0);
-    toolpath2D.draw();
-    ofSetColor(ofColor::chartreuse);
-    ofSetLineWidth(3);
-    toolpath.draw();
-    
-    // show toolpath normals
-    ofSetColor(ofColor::blue);
-    for (int i=0; i<toolpathOrients.size(); i++){
-        
-        ofQuaternion q = toolpathOrients[i];
-        ofMatrix4x4 m44 = ofMatrix4x4(q);
-        m44.setTranslation(toolpath[i]);
-        ofPushMatrix();
-        glMultMatrixf(m44.getPtr());
-        ofDrawAxis(.01);
-        ofPopMatrix();
-        
-    }
-    ofSetLineWidth(1);
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-    ofPushStyle();
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-    ofPopMatrix();
-
-}
 
 //--------------------------------------------------------------
 void ofApp::drawGUI(){
@@ -256,7 +166,6 @@ void ofApp::drawGUI(){
     panelJointsSpeed.draw();
     panelTargetJoints.draw();
 }
-
 
 //--------------------------------------------------------------
 void ofApp::updateActiveCamera(){
@@ -270,97 +179,19 @@ void ofApp::updateActiveCamera(){
         activeCam = 1;
     }
 }
+
 //--------------------------------------------------------------
-void ofApp::buildToolpath(ofPolyline &path){
+void ofApp::keyPressed(int key){
+    float offset = .005;
     
-    path.clear();
-    
-
-    // make an XY circle as a toolpath ...    
-
-    float res = 200;
-    float radius = .05;
-    float theta = 360/res;
-    
-    for (int i=0; i<res; i++){
-        ofPoint p = ofPoint(radius,0,0);
-        p.rotate(theta*i, ofVec3f(0,1,1));
-        p.x += .0;
-        path.addVertex(p);
+    if(key == '5'){
+        cams[activeCam].usemouse = true;
     }
-    path.close();
+    
+    handleViewportPresets(key);
     
 }
 
-
-//--------------------------------------------------------------
-void ofApp::projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path){
-    
-    path.clear();
-    toolpath.clear();
-    toolpathOrients.clear();
-    
-    for (auto &v : path2D.getVertices()){
-        
-        // find the closest face to the 2D path point
-        for (int i=0; i<mesh.getUniqueFaces().size(); i++){
-            
-            // re-make the face as a 2D polyline so we can check
-            // if the toolpath point is inside ... hacky, but it works!
-            ofPolyline f;
-            f.addVertex(mesh.getFace(i).getVertex(0));
-            f.addVertex(mesh.getFace(i).getVertex(1));
-            f.addVertex(mesh.getFace(i).getVertex(2));
-            f.close();
-            f.getVertices()[0].z = 0;
-            f.getVertices()[1].z = 0;
-            f.getVertices()[2].z = 0;
-            
-            // project the 2D point onto the mesh face
-            if (f.inside(v)){
-                auto face = mesh.getFace(i);
-                
-                // find the distance between our toolpath point and the mesh face
-                ofVec3f facePos = (mesh.getFace(i).getVertex(0)+mesh.getFace(i).getVertex(1)+mesh.getFace(i).getVertex(2))/3;
-                ofVec3f face2toolPt = v - facePos;
-                float projectedDist = face2toolPt.dot(face.getFaceNormal().getNormalized());
-               
-                // use the distance as the length of a vertical projection vector
-                ofVec3f length = ofVec3f(0,0,-projectedDist);
-                ofVec3f projectedPt = v-length;
-                
-                // save the projected point and face normal
-                toolpath.addVertex(projectedPt);
-                ofQuaternion q;
-<<<<<<< Updated upstream
-
-                q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-                q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
-=======
-                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
->>>>>>> origin/master
-=======
-                q.makeRotate(ofVec3f(0,0,-1), face.getFaceNormal().getNormalized());
->>>>>>> origin/master
->>>>>>> Stashed changes
-                toolpathOrients.push_back(q);
-            }
-            
-        }
-    }
-    
-    toolpath.close();
-<<<<<<< Updated upstream
-
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> Stashed changes
-}
 //--------------------------------------------------------------
 void ofApp::handleViewportPresets(int key){
     
@@ -402,7 +233,7 @@ void ofApp::handleViewportPresets(int key){
     if(key == '5'){
         cams[activeCam].usemouse = true;
     }
-
+    
 }
 
 //--------------------------------------------------------------
@@ -448,54 +279,9 @@ void ofApp::hightlightViewports(){
     ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
     
     ofPopStyle();
-<<<<<<< Updated upstream
-
-=======
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
-}
-
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-    float offset = .005;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if(key == '5'){
-        cams[activeCam].usemouse = true;
-    }
-    
-    handleViewportPresets(key);
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-    
-     if (key == OF_KEY_RIGHT){
-        for (auto &p : toolpath2D)
-            p.x += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_LEFT){
-        for (auto &p : toolpath2D)
-            p.x -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_UP){
-        for (auto &p : toolpath2D)
-            p.y += offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
-    else if (key == OF_KEY_DOWN){
-        for (auto &p : toolpath2D)
-            p.y -= offset;
-        projectToolpath(srf,toolpath2D,toolpath);
-    }
     
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){

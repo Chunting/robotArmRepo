@@ -425,9 +425,7 @@ void ofApp::hightlightViewports(){
         ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
     }
     
-    // show Viewport info
-    
-    
+    // show Viewport info 
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
