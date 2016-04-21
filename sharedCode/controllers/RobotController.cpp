@@ -115,10 +115,13 @@ void RobotController::moveArm(){
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
         
     }else if(robotParams->bTrace || robotParams->b3DPath){
-        
+        // set target TCP to a default orientation, then modify
+        robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        robotParams->targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
         
         robotParams->targetTCP.position = workSurfaceTargetTCP.position;
-        robotParams->targetTCP.rotation = workSurfaceTargetTCP.rotation;
+        robotParams->targetTCP.rotation *= workSurfaceTargetTCP.rotation;
         
         // update GUI params
         robotParams->targetTCPPosition = robotParams->targetTCP.position;

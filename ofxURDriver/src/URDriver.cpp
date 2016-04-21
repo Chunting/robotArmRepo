@@ -74,25 +74,24 @@ vector<double> ofxURDriver::getToolPointRaw(){
 
 vector<double> ofxURDriver::getJointPositions(){
     vector<double> ret;
-//    lock();
-      ret = model.jointsRaw;
-//    unlock();
+    lock();
+    ret = model.jointsRaw;
+    unlock();
     return ret;
 }
 vector<double> ofxURDriver::getJointAngles(){
     vector<double> ret;
-//    lock();
-      ret = model.jointsRaw;
-//    unlock();
+    lock();
+    ret = model.jointsRaw;
+    unlock();
     return ret;
 }
 
 float ofxURDriver::getThreadFPS(){
     float fps = 0;
-    if(lock()){
-        fps = timer.getFrameRate();
-        unlock();
-    }
+    lock();
+    fps = timer.getFrameRate();
+    unlock();
     return fps;
 }
 
@@ -105,7 +104,9 @@ Joint ofxURDriver::getToolPose(){
 }
 
 void ofxURDriver::moveJoints(vector<double> pos){
+    lock();
     posBuffer.push_back(pos);
+    unlock();
 }
 
 void ofxURDriver::setSpeed(vector<double> speeds, double accel){
@@ -147,7 +148,7 @@ void ofxURDriver::threadedFunction(){
                 model.dtoolPoint.rotation*=model.joints[i].rotation;
             }
             
-    
+            
             //this is returning weird shit that doesn't return the same values.
             
             model.toolPointRaw = robot->rt_interface_->robot_state_->getToolVectorActual();
@@ -158,10 +159,6 @@ void ofxURDriver::threadedFunction(){
                 model.tool.rotation = ofQuaternion(angle, ofVec3f(model.toolPointRaw[3]/angle, model.toolPointRaw[4]/angle, model.toolPointRaw[5]/angle));
             }
             model.tool.position = ofVec3f(model.toolPointRaw[0], model.toolPointRaw[1], model.toolPointRaw[2]);
-            
-            cout<<ofToString(model.toolPointRaw)<<endl;
-            
-            // add tool offset here?
             
             robot->rt_interface_->robot_state_->setControllerUpdated();
             

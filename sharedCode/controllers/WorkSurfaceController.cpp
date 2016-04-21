@@ -27,7 +27,7 @@ void WorkSurfaceController::update(){
     }
 }
 void WorkSurfaceController::draw(){
-    twoDSurface.draw();
+//    twoDSurface.draw();
     threeDSurface.draw();
 }
 

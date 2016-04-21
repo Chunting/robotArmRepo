@@ -30,7 +30,7 @@ void ofApp::setup(){
     // get the current pose on start up
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
-    
+    panelWorkSurface.loadFromFile("settings.xml");
     
     gml.setup();
     gml.loadFile("gml/53514.gml");
@@ -57,7 +57,7 @@ void ofApp::setupGUI(){
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelWorkSurface.setup(workSurface.threeDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
-    panelWorkSurface.loadFromFile("workSurface.xml");
+
     
 
 }

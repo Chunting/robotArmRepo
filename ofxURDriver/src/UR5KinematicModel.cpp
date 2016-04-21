@@ -35,11 +35,11 @@ void UR5KinematicModel::setup(){
     joints.resize(6);
     
     joints[0].position.set(0, 0, 0);
-    joints[1].position.set(0, -72.238, 83.204);
-    joints[2].position.set(0,-77.537,511.41);
-    joints[3].position.set(0, -70.608, 903.192);
-    joints[4].position.set(0, -117.242, 950.973);
-    joints[5].position.set(0, -164.751, 996.802);
+    joints[1].position.set(0, -0.072238, 0.083204);
+    joints[2].position.set(0,-0.077537,0.51141);
+    joints[3].position.set(0, -0.070608, 0.903192);
+    joints[4].position.set(0, -0.117242, 0.950973);
+    joints[5].position.set(0, -0.164751, 0.996802);
     tool.position.set(joints[5].position + ofVec3f(0,-0.135,0)); // tool tip position
     
     for(int i = 1; i < joints.size(); i++){
@@ -72,7 +72,7 @@ void UR5KinematicModel::setup(){
     bDrawModel = true;
 }
 
-ofQuaternion UR5KinematicModel::getToolPointMatrix(){
+ofQuaternion UR5KinematicModel::getToolPointQuaternion(){
 
     return joints[0].rotation*joints[1].rotation*joints[2].rotation*joints[3].rotation*joints[4].rotation;
 }
@@ -109,7 +109,7 @@ void UR5KinematicModel::draw(){
                 ofVec3f axis;
                 q = joints[i].rotation;
                 q.getRotate(x, axis);
-                ofTranslate(joints[i].offset);
+                ofTranslate(joints[i].offset*1000);
                 ofDrawAxis(10);
                 if(i >= 3){
                     ofPushMatrix();

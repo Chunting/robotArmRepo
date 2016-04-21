@@ -65,8 +65,7 @@ Joint ThreeDWorkSurface::getTargetPose(float t){
         float indexInterpolated = toolpath.getIndexAtPercent(dist/length);
         
         ofPoint p = toolpath.getPointAtIndexInterpolated(indexInterpolated);
-        orientation.slerp(0.5, orientation, toolpathOrients[(int)indexInterpolated]);
-        orientation.slerp(0.5, orientation, toolpathOrients[(int)(indexInterpolated-1)%toolpathOrients.size()]);
+        orientation =  toolpathOrients[(int)indexInterpolated];
 
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
@@ -226,7 +225,12 @@ void ThreeDWorkSurface::addPoint(ofVec3f pt){
     
 }
 void ThreeDWorkSurface::addStroke(ofPolyline stroke){
-    
+    ofPolyline fooLine;
+    for(int j = 0; j < stroke.getVertices().size(); j++){
+        fooLine.addVertex(stroke.getVertices()[j]*drawingScale+position);
+    }
+    lines.push_back(fooLine);
+    projectToolpath(surfaceMesh, lines, lines2D);
 }
 void ThreeDWorkSurface::setCorners(vector<ofPoint> pts){
     
@@ -235,34 +239,6 @@ void ThreeDWorkSurface::setCorner(CORNER i, ofPoint pt){
     
 }
 void ThreeDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist){
-//    if (strokes_original.size() == 0){
-//        
-//        // add a approach/retract point to the start and end of the path
-//        for (auto &stroke : strokes){
-//            auto first = ofVec3f(stroke.getVertices()[0]);
-//            auto last = ofVec3f(stroke.getVertices()[stroke.getVertices().size()-1]);
-//            
-//            first.z += retractDist;
-//            last.z  += retractDist;
-//            
-//            
-//            stroke.insertVertex(first, 0);
-//            stroke.addVertex(last);
-//            stroke.addVertex(first);
-//            
-//        }
-//        
-//        
-//        ofPolyline pl;
-//        for (auto &stroke : strokes){
-//            for (auto &v : stroke.getVertices()){
-//                pl.addVertex(v);
-//            }
-//        }
-//        strokes_original.push_back(pl);
-//    }
-    
-   
     lines.clear();
     lines2D.clear();
     for(int i = 0; i < strokes.size(); i++){
@@ -273,6 +249,4 @@ void ThreeDWorkSurface::addStrokes(vector<ofPolyline> strokes, float retractDist
         lines.push_back(fooLine);
     }
     projectToolpath(surfaceMesh, lines, lines2D);
-    
-
 }
