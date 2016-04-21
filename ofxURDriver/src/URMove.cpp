@@ -59,7 +59,6 @@ void URMove::update(){
     mat.setRotate(targetPoint.rotation);
     selectedSolution = selectSolution();
     urKinematics(mat);
-    inversePosition.swapFront();
     computeVelocities();
     
 }
@@ -142,6 +141,7 @@ void URMove::draw(int i){
 }
 
 int URMove::selectSolution(){
+    inversePosition.swapFront();
     vector<int> nearestSolution;
     vector<int> count;
     if(currentPose.size() > 0 && inversePosition.getFront().size() > 0){

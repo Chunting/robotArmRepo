@@ -154,7 +154,8 @@ void ofxURDriver::threadedFunction(){
             }
         }else{
             bDataReady = false;
-            std::unique_lock<std::mutex> locker(this->mutex);
+            std::mutex msg_lock;
+            std::unique_lock<std::mutex> locker(msg_lock);
             while (!robot->rt_interface_->robot_state_->getControllerUpdated()) {
                 rt_msg_cond_.wait(locker);
             }
@@ -175,7 +176,7 @@ void ofxURDriver::threadedFunction(){
             
             
             //this is returning weird shit that doesn't return the same values.
-            model.toolPointRaw.swapBack();
+          
             model.toolPointRaw.getBack() = robot->rt_interface_->robot_state_->getToolVectorActual();
             
             ofVec3f fooRot = ofVec3f(model.toolPointRaw.getBack()[3]/PI*180,model.toolPointRaw.getBack()[4]/PI*180,model.toolPointRaw.getBack()[5]/PI*180);
@@ -196,6 +197,7 @@ void ofxURDriver::threadedFunction(){
                 bMove = false;
             }
             
+            model.toolPointRaw.swapBack();
             model.jointsRaw.swapBack();
             model.jointsProcessed.swapBack();
         }
