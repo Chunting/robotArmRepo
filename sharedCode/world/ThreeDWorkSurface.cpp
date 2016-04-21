@@ -65,7 +65,7 @@ Joint ThreeDWorkSurface::getTargetPose(float t){
         float indexInterpolated = toolpath.getIndexAtPercent(dist/length);
         
         ofPoint p = toolpath.getPointAtIndexInterpolated(indexInterpolated);
-        orientation =  toolpathOrients[(int)indexInterpolated];
+        orientation.slerp(0.1, orientation, toolpathOrients[(int)indexInterpolated]);
 
         targetToolPoint.position = p;
         targetToolPoint.rotation = orientation;
