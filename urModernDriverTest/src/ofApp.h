@@ -35,7 +35,7 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-
+    void moveArm();
     void setupGUI();    
     /// \brief 3D mesh with paths for robot to follow
 
@@ -54,7 +54,9 @@ public:
 
    
     WorkSurfaceController workSurface;
-
+    
+    Joint workSurfaceTargetTCP;
+    
     float acceleration;
     vector<double> speeds;
 
