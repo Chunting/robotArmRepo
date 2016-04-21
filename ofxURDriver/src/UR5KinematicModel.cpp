@@ -26,54 +26,70 @@ void UR5KinematicModel::setup(){
         meshs.push_back(loader.getMesh(i));
     }
     
-
     
-    jointsRaw.assign(6, 0.0);
-    jointsRaw[1] = -PI/2.0;
-    jointsRaw[3] = -PI/2.0;
+    
+    
+    
+//    joints.setup(vector<Joint>());
+    vector<double> foo;
+    foo.assign(6, 0.0);
+    jointsRaw.setup(foo);
+    toolPointRaw.setup(foo);
+    jointsProcessed.setup(foo);
     
     joints.resize(6);
+    jointsRaw.getBack().assign(6, 0.0);
+    jointsProcessed.getBack().assign(6, 0.0);
+    toolPointRaw.getBack().assign(6, 0.0);
     
-    joints[0].position.set(0, 0, 0);
-    joints[1].position.set(0, -0.072238, 0.083204);
-    joints[2].position.set(0,-0.077537,0.51141);
-    joints[3].position.set(0, -0.070608, 0.903192);
-    joints[4].position.set(0, -0.117242, 0.950973);
-    joints[5].position.set(0, -0.164751, 0.996802);
+    vector<Joint> foojoints;
+    foojoints.resize(6);
+    
+   joints[0].position.set(0, 0, 0);
+   joints[1].position.set(0, -0.072238, 0.083204);
+   joints[2].position.set(0,-0.077537,0.51141);
+   joints[3].position.set(0, -0.070608, 0.903192);
+   joints[4].position.set(0, -0.117242, 0.950973);
+   joints[5].position.set(0, -0.164751, 0.996802);
     tool.position.set(joints[5].position + ofVec3f(0,-0.135,0)); // tool tip position
     
-    for(int i = 1; i < joints.size(); i++){
-        joints[i].offset = joints[i].position-joints[i-1].position;
+    for(int i = 1; i <joints.size(); i++){
+       joints[i].offset =joints[i].position-joints[i-1].position;
     }
-    tool.offset = joints[5].offset;
+    tool.offset =joints[5].offset;
     
     
     
-    joints[0].axis.set(0, 0, 1);
-    joints[1].axis.set(0, -1, 0);
-    joints[2].axis.set(0, -1, 0);
-    joints[3].axis.set(0, -1, 0);
-    joints[4].axis.set(0, 0, 1);
-    joints[5].axis.set(0, 1, 0);
+   joints[0].axis.set(0, 0, 1);
+   joints[1].axis.set(0, -1, 0);
+   joints[2].axis.set(0, -1, 0);
+   joints[3].axis.set(0, -1, 0);
+   joints[4].axis.set(0, 0, 1);
+   joints[5].axis.set(0, 1, 0);
     tool.axis.set(joints[5].axis);
     
-    joints[0].rotation.makeRotate(0, joints[0].axis);
-    joints[1].rotation.makeRotate(-90, joints[1].axis);
-    joints[2].rotation.makeRotate(0, joints[2].axis);
-    joints[3].rotation.makeRotate(-90, joints[3].axis);
-    joints[4].rotation.makeRotate(0, joints[4].axis);
-    joints[5].rotation.makeRotate(0, joints[5].axis);
-    tool.rotation = joints[5].rotation;
+   joints[0].rotation.makeRotate(0,joints[0].axis);
+   joints[1].rotation.makeRotate(-90,joints[1].axis);
+   joints[2].rotation.makeRotate(0,joints[2].axis);
+   joints[3].rotation.makeRotate(-90,joints[3].axis);
+   joints[4].rotation.makeRotate(0,joints[4].axis);
+   joints[5].rotation.makeRotate(0,joints[5].axis);
+    tool.rotation =joints[5].rotation;
     
     shader.load("shaders/model");
     
     bDrawModel.set("Draw Model", true);
     bDrawTargetModel.set("Draw Target Model", false);
     bDrawModel = true;
+    
+    jointsProcessed.swapBack();
+    jointsRaw.swapBack();
+    toolPointRaw.swapBack();
+    
 }
 
 ofQuaternion UR5KinematicModel::getToolPointQuaternion(){
-
+    
     return joints[0].rotation*joints[1].rotation*joints[2].rotation*joints[3].rotation*joints[4].rotation;
 }
 
@@ -84,10 +100,11 @@ void UR5KinematicModel::update(){
     
 }
 void UR5KinematicModel::draw(){
-    ofDrawAxis(100);
+
+    ofDrawAxis(1000);
     ofEnableDepthTest();
     ofSetColor(255, 255, 0);
-    ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 10);
+    ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 4);
     ofSetColor(255, 0, 255);
     ofDisableDepthTest();
     
@@ -120,7 +137,6 @@ void UR5KinematicModel::draw(){
                     ofPopMatrix();
                 }
                 ofRotate(x, axis.x, axis.y, axis.z);
-                ofDrawAxis(100);
                 if(i < 3){
                     ofPushMatrix();
                     ofRotateZ(-180);
@@ -133,7 +149,7 @@ void UR5KinematicModel::draw(){
             toolMesh.draw();
         }
         ofPopMatrix();
-            
+        
         shader.end();
         ofDisableDepthTest();
         
@@ -145,14 +161,13 @@ void UR5KinematicModel::draw(){
                 ofVec3f axis;
                 q = joints[i].rotation;
                 q.getRotate(x, axis);
-                ofTranslate(joints[i].offset);
-                ofDrawAxis(10);
+                ofTranslate(joints[i].offset*1000);
                 ofRotate(x, axis.x, axis.y, axis.z);
                 ofDrawAxis(100);
-
+                
             }
         }
         ofPopMatrix();
-
+        
     }
 }

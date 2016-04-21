@@ -72,7 +72,6 @@ void ofApp::update(){
     
     workSurfaceTargetTCP = workSurface.getNextPose();
     moveArm();
-    robot.updatePose(parameters.targetTCP);
     robot.update();
     
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
@@ -86,14 +85,13 @@ void ofApp::update(){
 }
 
 void ofApp::moveArm(){
-    
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
         parameters.bCopy = false;
         
         // get the robot's position
         parameters.targetTCP = parameters.actualTCP;
-        
+//        parameters.targetTCP.rotation = parameters.actualTCP.position
         
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
@@ -105,18 +103,17 @@ void ofApp::moveArm(){
         
         
         parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
-        parameters.targetTCP.rotation = ofQuaternion(parameters.targetTCPOrientation);
-        //        }
+        parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
+
         
         // update GUI params
-        parameters.bTrace = false;
         parameters.targetTCPPosition = parameters.targetTCP.position;
         
-    }else if(parameters.bTrace || parameters.b3DPath){
+    }
+    if(parameters.bTrace || parameters.b3DPath){
         // set target TCP to a default orientation, then modify
         parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        parameters.targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
         
         parameters.targetTCP.position = workSurfaceTargetTCP.position;
         parameters.targetTCP.rotation *= workSurfaceTargetTCP.rotation;
@@ -125,7 +122,8 @@ void ofApp::moveArm(){
         parameters.targetTCPPosition = parameters.targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
-    }else if(parameters.bFigure8){
+    }
+    if(parameters.bFigure8){
         
         // use a preset orientation
         parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
@@ -170,8 +168,6 @@ void ofApp::draw(){
         robot.movement.draw(robot.movement.selectedSolution);
     }
     cams[1].end();
-    
-    
     
     
     ofPushMatrix();

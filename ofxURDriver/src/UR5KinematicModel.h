@@ -9,7 +9,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
-
+#include "Synchronized.h"
 struct Joint{
     ofVec3f offset;
     ofVec3f axis;
@@ -35,14 +35,15 @@ public:
     float elapsed_time, last_time;
     ofVec3f pt;
     vector<Joint> joints;
-    vector<double> jointsProcessed;
-    vector<double> jointsRaw;
-    vector<double> toolPointRaw;
+    Synchronized<vector<double> > jointsProcessed;
+    Synchronized<vector<double> > jointsRaw;
+    Synchronized<vector<double> > toolPointRaw;
     Joint tool;
-
+    
     Joint dtoolPoint;
     
     ofEasyCam cam;
+ 
     
     ofParameter<float> stage;
     ofParameter<bool> bDrawModel;

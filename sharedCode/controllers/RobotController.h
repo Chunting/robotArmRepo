@@ -22,7 +22,6 @@ public:
     void update();
     void moveArm();
     void draw();
-    void updatePose(Joint targetPt);
     void toggleRecord();
     
     vector<double> getJointPosition();

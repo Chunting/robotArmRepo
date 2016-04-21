@@ -68,8 +68,6 @@
 		C876CB1E1CC8004400B69A25 /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB0A1CC8004400B69A25 /* UR5KinematicModel.cpp */; };
 		C876CB1F1CC8004400B69A25 /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB0C1CC8004400B69A25 /* URDriver.cpp */; };
 		C876CB201CC8004400B69A25 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB0E1CC8004400B69A25 /* URMove.cpp */; };
-		C876CB211CC8004400B69A25 /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB101CC8004400B69A25 /* URRead.cpp */; };
-		C876CB221CC8004400B69A25 /* URRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB121CC8004400B69A25 /* URRecorder.cpp */; };
 		C876CB231CC8004400B69A25 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB141CC8004400B69A25 /* URToolHead.cpp */; };
 		C876CB291CC8010900B69A25 /* ParallelTransportFrames.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C876CB271CC8010900B69A25 /* ParallelTransportFrames.cpp */; };
 		C878558D1CC80DB400707D96 /* PathRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C878558B1CC80DB400707D96 /* PathRecorder.cpp */; };
@@ -415,10 +413,6 @@
 		C876CB0D1CC8004400B69A25 /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
 		C876CB0E1CC8004400B69A25 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
 		C876CB0F1CC8004400B69A25 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
-		C876CB101CC8004400B69A25 /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
-		C876CB111CC8004400B69A25 /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
-		C876CB121CC8004400B69A25 /* URRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRecorder.cpp; sourceTree = "<group>"; };
-		C876CB131CC8004400B69A25 /* URRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRecorder.h; sourceTree = "<group>"; };
 		C876CB141CC8004400B69A25 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
 		C876CB151CC8004400B69A25 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
 		C876CB161CC8004400B69A25 /* URUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
@@ -430,6 +424,7 @@
 		C87855CE1CC8279500707D96 /* PathPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathPlayer.cpp; sourceTree = "<group>"; };
 		C87855CF1CC8279500707D96 /* PathPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathPlayer.h; sourceTree = "<group>"; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
+		C8D350691CC9369D001E4985 /* Synchronized.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synchronized.h; sourceTree = "<group>"; };
 		CBDE84185E2969BA4AB209FC /* general.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = general.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/general.h; sourceTree = SOURCE_ROOT; };
 		CCC89CA785CFCE1FE8D78F26 /* cvstd.inl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cvstd.inl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cvstd.inl.hpp; sourceTree = SOURCE_ROOT; };
 		CCFB64CDA537F2B5A54CDC13 /* photo.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = photo.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/photo/photo.hpp; sourceTree = SOURCE_ROOT; };
@@ -1364,6 +1359,7 @@
 		C876CB081CC8004400B69A25 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				C8D350691CC9369D001E4985 /* Synchronized.h */,
 				C876CB091CC8004400B69A25 /* ofxURDriver.h */,
 				C876CB0A1CC8004400B69A25 /* UR5KinematicModel.cpp */,
 				C876CB0B1CC8004400B69A25 /* UR5KinematicModel.h */,
@@ -1371,10 +1367,6 @@
 				C876CB0D1CC8004400B69A25 /* URDriver.h */,
 				C876CB0E1CC8004400B69A25 /* URMove.cpp */,
 				C876CB0F1CC8004400B69A25 /* URMove.h */,
-				C876CB101CC8004400B69A25 /* URRead.cpp */,
-				C876CB111CC8004400B69A25 /* URRead.h */,
-				C876CB121CC8004400B69A25 /* URRecorder.cpp */,
-				C876CB131CC8004400B69A25 /* URRecorder.h */,
 				C876CB141CC8004400B69A25 /* URToolHead.cpp */,
 				C876CB151CC8004400B69A25 /* URToolHead.h */,
 				C876CB161CC8004400B69A25 /* URUtils.h */,
@@ -1653,14 +1645,12 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				C876CAEE1CC8003500B69A25 /* Calibration.cpp in Sources */,
-				C876CB211CC8004400B69A25 /* URRead.cpp in Sources */,
 				C876CB291CC8010900B69A25 /* ParallelTransportFrames.cpp in Sources */,
 				C878558D1CC80DB400707D96 /* PathRecorder.cpp in Sources */,
 				C876CAE41CC8003500B69A25 /* PathController.cpp in Sources */,
 				C876CB1D1CC8004400B69A25 /* ur_kin.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				3B8120368B4FCCD80883BAF3 /* ofxAssimpAnimation.cpp in Sources */,
-				C876CB221CC8004400B69A25 /* URRecorder.cpp in Sources */,
 				483FA4F6D5FA6422C559B1F5 /* ofxAssimpMeshHelper.cpp in Sources */,
 				C876CAF01CC8003500B69A25 /* TwoDWorkSurface.cpp in Sources */,
 				C876CAEF1CC8003500B69A25 /* ThreeDWorkSurface.cpp in Sources */,

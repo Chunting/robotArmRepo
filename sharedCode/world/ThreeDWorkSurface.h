@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "WorkSurface.h"
+#include "ofxNatNet.h"
 class ThreeDWorkSurface : public WorkSurface{
 public:
     ThreeDWorkSurface();
@@ -9,6 +10,9 @@ public:
     void setup(RobotParameters * params);
     void update(Joint currentTCP);
     void draw();
+    
+    ofxNatNet::RigidBody optitrackRb;
+
     
     Joint getTargetPose(float t);
     void addPoint(ofVec3f pt);

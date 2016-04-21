@@ -12,6 +12,7 @@
 #include "UR5KinematicModel.h"
 #include "ur_kin.h"
 #include "ofxTiming.h"
+#include "Synchronized.h"
 class URMove {
 public:
     URMove();
@@ -21,13 +22,13 @@ public:
     void draw(int i);
     void computeVelocities();
     void updatePathDebug();
-
+    
     void addTargetPoint(Joint target);
     void urKinematics(vector<double> input);
     void urKinematics(ofMatrix4x4 input);
     void urKinematics(double o, double t, double th, double f, double fi, double s);
-//    void urKinematics(vector<double> input);
-    void setCurrentJointPosition(vector<double> pos);
+    //    void urKinematics(vector<double> input);
+    void setCurrentJointPosition(vector<double> & pose);
     float getAcceleration();
     ofParameterGroup movementParams;
     vector<double> getTargetJointPos();
@@ -48,11 +49,11 @@ protected:
     int selectSolution();
     vector<UR5KinematicModel*> previews;
     //Motion Capture Visualization
- 
+    
     URKinematics kinematics;
     vector<double> currentPose;
-    vector<vector<double> > inversePosition;
-    vector<vector<double> > preInversePosition;
+    Synchronized<vector<vector<double> > > inversePosition;
+    vector<vector<double> >  preInversePosition;
     ofMatrix4x4 mat;
     ofParameter<float> maxSpeed;
     ofParameter<float> minSpeed;
@@ -67,7 +68,7 @@ protected:
     double lastAvgAccel;
     deque<vector<float> > jointSpeedHistory;
     deque<Joint> positions;
-//    ofEasyCam cam;
+    //    ofEasyCam cam;
     ofPolyline targetLine;
     float totalLength;
     float totalArea;

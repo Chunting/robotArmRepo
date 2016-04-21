@@ -32,25 +32,32 @@ void RobotController::updateMovement(){
     movement.setCurrentJointPosition(robotParams->currentJointPos);
 
     
-   
+    robotParams->targetTCP.position+=robotParams->tcpOffset;
     
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);
     movement.update();
-
+    vector<double> rawIK = movement.getRawJointPos();
+    for(int i = 0; i < rawIK.size(); i++){
+        robotParams->jointPosIKRaw[i] = ofRadToDeg((float)rawIK[i]);
+    }
+    
+    // get back the target joint trajectories
+    vector<double> target = movement.getTargetJointPos();
+    for(int i = 0; i < target.size(); i++){
+        robotParams->targetJointPos[i] = ofRadToDeg((float)target[i]);
+    }
     
     // set the joint speeds
     vector<double> tempSpeeds;
     tempSpeeds.assign(6, 0);
     tempSpeeds = movement.getCurrentSpeed();
-
+    for(int i = 0; i < tempSpeeds.size(); i++){
+        robotParams->jointVelocities[i] = (float)tempSpeeds[i];
+    }
     // move the robot to the target TCP
     if(robotParams->bMove){
         robot.setSpeed(tempSpeeds, movement.getAcceleration());
-    }
-    
-    for(int i = 0; i < tempSpeeds.size(); i++){
-        robotParams->jointVelocities[i] = (float)tempSpeeds[i];
     }
     
 }
@@ -59,6 +66,8 @@ void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
 
+    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
+    
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
@@ -67,14 +76,14 @@ void RobotController::updateData(){
     ofQuaternion tcpO = robotParams->actualTCP.rotation;
     robotParams->tcpOrientation = ofVec4f(tcpO.x(), tcpO.y(), tcpO.z(), tcpO.w());
     if(robotParams->bRecord){
-        recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
+        recorder.addPose(robotParams->jointPos, ofGetElapsedTimef());
     }
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
     }
-    
 }
+
 
 void RobotController::toggleRecord(){
     if(robotParams->bRecord){
