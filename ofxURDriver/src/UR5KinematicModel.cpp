@@ -38,6 +38,7 @@ void UR5KinematicModel::setup(){
     jointsProcessed.setup(foo);
     
     joints.resize(6);
+    nodes.resize(6);
     jointsRaw.getBack().assign(6, 0.0);
     jointsProcessed.getBack().assign(6, 0.0);
     toolPointRaw.getBack().assign(6, 0.0);
@@ -55,6 +56,7 @@ void UR5KinematicModel::setup(){
     
     for(int i = 1; i <joints.size(); i++){
        joints[i].offset =joints[i].position-joints[i-1].position;
+       
     }
     tool.offset =joints[5].offset;
     
@@ -74,6 +76,19 @@ void UR5KinematicModel::setup(){
    joints[3].rotation.makeRotate(-90,joints[3].axis);
    joints[4].rotation.makeRotate(0,joints[4].axis);
    joints[5].rotation.makeRotate(0,joints[5].axis);
+    
+    nodes[0].setPosition(joints[0].position);
+    nodes[0].setOrientation(joints[0].rotation);
+    for(int i = 1; i <nodes.size(); i++){
+        nodes[i].setParent(nodes[i-1]);
+        nodes[i].setPosition(joints[i].offset*1000);
+        nodes[i].setOrientation(joints[i].rotation);
+    }
+    
+    tcpNode.setParent(nodes[5]);
+    tcpNode.setPosition(ofVec3f(0.0, -0.2, 0.0)*1000);
+
+    
     tool.rotation =joints[5].rotation;
     
     shader.load("shaders/model");
@@ -90,7 +105,12 @@ void UR5KinematicModel::setup(){
 
 ofQuaternion UR5KinematicModel::getToolPointQuaternion(){
     
-    return joints[0].rotation*joints[1].rotation*joints[2].rotation*joints[3].rotation*joints[4].rotation;
+    return nodes[5].getGlobalTransformMatrix().getRotate();
+}
+
+ofNode UR5KinematicModel::getTool(){
+    
+    return tcpNode;
 }
 
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
@@ -107,6 +127,7 @@ void UR5KinematicModel::draw(){
     ofDrawSphere(tool.position*ofVec3f(1000, 1000, 1000), 4);
     ofSetColor(255, 0, 255);
     ofDisableDepthTest();
+
     
     if(bDrawModel){
         ofEnableDepthTest();
@@ -153,21 +174,27 @@ void UR5KinematicModel::draw(){
         shader.end();
         ofDisableDepthTest();
         
-        ofPushMatrix();
-        {
-            for(int i = 0; i < joints.size(); i++)
-            {
-                float x;
-                ofVec3f axis;
-                q = joints[i].rotation;
-                q.getRotate(x, axis);
-                ofTranslate(joints[i].offset*1000);
-                ofRotate(x, axis.x, axis.y, axis.z);
-                ofDrawAxis(100);
-                
-            }
-        }
-        ofPopMatrix();
+//        ofPushMatrix();
+//        {
+//            for(int i = 0; i < joints.size(); i++)
+//            {
+//                float x;
+//                ofVec3f axis;
+//                q = joints[i].rotation;
+//                q.getRotate(x, axis);
+//                ofTranslate(joints[i].offset*1000);
+//                ofRotate(x, axis.x, axis.y, axis.z);
+//                ofDrawAxis(100);
+//                
+//            }
+//        }
+//        ofPopMatrix();
         
+        ofPushMatrix();
+        for(int i = 0; i < nodes.size(); i++){
+            nodes[i].draw();
+        }
+        tcpNode.draw();
+        ofPopMatrix();
     }
 }

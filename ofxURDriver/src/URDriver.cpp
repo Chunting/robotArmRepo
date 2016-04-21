@@ -179,7 +179,7 @@ void ofxURDriver::threadedFunction(){
           
             model.toolPointRaw.getBack() = robot->rt_interface_->robot_state_->getToolVectorActual();
             
-            ofVec3f fooRot = ofVec3f(model.toolPointRaw.getBack()[3]/PI*180,model.toolPointRaw.getBack()[4]/PI*180,model.toolPointRaw.getBack()[5]/PI*180);
+            ofVec3f fooRot = ofVec3f(ofRadToDeg(model.toolPointRaw.getBack()[3]),ofRadToDeg(model.toolPointRaw.getBack()[4]),ofRadToDeg(model.toolPointRaw.getBack()[5]));
             
             float angle = fooRot.length();
             if( angle < epslion){
@@ -195,6 +195,10 @@ void ofxURDriver::threadedFunction(){
             if(bMove){
                 robot->setSpeed(currentSpeed[0], currentSpeed[1], currentSpeed[2], currentSpeed[3], currentSpeed[4], currentSpeed[5], acceleration);
                 bMove = false;
+            }
+            
+            for(int i = 0; i < model.nodes.size(); i++){
+                model.nodes[i].setOrientation(model.joints[i].rotation);
             }
             
             model.toolPointRaw.swapBack();

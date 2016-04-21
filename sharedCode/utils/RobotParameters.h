@@ -16,6 +16,8 @@ class RobotParameters{
             robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
             robotArmParams.add(tcpOrientation.set("Actual Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
             robotArmParams.add(calcTCPOrientation.set("Calculated Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
+            robotArmParams.add(forwardTCPOrientation.set("Forward TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
+            robotArmParams.add(forwardTCPPosition.set("Forward TCP Pos", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
         }
         if (setTCP){
             robotArmParams.add(targetTCPPosition.set("Set TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
@@ -75,6 +77,8 @@ class RobotParameters{
     ofParameter<ofVec4f> targetTCPOrientation;
     ofParameter<ofVec4f> tcpOrientation;
     ofParameter<ofVec4f> calcTCPOrientation;
+    ofParameter<ofVec4f> forwardTCPOrientation;
+    ofParameter<ofVec3f> forwardTCPPosition;
     ofParameter<ofVec3f> tcpPosition;
     ofParameter<ofVec3f> tcpOffset;
     

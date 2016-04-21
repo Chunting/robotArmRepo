@@ -57,6 +57,7 @@ void URMove::update(){
     
     mat.setTranslation(targetPoint.position);
     mat.setRotate(targetPoint.rotation);
+
     selectedSolution = selectSolution();
     urKinematics(mat);
     computeVelocities();
@@ -98,9 +99,6 @@ void URMove::computeVelocities(){
                 float tempMax = maxSpeed;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
                 maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
-                if(abs(currentJointSpeeds[i]) > PI){
-                    ofLog(OF_LOG_VERBOSE)<<"TOO FAST "<<ofToString(currentJointSpeeds[i], 10)<<endl;
-                }
                 
                 acceleration[i] = currentJointSpeeds[i]-lastJointSpeeds[i];
                 avgAccel +=acceleration[i];
@@ -133,7 +131,7 @@ void URMove::draw(int i){
         targetLine.draw();
         ofSetColor(255, 0, 255, 200);
         ofDrawSphere(toMM(targetPoint.position), 5);
-        ofSetColor(255, 255, 0, 200);
+        ofSetColor(255, 0, 255);
         if(newTargetPoint.size() > 0){
             ofDrawSphere(toMM(newTargetPoint.front().position), 5);
         }
@@ -180,7 +178,7 @@ int URMove::selectSolution(){
                 max = count[i];
             }
         }
-        ofLog(OF_LOG_NOTICE)<<"nearest "<<nearest<<endl;
+        ofLog(OF_LOG_VERBOSE)<<"nearest "<<nearest<<endl;
         //        if(inversePosition.size() >= 7)
         //            return nearest;
         //        else
@@ -246,12 +244,33 @@ void URMove::urKinematics(ofMatrix4x4 input){
                 }
                 
                 previews[i]->joints[j].rotation.makeRotate(previews[i]->jointsProcessed.getBack()[j], previews[i]->joints[j].axis);
+                
+                previews[i]->nodes[j].setOrientation(previews[i]->joints[j].rotation);
             }
             previews[i]->jointsRaw.swapBack();
             previews[i]->jointsProcessed.swapBack();
         }
     }
     inversePosition.swapBack();
+}
+
+ofMatrix4x4 URMove::forwardKinematics(vector<double> pose){
+    return forwardKinematics(pose[0], pose[1], pose[2], pose[3], pose[4], pose[5]);
+}
+
+ofMatrix4x4 URMove::forwardKinematics(double o, double t, double th, double f, double fi, double s){
+    double q[6] = {o, t, th, f, fi, s};
+    ofLog()<<q<<endl;
+    double* T1 = new double[16];
+    double* T2 = new double[16];
+    double* T3 = new double[16];
+    double* T4 = new double[16];
+    double* T5 = new double[16];
+    double* T6 = new double[16];
+    
+    kinematics.forward_all(q, T1, T2, T3, T4, T5, T6);
+    
+    return toOF(T6);
 }
 
 

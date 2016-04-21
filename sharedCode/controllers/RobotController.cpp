@@ -61,6 +61,9 @@ void RobotController::updateMovement(){
     }
     
 }
+ofNode RobotController::getTCPNode(){
+    return robot.model.getTool();
+}
 
 void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
@@ -82,6 +85,11 @@ void RobotController::updateData(){
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
     }
+    
+    ofMatrix4x4 forwardIK = movement.forwardKinematics(robotParams->currentJointPos);
+    robotParams->forwardTCPPosition = forwardIK.getTranslation();
+    robotParams->forwardTCPOrientation = ofVec4f(forwardIK.getRotate().x(), forwardIK.getRotate().y(), forwardIK.getRotate().z(), forwardIK.getRotate().x());
+    
 }
 
 

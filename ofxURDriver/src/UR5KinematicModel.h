@@ -25,6 +25,8 @@ public:
     void update();
     void draw();
     void setToolMesh(ofMesh mesh);
+    ofNode getTool();
+    
     ofQuaternion getToolPointQuaternion();
     
     ofxAssimpModelLoader loader;
@@ -43,7 +45,8 @@ public:
     Joint dtoolPoint;
     
     ofEasyCam cam;
- 
+    ofNode tcpNode;
+    vector<ofNode> nodes;
     
     ofParameter<float> stage;
     ofParameter<bool> bDrawModel;

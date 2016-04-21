@@ -24,6 +24,8 @@ public:
     void updatePathDebug();
     
     void addTargetPoint(Joint target);
+    ofMatrix4x4 forwardKinematics(vector<double> pose);
+    ofMatrix4x4 forwardKinematics(double o, double t, double th, double f, double fi, double s);
     void urKinematics(vector<double> input);
     void urKinematics(ofMatrix4x4 input);
     void urKinematics(double o, double t, double th, double f, double fi, double s);

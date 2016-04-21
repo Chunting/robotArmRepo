@@ -85,13 +85,17 @@ void ofApp::update(){
 }
 
 void ofApp::moveArm(){
+
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
         parameters.bCopy = false;
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         
         // get the robot's position
-        parameters.targetTCP = parameters.actualTCP;
-//        parameters.targetTCP.rotation = parameters.actualTCP.position
+        parameters.targetTCP.position = parameters.actualTCP.position;
+        parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
+
         
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
@@ -101,13 +105,9 @@ void ofApp::moveArm(){
     // follow a user-defined position and orientation
     if(parameters.bFollow){
         
-        
         parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
         parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
-
-        
-        // update GUI params
-        parameters.targetTCPPosition = parameters.targetTCP.position;
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
     if(parameters.bTrace || parameters.b3DPath){
@@ -120,6 +120,7 @@ void ofApp::moveArm(){
         
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
+        
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
@@ -131,7 +132,6 @@ void ofApp::moveArm(){
         
         // update the target position
         parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-        
     }
     
 }
