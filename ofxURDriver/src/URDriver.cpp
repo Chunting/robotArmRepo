@@ -23,7 +23,7 @@ void ofxURDriver::setup(string ipAddress, double minPayload, double maxPayload){
     
     char buf[256];
     vector<string> foo = robot->getJointNames();
-    std::string joint_prefix = "";
+    std::string joint_prefix = "ur_";
     std::vector<std::string> joint_names;
     joint_prefix = "ofxURDriver-";
     joint_names.push_back(joint_prefix + "shoulder_pan_joint");
@@ -65,23 +65,26 @@ bool ofxURDriver::isDataReady(){
     }
 }
 vector<double> ofxURDriver::getToolPointRaw(){
-//    lock();
-//    vector<double> fooR = model.toolPointRaw;
-//    unlock();
-    return model.toolPointRaw;
+    vector<double> ret;
+    lock();
+    ret = model.toolPointRaw;
+    unlock();
+    return ret;
 }
 
 vector<double> ofxURDriver::getJointPositions(){
+    vector<double> ret;
 //    lock();
-////    vector<double> fooR = model.jointsRaw;
+      ret = model.jointsRaw;
 //    unlock();
-    return model.jointsRaw;
+    return ret;
 }
 vector<double> ofxURDriver::getJointAngles(){
+    vector<double> ret;
 //    lock();
-//    vector<double> fooR = model.jointsRaw;
+      ret = model.jointsRaw;
 //    unlock();
-    return model.jointsProcessed;
+    return ret;
 }
 
 float ofxURDriver::getThreadFPS(){
@@ -94,10 +97,11 @@ float ofxURDriver::getThreadFPS(){
 }
 
 Joint ofxURDriver::getToolPose(){
+    Joint ret;
     lock();
-    Joint foo = model.tool;
+    ret = model.tool;
     unlock();
-    return foo;
+    return ret;
 }
 
 void ofxURDriver::moveJoints(vector<double> pos){
@@ -143,6 +147,8 @@ void ofxURDriver::threadedFunction(){
                 model.dtoolPoint.rotation*=model.joints[i].rotation;
             }
             
+    
+            //this is returning weird shit that doesn't return the same values.
             
             model.toolPointRaw = robot->rt_interface_->robot_state_->getToolVectorActual();
             float angle = sqrt(pow(model.toolPointRaw[3], 2)+pow(model.toolPointRaw[4], 2)+pow(model.toolPointRaw[5], 2));
@@ -153,7 +159,7 @@ void ofxURDriver::threadedFunction(){
             }
             model.tool.position = ofVec3f(model.toolPointRaw[0], model.toolPointRaw[1], model.toolPointRaw[2]);
             
-            
+            cout<<ofToString(model.toolPointRaw)<<endl;
             
             // add tool offset here?
             
