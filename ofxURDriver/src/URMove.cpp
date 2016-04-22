@@ -100,9 +100,8 @@ void URMove::computeVelocities(){
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
                 maxSpeed = MAX(tempMax, currentJointSpeeds[i]);
                 
-                acceleration[i] = currentJointSpeeds[i]-lastJointSpeeds[i];
-                avgAccel +=acceleration[i];
-                avgAccel/=2;
+                acceleration[i] = currentJointSpeeds[i] - lastJointSpeeds[i];
+                avgAccel = MAX(acceleration[i], avgAccel);
                 
             }
         }
