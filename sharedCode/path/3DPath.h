@@ -15,6 +15,7 @@ public:
     ofPoint centroid;
     bool pause;
     int ptIndex;
+    int direction;
     
     
     /// \brief Creates a periodic 3D path.
