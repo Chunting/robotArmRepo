@@ -2,40 +2,25 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_SILENT);
     
-    parameters.setTCPPanel = true;
-    parameters.getTCPPanel = true;
-    parameters.debugPanel  = true;
-    parameters.setToolOffset = false;
-    parameters.drawPaths = false;
-    parameters.recordPanel = false;
-    
-    // setup GUI
     setupUserPanel();
     setupDebugPanel();
-    setupCameras();
 
     // setup robot
     robot.setup(parameters);
-    
+
     panel.add(robot.movement.movementParams);
     
-    speeds.assign(6, 0);
-    parameters.bMove = false;
-    parameters.bCopy = true;
-    
-    panel.loadFromFile("settings.xml");
-    
-    ofEnableAlphaBlending();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    moveArm();
     robot.update();
     
     updateActiveCamera();
@@ -43,28 +28,50 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofBackground(0);
-    
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-    
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.robot.model.draw();
     cams[0].end();
     
-    
-    // show simulated robot
+    // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    robot.movement.draw(0);
+    robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
-    
     
     drawGUI();
     hightlightViewports();
 }
+
+void ofApp::moveArm(){
+    
+    // get the current robot pose
+    if(parameters.bCopy){
+        parameters.bCopy = false;
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        
+        // get the robot's pose
+        parameters.targetTCP.position = parameters.actualTCP.position;
+        parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
+        
+        // update GUI params
+        parameters.targetTCPPosition = parameters.targetTCP.position;
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+        
+    }
+    // get the current robot pose
+    if(parameters.bFollow){
+        parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
+        parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+    }
+    
+}
+
 
 //--------------------------------------------------------------
 void ofApp::setupUserPanel(){
@@ -74,8 +81,6 @@ void ofApp::setupUserPanel(){
     panel.setup(parameters.robotArmParams);
     panel.setPosition(10, 10);
     
-    // remove unneccesary variables from panel
-    //    panel.getToggle("bTrace").???
 }
 
 //--------------------------------------------------------------
@@ -92,18 +97,6 @@ void ofApp::setupDebugPanel(){
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
 }
 
-void ofApp::setupCameras(){
-    
-    for(int i = 0; i < N_CAMERAS; i++){
-        cams[i].setup();
-        cams[i].autosavePosition = true;
-        cams[i].useArrowKeys = false;
-        cams[i].usemouse = false;
-        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        cams[i].loadCameraPosition();
-    }
-}
 
 //--------------------------------------------------------------
 void ofApp::drawGUI(){
@@ -114,15 +107,14 @@ void ofApp::drawGUI(){
     panelTargetJoints.draw();
 }
 
+
 //--------------------------------------------------------------
 void ofApp::updateActiveCamera(){
     
-    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
-    {
+    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS){
         activeCam = 0;
     }
-    else
-    {
+    else{
         activeCam = 1;
     }
 }
@@ -138,7 +130,6 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, 0, dist);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "TOP VIEW";
     }
     // LEFT VIEW
@@ -146,7 +137,6 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, 0, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "LEFT VIEW";
     }
     // FRONT VIEW
@@ -154,7 +144,6 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(0, dist, 0);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "FRONT VIEW";
     }
     // PERSPECTIVE VIEW
@@ -162,13 +151,15 @@ void ofApp::handleViewportPresets(int key){
         cams[activeCam].reset();
         cams[activeCam].setPosition(dist, dist, dist/4);
         cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-        cams[activeCam].movedManually();
         viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
-    if(key == '5'){
-        cams[activeCam].usemouse = true;
+    else if (key == '5'){
+        cams[activeCam].reset();
+        cams[activeCam].setPosition(0, 0, -dist);
+        cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+        viewportLabels[activeCam] = "PERSPECTIVE VIEW";
     }
-    
+
 }
 
 //--------------------------------------------------------------
@@ -205,8 +196,6 @@ void ofApp::hightlightViewports(){
     }
     
     // show Viewport info
-    
-    
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
@@ -214,19 +203,18 @@ void ofApp::hightlightViewports(){
     ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
     
     ofPopStyle();
-    
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    float offset = .005;
-    
-    if(key == '5'){
-        cams[activeCam].usemouse = true;
+
+    if(key == 'm'){
+        parameters.bMove = !parameters.bMove;
     }
-    
+
     handleViewportPresets(key);
- }
+}
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){

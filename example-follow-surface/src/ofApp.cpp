@@ -109,46 +109,7 @@ void ofApp::draw(){
     drawGUI();
     hightlightViewports();
 }
-
-//--------------------------------------------------------------
-void ofApp::setupUserPanel(){
-
-    parameters.setup();
-    
-    panel.setup(parameters.robotArmParams);
-    panel.setPosition(10, 10);
-    
-    // remove unneccesary variables from panel
-//    panel.getToggle("bTrace").???
-}
-
-//--------------------------------------------------------------
-void ofApp::setupDebugPanel(){
-
-    panelJoints.setup(parameters.joints);
-    panelTargetJoints.setup(parameters.targetJoints);
-    panelJointsSpeed.setup(parameters.jointSpeeds);
-    panelJointsIK.setup(parameters.jointsIK);
-    
-    panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
-    panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
-    panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
-}
-
-void ofApp::setupCameras(){
-    
-    for(int i = 0; i < N_CAMERAS; i++){
-        cams[i].setup();
-        cams[i].autosavePosition = true;
-        cams[i].useArrowKeys = false;
-        cams[i].usemouse = false;
-        cams[i].cameraPositionFile = "cam_"+ofToString(i)+".xml";
-        cams[i].viewport = ofRectangle(ofGetWindowWidth()/2*i, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        cams[i].loadCameraPosition();
-    }
-}
-
+`
 //--------------------------------------------------------------
 void ofApp::setupGeometry(){
     ofxAssimpModelLoader loader;

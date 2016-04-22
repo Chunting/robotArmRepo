@@ -2,10 +2,8 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "ofxGameCamera.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
-
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -26,13 +24,11 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-    
-        // GUI
+		
         RobotParameters parameters;
         
         void setupUserPanel();
         void setupDebugPanel();
-        void setupCameras();
         void drawGUI();
         
         ofxPanel panel;
@@ -41,15 +37,14 @@ class ofApp : public ofBaseApp{
         ofxPanel panelJointsIK;
         ofxPanel panelJointsSpeed;
         
-        // ROBOT
-        RobotController robot;
-        float acceleration;
-        vector<double> speeds;
-
-        /* 3D Navigation */
         
+        RobotController robot;
+        void moveArm();
+        
+        
+        // 3D Navigation
         void updateActiveCamera();
-        ofxGameCamera cams[N_CAMERAS];
+        ofEasyCam cams[N_CAMERAS];
         ofMatrix4x4 savedCamMats[N_CAMERAS];
         string viewportLabels[N_CAMERAS];
         int activeCam;
@@ -57,15 +52,14 @@ class ofApp : public ofBaseApp{
         /**
          Use hotkeys to cyle through preset viewports.
          @param key
-         't' = Top View      <br/>
-         'l' = Left View     <br/>
-         'f' = Front View    <br/>
-         'p' = Perspective   <br/>
-         'c' = Custom View   <br/>
-         's' = Save current for Custom View
+             '1' = Top View      <br/>
+             '2' = Left View     <br/>
+             '3' = Front View    <br/>
+             '4' = Perspective   <br/>
          */
         void handleViewportPresets(int key);
         
         /// Highlights the active viewport.
         void hightlightViewports();
+
 };

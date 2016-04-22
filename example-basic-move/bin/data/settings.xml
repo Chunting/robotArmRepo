@@ -23,40 +23,41 @@
     <Joint_Speed5>0</Joint_Speed5>
     <Joints>
         <joint_0>0</joint_0>
-        <target_joint_0>1.90799</target_joint_0>
-        <Joint_Speed0>8.99873</Joint_Speed0>
+        <target_joint_0>-1.99649</target_joint_0>
+        <Joint_Speed0>-9.2812</Joint_Speed0>
         <joint_1>-1.5708</joint_1>
-        <target_joint_1>-1.7403</target_joint_1>
-        <Joint_Speed1>-0.799459</Joint_Speed1>
+        <target_joint_1>-5.9551</target_joint_1>
+        <Joint_Speed1>-20.3816</Joint_Speed1>
         <joint_2>0</joint_2>
-        <target_joint_2>1.97069</target_joint_2>
-        <Joint_Speed2>9.29444</Joint_Speed2>
+        <target_joint_2>1.66735</target_joint_2>
+        <Joint_Speed2>7.7511</Joint_Speed2>
         <joint_3>-1.5708</joint_3>
-        <target_joint_3>-1.80118</target_joint_3>
-        <Joint_Speed3>-1.08657</Joint_Speed3>
+        <target_joint_3>-5.13703</target_joint_3>
+        <Joint_Speed3>-16.5786</Joint_Speed3>
         <joint_4>0</joint_4>
-        <target_joint_4>1.5708</target_joint_4>
-        <Joint_Speed4>7.40841</Joint_Speed4>
+        <target_joint_4>1.99649</target_joint_4>
+        <Joint_Speed4>9.28121</Joint_Speed4>
         <joint_5>0</joint_5>
-        <target_joint_5>5.94599</target_joint_5>
-        <Joint_Speed5>0</Joint_Speed5>
+        <target_joint_5>4.71239</target_joint_5>
+        <Joint_Speed5>21.9068</Joint_Speed5>
         <Move>0</Move>
-        <avgAccel>2.35099e-36</avgAccel>
+        <avgAccel>1.74926e-36</avgAccel>
         <figure8>0</figure8>
-    </Joints>
+    <bFigure8>0</bFigure8>
+	</Joints>
     <Work_Surface>
-        <WS_Position>-0.615619, 0.240441, 0.163748</WS_Position>
+        <WS_Position>0.109077, 0.520298, 0.317947</WS_Position>
         <WS_size>0, 0, 0</WS_size>
         <Orientation>0, 0, 360</Orientation>
-        <TP-0>-0.603097, 0.351555, 0.367634</TP-0>
-        <TP-1>-0.704331, 0.0413182, 0.367687</TP-1>
-        <TP-2>-0.704534, 0.0391832, -0.039617</TP-2>
-        <TP-3>-0.450515, 0.529707, -0.040712</TP-3>
-        <WS_Euler>-3.50727, -89.0208, -81.1252</WS_Euler>
-        <qAxis>0.586863, -0.619575, -0.521266</qAxis>
-        <qAngle>122.718</qAngle>
-        <Fix_X>95.4</Fix_X>
-        <Fix_Y>138.6</Fix_Y>
+        <TP-0>0.0358612, 0.527369, 0.397448</TP-0>
+        <TP-1>0.189786, 0.515288, 0.410917</TP-1>
+        <TP-2>0.0224748, 0.523051, 0.233127</TP-2>
+        <TP-3>0.188185, 0.515485, 0.230295</TP-3>
+        <WS_Euler>-89.5852, -8.43083, 8.37024</WS_Euler>
+        <qAxis>0, 0, 0</qAxis>
+        <qAngle>4.59163e-41</qAngle>
+        <Fix_X>0</Fix_X>
+        <Fix_Y>0</Fix_Y>
         <Fix_Z>0</Fix_Z>
     </Work_Surface>
     <Follow_TargetPoint>0</Follow_TargetPoint>
@@ -64,36 +65,45 @@
     <bCopy_Tool_Point>0</bCopy_Tool_Point>
     <TargetPointOrientation>-104.385, -78.8826, 47.7795</TargetPointOrientation>
     <Target_Orientation>0.5, -0.5, 0.5, 0.5</Target_Orientation>
-    <Set_TCP_POS>0, -0.438776, 0.306122</Set_TCP_POS>
-    <Set_TCP_ORIENT>0, 0, 0, 1</Set_TCP_ORIENT>
-    <Robot_TCP_POS>0.673469, -0.693878, -0.214286</Robot_TCP_POS>
-    <Robot_TCP_ORIENT>-1.26504e-05, -1.90804e-05, -5.2296e-05</Robot_TCP_ORIENT>
+    <Set_TCP_POS>0.157898, 0.525885, 0.344882</Set_TCP_POS>
+    <Set_TCP_ORIENT>-0.0529004, -0.0504068, 0.754976, 0.651669</Set_TCP_ORIENT>
+    <Robot_TCP_POS>0, -299.751, 996.802</Robot_TCP_POS>
+    <Robot_TCP_ORIENT>0, 0, 0</Robot_TCP_ORIENT>
     <set_TCP>0</set_TCP>
     <get_TCP>0</get_TCP>
     <UR_Movements>
         <Max_Speed>0</Max_Speed>
         <Min_Speed>0</Min_Speed>
-        <Delta_T>0.18989</Delta_T>
+<<<<<<< HEAD
+        <Delta_T>0.548773</Delta_T>
+=======
+        <Delta_T>0.236681</Delta_T>
+>>>>>>> master
         <targetTCPLerpSpeed>0.984709</targetTCPLerpSpeed>
         <jointSpeedLerpSpeed>0.979612</jointSpeedLerpSpeed>
         <Reported_MIN_Speed>-11.7227</Reported_MIN_Speed>
         <Reported_MAX_Speed>43.6339</Reported_MAX_Speed>
         <jointAccelerationMultipler>200</jointAccelerationMultipler>
-        <MIN_Speed>-52.4517</MIN_Speed>
-        <_MAX_Speed>50.7238</_MAX_Speed>
-        <TCP_LerpSpeed>0.0774541</TCP_LerpSpeed>
-        <Join_LerpSpeed>0.9</Join_LerpSpeed>
-        <Acceleration_M>148.811</Acceleration_M>
+<<<<<<< HEAD
+        <MIN_Speed>nan</MIN_Speed>
+        <_MAX_Speed>nan</_MAX_Speed>
+=======
+        <MIN_Speed>-9.20143</MIN_Speed>
+        <_MAX_Speed>15.3742</_MAX_Speed>
+>>>>>>> master
+        <TCP_LerpSpeed>0.959225</TCP_LerpSpeed>
+        <Join_LerpSpeed>0.964321</Join_LerpSpeed>
+        <Acceleration_M>240.556</Acceleration_M>
     <Step>0</Step>
-		<Speed_Divider>1</Speed_Divider>
-	<Joint_LerpSpeed>0.9</Joint_LerpSpeed>
-		<avgAcceleration>0</avgAcceleration>
-		<followLerp>1</followLerp>
+	<Speed_Divider>1</Speed_Divider>
 	</UR_Movements>
-<tcpOffset>0, 0, 0</tcpOffset>
-	<avgAccel>0</avgAccel>
-	<followLerp>1</followLerp>
-	<Move>0</Move>
-<Actual_Robot_TCP_POS>0, 0, 0</Actual_Robot_TCP_POS>
-	<Actual_Robot_TCP_ORIENT>0, 0, 0</Actual_Robot_TCP_ORIENT>
+<Move>0</Move>
+<<<<<<< HEAD
+	<avgAccel>nan</avgAccel>
+	<bFigure8>0</bFigure8>
+<3DPath>0</3DPath>
+=======
+	<avgAccel>4.41832e-38</avgAccel>
+	<bFigure8>0</bFigure8>
+>>>>>>> master
 </group>
