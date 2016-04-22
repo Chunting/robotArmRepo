@@ -29,6 +29,7 @@ class ofApp : public ofBaseApp{
         
         void setupUserPanel();
         void setupDebugPanel();
+        void setupCameras();
         void drawGUI();
         
         ofxPanel panel;

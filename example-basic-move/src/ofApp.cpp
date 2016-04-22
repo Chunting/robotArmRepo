@@ -16,6 +16,7 @@ void ofApp::setup(){
 
     panel.add(robot.movement.movementParams);
     
+    setupCameras();
 }
 
 //--------------------------------------------------------------
@@ -95,6 +96,16 @@ void ofApp::setupDebugPanel(){
     panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
+}
+
+void ofApp::setupCameras(){
+   
+    parameters.bCopy = true;
+    
+    for (int i=0; i<N_CAMERAS; i++){
+        activeCam = i;
+        handleViewportPresets('4');
+    }
 }
 
 
