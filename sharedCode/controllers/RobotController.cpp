@@ -79,39 +79,7 @@ void RobotController::updateData(){
     ofQuaternion tcpO = robotParams->actualTCP.rotation;
     robotParams->tcpOrientation = ofVec4f(tcpO.x(), tcpO.y(), tcpO.z(), tcpO.w());
     if(robotParams->bRecord){
-<<<<<<< HEAD
-        recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
-    }
-}
-
-void RobotController::updatePose(Joint targetTCP){
-    workSurfaceTargetTCP = targetTCP;
-}
-
-void RobotController::moveArm(){
-<<<<<<< HEAD
-    // set target TCP to a default orientation, then modify
-//    robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-//    robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-//    robotParams->targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-=======
->>>>>>> master
-    
-    // assign the target pose to the current robot pose
-    if(robotParams->bCopy){
-        robotParams->bCopy = false;
-        
-        // get the robot's position
-        robotParams->targetTCP = robotParams->actualTCP;
-        
-        
-        // update GUI params
-        robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
-        
-=======
         recorder.addPose(robotParams->jointPos, ofGetElapsedTimef());
->>>>>>> master
     }
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
