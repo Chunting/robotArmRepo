@@ -30,12 +30,7 @@ void RobotController::update(){
 
 void RobotController::updateMovement(){
     movement.setCurrentJointPosition(robotParams->currentJointPos);
-    // update GUI params
-    for(int i = 0; i < robotParams->currentJointPos.size(); i++){
-        robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
-    }
-    
-    moveArm();
+
     
     robotParams->targetTCP.position+=robotParams->tcpOffset;
     
@@ -66,11 +61,16 @@ void RobotController::updateMovement(){
     }
     
 }
+ofNode RobotController::getTCPNode(){
+    return robot.model.getTool();
+}
 
 void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
 
+    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
+    
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
     }
@@ -79,6 +79,7 @@ void RobotController::updateData(){
     ofQuaternion tcpO = robotParams->actualTCP.rotation;
     robotParams->tcpOrientation = ofVec4f(tcpO.x(), tcpO.y(), tcpO.z(), tcpO.w());
     if(robotParams->bRecord){
+<<<<<<< HEAD
         recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
     }
 }
@@ -108,41 +109,21 @@ void RobotController::moveArm(){
         robotParams->targetTCPPosition = robotParams->targetTCP.position;
         robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
         
+=======
+        recorder.addPose(robotParams->jointPos, ofGetElapsedTimef());
+>>>>>>> master
     }
-    // follow a user-defined position and orientation
-    if(robotParams->bFollow){
-        
-
-        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get(), movement.followLerp);
-        robotParams->targetTCP.rotation = ofQuaternion(robotParams->targetTCPOrientation);
-        //        }
-        
-        // update GUI params
-        robotParams->bTrace = false;
-        robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        
-    }else if(robotParams->bTrace || robotParams->b3DPath){
-        
-        
-        robotParams->targetTCP.position = workSurfaceTargetTCP.position;
-        robotParams->targetTCP.rotation = workSurfaceTargetTCP.rotation;
-        
-        // update GUI params
-        robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
-        
-    }else if(robotParams->bFigure8){
-        
-        // use a preset orientation
-        robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        
-        // update the target position
-        robotParams->targetTCP.position.interpolate(robotParams->targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-        
+    // update GUI params
+    for(int i = 0; i < robotParams->currentJointPos.size(); i++){
+        robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
     }
     
+    ofMatrix4x4 forwardIK = movement.forwardKinematics(robotParams->currentJointPos);
+    robotParams->forwardTCPPosition = forwardIK.getTranslation();
+    robotParams->forwardTCPOrientation = ofVec4f(forwardIK.getRotate().x(), forwardIK.getRotate().y(), forwardIK.getRotate().z(), forwardIK.getRotate().x());
+    
 }
+
 
 void RobotController::toggleRecord(){
     if(robotParams->bRecord){

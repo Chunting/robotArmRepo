@@ -22,6 +22,17 @@ double* toUR(ofMatrix4x4 input){
     return T;
 }
 
+ofMatrix4x4 toOF(double * T){
+    ofMatrix4x4 output;
+    for(int i = 0; i < 4; i++){
+        output._mat[i][0] = T[i];
+        output._mat[i][1] = T[i+(4)];
+        output._mat[i][2] = T[i+(8)];
+        output._mat[i][3] = T[i+(12)];
+    }
+    return output;
+}
+
 /// \brief Converts a 3D point from millimeters to meters
 /// \param v ofVec3f to convert
 /// \return returns a copy of the point in meters

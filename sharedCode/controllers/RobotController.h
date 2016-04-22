@@ -22,9 +22,8 @@ public:
     void update();
     void moveArm();
     void draw();
-    void updatePose(Joint targetPt);
     void toggleRecord();
-    
+    ofNode getTCPNode();
     vector<double> getJointPosition();
     RobotStateMachine state;
     ofxURDriver robot;

@@ -30,7 +30,7 @@ void ofApp::setup(){
     // get the current pose on start up
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
-    
+    panelWorkSurface.loadFromFile("settings.xml");
     
     gml.setup();
     gml.loadFile("gml/53514.gml");
@@ -57,9 +57,9 @@ void ofApp::setupGUI(){
     panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
     panelWorkSurface.setup(workSurface.threeDSurface.workSurfaceParams);
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
-    panelWorkSurface.loadFromFile("workSurface.xml");
     
-
+    
+    
 }
 
 
@@ -69,7 +69,9 @@ void ofApp::update(){
     natNet.update();
 #endif
     workSurface.update();
-    robot.updatePose(workSurface.getNextPose());
+    
+    workSurfaceTargetTCP = workSurface.getNextPose();
+    moveArm();
     robot.update();
     
     if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
@@ -81,6 +83,59 @@ void ofApp::update(){
         activeCam = 1;
     }
 }
+
+void ofApp::moveArm(){
+
+    // assign the target pose to the current robot pose
+    if(parameters.bCopy){
+        parameters.bCopy = false;
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        
+        // get the robot's position
+        parameters.targetTCP.position = parameters.actualTCP.position;
+        parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
+
+        
+        // update GUI params
+        parameters.targetTCPPosition = parameters.targetTCP.position;
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+        
+    }
+    // follow a user-defined position and orientation
+    if(parameters.bFollow){
+        
+        parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
+        parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+        
+    }
+    if(parameters.bTrace || parameters.b3DPath){
+        // set target TCP to a default orientation, then modify
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        
+        parameters.targetTCP.position = workSurfaceTargetTCP.position;
+        parameters.targetTCP.rotation *= workSurfaceTargetTCP.rotation;
+        
+        // update GUI params
+        parameters.targetTCPPosition = parameters.targetTCP.position;
+        
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+        
+    }
+    if(parameters.bFigure8){
+        
+        // use a preset orientation
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        
+        // update the target position
+        parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
+    }
+    
+}
+
 
 //--------------------------------------------------------------
 void ofApp::draw(){
@@ -113,8 +168,6 @@ void ofApp::draw(){
         robot.movement.draw(robot.movement.selectedSolution);
     }
     cams[1].end();
-    
-    
     
     
     ofPushMatrix();
@@ -302,7 +355,7 @@ void ofApp::hightlightViewports(){
         ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
     }
     
-    // show Viewport info 
+    // show Viewport info
     ofSetColor(ofColor::white,200);
     ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);

@@ -18,23 +18,6 @@
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
 		B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECF8674C7975F1063C5E30CA /* ofxGuiGroup.cpp */; };
 		B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 802251BAF1B35B1D67B32FD0 /* ofxSliderGroup.cpp */; };
-		C8C997D11CA30E900094BAFD /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997B51CA30E900094BAFD /* do_output.cpp */; };
-		C8C997D21CA30E900094BAFD /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997B81CA30E900094BAFD /* robot_state.cpp */; };
-		C8C997D31CA30E900094BAFD /* robot_state_RT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997BA1CA30E900094BAFD /* robot_state_RT.cpp */; };
-		C8C997D41CA30E900094BAFD /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997BC1CA30E900094BAFD /* ur_communication.cpp */; };
-		C8C997D51CA30E900094BAFD /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997BE1CA30E900094BAFD /* ur_driver.cpp */; };
-		C8C997D61CA30E900094BAFD /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997C01CA30E900094BAFD /* ur_realtime_communication.cpp */; };
-		C8C997D71CA30E900094BAFD /* ur_kin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997C41CA30E900094BAFD /* ur_kin.cpp */; };
-		C8C997D81CA30E900094BAFD /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997C71CA30E900094BAFD /* UR5KinematicModel.cpp */; };
-		C8C997D91CA30E900094BAFD /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997C91CA30E900094BAFD /* URDriver.cpp */; };
-		C8C997DA1CA30E900094BAFD /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997CB1CA30E900094BAFD /* URMove.cpp */; };
-		C8C997DB1CA30E900094BAFD /* URRead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997CD1CA30E900094BAFD /* URRead.cpp */; };
-		C8C997DC1CA30E900094BAFD /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997CF1CA30E900094BAFD /* URToolHead.cpp */; };
-		C8C9982B1CA30FA20094BAFD /* ofxAssimpAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997DF1CA30FA20094BAFD /* ofxAssimpAnimation.cpp */; };
-		C8C9982C1CA30FA20094BAFD /* ofxAssimpMeshHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997E11CA30FA20094BAFD /* ofxAssimpMeshHelper.cpp */; };
-		C8C9982D1CA30FA20094BAFD /* ofxAssimpModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997E31CA30FA20094BAFD /* ofxAssimpModelLoader.cpp */; };
-		C8C9982E1CA30FA20094BAFD /* ofxAssimpTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8C997E51CA30FA20094BAFD /* ofxAssimpTexture.cpp */; };
-		C8C9982F1CA30FA20094BAFD /* assimp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C998231CA30FA20094BAFD /* assimp.a */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -91,92 +74,6 @@
 		B87C60311EC1FE841C1ECD89 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxLabel.h; path = ../../../addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
-		C8C997B51CA30E900094BAFD /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
-		C8C997B61CA30E900094BAFD /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
-		C8C997B71CA30E900094BAFD /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
-		C8C997B81CA30E900094BAFD /* robot_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state.cpp; sourceTree = "<group>"; };
-		C8C997B91CA30E900094BAFD /* robot_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state.h; sourceTree = "<group>"; };
-		C8C997BA1CA30E900094BAFD /* robot_state_RT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state_RT.cpp; sourceTree = "<group>"; };
-		C8C997BB1CA30E900094BAFD /* robot_state_RT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state_RT.h; sourceTree = "<group>"; };
-		C8C997BC1CA30E900094BAFD /* ur_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_communication.cpp; sourceTree = "<group>"; };
-		C8C997BD1CA30E900094BAFD /* ur_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_communication.h; sourceTree = "<group>"; };
-		C8C997BE1CA30E900094BAFD /* ur_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_driver.cpp; sourceTree = "<group>"; };
-		C8C997BF1CA30E900094BAFD /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
-		C8C997C01CA30E900094BAFD /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
-		C8C997C11CA30E900094BAFD /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
-		C8C997C31CA30E900094BAFD /* ikfast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ikfast.h; sourceTree = "<group>"; };
-		C8C997C41CA30E900094BAFD /* ur_kin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_kin.cpp; sourceTree = "<group>"; };
-		C8C997C51CA30E900094BAFD /* ur_kin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_kin.h; sourceTree = "<group>"; };
-		C8C997C71CA30E900094BAFD /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
-		C8C997C81CA30E900094BAFD /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
-		C8C997C91CA30E900094BAFD /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
-		C8C997CA1CA30E900094BAFD /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
-		C8C997CB1CA30E900094BAFD /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
-		C8C997CC1CA30E900094BAFD /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
-		C8C997CD1CA30E900094BAFD /* URRead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URRead.cpp; sourceTree = "<group>"; };
-		C8C997CE1CA30E900094BAFD /* URRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URRead.h; sourceTree = "<group>"; };
-		C8C997CF1CA30E900094BAFD /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
-		C8C997D01CA30E900094BAFD /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
-		C8C997DF1CA30FA20094BAFD /* ofxAssimpAnimation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAssimpAnimation.cpp; sourceTree = "<group>"; };
-		C8C997E01CA30FA20094BAFD /* ofxAssimpAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpAnimation.h; sourceTree = "<group>"; };
-		C8C997E11CA30FA20094BAFD /* ofxAssimpMeshHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAssimpMeshHelper.cpp; sourceTree = "<group>"; };
-		C8C997E21CA30FA20094BAFD /* ofxAssimpMeshHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpMeshHelper.h; sourceTree = "<group>"; };
-		C8C997E31CA30FA20094BAFD /* ofxAssimpModelLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAssimpModelLoader.cpp; sourceTree = "<group>"; };
-		C8C997E41CA30FA20094BAFD /* ofxAssimpModelLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpModelLoader.h; sourceTree = "<group>"; };
-		C8C997E51CA30FA20094BAFD /* ofxAssimpTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAssimpTexture.cpp; sourceTree = "<group>"; };
-		C8C997E61CA30FA20094BAFD /* ofxAssimpTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpTexture.h; sourceTree = "<group>"; };
-		C8C997E71CA30FA20094BAFD /* ofxAssimpUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxAssimpUtils.h; sourceTree = "<group>"; };
-		C8C997EC1CA30FA20094BAFD /* ai_assert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ai_assert.h; sourceTree = "<group>"; };
-		C8C997ED1CA30FA20094BAFD /* anim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = anim.h; sourceTree = "<group>"; };
-		C8C997EE1CA30FA20094BAFD /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
-		C8C997EF1CA30FA20094BAFD /* cexport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cexport.h; sourceTree = "<group>"; };
-		C8C997F01CA30FA20094BAFD /* cfileio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cfileio.h; sourceTree = "<group>"; };
-		C8C997F11CA30FA20094BAFD /* cimport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cimport.h; sourceTree = "<group>"; };
-		C8C997F21CA30FA20094BAFD /* color4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = color4.h; sourceTree = "<group>"; };
-		C8C997F31CA30FA20094BAFD /* color4.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = color4.inl; sourceTree = "<group>"; };
-		C8C997F51CA30FA20094BAFD /* poppack1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = poppack1.h; sourceTree = "<group>"; };
-		C8C997F61CA30FA20094BAFD /* pstdint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pstdint.h; sourceTree = "<group>"; };
-		C8C997F71CA30FA20094BAFD /* pushpack1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pushpack1.h; sourceTree = "<group>"; };
-		C8C997F81CA30FA20094BAFD /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		C8C997F91CA30FA20094BAFD /* DefaultLogger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DefaultLogger.hpp; sourceTree = "<group>"; };
-		C8C997FA1CA30FA20094BAFD /* defs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = defs.h; sourceTree = "<group>"; };
-		C8C997FB1CA30FA20094BAFD /* Exporter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exporter.hpp; sourceTree = "<group>"; };
-		C8C997FC1CA30FA20094BAFD /* Importer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Importer.hpp; sourceTree = "<group>"; };
-		C8C997FD1CA30FA20094BAFD /* importerdesc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = importerdesc.h; sourceTree = "<group>"; };
-		C8C997FE1CA30FA20094BAFD /* IOStream.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IOStream.hpp; sourceTree = "<group>"; };
-		C8C997FF1CA30FA20094BAFD /* IOSystem.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IOSystem.hpp; sourceTree = "<group>"; };
-		C8C998001CA30FA20094BAFD /* light.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = light.h; sourceTree = "<group>"; };
-		C8C998011CA30FA20094BAFD /* Logger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Logger.hpp; sourceTree = "<group>"; };
-		C8C998021CA30FA20094BAFD /* LogStream.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LogStream.hpp; sourceTree = "<group>"; };
-		C8C998031CA30FA20094BAFD /* material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = material.h; sourceTree = "<group>"; };
-		C8C998041CA30FA20094BAFD /* material.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = material.inl; sourceTree = "<group>"; };
-		C8C998051CA30FA20094BAFD /* matrix3x3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix3x3.h; sourceTree = "<group>"; };
-		C8C998061CA30FA20094BAFD /* matrix3x3.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = matrix3x3.inl; sourceTree = "<group>"; };
-		C8C998071CA30FA20094BAFD /* matrix4x4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = matrix4x4.h; sourceTree = "<group>"; };
-		C8C998081CA30FA20094BAFD /* matrix4x4.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = matrix4x4.inl; sourceTree = "<group>"; };
-		C8C998091CA30FA20094BAFD /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mesh.h; sourceTree = "<group>"; };
-		C8C9980A1CA30FA20094BAFD /* metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = metadata.h; sourceTree = "<group>"; };
-		C8C9980B1CA30FA20094BAFD /* NullLogger.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NullLogger.hpp; sourceTree = "<group>"; };
-		C8C9980C1CA30FA20094BAFD /* postprocess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = postprocess.h; sourceTree = "<group>"; };
-		C8C9980D1CA30FA20094BAFD /* ProgressHandler.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgressHandler.hpp; sourceTree = "<group>"; };
-		C8C9980E1CA30FA20094BAFD /* quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = quaternion.h; sourceTree = "<group>"; };
-		C8C9980F1CA30FA20094BAFD /* quaternion.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = quaternion.inl; sourceTree = "<group>"; };
-		C8C998101CA30FA20094BAFD /* scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scene.h; sourceTree = "<group>"; };
-		C8C998111CA30FA20094BAFD /* texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
-		C8C998121CA30FA20094BAFD /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		C8C998131CA30FA20094BAFD /* vector2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector2.h; sourceTree = "<group>"; };
-		C8C998141CA30FA20094BAFD /* vector2.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vector2.inl; sourceTree = "<group>"; };
-		C8C998151CA30FA20094BAFD /* vector3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vector3.h; sourceTree = "<group>"; };
-		C8C998161CA30FA20094BAFD /* vector3.inl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vector3.inl; sourceTree = "<group>"; };
-		C8C998171CA30FA20094BAFD /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		C8C998231CA30FA20094BAFD /* assimp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = assimp.a; sourceTree = "<group>"; };
-		C8C9982A1CA30FA20094BAFD /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		C8C998321CA30FCE0094BAFD /* DelayTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DelayTimer.h; sourceTree = "<group>"; };
-		C8C998331CA30FCE0094BAFD /* FadeTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FadeTimer.h; sourceTree = "<group>"; };
-		C8C998341CA30FCE0094BAFD /* Hysteresis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Hysteresis.h; sourceTree = "<group>"; };
-		C8C998351CA30FCE0094BAFD /* LerpTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LerpTimer.h; sourceTree = "<group>"; };
-		C8C998361CA30FCE0094BAFD /* ofxTiming.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTiming.h; sourceTree = "<group>"; };
-		C8C998371CA30FCE0094BAFD /* RateTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RateTimer.h; sourceTree = "<group>"; };
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* toolPointOrientationDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = toolPointOrientationDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8C9982F1CA30FA20094BAFD /* assimp.a in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,236 +170,10 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				C8C997B21CA30E900094BAFD /* ofxURDriver */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
-				C8C997DD1CA30FA20094BAFD /* ofxAssimpModelLoader */,
-				C8C998301CA30FCE0094BAFD /* ofxTiming */,
 			);
 			name = addons;
-			sourceTree = "<group>";
-		};
-		C8C997B21CA30E900094BAFD /* ofxURDriver */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997B31CA30E900094BAFD /* lib */,
-				C8C997C61CA30E900094BAFD /* src */,
-			);
-			name = ofxURDriver;
-			path = ../ofxURDriver;
-			sourceTree = "<group>";
-		};
-		C8C997B31CA30E900094BAFD /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997B41CA30E900094BAFD /* urDriver */,
-				C8C997C21CA30E900094BAFD /* urKinematics */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		C8C997B41CA30E900094BAFD /* urDriver */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997B51CA30E900094BAFD /* do_output.cpp */,
-				C8C997B61CA30E900094BAFD /* do_output.h */,
-				C8C997B71CA30E900094BAFD /* endian.h */,
-				C8C997B81CA30E900094BAFD /* robot_state.cpp */,
-				C8C997B91CA30E900094BAFD /* robot_state.h */,
-				C8C997BA1CA30E900094BAFD /* robot_state_RT.cpp */,
-				C8C997BB1CA30E900094BAFD /* robot_state_RT.h */,
-				C8C997BC1CA30E900094BAFD /* ur_communication.cpp */,
-				C8C997BD1CA30E900094BAFD /* ur_communication.h */,
-				C8C997BE1CA30E900094BAFD /* ur_driver.cpp */,
-				C8C997BF1CA30E900094BAFD /* ur_driver.h */,
-				C8C997C01CA30E900094BAFD /* ur_realtime_communication.cpp */,
-				C8C997C11CA30E900094BAFD /* ur_realtime_communication.h */,
-			);
-			path = urDriver;
-			sourceTree = "<group>";
-		};
-		C8C997C21CA30E900094BAFD /* urKinematics */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997C31CA30E900094BAFD /* ikfast.h */,
-				C8C997C41CA30E900094BAFD /* ur_kin.cpp */,
-				C8C997C51CA30E900094BAFD /* ur_kin.h */,
-			);
-			path = urKinematics;
-			sourceTree = "<group>";
-		};
-		C8C997C61CA30E900094BAFD /* src */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997C71CA30E900094BAFD /* UR5KinematicModel.cpp */,
-				C8C997C81CA30E900094BAFD /* UR5KinematicModel.h */,
-				C8C997C91CA30E900094BAFD /* URDriver.cpp */,
-				C8C997CA1CA30E900094BAFD /* URDriver.h */,
-				C8C997CB1CA30E900094BAFD /* URMove.cpp */,
-				C8C997CC1CA30E900094BAFD /* URMove.h */,
-				C8C997CD1CA30E900094BAFD /* URRead.cpp */,
-				C8C997CE1CA30E900094BAFD /* URRead.h */,
-				C8C997CF1CA30E900094BAFD /* URToolHead.cpp */,
-				C8C997D01CA30E900094BAFD /* URToolHead.h */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		C8C997DD1CA30FA20094BAFD /* ofxAssimpModelLoader */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997DE1CA30FA20094BAFD /* src */,
-				C8C997E81CA30FA20094BAFD /* libs */,
-			);
-			name = ofxAssimpModelLoader;
-			sourceTree = "<group>";
-		};
-		C8C997DE1CA30FA20094BAFD /* src */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997DF1CA30FA20094BAFD /* ofxAssimpAnimation.cpp */,
-				C8C997E01CA30FA20094BAFD /* ofxAssimpAnimation.h */,
-				C8C997E11CA30FA20094BAFD /* ofxAssimpMeshHelper.cpp */,
-				C8C997E21CA30FA20094BAFD /* ofxAssimpMeshHelper.h */,
-				C8C997E31CA30FA20094BAFD /* ofxAssimpModelLoader.cpp */,
-				C8C997E41CA30FA20094BAFD /* ofxAssimpModelLoader.h */,
-				C8C997E51CA30FA20094BAFD /* ofxAssimpTexture.cpp */,
-				C8C997E61CA30FA20094BAFD /* ofxAssimpTexture.h */,
-				C8C997E71CA30FA20094BAFD /* ofxAssimpUtils.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxAssimpModelLoader/src;
-			sourceTree = "<group>";
-		};
-		C8C997E81CA30FA20094BAFD /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997E91CA30FA20094BAFD /* assimp */,
-			);
-			name = libs;
-			path = ../../../addons/ofxAssimpModelLoader/libs;
-			sourceTree = "<group>";
-		};
-		C8C997E91CA30FA20094BAFD /* assimp */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997EA1CA30FA20094BAFD /* include */,
-				C8C998181CA30FA20094BAFD /* lib */,
-				C8C998291CA30FA20094BAFD /* license */,
-			);
-			path = assimp;
-			sourceTree = "<group>";
-		};
-		C8C997EA1CA30FA20094BAFD /* include */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997EB1CA30FA20094BAFD /* assimp */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		C8C997EB1CA30FA20094BAFD /* assimp */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997EC1CA30FA20094BAFD /* ai_assert.h */,
-				C8C997ED1CA30FA20094BAFD /* anim.h */,
-				C8C997EE1CA30FA20094BAFD /* camera.h */,
-				C8C997EF1CA30FA20094BAFD /* cexport.h */,
-				C8C997F01CA30FA20094BAFD /* cfileio.h */,
-				C8C997F11CA30FA20094BAFD /* cimport.h */,
-				C8C997F21CA30FA20094BAFD /* color4.h */,
-				C8C997F31CA30FA20094BAFD /* color4.inl */,
-				C8C997F41CA30FA20094BAFD /* Compiler */,
-				C8C997F81CA30FA20094BAFD /* config.h */,
-				C8C997F91CA30FA20094BAFD /* DefaultLogger.hpp */,
-				C8C997FA1CA30FA20094BAFD /* defs.h */,
-				C8C997FB1CA30FA20094BAFD /* Exporter.hpp */,
-				C8C997FC1CA30FA20094BAFD /* Importer.hpp */,
-				C8C997FD1CA30FA20094BAFD /* importerdesc.h */,
-				C8C997FE1CA30FA20094BAFD /* IOStream.hpp */,
-				C8C997FF1CA30FA20094BAFD /* IOSystem.hpp */,
-				C8C998001CA30FA20094BAFD /* light.h */,
-				C8C998011CA30FA20094BAFD /* Logger.hpp */,
-				C8C998021CA30FA20094BAFD /* LogStream.hpp */,
-				C8C998031CA30FA20094BAFD /* material.h */,
-				C8C998041CA30FA20094BAFD /* material.inl */,
-				C8C998051CA30FA20094BAFD /* matrix3x3.h */,
-				C8C998061CA30FA20094BAFD /* matrix3x3.inl */,
-				C8C998071CA30FA20094BAFD /* matrix4x4.h */,
-				C8C998081CA30FA20094BAFD /* matrix4x4.inl */,
-				C8C998091CA30FA20094BAFD /* mesh.h */,
-				C8C9980A1CA30FA20094BAFD /* metadata.h */,
-				C8C9980B1CA30FA20094BAFD /* NullLogger.hpp */,
-				C8C9980C1CA30FA20094BAFD /* postprocess.h */,
-				C8C9980D1CA30FA20094BAFD /* ProgressHandler.hpp */,
-				C8C9980E1CA30FA20094BAFD /* quaternion.h */,
-				C8C9980F1CA30FA20094BAFD /* quaternion.inl */,
-				C8C998101CA30FA20094BAFD /* scene.h */,
-				C8C998111CA30FA20094BAFD /* texture.h */,
-				C8C998121CA30FA20094BAFD /* types.h */,
-				C8C998131CA30FA20094BAFD /* vector2.h */,
-				C8C998141CA30FA20094BAFD /* vector2.inl */,
-				C8C998151CA30FA20094BAFD /* vector3.h */,
-				C8C998161CA30FA20094BAFD /* vector3.inl */,
-				C8C998171CA30FA20094BAFD /* version.h */,
-			);
-			path = assimp;
-			sourceTree = "<group>";
-		};
-		C8C997F41CA30FA20094BAFD /* Compiler */ = {
-			isa = PBXGroup;
-			children = (
-				C8C997F51CA30FA20094BAFD /* poppack1.h */,
-				C8C997F61CA30FA20094BAFD /* pstdint.h */,
-				C8C997F71CA30FA20094BAFD /* pushpack1.h */,
-			);
-			path = Compiler;
-			sourceTree = "<group>";
-		};
-		C8C998181CA30FA20094BAFD /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				C8C998221CA30FA20094BAFD /* osx */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		C8C998221CA30FA20094BAFD /* osx */ = {
-			isa = PBXGroup;
-			children = (
-				C8C998231CA30FA20094BAFD /* assimp.a */,
-			);
-			path = osx;
-			sourceTree = "<group>";
-		};
-		C8C998291CA30FA20094BAFD /* license */ = {
-			isa = PBXGroup;
-			children = (
-				C8C9982A1CA30FA20094BAFD /* LICENSE */,
-			);
-			path = license;
-			sourceTree = "<group>";
-		};
-		C8C998301CA30FCE0094BAFD /* ofxTiming */ = {
-			isa = PBXGroup;
-			children = (
-				C8C998311CA30FCE0094BAFD /* src */,
-			);
-			name = ofxTiming;
-			sourceTree = "<group>";
-		};
-		C8C998311CA30FCE0094BAFD /* src */ = {
-			isa = PBXGroup;
-			children = (
-				C8C998321CA30FCE0094BAFD /* DelayTimer.h */,
-				C8C998331CA30FCE0094BAFD /* FadeTimer.h */,
-				C8C998341CA30FCE0094BAFD /* Hysteresis.h */,
-				C8C998351CA30FCE0094BAFD /* LerpTimer.h */,
-				C8C998361CA30FCE0094BAFD /* ofxTiming.h */,
-				C8C998371CA30FCE0094BAFD /* RateTimer.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxTiming/src;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -648,31 +318,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				C8C997DA1CA30E900094BAFD /* URMove.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
-				C8C997D81CA30E900094BAFD /* UR5KinematicModel.cpp in Sources */,
-				C8C997D11CA30E900094BAFD /* do_output.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
-				C8C997D51CA30E900094BAFD /* ur_driver.cpp in Sources */,
-				C8C9982D1CA30FA20094BAFD /* ofxAssimpModelLoader.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
-				C8C997DB1CA30E900094BAFD /* URRead.cpp in Sources */,
-				C8C997D21CA30E900094BAFD /* robot_state.cpp in Sources */,
-				C8C997D61CA30E900094BAFD /* ur_realtime_communication.cpp in Sources */,
 				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
-				C8C9982E1CA30FA20094BAFD /* ofxAssimpTexture.cpp in Sources */,
-				C8C9982B1CA30FA20094BAFD /* ofxAssimpAnimation.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
-				C8C997D91CA30E900094BAFD /* URDriver.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
-				C8C997DC1CA30E900094BAFD /* URToolHead.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
-				C8C9982C1CA30FA20094BAFD /* ofxAssimpMeshHelper.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
-				C8C997D71CA30E900094BAFD /* ur_kin.cpp in Sources */,
-				C8C997D31CA30E900094BAFD /* robot_state_RT.cpp in Sources */,
-				C8C997D41CA30E900094BAFD /* ur_communication.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
