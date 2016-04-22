@@ -178,8 +178,10 @@ void ofxURDriver::threadedFunction(){
             //this is returning weird shit that doesn't return the same values.
           
             model.toolPointRaw.getBack() = robot->rt_interface_->robot_state_->getToolVectorActual();
-            
-            ofVec3f fooRot = ofVec3f(ofRadToDeg(model.toolPointRaw.getBack()[3]),ofRadToDeg(model.toolPointRaw.getBack()[4]),ofRadToDeg(model.toolPointRaw.getBack()[5]));
+            model.toolPointRaw.getBack()[3] = model.toolPointRaw.getBack()[3]/PI*180;
+            model.toolPointRaw.getBack()[4] = model.toolPointRaw.getBack()[4]/PI*180;
+            model.toolPointRaw.getBack()[5] = model.toolPointRaw.getBack()[5]/PI*180;
+            ofVec3f fooRot = ofVec3f((model.toolPointRaw.getBack()[3]),(model.toolPointRaw.getBack()[4]),(model.toolPointRaw.getBack()[5]));
             
             float angle = fooRot.length();
             if( angle < epslion){

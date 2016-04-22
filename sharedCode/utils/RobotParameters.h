@@ -90,7 +90,7 @@ class RobotParameters{
     ofParameterGroup jointSpeeds;
     ofParameterGroup jointsIK;
     
-   
+    
     
     ofParameter<float> followLerp;
     ofParameter<float> avgAccel;
