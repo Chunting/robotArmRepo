@@ -31,8 +31,9 @@ void RobotController::update(){
 void RobotController::updateMovement(){
     movement.setCurrentJointPosition(robotParams->currentJointPos);
 
+//    robotParams->tcpOffset = robot.getToolNode().getGlobalPosition();
     
-    robotParams->targetTCP.position+=robotParams->tcpOffset;
+//    robotParams->targetTCP.position+=robotParams->tcpOffset;
     
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);
@@ -79,51 +80,9 @@ void RobotController::updateData(){
     ofQuaternion tcpO = robotParams->actualTCP.rotation;
     robotParams->tcpOrientation = ofVec4f(tcpO.x(), tcpO.y(), tcpO.z(), tcpO.w());
     if(robotParams->bRecord){
-<<<<<<< HEAD
         recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
     }
 }
-
-void RobotController::updatePose(Joint targetTCP){
-    workSurfaceTargetTCP = targetTCP;
-}
-
-void RobotController::moveArm(){
-<<<<<<< HEAD
-    // set target TCP to a default orientation, then modify
-//    robotParams->targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-//    robotParams->targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-//    robotParams->targetTCP.rotation*=ofQuaternion(0, ofVec3f(0,1, 0));
-=======
->>>>>>> master
-    
-    // assign the target pose to the current robot pose
-    if(robotParams->bCopy){
-        robotParams->bCopy = false;
-        
-        // get the robot's position
-        robotParams->targetTCP = robotParams->actualTCP;
-        
-        
-        // update GUI params
-        robotParams->targetTCPPosition = robotParams->targetTCP.position;
-        robotParams->targetTCPOrientation = ofVec4f(robotParams->targetTCP.rotation.x(), robotParams->targetTCP.rotation.y(), robotParams->targetTCP.rotation.z(), robotParams->targetTCP.rotation.w());
-        
-=======
-        recorder.addPose(robotParams->jointPos, ofGetElapsedTimef());
->>>>>>> master
-    }
-    // update GUI params
-    for(int i = 0; i < robotParams->currentJointPos.size(); i++){
-        robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
-    }
-    
-    ofMatrix4x4 forwardIK = movement.forwardKinematics(robotParams->currentJointPos);
-    robotParams->forwardTCPPosition = forwardIK.getTranslation();
-    robotParams->forwardTCPOrientation = ofVec4f(forwardIK.getRotate().x(), forwardIK.getRotate().y(), forwardIK.getRotate().z(), forwardIK.getRotate().x());
-    
-}
-
 
 void RobotController::toggleRecord(){
     if(robotParams->bRecord){

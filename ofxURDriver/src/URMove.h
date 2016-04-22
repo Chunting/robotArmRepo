@@ -102,4 +102,6 @@ protected:
     unsigned int nearestIndex;
     float rotAngle;
     ofNode node;
+    
+    float epslion;
 };

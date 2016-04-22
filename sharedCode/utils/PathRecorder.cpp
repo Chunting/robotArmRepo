@@ -26,9 +26,9 @@ void PathRecorder::endRecording(){
     }
     
 }
-void PathRecorder::addPose(vector<ofParameter<float> > pose, float timestamp){
+void PathRecorder::addPose(vector<double> pose, float timestamp){
     for(int i = 0; i < pose.size(); i++){
-        file<<pose[i].get();
+        file<<pose[i];
         file<<",";
     }
     file<<(timestamp-startTime);

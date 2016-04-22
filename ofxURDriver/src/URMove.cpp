@@ -40,6 +40,9 @@ void URMove::setup(){
     currentJointSpeeds.assign(6, 0.0);
     currentPose.assign(6, 0.0);
     inversePosition.setup(vector<vector<double> >());
+    
+    epslion = 0.0005;
+    
 }
 
 
@@ -48,7 +51,6 @@ void URMove::update(){
     deltaTime = deltaTimer.getPeriod();
     
   
-    
     if(newTargetPoint.size() > 0){
         targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
         targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
@@ -95,6 +97,11 @@ void URMove::computeVelocities(){
             previews[selectedSolution]->jointsProcessed.swapFront();
             for(int i = 0; i < previews[selectedSolution]->jointsRaw.getFront().size(); i++){
                 currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw.getFront()[i]-currentPose[i])/deltaTime/speedDivider;
+                
+                if(abs(currentJointSpeeds[i]) < epslion){
+                    currentJointSpeeds[i] = 0.0;
+                }
+                
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);

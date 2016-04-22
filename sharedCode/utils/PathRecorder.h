@@ -9,7 +9,7 @@ public:
     void draw();
     void startRecording();
     void endRecording();
-    void addPose(vector<ofParameter<float> > pose, float timestamp);
+    void addPose(vector<double> pose, float timestamp);
     
     bool recording;
     string path;

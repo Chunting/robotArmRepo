@@ -26,7 +26,7 @@ public:
     void draw();
     void setToolMesh(ofMesh mesh);
     ofNode getTool();
-    
+    void setToolOffset(ofVec3f localOffset);
     ofQuaternion getToolPointQuaternion();
     
     ofxAssimpModelLoader loader;

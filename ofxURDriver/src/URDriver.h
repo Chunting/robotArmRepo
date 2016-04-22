@@ -19,7 +19,9 @@ public:
     void setup(string ipAddress, double minPayload = 0.0, double maxPayload = 1.0);
     void start();
     void disconnect();
+    void setToolOffset(ofVec3f localPos);
     void threadedFunction();
+    ofNode getToolNode();
     ofVec4f getCalculatedTCPOrientation();
     vector<double> getToolPointRaw();
     vector<double> getJointPositions();
