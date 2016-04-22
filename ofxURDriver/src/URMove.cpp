@@ -266,7 +266,6 @@ ofMatrix4x4 URMove::forwardKinematics(vector<double> pose){
 
 ofMatrix4x4 URMove::forwardKinematics(double o, double t, double th, double f, double fi, double s){
     double q[6] = {o, t, th, f, fi, s};
-    ofLog()<<q<<endl;
     double* T1 = new double[16];
     double* T2 = new double[16];
     double* T3 = new double[16];
