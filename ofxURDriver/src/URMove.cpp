@@ -42,6 +42,7 @@ void URMove::setup(){
     inversePosition.setup(vector<vector<double> >());
     
     epslion = 0.0005;
+    targetLength = 0.0;
     
 }
 
@@ -52,6 +53,8 @@ void URMove::update(){
     
   
     if(newTargetPoint.size() > 0){
+        float speed = ((targetPoint.position-newTargetPoint.front().position)).length()/deltaTime;
+        targetLine.getPointAtIndexInterpolated(targetLine.getIndexAtLength(targetLength));
         targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
         targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
         newTargetPoint.pop_front();
@@ -122,11 +125,12 @@ void URMove::computeVelocities(){
 void URMove::addTargetPoint(Joint target){
     
     newTargetPoint.push_back(target);
-    
     targetLine.addVertex(toMM(target.position));
     if(targetLine.size() > 400){
         targetLine.getVertices().erase(targetLine.getVertices().begin(), targetLine.getVertices().begin()+1);
     }
+    totalLength = targetLine.getLengthAtIndexInterpolated(targetLine.getIndexAtPercent(1.0));
+    
 }
 
 

@@ -34,6 +34,21 @@ void ofApp::setup(){
     
     gml.setup();
     gml.loadFile("gml/53514.gml");
+    
+    
+    
+    gizmo.setDisplayScale(0.5);
+    
+    
+    tcpNode.setPosition(ofVec3f(0.5, 0.5, 0.5)*1000);
+    tcpNode.setOrientation(parameters.targetTCP.rotation);
+    
+    //    if(gizmo.load("tcpNode.txt" )) {
+    //        tcpNode.setTransformMatrix( gizmo.getMatrix() );
+    //    }
+    
+    
+    gizmo.setNode( tcpNode);
 }
 
 void ofApp::setupGUI(){
@@ -60,6 +75,8 @@ void ofApp::setupGUI(){
     
     
     
+    
+    
 }
 
 
@@ -71,21 +88,24 @@ void ofApp::update(){
     workSurface.update();
     
     workSurfaceTargetTCP = workSurface.getNextPose();
+    tcpNode.setTransformMatrix( gizmo.getMatrix() );
     moveArm();
     robot.update();
     
-    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
-    {
+//    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+//    {
         activeCam = 0;
-    }
-    else
-    {
-        activeCam = 1;
-    }
+//    }
+//    else
+//    {
+//        activeCam = 1;
+//    }
+    
+    
 }
 
 void ofApp::moveArm(){
-
+    
     // assign the target pose to the current robot pose
     if(parameters.bCopy){
         parameters.bCopy = false;
@@ -95,18 +115,19 @@ void ofApp::moveArm(){
         // get the robot's position
         parameters.targetTCP.position = parameters.actualTCP.position;
         parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
-
+        
         
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
+        tcpNode.setOrientation(parameters.targetTCP.rotation);
     }
     // follow a user-defined position and orientation
     if(parameters.bFollow){
         
-        parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
-        parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
+        parameters.targetTCP.position.interpolate(tcpNode.getPosition()/1000.0, parameters.followLerp);
+        parameters.targetTCP.rotation = tcpNode.getOrientationQuat();
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
@@ -144,30 +165,34 @@ void ofApp::draw(){
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    cams[0].begin();
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
-    
-    
+    tcpNode.draw();
+    gizmo.draw( cams[0] );
     if (!hideRobot){
-        robot.robot.model.draw();
+//        robot.robot.model.draw();
+        robot.movement.draw(robot.movement.selectedSolution);
     }
     ofSetColor(255, 0, 255);
     ofEnableDepthTest();
     workSurface.draw();
     ofDisableDepthTest();;
+    
     cams[0].end();
     
     
-    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    ofEnableDepthTest();
-    workSurface.draw();
-    ofDisableDepthTest();
-    if (!hideRobot){
-        robot.movement.draw(robot.movement.selectedSolution);
-    }
-    cams[1].end();
+    
+//    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+//    ofEnableDepthTest();
+//    workSurface.draw();
+//    ofDisableDepthTest();
+//    if (!hideRobot){
+//   
+//    }
+//    cams[1].end();
+    
     
     
     ofPushMatrix();
@@ -247,6 +272,20 @@ void ofApp::keyPressed(int key){
         parameters.bFigure8 = !parameters.bFigure8;
     }
     
+    if( key == 'r' ) {
+        gizmo.setType( ofxGizmo::OFX_GIZMO_ROTATE );
+    }
+    if( key == 'g' ) {
+        gizmo.setType( ofxGizmo::OFX_GIZMO_MOVE );
+    }
+    if( key == 's' ) {
+        gizmo.setType( ofxGizmo::OFX_GIZMO_SCALE );
+    }
+    if( key == 'e' ) {
+        gizmo.toggleVisible();
+    }
+    
+    
     
     handleViewportPresets(key);
     
@@ -320,6 +359,8 @@ void ofApp::handleViewportPresets(int key){
     //        viewportLabels[activeCam] = "New Viewport Saved!";
     //        cout << ofToString(savedCamMats[activeCam]) << endl;
     //    }
+    cams[0].disableMouseInput();
+    cams[1].disableMouseInput();
 }
 
 //--------------------------------------------------------------
@@ -371,6 +412,8 @@ void ofApp::keyReleased(int key){
     if(key == '5'){
         //        cams[activeCam].usemouse = false;
     }
+    cams[0].enableMouseInput();
+    cams[1].enableMouseInput();
 }
 
 //--------------------------------------------------------------

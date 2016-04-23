@@ -14,6 +14,7 @@
 #include "NatNetController.h"
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
+#include "ofxGizmo.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -48,6 +49,8 @@ public:
     ofxPanel panelJointsIK;
     ofxPanel panelJointsSpeed;
     
+    ofxGizmo gizmo;
+    ofNode tcpNode;
     
     RobotController robot;
     NatNetController natNet;
