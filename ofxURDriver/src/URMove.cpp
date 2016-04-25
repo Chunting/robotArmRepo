@@ -231,16 +231,13 @@ void URMove::urKinematics(ofMatrix4x4 input){
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
                     inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j]-PI;
-//                    if(inversePosition.getBack()[i][j] > PI){
-//                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
-//                    }
                 }
-//                if(j == 1 || j == 3){
-////                    if(inversePosition.getBack()[i][j] > PI){
-//                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
-//                    }
-//                }
-//                
+                if(j == 1 || j == 3){
+                    if(inversePosition.getBack()[i][j] > PI){
+                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
+                    }
+                }
+//
 //                if(j == 5){
 //                     inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], 0, TWO_PI, -TWO_PI, 0, true);
 //                }

@@ -37,8 +37,13 @@ void ofApp::setup(){
     
     
     
+    
+    
+    viewportReal = ofRectangle(0, 0, (5*ofGetWindowWidth()/6)/2, 2*ofGetWindowHeight()/3);
+    viewportSim = ofRectangle((5*ofGetWindowWidth()/6)/2, 0, (5*ofGetWindowWidth()/6)/2, 2*ofGetWindowHeight()/3);
+    
     gizmo.setDisplayScale(1.0);
-
+    
     
     tcpNode.setPosition(ofVec3f(0.5, 0.5, 0.5)*1000);
     tcpNode.setOrientation(parameters.targetTCP.rotation);
@@ -49,6 +54,27 @@ void ofApp::setup(){
     
     
     gizmo.setNode( tcpNode);
+    setupTimeline();
+
+    
+}
+void ofApp::setupTimeline(){
+    
+    timeline.setup();
+    timeline.setFrameRate(60);
+    timeline.setDurationInFrames(10000);
+    timeline.setLoopType(OF_LOOP_PALINDROME);
+    
+    
+    nodeTrack = new ofxTLNodeTrack();
+    nodeTrack->setNode(tcpNode);
+    timeline.addTrack("TargetTCP", nodeTrack);
+    
+    
+    timeline.setOffset(ofVec2f(viewportReal.x, viewportReal.y+viewportReal.height));
+    timeline.setWidth(5*ofGetWindowWidth()/6);
+    timeline.setHeight(ofGetWindowHeight()/6);
+    nodeTrack->lockNodeToTrack = true;
 }
 
 void ofApp::setupGUI(){
@@ -74,9 +100,6 @@ void ofApp::setupGUI(){
     panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     
     
-    
-    
-    
 }
 
 
@@ -88,17 +111,29 @@ void ofApp::update(){
     workSurface.update();
     
     workSurfaceTargetTCP = workSurface.getNextPose();
-    tcpNode.setTransformMatrix( gizmo.getMatrix() );
+    if(nodeTrack->lockNodeToTrack){
+        gizmo.setNode(tcpNode);
+    }else{
+        tcpNode.setTransformMatrix( gizmo.getMatrix() );
+    }
     moveArm();
     robot.update();
     
-    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+    if (viewportReal.inside(ofGetMouseX(), ofGetMouseY()))
     {
         activeCam = 0;
+        if(!cams[0].getMouseInputEnabled())
+            cams[0].enableMouseInput();
+        if(cams[1].getMouseInputEnabled())
+            cams[1].disableMouseInput();
     }
-    else
+    else if(viewportSim.inside(ofGetMouseX(), ofGetMouseY()))
     {
         activeCam = 1;
+        if(!cams[1].getMouseInputEnabled())
+            cams[1].enableMouseInput();
+        if(cams[0].getMouseInputEnabled())
+            cams[0].disableMouseInput();
     }
     
     
@@ -117,12 +152,12 @@ void ofApp::moveArm(){
         parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
         
         tcpNode.setPosition(parameters.targetTCP.position*1000);
-        tcpNode.setOrientation(parameters.actualTCP.rotation);
+        tcpNode.setOrientation(parameters.targetTCP.rotation);
+        gizmo.setNode(tcpNode);
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
-        tcpNode.setOrientation(parameters.targetTCP.rotation);
     }
     // follow a user-defined position and orientation
     if(parameters.bFollow){
@@ -132,37 +167,6 @@ void ofApp::moveArm(){
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
-    if(parameters.bTrace || parameters.b3DPath){
-        // set target TCP to a default orientation, then modify
-
-        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        parameters.targetTCP.rotation *= workSurfaceTargetTCP.rotation;
-        parameters.targetTCP.position = workSurfaceTargetTCP.position;
-        
-        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
-        
-        
-        tcpNode.setPosition(parameters.targetTCP.position*1000);
-        tcpNode.setOrientation(parameters.targetTCP.rotation);
-        gizmo.setNode(tcpNode);
-        
-        // update GUI params
-        parameters.targetTCPPosition = parameters.targetTCP.position;
-        
-        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
-        
-    }
-    if(parameters.bFigure8){
-        
-        // use a preset orientation
-        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        
-        // update the target position
-        parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get()+ofVec3f(cos(ofGetElapsedTimef()*0.25)*0.2, 0, sin(ofGetElapsedTimef()*0.25*2)*0.2), 0.5);
-    }
-    
 }
 
 
@@ -173,8 +177,12 @@ void ofApp::draw(){
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-    gizmo.setViewDimensions(ofGetWindowWidth()/2, ofGetWindowHeight());
-    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    gizmo.setViewDimensions(viewportReal.width, viewportReal.height);
+    ofSetColor(100, 100, 100);
+    ofDrawRectangle(viewportReal);
+    cams[0].begin(viewportReal);
+    ofSetColor(100, 100, 100);
+    ofDrawRectangle(viewportReal);
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -191,22 +199,32 @@ void ofApp::draw(){
     cams[0].end();
     
     
+    ofSetColor(50, 50, 50);
+    ofDrawRectangle(viewportSim);
     
-    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    cams[1].begin(viewportSim);
+    
     ofEnableDepthTest();
     workSurface.draw();
-    for(int i = 0; i < 4; i++){
-        robot.movement.draw(i);
-    }
+    //    for(int i = 0; i < 4; i++){
+    robot.movement.draw(0);
+    //    }
     ofDisableDepthTest();
     cams[1].end();
     
+    hightlightViewports();
     
+    timeline.draw();
+    
+    
+
     
     ofPushMatrix();
     ofSetColor(255, 0, 255);
     gml.draw();
     ofPopMatrix();
+    
+    
     
     panel.draw();
     panelJoints.draw();
@@ -216,7 +234,9 @@ void ofApp::draw(){
     panelTargetJoints.draw();
     
     /* 3D Navigation */
-    hightlightViewports();
+    
+    
+    
 }
 
 void ofApp::exit(){
@@ -230,40 +250,16 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if(key == 'L'){
+        nodeTrack->lockNodeToTrack = !nodeTrack->lockNodeToTrack;
+    }
+    else if(key == 'T'){
+        nodeTrack->addKeyframe();
+    }
     if(key == 'm'){
         parameters.bMove = !parameters.bMove;
     }
-    if(key == ' '){
-        if(parameters.bTrace){
-            parameters.bTrace = false;
-            parameters.bFollow = true;
-        }else{
-            vector<ofPolyline> strokes;
-            float retract;
-            if (natNet.recordedPath.size() > 0){
-                // DEBUGGING....testing mocap tracking single point on worksrf
-                ofPolyline temp;
-                temp.addVertex(ofPoint (0,0,0));
-                
-                retract = 0;
-                strokes.push_back(temp);
-            }else{
-                retract = -.1;
-                strokes = gml.getPath(0.1);
-            }
-            
-            for(int i = 0; i < strokes.size(); i++){
-                strokes[i] = strokes[i].getResampledByCount(strokes[i].getVertices().size()*4.0);
-            }
-            
-            workSurface.threeDSurface.addStrokes(strokes,retract);
-            workSurface.twoDSurface.addStrokes(strokes,retract);
-            parameters.bTrace = true;
-            parameters.bFollow = false;
-            workSurface.startTime = ofGetElapsedTimef();
-        }
-        
-    }
+    
     if(key == 'u'){
         workSurface.twoDSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
     }
@@ -377,41 +373,13 @@ void ofApp::handleViewportPresets(int key){
 void ofApp::hightlightViewports(){
     ofPushStyle();
     
-    float w = 6;
-    ofSetLineWidth(w);
-    
-    // highlight right viewport
-    if (activeCam == 1){
-        ofSetColor(ofColor::white,80);
-        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
-        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
-        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
-        ofSetColor(ofColor::white,40);
-        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
-        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
-        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
-    }
-    // hightligh left viewport
-    else{
-        ofSetLineWidth(w);
-        ofSetColor(ofColor::white,80);
-        ofDrawLine(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight());
-        ofDrawLine(0, w/2, ofGetWindowWidth()/2, w/2);
-        ofDrawLine(w/2, 0, w/2, ofGetWindowHeight());
-        ofDrawLine(0, ofGetWindowHeight()-w/2, ofGetWindowWidth()/2, ofGetWindowHeight()-w/2);
-        ofSetColor(ofColor::white,40);
-        ofDrawLine(ofGetWindowWidth()/2, w/2, ofGetWindowWidth(), w/2);
-        ofDrawLine(ofGetWindowWidth()-w/2, 0, ofGetWindowWidth()-w/2, ofGetWindowHeight());
-        ofDrawLine(ofGetWindowWidth()/2, ofGetWindowHeight()-w/2, ofGetWindowWidth(), ofGetWindowHeight()-w/2);
-    }
     
     // show Viewport info
     ofSetColor(ofColor::white,200);
-    ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
-    ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
-    ofDrawBitmapString(viewportLabels[1], ofGetWindowWidth()/2+30, ofGetWindowHeight()-30);
-    ofDrawBitmapString("SIMULATED", ofGetWindowWidth() - 100, ofGetWindowHeight()-30);
+    ofDrawBitmapString(viewportLabels[0], viewportReal.x+30, viewportReal.height-30);
+    ofDrawBitmapString("REALTIME", viewportReal.x+viewportReal.width-90, viewportReal.height-30);
+    ofDrawBitmapString(viewportLabels[1], viewportSim.x+30, viewportSim.height-30);
+    ofDrawBitmapString("SIMULATED", viewportSim.x+viewportSim.width - 100, viewportSim.height-30);
     
     ofPopStyle();
 }

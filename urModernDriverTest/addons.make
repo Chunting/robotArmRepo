@@ -2,8 +2,16 @@ ofxAssimpModelLoader
 ofxGML
 ofxGameCamera
 ofxGui
+ofxMSATimer
 ofxNatNet
 ofxOpenCv
 ofxOsc
+ofxRange
+ofxTextInputField
+ofxTimecode
+ofxTimeline
 ofxTiming
+ofxTween
 ofxXmlSettings
+ofxPtf
+ofxGizmo

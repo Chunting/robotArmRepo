@@ -10,7 +10,7 @@
 #include "ofMain.h"
 class RobotParameters{
     public :
-    void setup(bool getTCP = true, bool setTCP = true, bool toolOffset = true, bool drawpath = true){
+    void setup(bool getTCP = true, bool setTCP = true, bool toolOffset = true, bool drawpath = true, bool record = true){
         robotArmParams.setName("UR 5");
         if (getTCP){
             robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
@@ -66,7 +66,7 @@ class RobotParameters{
             jointSpeeds.add(jointVelocities.back().set("Joint Speed"+ofToString(i), 0, -100, 100));
         }
         
-        if (recordPanel){
+        if (record){
             pathRecorderParams.setName("Path Recording");
             pathRecorderParams.add(bRecord.set("Record", false));
         }

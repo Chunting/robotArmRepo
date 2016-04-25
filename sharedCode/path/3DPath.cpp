@@ -23,6 +23,8 @@ void ThreeDPath::setup(){
     path = fooCircle[0];
     buildPerpFrames(path);
     reverse = false;
+    
+    direction = 1;
 }
 
 void ThreeDPath::keyPressed(int key){
@@ -77,7 +79,11 @@ void ThreeDPath::keyPressed(int key){
 
 ofMatrix4x4 ThreeDPath::getNextPose(){
     if(ptf.framesSize()>0){
-        ptIndex = (ptIndex +1) % ptf.framesSize();
+        
+        if (ptIndex == 0 || ptIndex == ptf.framesSize()-1)
+            direction *= -1;
+        
+        ptIndex = (ptIndex + direction) % ptf.framesSize();
         
         orientation = ptf.frameAt(ptIndex);
         

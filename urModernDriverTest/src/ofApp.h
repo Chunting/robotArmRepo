@@ -15,6 +15,9 @@
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
 #include "ofxGizmo.h"
+#include "ofxTimeline.h"
+#include "ofxTLNodeTrack.h"
+
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -37,9 +40,16 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     void moveArm();
-    void setupGUI();    
+    void setupGUI();
+    void setupTimeline();
     /// \brief 3D mesh with paths for robot to follow
 
+    ofxTLNodeTrack* nodeTrack;
+    ofxTimeline timeline;
+    
+    ofRectangle viewportReal;
+    ofRectangle viewportSim;
+    
     RobotParameters parameters;
 
     ofxPanel panel;
@@ -95,6 +105,5 @@ public:
     
     /// Highlights the active viewport.
     void hightlightViewports();
-    
     
 };

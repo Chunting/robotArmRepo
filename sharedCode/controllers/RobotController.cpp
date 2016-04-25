@@ -82,6 +82,15 @@ void RobotController::updateData(){
     if(robotParams->bRecord){
         recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
     }
+    // update GUI params
+    for(int i = 0; i < robotParams->currentJointPos.size(); i++){
+        robotParams->jointPos[i] = ofRadToDeg((float)robotParams->currentJointPos[i]);
+    }
+    
+    ofMatrix4x4 forwardIK = movement.forwardKinematics(robotParams->currentJointPos);
+    robotParams->forwardTCPPosition = forwardIK.getTranslation();
+    robotParams->forwardTCPOrientation = ofVec4f(forwardIK.getRotate().x(), forwardIK.getRotate().y(), forwardIK.getRotate().z(), forwardIK.getRotate().x());
+    
 }
 
 void RobotController::toggleRecord(){
