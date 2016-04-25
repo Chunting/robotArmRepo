@@ -37,8 +37,8 @@ void ofApp::setup(){
     
     
     
-    gizmo.setDisplayScale(0.5);
-    
+    gizmo.setDisplayScale(1.0);
+
     
     tcpNode.setPosition(ofVec3f(0.5, 0.5, 0.5)*1000);
     tcpNode.setOrientation(parameters.targetTCP.rotation);
@@ -92,14 +92,14 @@ void ofApp::update(){
     moveArm();
     robot.update();
     
-//    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
-//    {
+    if (ofGetMouseX() < ofGetWindowWidth()/N_CAMERAS)
+    {
         activeCam = 0;
-//    }
-//    else
-//    {
-//        activeCam = 1;
-//    }
+    }
+    else
+    {
+        activeCam = 1;
+    }
     
     
 }
@@ -116,7 +116,8 @@ void ofApp::moveArm(){
         parameters.targetTCP.position = parameters.actualTCP.position;
         parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
         
-        
+        tcpNode.setPosition(parameters.targetTCP.position*1000);
+        tcpNode.setOrientation(parameters.actualTCP.rotation);
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
@@ -133,11 +134,18 @@ void ofApp::moveArm(){
     }
     if(parameters.bTrace || parameters.b3DPath){
         // set target TCP to a default orientation, then modify
+
         parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        
-        parameters.targetTCP.position = workSurfaceTargetTCP.position;
         parameters.targetTCP.rotation *= workSurfaceTargetTCP.rotation;
+        parameters.targetTCP.position = workSurfaceTargetTCP.position;
+        
+        parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
+        
+        
+        tcpNode.setPosition(parameters.targetTCP.position*1000);
+        tcpNode.setOrientation(parameters.targetTCP.rotation);
+        gizmo.setNode(tcpNode);
         
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
@@ -165,15 +173,15 @@ void ofApp::draw(){
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
-    cams[0].begin();
+    gizmo.setViewDimensions(ofGetWindowWidth()/2, ofGetWindowHeight());
+    cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
     tcpNode.draw();
     gizmo.draw( cams[0] );
     if (!hideRobot){
-//        robot.robot.model.draw();
-        robot.movement.draw(robot.movement.selectedSolution);
+        robot.robot.model.draw();
     }
     ofSetColor(255, 0, 255);
     ofEnableDepthTest();
@@ -184,14 +192,14 @@ void ofApp::draw(){
     
     
     
-//    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-//    ofEnableDepthTest();
-//    workSurface.draw();
-//    ofDisableDepthTest();
-//    if (!hideRobot){
-//   
-//    }
-//    cams[1].end();
+    cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    ofEnableDepthTest();
+    workSurface.draw();
+    for(int i = 0; i < 4; i++){
+        robot.movement.draw(i);
+    }
+    ofDisableDepthTest();
+    cams[1].end();
     
     
     
@@ -359,8 +367,10 @@ void ofApp::handleViewportPresets(int key){
     //        viewportLabels[activeCam] = "New Viewport Saved!";
     //        cout << ofToString(savedCamMats[activeCam]) << endl;
     //    }
-    cams[0].disableMouseInput();
-    cams[1].disableMouseInput();
+    if(key == 'z'){
+        cams[0].disableMouseInput();
+        cams[1].disableMouseInput();
+    }
 }
 
 //--------------------------------------------------------------
@@ -412,8 +422,10 @@ void ofApp::keyReleased(int key){
     if(key == '5'){
         //        cams[activeCam].usemouse = false;
     }
-    cams[0].enableMouseInput();
-    cams[1].enableMouseInput();
+    if(key == 'z'){
+        cams[0].enableMouseInput();
+        cams[1].enableMouseInput();
+    }
 }
 
 //--------------------------------------------------------------

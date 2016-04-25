@@ -70,7 +70,7 @@ void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
 
-    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
+//    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
     
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];

@@ -137,7 +137,7 @@ void URMove::addTargetPoint(Joint target){
 void URMove::draw(int i){
     if(inversePosition.getFront().size() > 0 && i < inversePosition.getFront().size()){
         ofSetColor(255, 0, 255, 150);
-        previews[i]->draw();
+        previews[i]->draw(i);
         targetLine.draw();
         ofSetColor(255, 0, 255, 200);
         ofDrawSphere(toMM(targetPoint.position), 5);
@@ -231,19 +231,19 @@ void URMove::urKinematics(ofMatrix4x4 input){
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
                     inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j]-PI;
-                    if(inversePosition.getBack()[i][j] > PI){
-                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
-                    }
+//                    if(inversePosition.getBack()[i][j] > PI){
+//                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
+//                    }
                 }
-                if(j == 1 || j == 3){
-                    if(inversePosition.getBack()[i][j] > PI){
-                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
-                    }
-                }
-                
-                if(j == 5){
-                     inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], 0, TWO_PI, -TWO_PI, 0, true);
-                }
+//                if(j == 1 || j == 3){
+////                    if(inversePosition.getBack()[i][j] > PI){
+//                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
+//                    }
+//                }
+//                
+//                if(j == 5){
+//                     inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], 0, TWO_PI, -TWO_PI, 0, true);
+//                }
                 
                 previews[i]->jointsRaw.getBack()[j] = inversePosition.getBack()[i][j];
                 if(preInversePosition.size() > 0){
