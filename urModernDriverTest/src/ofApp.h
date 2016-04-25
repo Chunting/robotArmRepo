@@ -40,6 +40,8 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     void moveArm();
+    
+    void setupViewports();
     void setupGUI();
     void setupTimeline();
     /// \brief 3D mesh with paths for robot to follow

@@ -1,9 +1,3 @@
-<3D_Work_Surface>
-	<3d_feedRate>0.001</3d_feedRate>
-	<3d_WS_Position>0.2, 0.2, 0</3d_WS_Position>
-	<3d_WS_Euler>0, 0, 0</3d_WS_Euler>
-	<3d_retractDistance>4</3d_retractDistance>
-	<3d_rotateDrawing>0</3d_rotateDrawing>
-	<3d_drawingScale>1</3d_drawingScale>
-	<3d_drawingOffset>0, 0, 0</3d_drawingOffset>
-</3D_Work_Surface>
+<group>
+	<group/>
+</group>

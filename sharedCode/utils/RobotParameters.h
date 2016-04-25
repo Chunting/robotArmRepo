@@ -15,9 +15,11 @@ class RobotParameters{
         if (getTCP){
             robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
             robotArmParams.add(tcpOrientation.set("Actual Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
-//            robotArmParams.add(calcTCPOrientation.set("Calculated Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
-            robotArmParams.add(forwardTCPOrientation.set("Forward TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
-            robotArmParams.add(forwardTCPPosition.set("Forward TCP Pos", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
+            //            robotArmParams.add(calcTCPOrientation.set("Calculated Robot TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
+            forwardTCPOrientation.set("Forward TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1));
+            //            robotArmParams.add(forwardTCPOrientation.set("Forward TCP ORIENT", ofVec4f(0,0,0,1), ofVec4f(-1,-1,-1,-1), ofVec4f(1,1,1,1)));
+            forwardTCPPosition.set("Forward TCP Pos", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1));
+//            robotArmParams.add(forwardTCPPosition.set("Forward TCP Pos", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
         }
         if (setTCP){
             robotArmParams.add(targetTCPPosition.set("Set TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));
@@ -30,7 +32,7 @@ class RobotParameters{
         // should move to URMove
         robotArmParams.add(avgAccel.set("avgAccel", 0, 0, 200));
         robotArmParams.add(followLerp.set("followLerp", 1, 0, 1.0));
-       
+        
         if (getTCP)
             robotArmParams.add(bCopy.set("get TCP", false));
         if (setTCP)
@@ -45,10 +47,10 @@ class RobotParameters{
         robotArmParams.add(bMove.set("Move", false));
         
         
-        joints.setName("Joints");
+        joints.setName("Joint Pos");
         targetJoints.setName("Target Joints");
         jointSpeeds.setName("Joint Speeds");
-        
+        jointsIK.setName("IK Solver");
         for(int i = 0; i < 6; i++){
             jointPos.push_back(ofParameter<float>());
             joints.add(jointPos.back().set("joint "+ofToString(i), 0, -360, 360));
@@ -76,7 +78,7 @@ class RobotParameters{
     ofParameter<ofVec3f> targetTCPPosition;
     ofParameter<ofVec4f> targetTCPOrientation;
     ofParameter<ofVec4f> tcpOrientation;
-//    ofParameter<ofVec4f> calcTCPOrientation;
+    //    ofParameter<ofVec4f> calcTCPOrientation;
     ofParameter<ofVec4f> forwardTCPOrientation;
     ofParameter<ofVec3f> forwardTCPPosition;
     ofParameter<ofVec3f> tcpPosition;

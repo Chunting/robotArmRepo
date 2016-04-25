@@ -9,7 +9,7 @@ void ofApp::setup(){
     ofSetVerticalSync(true);
     ofBackground(0);
     ofSetLogLevel(OF_LOG_NOTICE);
-    
+    setupViewports();
     string interface_name = "en0"; // or network interface name
     
     //    tcp.setPosition(0, 0, 0);
@@ -31,34 +31,24 @@ void ofApp::setup(){
     parameters.bCopy = true;
     panel.loadFromFile("settings.xml");
     panelWorkSurface.loadFromFile("settings.xml");
-    
-    gml.setup();
-    gml.loadFile("gml/53514.gml");
-    
-    
-    
-    
+}
+
+
+
+void ofApp::setupViewports(){
     
     viewportReal = ofRectangle(0, 0, (5*ofGetWindowWidth()/6)/2, 2*ofGetWindowHeight()/3);
     viewportSim = ofRectangle((5*ofGetWindowWidth()/6)/2, 0, (5*ofGetWindowWidth()/6)/2, 2*ofGetWindowHeight()/3);
+}
+
+void ofApp::setupTimeline(){
+    
     
     gizmo.setDisplayScale(1.0);
-    
-    
     tcpNode.setPosition(ofVec3f(0.5, 0.5, 0.5)*1000);
     tcpNode.setOrientation(parameters.targetTCP.rotation);
-    
-    //    if(gizmo.load("tcpNode.txt" )) {
-    //        tcpNode.setTransformMatrix( gizmo.getMatrix() );
-    //    }
-    
-    
     gizmo.setNode( tcpNode);
-    setupTimeline();
-
     
-}
-void ofApp::setupTimeline(){
     
     timeline.setup();
     timeline.setFrameRate(60);
@@ -82,9 +72,9 @@ void ofApp::setupGUI(){
     
     panel.setup(parameters.robotArmParams);
     panel.add(parameters.pathRecorderParams);
-    panel.setPosition(10, 10);
+    panel.setPosition(viewportSim.x+viewportSim.width, 10);
     
-    workSurface.setup(parameters);
+//    workSurface.setup(parameters);
     
     
     panelJoints.setup(parameters.joints);
@@ -92,14 +82,14 @@ void ofApp::setupGUI(){
     panelJointsSpeed.setup(parameters.jointSpeeds);
     panelJointsIK.setup(parameters.jointsIK);
     
-    panelJoints.setPosition(ofGetWindowWidth()-panelJoints.getWidth()-10, 10);
-    panelJointsIK.setPosition(panelJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelTargetJoints.setPosition(panelJointsIK.getPosition().x-panelJoints.getWidth(), 10);
-    panelJointsSpeed.setPosition(panelTargetJoints.getPosition().x-panelJoints.getWidth(), 10);
-    panelWorkSurface.setup(workSurface.threeDSurface.workSurfaceParams);
-    panelWorkSurface.setPosition(panel.getWidth()+10, 10);
+    panelJointsSpeed.setPosition(viewportSim.x, 10);
+    panelJointsIK.setPosition(panelJointsSpeed.getPosition().x+panelJoints.getWidth(), 10);
+    panelTargetJoints.setPosition(panelJointsIK.getPosition().x+panelJoints.getWidth(), 10);
+    panelJoints.setPosition(panelTargetJoints.getPosition().x+panelJoints.getWidth(), 10);
+//    panelWorkSurface.setup(workSurface.threeDSurface.workSurfaceParams);
+//    panelWorkSurface.setPosition(panel.getWidth()+10, 10);
     
-    
+    setupTimeline();
 }
 
 
@@ -108,9 +98,9 @@ void ofApp::update(){
 #ifdef ENABLE_NATNET
     natNet.update();
 #endif
-    workSurface.update();
+//    workSurface.update();
     
-    workSurfaceTargetTCP = workSurface.getNextPose();
+//    workSurfaceTargetTCP = workSurface.getNextPose();
     if(nodeTrack->lockNodeToTrack){
         gizmo.setNode(tcpNode);
     }else{
@@ -122,10 +112,17 @@ void ofApp::update(){
     if (viewportReal.inside(ofGetMouseX(), ofGetMouseY()))
     {
         activeCam = 0;
-        if(!cams[0].getMouseInputEnabled())
+        if(!cams[0].getMouseInputEnabled()){
             cams[0].enableMouseInput();
-        if(cams[1].getMouseInputEnabled())
+        }
+        if(cams[1].getMouseInputEnabled()){
             cams[1].disableMouseInput();
+        }
+        
+        
+        if(gizmo.isInteracting() && cams[0].getMouseInputEnabled()){
+            cams[0].disableMouseInput();
+        }
     }
     else if(viewportSim.inside(ofGetMouseX(), ofGetMouseY()))
     {
@@ -178,11 +175,12 @@ void ofApp::draw(){
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
     gizmo.setViewDimensions(viewportReal.width, viewportReal.height);
-    ofSetColor(100, 100, 100);
+    if(activeCam == 0)
+        ofSetColor(15, 15, 15);
+    else
+        ofSetColor(0, 0, 0);
     ofDrawRectangle(viewportReal);
     cams[0].begin(viewportReal);
-    ofSetColor(100, 100, 100);
-    ofDrawRectangle(viewportReal);
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -191,52 +189,28 @@ void ofApp::draw(){
     if (!hideRobot){
         robot.robot.model.draw();
     }
-    ofSetColor(255, 0, 255);
-    ofEnableDepthTest();
-    workSurface.draw();
-    ofDisableDepthTest();;
-    
     cams[0].end();
     
     
-    ofSetColor(50, 50, 50);
+    if(activeCam == 1)
+        ofSetColor(15, 15, 15);
+    else
+        ofSetColor(0, 0, 0);
     ofDrawRectangle(viewportSim);
     
     cams[1].begin(viewportSim);
-    
-    ofEnableDepthTest();
-    workSurface.draw();
-    //    for(int i = 0; i < 4; i++){
     robot.movement.draw(0);
-    //    }
-    ofDisableDepthTest();
     cams[1].end();
     
-    hightlightViewports();
     
     timeline.draw();
-    
-    
 
-    
-    ofPushMatrix();
-    ofSetColor(255, 0, 255);
-    gml.draw();
-    ofPopMatrix();
-    
-    
-    
     panel.draw();
     panelJoints.draw();
     panelJointsIK.draw();
     panelWorkSurface.draw();
     panelJointsSpeed.draw();
     panelTargetJoints.draw();
-    
-    /* 3D Navigation */
-    
-    
-    
 }
 
 void ofApp::exit(){
