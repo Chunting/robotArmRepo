@@ -1,7 +1,7 @@
 #include "PathRecorder.h"
 
 PathRecorder::PathRecorder(){
-    
+    recording = false;
 }
 PathRecorder::~PathRecorder(){
     
