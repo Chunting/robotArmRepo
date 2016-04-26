@@ -23,10 +23,10 @@ public:
     ~UR5KinematicModel();
     void setup();
     void update();
-    void draw();
+    void draw(float stage = 3.0);
     void setToolMesh(ofMesh mesh);
     ofNode getTool();
-    
+    void setToolOffset(ofVec3f localOffset);
     ofQuaternion getToolPointQuaternion();
     
     ofxAssimpModelLoader loader;

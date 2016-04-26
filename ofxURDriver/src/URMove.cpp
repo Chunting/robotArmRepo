@@ -40,6 +40,10 @@ void URMove::setup(){
     currentJointSpeeds.assign(6, 0.0);
     currentPose.assign(6, 0.0);
     inversePosition.setup(vector<vector<double> >());
+    
+    epslion = 0.0005;
+    targetLength = 0.0;
+    
 }
 
 
@@ -48,8 +52,9 @@ void URMove::update(){
     deltaTime = deltaTimer.getPeriod();
     
   
-    
     if(newTargetPoint.size() > 0){
+        float speed = ((targetPoint.position-newTargetPoint.front().position)).length()/deltaTime;
+        targetLine.getPointAtIndexInterpolated(targetLine.getIndexAtLength(targetLength));
         targetPoint.position = targetPoint.position.interpolate(newTargetPoint.front().position, targetTCPLerpSpeed);
         targetPoint.rotation.slerp(targetTCPLerpSpeed, targetPoint.rotation, newTargetPoint.front().rotation);
         newTargetPoint.pop_front();
@@ -95,6 +100,11 @@ void URMove::computeVelocities(){
             previews[selectedSolution]->jointsProcessed.swapFront();
             for(int i = 0; i < previews[selectedSolution]->jointsRaw.getFront().size(); i++){
                 currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw.getFront()[i]-currentPose[i])/deltaTime/speedDivider;
+                
+                if(abs(currentJointSpeeds[i]) < epslion){
+                    currentJointSpeeds[i] = 0.0;
+                }
+                
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
                 minSpeed = MIN(tempMin, currentJointSpeeds[i]);
@@ -115,18 +125,19 @@ void URMove::computeVelocities(){
 void URMove::addTargetPoint(Joint target){
     
     newTargetPoint.push_back(target);
-    
     targetLine.addVertex(toMM(target.position));
     if(targetLine.size() > 400){
         targetLine.getVertices().erase(targetLine.getVertices().begin(), targetLine.getVertices().begin()+1);
     }
+    totalLength = targetLine.getLengthAtIndexInterpolated(targetLine.getIndexAtPercent(1.0));
+    
 }
 
 
 void URMove::draw(int i){
     if(inversePosition.getFront().size() > 0 && i < inversePosition.getFront().size()){
         ofSetColor(255, 0, 255, 150);
-        previews[i]->draw();
+        previews[i]->draw(i);
         targetLine.draw();
         ofSetColor(255, 0, 255, 200);
         ofDrawSphere(toMM(targetPoint.position), 5);
@@ -219,20 +230,17 @@ void URMove::urKinematics(ofMatrix4x4 input){
             previews[i]->jointsProcessed.getBack().resize(previews[i]->jointsRaw.getBack().size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
-                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j]-PI;
-                    if(inversePosition.getBack()[i][j] > PI){
-                        inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
-                    }
+                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j];
                 }
                 if(j == 1 || j == 3){
                     if(inversePosition.getBack()[i][j] > PI){
                         inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], PI, TWO_PI, -PI, 0, true);
                     }
                 }
-                
-                if(j == 5){
-                     inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], 0, TWO_PI, -TWO_PI, 0, true);
-                }
+//
+//                if(j == 5){
+//                     inversePosition.getBack()[i][j]  = ofMap(inversePosition.getBack()[i][j], 0, TWO_PI, -TWO_PI, 0, true);
+//                }
                 
                 previews[i]->jointsRaw.getBack()[j] = inversePosition.getBack()[i][j];
                 if(preInversePosition.size() > 0){
@@ -244,7 +252,9 @@ void URMove::urKinematics(ofMatrix4x4 input){
                 }
                 
                 previews[i]->jointsProcessed.getBack()[j] = ofRadToDeg(previews[i]->jointsRaw.getBack()[j]);
-                
+                if(j == 0){
+                    previews[i]->jointsProcessed.getBack()[j]-=180;
+                }
                 if(j == 1 || j == 3){
                     previews[i]->jointsProcessed.getBack()[j]+=90;
                 }

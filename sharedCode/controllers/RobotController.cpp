@@ -31,8 +31,9 @@ void RobotController::update(){
 void RobotController::updateMovement(){
     movement.setCurrentJointPosition(robotParams->currentJointPos);
 
+//    robotParams->tcpOffset = robot.getToolNode().getGlobalPosition();
     
-    robotParams->targetTCP.position+=robotParams->tcpOffset;
+//    robotParams->targetTCP.position+=robotParams->tcpOffset;
     
     // send the target TCP to the kinematic solver
     movement.addTargetPoint(robotParams->targetTCP);
@@ -69,7 +70,7 @@ void RobotController::updateData(){
     // pass the current joints from the robot to the kinematic solver
     robotParams->currentJointPos = robot.getJointPositions();
 
-    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
+//    robotParams->calcTCPOrientation = robot.getCalculatedTCPOrientation();
     
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
         robotParams->jointPos[i] = (float)robotParams->currentJointPos[i];
@@ -79,7 +80,7 @@ void RobotController::updateData(){
     ofQuaternion tcpO = robotParams->actualTCP.rotation;
     robotParams->tcpOrientation = ofVec4f(tcpO.x(), tcpO.y(), tcpO.z(), tcpO.w());
     if(robotParams->bRecord){
-        recorder.addPose(robotParams->jointPos, ofGetElapsedTimef());
+        recorder.addPose(robotParams->currentJointPos, ofGetElapsedTimef());
     }
     // update GUI params
     for(int i = 0; i < robotParams->currentJointPos.size(); i++){
@@ -91,7 +92,6 @@ void RobotController::updateData(){
     robotParams->forwardTCPOrientation = ofVec4f(forwardIK.getRotate().x(), forwardIK.getRotate().y(), forwardIK.getRotate().z(), forwardIK.getRotate().x());
     
 }
-
 
 void RobotController::toggleRecord(){
     if(robotParams->bRecord){

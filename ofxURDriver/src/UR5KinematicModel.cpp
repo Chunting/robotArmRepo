@@ -104,13 +104,15 @@ void UR5KinematicModel::setup(){
 }
 
 ofQuaternion UR5KinematicModel::getToolPointQuaternion(){
-    
     return nodes[5].getGlobalTransformMatrix().getRotate();
 }
 
 ofNode UR5KinematicModel::getTool(){
-    
     return tcpNode;
+}
+
+void UR5KinematicModel::setToolOffset(ofVec3f localOffset){
+    tcpNode.setPosition(localOffset);
 }
 
 void UR5KinematicModel::setToolMesh(ofMesh mesh){
@@ -119,7 +121,7 @@ void UR5KinematicModel::setToolMesh(ofMesh mesh){
 void UR5KinematicModel::update(){
     
 }
-void UR5KinematicModel::draw(){
+void UR5KinematicModel::draw(float stage){
 
     ofDrawAxis(1000);
     ofEnableDepthTest();
@@ -132,9 +134,6 @@ void UR5KinematicModel::draw(){
     if(bDrawModel){
         ofEnableDepthTest();
         shader.begin();
-        shader.setUniform1f("elapsedTime", fmodf(ofGetElapsedTimef(), 15.0));
-        shader.setUniform1f("stage", 3.0);
-        shader.setUniform1f("alpha", 1.0);
         float x;
         ofVec3f axis;
         ofQuaternion q;

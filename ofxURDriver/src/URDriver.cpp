@@ -141,6 +141,21 @@ void ofxURDriver::convertAxisAngle(double rx, double ry, double rz) {
     model.tool.rotation = ofQuaternion(x, y, z, w);
 }
 
+
+void ofxURDriver::setToolOffset(ofVec3f localPos){
+    lock();
+    model.setToolOffset(localPos);
+    unlock();
+}
+
+ofNode ofxURDriver::getToolNode(){
+    ofNode node;
+    lock();
+    node = model.getTool();
+    unlock();
+    return node;
+}
+
 void ofxURDriver::threadedFunction(){
     while(isThreadRunning()){
         timer.tick();

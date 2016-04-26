@@ -14,6 +14,10 @@
 #include "NatNetController.h"
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
+#include "ofxGizmo.h"
+#include "ofxTimeline.h"
+#include "ofxTLNodeTrack.h"
+#include "ofxSyphon.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -36,9 +40,19 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     void moveArm();
-    void setupGUI();    
+    
+    void setupViewports();
+    void setupGUI();
+    void positionGUI();
+    void setupTimeline();
     /// \brief 3D mesh with paths for robot to follow
 
+    ofxTLNodeTrack* nodeTrack;
+    ofxTimeline timeline;
+    
+    ofRectangle viewportReal;
+    ofRectangle viewportSim;
+    
     RobotParameters parameters;
 
     ofxPanel panel;
@@ -48,6 +62,8 @@ public:
     ofxPanel panelJointsIK;
     ofxPanel panelJointsSpeed;
     
+    ofxGizmo gizmo;
+    ofNode tcpNode;
     
     RobotController robot;
     NatNetController natNet;
@@ -90,8 +106,6 @@ public:
      */
     void handleViewportPresets(int key);
     
-    /// Highlights the active viewport.
-    void hightlightViewports();
-    
+    ofxSyphonServer syphon;
     
 };
