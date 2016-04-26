@@ -153,8 +153,8 @@ void ThreeDWorkSurface::draw(bool showNormals){
     ofSetLineWidth(3);
     for (auto &p : paths)
         p.draw();
-    for (auto &p : lines2D)
-        p.draw();
+//    for (auto &p : lines2D)
+//        p.draw();
     
     ofPopStyle();
     ofPopMatrix();

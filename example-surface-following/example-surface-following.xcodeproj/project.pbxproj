@@ -36,6 +36,7 @@
 		00CF5A271CCFCFCA00CD1A5F /* TwoDWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00CF5A061CCFCFCA00CD1A5F /* TwoDWorkSurface.cpp */; };
 		00CF5A281CCFCFCA00CD1A5F /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00CF5A091CCFCFCA00CD1A5F /* World.cpp */; };
 		00CF5A291CCFCFCA00CD1A5F /* WorldObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00CF5A0B1CCFCFCA00CD1A5F /* WorldObject.cpp */; };
+		00CF5A2F1CD026AF00CD1A5F /* WorkSurface3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00CF5A2E1CD026AF00CD1A5F /* WorkSurface3D.cpp */; };
 		03B14860C85545A54080C30A /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7DB470D57A91A0701B9FCD /* tagWriter.cpp */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
 		2EB82731E35103D1E16BAFCF /* ofxNatNet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F3A36FC9F5D38A7D10DEB9F /* ofxNatNet.cpp */; };
@@ -158,6 +159,8 @@
 		00CF5A0A1CCFCFCA00CD1A5F /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
 		00CF5A0B1CCFCFCA00CD1A5F /* WorldObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldObject.cpp; sourceTree = "<group>"; };
 		00CF5A0C1CCFCFCA00CD1A5F /* WorldObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldObject.h; sourceTree = "<group>"; };
+		00CF5A2E1CD026AF00CD1A5F /* WorkSurface3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurface3D.cpp; sourceTree = "<group>"; };
+		00CF5A301CD026BE00CD1A5F /* WorkSurface3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface3D.h; sourceTree = "<group>"; };
 		01DCC0911400F9ACF5B65578 /* ofxXmlSettings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxXmlSettings.h; path = ../../../addons/ofxXmlSettings/src/ofxXmlSettings.h; sourceTree = SOURCE_ROOT; };
 		0853C1E83DCC54A6D30F5C5A /* Hysteresis.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Hysteresis.h; path = ../../../addons/ofxTiming/src/Hysteresis.h; sourceTree = SOURCE_ROOT; };
 		0A1DAC09F322AE313A40706D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
@@ -407,6 +410,8 @@
 				00CF5A0A1CCFCFCA00CD1A5F /* World.h */,
 				00CF5A0B1CCFCFCA00CD1A5F /* WorldObject.cpp */,
 				00CF5A0C1CCFCFCA00CD1A5F /* WorldObject.h */,
+				00CF5A2E1CD026AF00CD1A5F /* WorkSurface3D.cpp */,
+				00CF5A301CD026BE00CD1A5F /* WorkSurface3D.h */,
 			);
 			path = world;
 			sourceTree = "<group>";
@@ -845,6 +850,7 @@
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				00CF5A0E1CCFCFCA00CD1A5F /* robot_state.cpp in Sources */,
 				00CF5A181CCFCFCA00CD1A5F /* NatNetController.cpp in Sources */,
+				00CF5A2F1CD026AF00CD1A5F /* WorkSurface3D.cpp in Sources */,
 				00CF5A171CCFCFCA00CD1A5F /* URToolHead.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
 				00CF5A201CCFCFCA00CD1A5F /* Path.cpp in Sources */,

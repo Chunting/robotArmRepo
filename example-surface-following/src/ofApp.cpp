@@ -23,16 +23,17 @@ void ofApp::setup(){
         toolpaths.push_back(buildToolpath(ofVec3f(-.075+(.075*i),0,0)));
     }
     
-    // add toolpaths to worksurface
-    workSrf.setup("mesh_srf.stl",toolpaths);
+    // add mesh and toolpaths to a new worksurface
+    ofxAssimpModelLoader loader;
+    loader.loadModel(ofToDataPath("mesh_srf.stl"));
+    ofMesh mesh = loader.getMesh(0);
+    workSrf.setup(mesh,toolpaths);
         
     setupCameras();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    workSrf.update();
     
     moveArm();
     robot.update();
@@ -48,13 +49,13 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(false);
+    workSrf.draw(true,true,false,true);
     robot.robot.model.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(false);
+    workSrf.draw(true,true,false,true);
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     

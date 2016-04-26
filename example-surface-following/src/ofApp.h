@@ -2,9 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "WorkSurface3D.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
-#include "ThreeDWorkSurface.h"
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -43,7 +43,7 @@ class ofApp : public ofBaseApp{
         RobotController robot;
         void moveArm();
     
-        ThreeDWorkSurface workSrf;
+        WorkSurface3D workSrf;
         ofPolyline buildToolpath(ofVec3f centroid);
     
         
