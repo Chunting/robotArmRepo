@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
+#include "ThreeDWorkSurface.h"
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -41,7 +42,9 @@ class ofApp : public ofBaseApp{
         
         RobotController robot;
         void moveArm();
-        
+    
+        ThreeDWorkSurface workSrf;
+    
         
         // 3D Navigation
         void updateActiveCamera();

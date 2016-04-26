@@ -8,10 +8,14 @@ public:
     ~ThreeDWorkSurface();
     
     void setup(RobotParameters * params);
+    
+    /// \brief creates a 3D worksurface from a imported mesh
+    /// \param filename mesh to import from data folder
+    void setup(string filename);
     void update(Joint currentTCP);
     void draw();
     
-    ofxNatNet::RigidBody optitrackRb;
+//    ofxNatNet::RigidBody optitrackRb;
 
     
     Joint getTargetPose(float t);
@@ -24,6 +28,7 @@ public:
     ofQuaternion eulerToQuat(ofVec3f rotationEuler) ;
     /// \brief example toolpath for projecting
     void buildToolpath(ofPolyline &path);
+    void buildToolpath(ofPolyline &path, ofVec3f centroid);
     
     /// \brief orthogonal projection of a 2D curve onto a 3D surface
     /// \param mesh 3D surface for proection

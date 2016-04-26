@@ -28,17 +28,36 @@ void ThreeDWorkSurface::setup(RobotParameters * params){
     }
 
 }
+
+void ThreeDWorkSurface::setup(string filename){
+    
+    ofxAssimpModelLoader loader;
+    loader.loadModel(ofToDataPath(filename));
+    surfaceMesh = loader.getMesh(0);
+    
+    // scale surface to meters and reposition for robot
+    ofVec3f offset = ofVec3f(0,.5,0);
+    for (auto &v : surfaceMesh.getVertices()){
+        v /= 100;
+        v+=offset;
+    }
+    
+    // build and project a toolpath
+    buildToolpath(toolpath2D, offset);
+    projectToolpath(surfaceMesh, toolpath2D, toolpath);
+}
+
 void ThreeDWorkSurface::update(Joint currentTCP){
     this->currentTCP = currentTCP;
     
 }
 void ThreeDWorkSurface::draw(){
     ofPushMatrix();
-
+    ofPushStyle();
     ofScale(1000, 1000, 1000);
     // show the surface
     ofSetColor(255, 0, 255, 100);
-    surfaceMesh.draw();
+//    surfaceMesh.draw();
     
     // show surface normals
     ofSetColor(ofColor::aqua,100);
@@ -50,11 +69,12 @@ void ThreeDWorkSurface::draw(){
     }
     
     // draw 2D & 3D toolpaths
-    ofSetColor(255, 0, 255, 200);
+    ofSetColor(0, 255, 255, 200);
     ofSetLineWidth(3);
+    toolpath2D.draw();
     toolpath.draw();
         
-    
+    ofPopStyle();
     ofPopMatrix();
 }
 
@@ -94,8 +114,7 @@ ofQuaternion ThreeDWorkSurface::eulerToQuat(ofVec3f  rotationEuler) {
 void ThreeDWorkSurface::buildToolpath(ofPolyline &path){
     
     path.clear();
-    
-    
+
     // make an XY circle as a toolpath ...
     
     float res = 60;
@@ -105,7 +124,26 @@ void ThreeDWorkSurface::buildToolpath(ofPolyline &path){
     for (int i=0; i<res; i++){
         ofPoint p = ofPoint(radius,0,0);
         p.rotate(theta*i, ofVec3f(0,0,1));
-        p.x += .0;
+        path.addVertex(p);
+    }
+    path.close();
+    
+}
+
+void ThreeDWorkSurface::buildToolpath(ofPolyline &path, ofVec3f centroid){
+    
+    path.clear();
+    
+    // make an XY circle as a test toolpath ...
+    
+    float res = 60;
+    float radius = .05;
+    float theta = 360/res;
+    
+    for (int i=0; i<res; i++){
+        ofPoint p = ofPoint(radius,0,0);
+        p.rotate(theta*i, ofVec3f(0,0,1));
+        p += centroid;
         path.addVertex(p);
     }
     path.close();

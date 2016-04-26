@@ -13,8 +13,10 @@ void ofApp::setup(){
 
     // setup robot
     robot.setup(parameters);
-
     panel.add(robot.movement.movementParams);
+    
+    // setup geometry
+    workSrf.setup("mesh_srf.stl");
     
     setupCameras();
 }
@@ -35,11 +37,13 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    workSrf.draw();
     robot.robot.model.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
+    workSrf.draw();
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     

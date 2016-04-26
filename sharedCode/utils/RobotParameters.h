@@ -10,13 +10,7 @@
 #include "ofMain.h"
 class RobotParameters{
     public :
-<<<<<<< HEAD
-    
-    /// \brief Adds gui panels to ofApp
-    void setup(bool getTCP = true, bool setTCP = true, bool toolOffset = true, bool drawpath = true, bool recordPanel = false){
-=======
     void setup(bool getTCP = true, bool setTCP = true, bool toolOffset = true, bool drawpath = true, bool record = true){
->>>>>>> master
         robotArmParams.setName("UR 5");
         if (getTCP){
             robotArmParams.add(tcpPosition.set("Actual Robot TCP POS", ofVec3f(0, 0, 0), ofVec3f(-1, -1, -1), ofVec3f(1, 1, 1)));

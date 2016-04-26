@@ -5,6 +5,7 @@
 #include "ofxTiming.h"
 #include "UR5KinematicModel.h"
 #include "RobotParameters.h"
+#include "3DPath.h"
 class WorkSurface{
 public:
     
@@ -28,6 +29,9 @@ public:
     virtual void setCorner(CORNER i, ofPoint pt){};
     virtual void addStrokes(vector<ofPolyline> strokes, float retractDist = 1){};
     ofParameterGroup workSurfaceParams;
+    
+
+    
 protected:
     
     RobotParameters * parameters;
@@ -46,6 +50,8 @@ protected:
     ofQuaternion orientation;
     vector<ofPolyline> lines;
     vector<ofPolyline> strokes_original;
+    
+    vector<ThreeDPath> paths;
     
     ofPolyline workArea;
     float targetIndex;
