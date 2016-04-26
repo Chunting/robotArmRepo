@@ -9,6 +9,7 @@ public:
 
     ofVec3f getNextNormal();
     ofMatrix4x4 getNextPose();
+    ofMatrix4x4 getPoseAt(int index);
     void draw();
     void keyPressed(int key);
     

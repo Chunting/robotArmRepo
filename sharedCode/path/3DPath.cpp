@@ -80,6 +80,7 @@ void ThreeDPath::keyPressed(int key){
 ofMatrix4x4 ThreeDPath::getNextPose(){
     if(ptf.framesSize()>0){
         
+        // go back-and-forth along a path
         if (ptIndex == 0 || ptIndex == ptf.framesSize()-1)
             direction *= -1;
         
@@ -91,11 +92,18 @@ ofMatrix4x4 ThreeDPath::getNextPose(){
             orientation = zForward(orientation);
         else if (makeZOut)
             orientation = zOut(orientation);
-        else
-            orientation = flip(orientation);
+//        else
+//            orientation = flip(orientation);
         
-        return flip(orientation);
+//        return flip(orientation);
+        return orientation;
     }
+}
+
+ofMatrix4x4 ThreeDPath::getPoseAt(int index){
+    
+    return ptf.frameAt(index);
+    
 }
 
 
@@ -140,12 +148,18 @@ void ThreeDPath::parsePts(string filename, ofPolyline &polyline){
         float scalar = 10;
         
         ofVec3f offset;
-        if (filename == "path_XZ.txt")
-            offset = ofVec3f(0, .25, 0);
-        else if (filename == "path_YZ.txt")
-            offset = ofVec3f(.25, 0, 0);
-        else
-            offset = ofVec3f(.25, .25, 0);
+        if (filename == "path_XZ.txt"){
+            offset = ofVec3f(0, 0, 0);
+            scalar = 6;
+        }
+        else if (filename == "path_YZ.txt"){
+            offset = ofVec3f(0, 0, 0);
+            scalar = 6;
+        }
+        else{
+            offset = ofVec3f(0, 0, .25);
+            scalar = 6;
+        }
         
         line = line.substr(1,line.length()-2);              // remove end { }
         vector<string> coords = ofSplitString(line, ", ");  // get x y z coordinates

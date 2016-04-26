@@ -17,18 +17,13 @@ void ofApp::setup(){
     panel.add(robot.movement.movementParams);
     
     setupCameras();
-    
-    path.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
-    
     moveArm();
     robot.update();
     
-
     updateActiveCamera();
 }
 
@@ -41,13 +36,11 @@ void ofApp::draw(){
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.robot.model.draw();
-    drawGeometry();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.movement.draw(robot.movement.selectedSolution);
-    drawGeometry();
     cams[1].end();
     
     drawGUI();
@@ -76,18 +69,6 @@ void ofApp::moveArm(){
         parameters.targetTCP.position.interpolate(parameters.targetTCPPosition.get(), parameters.followLerp);
         parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
-    }
-    
-    // follow geometry
-    if (!pause){
-        
-        ofMatrix4x4 orientation = path.getNextPose();
-        
-        parameters.targetTCP.position = orientation.getTranslation();
-        
-        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        parameters.targetTCP.rotation *= orientation.getRotate();
     }
     
 }
@@ -135,14 +116,6 @@ void ofApp::drawGUI(){
     panelJointsIK.draw();
     panelJointsSpeed.draw();
     panelTargetJoints.draw();
-}
-
-//--------------------------------------------------------------
-void ofApp::drawGeometry(){
-    ofPushMatrix();
-    ofScale(1000);
-    path.draw();
-    ofPopMatrix();
 }
 
 
@@ -250,10 +223,7 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         parameters.bMove = !parameters.bMove;
     }
-    else if (key == ' ')
-        pause = !pause;
-    
-    path.keyPressed(key);
+
     handleViewportPresets(key);
 }
 
