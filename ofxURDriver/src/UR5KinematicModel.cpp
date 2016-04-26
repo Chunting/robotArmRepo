@@ -134,9 +134,6 @@ void UR5KinematicModel::draw(float stage){
     if(bDrawModel){
         ofEnableDepthTest();
         shader.begin();
-        shader.setUniform1f("elapsedTime", fmodf(ofGetElapsedTimef(), 15.0));
-        shader.setUniform1f("stage", stage);
-        shader.setUniform1f("alpha", 1.0);
         float x;
         ofVec3f axis;
         ofQuaternion q;

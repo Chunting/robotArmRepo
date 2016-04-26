@@ -17,7 +17,7 @@
 #include "ofxGizmo.h"
 #include "ofxTimeline.h"
 #include "ofxTLNodeTrack.h"
-
+#include "ofxSyphon.h"
 #define N_CAMERAS 2
 #define ENABLE_NATNET
 
@@ -43,6 +43,7 @@ public:
     
     void setupViewports();
     void setupGUI();
+    void positionGUI();
     void setupTimeline();
     /// \brief 3D mesh with paths for robot to follow
 
@@ -105,7 +106,6 @@ public:
      */
     void handleViewportPresets(int key);
     
-    /// Highlights the active viewport.
-    void hightlightViewports();
+    ofxSyphonServer syphon;
     
 };

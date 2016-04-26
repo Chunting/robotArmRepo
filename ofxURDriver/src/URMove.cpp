@@ -230,7 +230,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
             previews[i]->jointsProcessed.getBack().resize(previews[i]->jointsRaw.getBack().size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
-                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j]-PI;
+                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j];
                 }
                 if(j == 1 || j == 3){
                     if(inversePosition.getBack()[i][j] > PI){
@@ -252,7 +252,9 @@ void URMove::urKinematics(ofMatrix4x4 input){
                 }
                 
                 previews[i]->jointsProcessed.getBack()[j] = ofRadToDeg(previews[i]->jointsRaw.getBack()[j]);
-                
+                if(j == 0){
+                    previews[i]->jointsProcessed.getBack()[j]-=180;
+                }
                 if(j == 1 || j == 3){
                     previews[i]->jointsProcessed.getBack()[j]+=90;
                 }

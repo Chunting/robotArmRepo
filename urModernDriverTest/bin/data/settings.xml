@@ -2,7 +2,7 @@
 	<Actual_Robot_TCP_POS>0, -0.299751, 0.996802</Actual_Robot_TCP_POS>
 	<Actual_Robot_TCP_ORIENT>0, 0, 0, 1</Actual_Robot_TCP_ORIENT>
 	<Set_TCP_POS>0, 0, 0</Set_TCP_POS>
-	<Set_TCP_ORIENT>0.0726265, 0.665776, 0.734851, 0.107059</Set_TCP_ORIENT>
+	<Set_TCP_ORIENT>0.557929, -0.434026, 0.434237, 0.558368</Set_TCP_ORIENT>
 	<tcpOffset>0, 0, 0</tcpOffset>
 	<avgAccel>0</avgAccel>
 	<followLerp>1</followLerp>
@@ -17,9 +17,9 @@
 	</Path_Recording>
 	<UR_Movements>
 		<Step>0</Step>
-		<MIN_Speed>-15.6538</MIN_Speed>
-		<_MAX_Speed>31.3289</_MAX_Speed>
-		<Delta_T>0.200555</Delta_T>
+		<MIN_Speed>-12.1315</MIN_Speed>
+		<_MAX_Speed>34.3187</_MAX_Speed>
+		<Delta_T>0.183071</Delta_T>
 		<TCP_LerpSpeed>0.9</TCP_LerpSpeed>
 		<Joint_LerpSpeed>0.9</Joint_LerpSpeed>
 		<avgAcceleration>0</avgAcceleration>
