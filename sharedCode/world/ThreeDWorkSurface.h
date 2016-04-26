@@ -9,11 +9,19 @@ public:
     
     void setup(RobotParameters * params);
     
-    /// \brief creates a 3D worksurface from a imported mesh
+    /// \brief creates a 3D worksurface from an imported mesh
     /// \param filename mesh to import from data folder
     void setup(string filename);
+    
+    /// \brief creates a 3D worksurface and toolpaths from an imported mesh and polylines
+    /// \param filename mesh to import from data folder
+    /// \param polylines toolpaths to project onto 3D mesh
+    void setup(string filename, vector<ofPolyline> polylines);
+    
+    void update();
     void update(Joint currentTCP);
     void draw();
+    void draw(bool showNormals);
     
 //    ofxNatNet::RigidBody optitrackRb;
 
@@ -34,8 +42,11 @@ public:
     /// \param mesh 3D surface for proection
     /// \param path2D 2D toolpath to project
     /// \param path resulting 3D projected toolpath
-    void projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2D, vector<ofPolyline> &path);
     void projectToolpath(ofMesh & mesh, ofPolyline &path2D, ofPolyline &path);
+    
+    void projectToolpath(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths);
+    
+    void projectToolpath(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths, float srfOffset);
     
     /// \brief 2D toolpath to project onto surface
     ofPolyline toolpath2D;

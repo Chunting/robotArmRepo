@@ -16,13 +16,24 @@ void ofApp::setup(){
     panel.add(robot.movement.movementParams);
     
     // setup geometry
-    workSrf.setup("mesh_srf.stl");
     
+    // generate dummy toolpaths
+    vector<ofPolyline> toolpaths;
+    for (int i=0; i<3; i++){
+        toolpaths.push_back(buildToolpath(ofVec3f(-.075+(.075*i),0,0)));
+    }
+    
+    // add toolpaths to worksurface
+    workSrf.setup("mesh_srf.stl",toolpaths);
+        
     setupCameras();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    workSrf.update();
+    
     moveArm();
     robot.update();
     
@@ -37,13 +48,13 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw();
+    workSrf.draw(false);
     robot.robot.model.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw();
+    workSrf.draw(false);
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     
@@ -75,6 +86,45 @@ void ofApp::moveArm(){
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
     }
     
+}
+
+ofPolyline ofApp::buildToolpath(ofVec3f centroid){
+    
+    // make an XY circle as a test toolpath ...
+    ofPolyline path;
+    float retract = .05;
+    
+    float res = 60;
+    float radius = .05;
+    float theta = 360/res;
+    
+    for (int i=0; i<res; i++){
+        ofPoint p = ofPoint(radius,0,0);
+        p.rotate(theta*i, ofVec3f(0,0,1));
+        p += centroid;
+        
+        // add an approach point
+        if (i==0){
+            p.z+=retract;
+            path.addVertex(p);
+            // add duplicate point for Path3D?
+            // path.addVertex(p);
+            p.z -=retract;
+        }
+        
+        path.addVertex(p);
+        
+        // add a retract point
+        if (i==res-1){
+            p.z+=retract;
+            path.addVertex(p);
+            // add duplicate point for Path3D?
+            // path.addVertex(p);
+        }
+    }
+//    path.close();
+    
+    return path;
 }
 
 

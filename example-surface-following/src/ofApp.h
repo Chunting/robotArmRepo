@@ -44,6 +44,7 @@ class ofApp : public ofBaseApp{
         void moveArm();
     
         ThreeDWorkSurface workSrf;
+        ofPolyline buildToolpath(ofVec3f centroid);
     
         
         // 3D Navigation

@@ -6,16 +6,23 @@ class ThreeDPath : public Path{
 public:
     /* Path Generator */
     void setup();
+    void set(ofPolyline &polyline);
 
     ofVec3f getNextNormal();
     ofMatrix4x4 getNextPose();
     ofMatrix4x4 getPoseAt(int index);
     void draw();
     void keyPressed(int key);
+   
+    /// \brief returns the number of perp frames in path
+    /// \note this is 2 less than the number of points in the path
+    int size();
     
     ofPoint centroid;
     bool pause;
     int ptIndex;
+    
+    bool reverse;
     int direction;
     
     
@@ -58,7 +65,6 @@ public:
     /// \brief polygonal profile to loft
     ofPolyline profile;
     
-    bool reverse;
     
     /* Test Paths for Orientation */
     ofPolyline path_XZ;

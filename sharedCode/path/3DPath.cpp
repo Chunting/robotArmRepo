@@ -27,6 +27,25 @@ void ThreeDPath::setup(){
     direction = 1;
 }
 
+void ThreeDPath::set(ofPolyline &polyline){
+    
+    setup(); // incase path hasn't been set up yet
+    
+    ptIndex = 0;
+    
+    // ignore the first and last points
+    for (int i=1; i<polyline.getVertices().size()-1; i++){
+        centroid += polyline.getVertices()[i];
+    }
+    centroid /= polyline.getVertices().size()-2;
+    
+    // assign path and make profile
+//    profile = buildProfile(.025,4);
+    path = polyline;
+    buildPerpFrames(path);   
+    
+  }
+
 void ThreeDPath::keyPressed(int key){
         float step = .01;   // 10 millimeters
         
@@ -80,8 +99,9 @@ void ThreeDPath::keyPressed(int key){
 ofMatrix4x4 ThreeDPath::getNextPose(){
     if(ptf.framesSize()>0){
         
+
         // go back-and-forth along a path
-        if (ptIndex == 0 || ptIndex == ptf.framesSize()-1)
+        if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
             direction *= -1;
         
         ptIndex = (ptIndex + direction) % ptf.framesSize();
@@ -130,6 +150,10 @@ void ThreeDPath::draw(){
     ofSetColor(ofColor::aqua);
     path.draw();
     
+}
+
+int ThreeDPath::size(){
+    return ptf.framesSize();
 }
 
 //--------------------------------------------------------------

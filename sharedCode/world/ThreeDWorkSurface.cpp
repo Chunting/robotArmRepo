@@ -45,6 +45,54 @@ void ThreeDWorkSurface::setup(string filename){
     // build and project a toolpath
     buildToolpath(toolpath2D, offset);
     projectToolpath(surfaceMesh, toolpath2D, toolpath);
+    
+    ThreeDPath p;
+    p.set(toolpath);
+    paths.push_back(p);
+    
+}
+
+void ThreeDWorkSurface::setup(string filename, vector<ofPolyline> polylines){
+    
+    ofxAssimpModelLoader loader;
+    loader.loadModel(ofToDataPath(filename));
+    surfaceMesh = loader.getMesh(0);
+    
+    // scale surface to meters and reposition for robot
+    ofVec3f offset = ofVec3f(0,.5,0);
+    for (auto &v : surfaceMesh.getVertices()){
+        v /= 100;
+        v+=offset;
+    }
+    
+    // center polylines onto mesh
+    for (auto &pl : polylines){
+        for (auto &v : pl.getVertices())
+            v+=offset;
+    }
+    
+    
+    vector<ofPolyline> polylines3D;
+    projectToolpath(surfaceMesh, polylines, polylines3D);
+    
+    for (auto &pl : polylines3D){
+        ThreeDPath p;
+        p.set(pl);
+        paths.push_back(p);
+    }
+    
+}
+
+void ThreeDWorkSurface::update(){
+   
+    // bug: no perp frame for last point
+    if (paths[pathIndex].ptIndex >= paths[pathIndex].size()-1){
+        paths[pathIndex].ptIndex = 0;
+        pathIndex = (pathIndex+1) % paths.size();
+    }
+
+    paths[pathIndex].getNextPose();
+    
 }
 
 void ThreeDWorkSurface::update(Joint currentTCP){
@@ -57,7 +105,7 @@ void ThreeDWorkSurface::draw(){
     ofScale(1000, 1000, 1000);
     // show the surface
     ofSetColor(255, 0, 255, 100);
-//    surfaceMesh.draw();
+    surfaceMesh.draw();
     
     // show surface normals
     ofSetColor(ofColor::aqua,100);
@@ -71,9 +119,43 @@ void ThreeDWorkSurface::draw(){
     // draw 2D & 3D toolpaths
     ofSetColor(0, 255, 255, 200);
     ofSetLineWidth(3);
-    toolpath2D.draw();
-    toolpath.draw();
-        
+//    toolpath2D.draw();
+//    toolpath.draw();
+    for (auto &p : paths)
+        p.draw();
+    
+    ofPopStyle();
+    ofPopMatrix();
+}
+void ThreeDWorkSurface::draw(bool showNormals){
+    ofPushMatrix();
+    ofPushStyle();
+    ofScale(1000, 1000, 1000);
+    
+    // show the surface
+    ofSetColor(255, 0, 255, 100);
+    surfaceMesh.draw();
+    ofSetColor(ofColor::aqua,100);
+    surfaceMesh.drawWireframe();
+    
+    // show surface normals
+    if (showNormals){
+        for (auto &face : surfaceMesh.getUniqueFaces()){
+            ofVec3f n = face.getFaceNormal();
+            n /= -100; // scale to meters & flip
+            ofVec3f pos = (face.getVertex(0) + face.getVertex(1) + face.getVertex(2)) / 3;
+            ofDrawLine(pos, pos+n);
+        }
+    }
+    
+    // draw toolpaths on surface
+    ofSetColor(0, 255, 255, 200);
+    ofSetLineWidth(3);
+    for (auto &p : paths)
+        p.draw();
+    for (auto &p : lines2D)
+        p.draw();
+    
     ofPopStyle();
     ofPopMatrix();
 }
@@ -150,17 +232,20 @@ void ThreeDWorkSurface::buildToolpath(ofPolyline &path, ofVec3f centroid){
     
 }
 
-void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2D, vector<ofPolyline> &path){
-    path.clear();
-    toolpath.clear();
-    toolpath2D.clear();
-    toolpathOrients.clear();
-    for(auto &foolines : path2D){
-        for (auto &v : foolines.getVertices()){
-            toolpath2D.addVertex(v);
-            // find the closest face to the 2D path point
+
+void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths){
+    
+    for (int i=0; i<paths2D.size(); i++){
+        ofPolyline pl = paths2D[i];
+        
+        ofPolyline temp3D;
+        
+        // find the closest face to the 2D path point
+        for (auto &v : pl.getVertices()){
+            float zHeight = v.z; // save the z height of the vertex
+            v.z = 0;             // make point into 2D point
             for (int i=0; i<mesh.getUniqueFaces().size(); i++){
-                
+                              
                 // re-make the face as a 2D polyline so we can check
                 // if the toolpath point is inside ... hacky, but it works!
                 ofPolyline f;
@@ -171,11 +256,12 @@ void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2
                 f.getVertices()[0].z = 0;
                 f.getVertices()[1].z = 0;
                 f.getVertices()[2].z = 0;
-                v.z = 0;
-                // project the 2D point onto the mesh face
+                
+                
+                // project the 2D point onto the 2D mesh face
                 if (f.inside(v)){
                     auto face = mesh.getFace(i);
-                    
+ 
                     // find the distance between our toolpath point and the mesh face
                     ofVec3f facePos = (mesh.getFace(i).getVertex(0)+mesh.getFace(i).getVertex(1)+mesh.getFace(i).getVertex(2))/3;
                     ofVec3f face2toolPt = v - facePos;
@@ -183,32 +269,29 @@ void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, vector<ofPolyline> &path2
                     
                     // use the distance as the length of a vertical projection vector
                     ofVec3f length = ofVec3f(0,0,-projectedDist);
+                    
+                    // preserve height offsets from original toolpaths
+                    if (zHeight > 0)
+                        length.z -= zHeight;
+                    
                     ofVec3f projectedPt = v-length;
                     
                     // save the projected point and face normal
-                    toolpath.addVertex(projectedPt);
-                    ofQuaternion q;
-                    
-                    q.makeRotate(ofVec3f(0,0,1), face.getFaceNormal().getNormalized());
-                    
-                    toolpathOrients.push_back(q);
+                    temp3D.addVertex(projectedPt);
                 }
-                
             }
+            
         }
+        temp3D.close();
+        paths.push_back(temp3D);
     }
-    ofQuaternion q;
-
-    toolpath.close();
     
 }
 
 //--------------------------------------------------------------
 void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, ofPolyline &path2D, ofPolyline &path){
     
-    path.clear();
     toolpath.clear();
-    toolpath2D.clear();
     toolpathOrients.clear();
     
     for (auto &v : path2D.getVertices()){
@@ -252,7 +335,7 @@ void ThreeDWorkSurface::projectToolpath(ofMesh & mesh, ofPolyline &path2D, ofPol
             
         }
     }
-    
+    int c = path.size();
     toolpath.close();
     
 }

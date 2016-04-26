@@ -6,6 +6,7 @@
 #include "UR5KinematicModel.h"
 #include "RobotParameters.h"
 #include "3DPath.h"
+#include "PathController.h"
 class WorkSurface{
 public:
     
@@ -21,7 +22,12 @@ public:
     
     virtual void setup(RobotParameters * parameters){};
     virtual void update(Joint _currentTCP){};
+    virtual void update(){};
     virtual void draw(){};
+    virtual void draw(bool showNormals){};
+    virtual void transform(ofMatrix4x4 m44){};
+    virtual void transform(ofVec3f pos){};
+    virtual void transform(ofVec3f pos, ofQuaternion orient){};
     virtual Joint getTargetPoint(float t){};
     virtual void addPoint(ofVec3f pt){};
     virtual void addStroke(ofPolyline stroke){};
@@ -51,6 +57,7 @@ protected:
     vector<ofPolyline> lines;
     vector<ofPolyline> strokes_original;
     
+    PathController pathController;
     vector<ThreeDPath> paths;
     
     ofPolyline workArea;
