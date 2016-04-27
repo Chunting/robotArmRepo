@@ -33,6 +33,7 @@ public:
     };
     
     void setup();
+    void setup(vector<Path> paths);
     void update();
     void draw();
     void pauseDrawing();
@@ -40,5 +41,13 @@ public:
     void endDrawing();
     void loadPath(string file);
     
+    vector<Path> paths;
+    int pathIndex;
+    
     PathState currentState;
+    
+    bool isDone;
+    
+private:
+    bool pause;
 };
