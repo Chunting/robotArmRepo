@@ -100,6 +100,10 @@ void WorkSurface3D::setMesh(ofMesh mesh, vector<ofPolyline> polylines2D){
     setPaths(polylines2D);
 }
 
+ofMesh WorkSurface3D::getMesh(){
+    return surfaceMesh;
+}
+
 void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
    
     vector<ofPolyline> polylines3D;
@@ -111,6 +115,10 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
         p.set(pl);
         paths.push_back(p);
     }
+}
+
+vector<ThreeDPath> WorkSurface3D::getPaths(){
+    return paths;
 }
 
 void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths, float srfOffset){
@@ -164,6 +172,20 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
         temp3D.close();
         paths.push_back(temp3D);
     }
+    
+}
+void WorkSurface3D::transform(<#ofVec3f p#>){
+    for (auto &v: surfaceMesh.getVertices()){
+        v += p;
+    }
+    for (auto &p : paths){
+        for (auto &v : p.path.getVertices())
+            v += p;
+        ThreeDPath::buildPerpFrames(p.path);
+    }
+}
+
+void WorkSurface3D::transform(ofMatrix4x4 m44){
     
 }
 

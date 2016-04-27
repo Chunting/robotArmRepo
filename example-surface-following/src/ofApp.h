@@ -2,9 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "WorkSurface3D.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
+#include "WorkSurface3D.h"
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
