@@ -9,9 +9,7 @@
 #pragma once
 #include "ofMain.h"
 #include "WorkSurface.h"
-#include "ofxNatNet.h"
-
-
+#include "3DPath.h"
 
 class WorkSurface3D : public WorkSurface{
 public:
@@ -32,10 +30,10 @@ public:
     
     void transform(ofVec3f p);
     void transform(ofMatrix4x4 m44);
-    
+  
 private:
     void project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths, float srfOffset);
-    void update();
     
-    vector<ThreeDPath> paths;
+    
+    
 };

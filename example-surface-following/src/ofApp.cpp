@@ -28,7 +28,7 @@ void ofApp::setup(){
     loader.loadModel(ofToDataPath("mesh_srf.stl"));
     ofMesh mesh = loader.getMesh(0);
     workSrf.setup(mesh,toolpaths);
-        
+    
     setupCameras();
 }
 
