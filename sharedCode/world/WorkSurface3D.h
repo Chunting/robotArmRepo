@@ -26,7 +26,7 @@ public:
     ofMesh getMesh();
     
     void setPaths(vector<ofPolyline> polylines3D);
-    vector<ThreeDPath> getPaths();
+    vector<Path> getPaths();
     
     void transform(ofVec3f p);
     void transform(ofMatrix4x4 m44);

@@ -118,7 +118,7 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
     }
 }
 
-vector<ThreeDPath> WorkSurface3D::getPaths(){
+vector<Path> WorkSurface3D::getPaths(){
     return paths;
 }
 
@@ -150,8 +150,6 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
                 if (f.inside(v)){
                     auto face = mesh.getFace(i);
                     
-                    
-                    
                     // find the distance between our toolpath point and the mesh face
                     ofVec3f facePos = (mesh.getFace(i).getVertex(0)+mesh.getFace(i).getVertex(1)+mesh.getFace(i).getVertex(2))/3;
                     ofVec3f face2toolPt = v - facePos;
@@ -164,7 +162,7 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
                     ofVec3f projectedPt = v-length;
                     
                     // preserve any 3D offset normal to the surface
-                    ofVec3f nOffset = mesh.getFace(i).getFaceNormal();
+                    ofVec3f nOffset = face.getFaceNormal();
                     nOffset.scale(zHeight+srfOffset);
                     
                     projectedPt -= nOffset;

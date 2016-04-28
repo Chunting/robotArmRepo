@@ -25,6 +25,7 @@ public:
     virtual void update(){};
     virtual void draw(){};
     virtual void draw(bool showNormals){};
+    virtual vector<Path> getPaths(){};
     virtual void transform(ofMatrix4x4 m44){};
     virtual void transform(ofVec3f pos){};
     virtual void transform(ofVec3f pos, ofQuaternion orient){};
