@@ -29,7 +29,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-
+#ifdef USE_TIMELINE
 #include "ofxTLNodeTrack.h"
 #include "ofxTimeline.h"
 
@@ -535,3 +535,4 @@ NodeTrackEase ofxTLNodeTrack::getPreviousEase(NodeTrackEase ease){
             return OFXTL_NODE_EASE_LINEAR;
     }
 }
+#endif

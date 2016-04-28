@@ -52,7 +52,9 @@ void ofxURDriver::start(){
 }
 
 void ofxURDriver::disconnect(){
-    robot->halt();
+    if(bStarted){
+        robot->halt();
+    }
     stopThread();
 }
 

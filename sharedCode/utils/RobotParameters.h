@@ -112,13 +112,6 @@ class RobotParameters{
     vector<double> currentJointPos;
     Joint actualTCP;
     Joint targetTCP;
-    
-    bool setTCPPanel;
-    bool getTCPPanel;
-    bool setToolOffset;
-    bool drawPaths;
-    bool recordPanel;
-    bool debugPanel;
-    
+        
 };
 

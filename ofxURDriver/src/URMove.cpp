@@ -41,7 +41,7 @@ void URMove::setup(){
     currentPose.assign(6, 0.0);
     inversePosition.setup(vector<vector<double> >());
     
-    epslion = 0.0005;
+    epslion = 0.00025;
     targetLength = 0.0;
     
 }
@@ -101,9 +101,9 @@ void URMove::computeVelocities(){
             for(int i = 0; i < previews[selectedSolution]->jointsRaw.getFront().size(); i++){
                 currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw.getFront()[i]-currentPose[i])/deltaTime/speedDivider;
                 
-                if(abs(currentJointSpeeds[i]) < epslion){
-                    currentJointSpeeds[i] = 0.0;
-                }
+//                if(abs(currentJointSpeeds[i]) < epslion){
+//                    currentJointSpeeds[i] = 0.0;
+//                }
                 
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
@@ -230,7 +230,7 @@ void URMove::urKinematics(ofMatrix4x4 input){
             previews[i]->jointsProcessed.getBack().resize(previews[i]->jointsRaw.getBack().size());
             for(int j = 0; j < previews[i]->joints.size(); j++){
                 if(j == 0){
-                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j];
+                    inversePosition.getBack()[i][j] = inversePosition.getBack()[i][j]-PI;
                 }
                 if(j == 1 || j == 3){
                     if(inversePosition.getBack()[i][j] > PI){
@@ -252,9 +252,6 @@ void URMove::urKinematics(ofMatrix4x4 input){
                 }
                 
                 previews[i]->jointsProcessed.getBack()[j] = ofRadToDeg(previews[i]->jointsRaw.getBack()[j]);
-                if(j == 0){
-                    previews[i]->jointsProcessed.getBack()[j]-=180;
-                }
                 if(j == 1 || j == 3){
                     previews[i]->jointsProcessed.getBack()[j]+=90;
                 }

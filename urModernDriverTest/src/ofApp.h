@@ -1,6 +1,7 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 #pragma once
-
+#define USE_TIMELINE
+#define N_CAMERAS 2
 #include "ofMain.h"
 #include "ofxNatNet.h"
 #include "ofxOsc.h"
@@ -15,11 +16,14 @@
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
 #include "ofxGizmo.h"
+#ifdef USE_TIMELINE
 #include "ofxTimeline.h"
 #include "ofxTLNodeTrack.h"
+#endif
 #include "ofxSyphon.h"
-#define N_CAMERAS 2
-#define ENABLE_NATNET
+
+//#define ENABLE_NATNET
+
 
 class ofApp : public ofBaseApp{
     

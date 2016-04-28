@@ -17,7 +17,7 @@ void PathController::setup(){
 }
 
 void PathController::setup(vector<Path> paths){
-    this.paths = paths;
+    this->paths = paths;
     pathIndex = 0;
 }
 
