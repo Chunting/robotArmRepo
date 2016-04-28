@@ -63,7 +63,6 @@
 		C8BBAA071CCEA6430045C06A /* 3DPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9E31CCEA6430045C06A /* 3DPath.cpp */; };
 		C8BBAA081CCEA6430045C06A /* GMLPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9E51CCEA6430045C06A /* GMLPath.cpp */; };
 		C8BBAA091CCEA6430045C06A /* ofxStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9E71CCEA6430045C06A /* ofxStrip.cpp */; };
-		C8BBAA0A1CCEA6430045C06A /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9E91CCEA6430045C06A /* Path.cpp */; };
 		C8BBAA0B1CCEA6430045C06A /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9EC1CCEA6430045C06A /* ofxGameCamera.cpp */; };
 		C8BBAA0C1CCEA6430045C06A /* PathPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9EE1CCEA6430045C06A /* PathPlayer.cpp */; };
 		C8BBAA0D1CCEA6430045C06A /* PathRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8BBA9F01CCEA6430045C06A /* PathRecorder.cpp */; };
@@ -447,6 +446,7 @@
 		C6937888E126BADC8777423B /* OscTypes.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = OscTypes.h; path = ../../../addons/ofxOsc/libs/oscpack/src/osc/OscTypes.h; sourceTree = SOURCE_ROOT; };
 		C70D8946940288799E82131E /* ofxSliderGroup.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxSliderGroup.h; path = ../../../addons/ofxGui/src/ofxSliderGroup.h; sourceTree = SOURCE_ROOT; };
 		C76DE5C29BDBD2CAA1DD0021 /* ofxCvContourFinder.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvContourFinder.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvContourFinder.cpp; sourceTree = SOURCE_ROOT; };
+		C879A5D31CD27B5A008A7E30 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		C88333E71C9457E441C33474 /* ofxButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxButton.cpp; path = ../../../addons/ofxGui/src/ofxButton.cpp; sourceTree = SOURCE_ROOT; };
 		C8BBA9D81CCEA6430045C06A /* NatNetController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetController.cpp; sourceTree = "<group>"; };
 		C8BBA9D91CCEA6430045C06A /* NatNetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetController.h; sourceTree = "<group>"; };
@@ -464,7 +464,6 @@
 		C8BBA9E61CCEA6430045C06A /* GMLPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMLPath.h; sourceTree = "<group>"; };
 		C8BBA9E71CCEA6430045C06A /* ofxStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStrip.cpp; sourceTree = "<group>"; };
 		C8BBA9E81CCEA6430045C06A /* ofxStrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxStrip.h; sourceTree = "<group>"; };
-		C8BBA9E91CCEA6430045C06A /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		C8BBA9EA1CCEA6430045C06A /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
 		C8BBA9EC1CCEA6430045C06A /* ofxGameCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
 		C8BBA9ED1CCEA6430045C06A /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
@@ -1589,7 +1588,6 @@
 				C8BBA9E61CCEA6430045C06A /* GMLPath.h */,
 				C8BBA9E71CCEA6430045C06A /* ofxStrip.cpp */,
 				C8BBA9E81CCEA6430045C06A /* ofxStrip.h */,
-				C8BBA9E91CCEA6430045C06A /* Path.cpp */,
 				C8BBA9EA1CCEA6430045C06A /* Path.h */,
 			);
 			path = path;
@@ -1598,6 +1596,7 @@
 		C8BBA9EB1CCEA6430045C06A /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				C879A5D31CD27B5A008A7E30 /* Constants.h */,
 				C8BBABB41CCEC75B0045C06A /* ofxTimeline */,
 				C8BBA9EC1CCEA6430045C06A /* ofxGameCamera.cpp */,
 				C8BBA9ED1CCEA6430045C06A /* ofxGameCamera.h */,
@@ -2284,7 +2283,6 @@
 				C8BBAA371CCEA64F0045C06A /* robot_state_RT.cpp in Sources */,
 				C8BBABF11CCEE3A60045C06A /* SyphonNameboundClient.m in Sources */,
 				C8BBAA041CCEA6430045C06A /* RobotController.cpp in Sources */,
-				C8BBAA0A1CCEA6430045C06A /* Path.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				C8BBAA601CCEA67A0045C06A /* GizmoTransformMove.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,

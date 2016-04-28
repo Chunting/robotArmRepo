@@ -31,9 +31,11 @@
  */
 
 #pragma once
-
+#include "Constants.h"
+#ifdef USE_TIMELINE
 #include "ofMain.h"
 #include "ofxTLKeyframes.h"
+
 typedef enum {
     OFXTL_NODE_EASE_LINEAR,
     OFXTL_NODE_EASE_SMOOTH,
@@ -140,3 +142,4 @@ class ofxTLNodeTrack : public ofxTLKeyframes {
 	//you can responde to a keyframe about to be killed with this function right before the parent class deletes it
 	virtual void willDeleteKeyframe(ofxTLKeyframe* keyframe);
 };
+#endif

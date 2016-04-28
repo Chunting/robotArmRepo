@@ -21,8 +21,6 @@ void ofApp::setup(){
 #endif
 }
 
-
-
 void ofApp::setupViewports(){
     
     viewportReal = ofRectangle((21*ofGetWindowWidth()/24)/2, 0, (21*ofGetWindowWidth()/24)/2, 7*ofGetWindowHeight()/8);
@@ -47,18 +45,23 @@ void ofApp::setupTimeline(){
     tcpNode.setOrientation(parameters.targetTCP.rotation);
     gizmo.setNode( tcpNode);
     
+    ofDirectory dir;
+    string dirName = "timeline/saves/"+ofGetTimestampString();
+    dir.createDirectory(ofToDataPath(dirName));
     
     timeline.setup();
+ 
     timeline.setFrameRate(60);
-    timeline.setDurationInFrames(60*30);
+    timeline.setDurationInFrames(timeline.getFrameRate()*30);
     timeline.setLoopType(OF_LOOP_NORMAL);
-    
     
     nodeTrack = new ofxTLNodeTrack();
     nodeTrack->setNode(tcpNode);
+    nodeTrack->setTimeline(&timeline);
+    nodeTrack->setXMLFileName(dirName+"/_keyframes.xml");
     timeline.addTrack("TargetTCP", nodeTrack);
-    
-    
+    timeline.setWorkingFolder(dirName);
+    timeline.setFrameBased(false);
     
     nodeTrack->lockNodeToTrack = true;
 }
@@ -78,7 +81,7 @@ void ofApp::setupGUI(){
     parameters.bMove = false;
     // get the current pose on start up
     parameters.bCopy = true;
-    panel.loadFromFile("settings.xml");
+    panel.loadFromFile("settings/settings.xml");
     //    panelWorkSurface.loadFromFile("settings.xml");
     
     
@@ -105,7 +108,7 @@ void ofApp::update(){
     //    workSurface.update();
     
     //    workSurfaceTargetTCP = workSurface.getNextPose();
-    if(nodeTrack->lockNodeToTrack){
+    if(nodeTrack->lockNodeToTrack && !parameters.bCopy){
         gizmo.setNode(tcpNode);
     }else{
         tcpNode.setTransformMatrix( gizmo.getMatrix() );
@@ -182,6 +185,11 @@ void ofApp::draw(){
     gizmo.setViewDimensions(viewportSim.width, viewportSim.height);
 
     
+    cams[1].begin(viewportSim);
+    gizmo.draw( cams[1] );
+    robot.movement.draw(0);
+    cams[1].end();
+    
     cams[0].begin(viewportReal);
 #ifdef ENABLE_NATNET
     natNet.draw();
@@ -193,10 +201,7 @@ void ofApp::draw(){
     }
     cams[0].end();
     
-    cams[1].begin(viewportSim);
-    gizmo.draw( cams[1] );
-    robot.movement.draw(0);
-    cams[1].end();
+
     
     
     timeline.draw();
@@ -213,8 +218,8 @@ void ofApp::draw(){
 
 void ofApp::exit(){
     parameters.bMove = false;
-    panel.saveToFile("settings.xml");
-    panelWorkSurface.saveToFile("workSurface.xml");
+    panel.saveToFile("settings/settings.xml");
+//    panelWorkSurface.saveToFile("settings/workSurface.xml");
     if(robot.robot.isThreadRunning()){
         robot.robot.disconnect();
     }
@@ -365,5 +370,25 @@ void ofApp::gotMessage(ofMessage msg){
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){
-    
+    parameters.bMove = false;
+    if(dragInfo.files.size() > 0){
+        ofFile file;
+        file.open(dragInfo.files[0]);
+        if(file.isDirectory()){
+            nodeTrack->clear();
+            timeline.clear();
+            ofDirectory dir;
+            dir.listDir(dragInfo.files[0]);
+            dir.allowExt(".xml");
+            timeline.loadTracksFromFolder(dragInfo.files[0]);
+            for(int i = 0; i < dir.size(); i++){
+                if(dir.getName(i) == "_keyframes.xml"){
+                    nodeTrack->loadFromXMLRepresentation(dir.getPath(i));
+                    nodeTrack->setXMLFileName(dir.getPath(i));
+                   
+                }
+            }
+            timeline.setWorkingFolder(dragInfo.files[0]);
+        }
+    }
 }
