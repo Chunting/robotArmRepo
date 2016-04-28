@@ -55,7 +55,7 @@ void ofApp::draw(){
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(true,true,false,true);
+    workSrf.draw(true,true,true,true);
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     

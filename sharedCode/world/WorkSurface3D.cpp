@@ -83,10 +83,11 @@ void WorkSurface3D::draw(bool showSrf=true, bool showWireframe=true, bool showNo
         }
     }
     if (showPaths){
-        ofSetColor(0, 255, 255, 200);
         ofSetLineWidth(3);
-        for (auto &p : paths)
+        ofSetColor(0, 255, 255, 200);
+        for (auto &p : paths){
             p.draw();
+        }
     }
     
     ofPopStyle();
@@ -149,6 +150,8 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
                 if (f.inside(v)){
                     auto face = mesh.getFace(i);
                     
+                    
+                    
                     // find the distance between our toolpath point and the mesh face
                     ofVec3f facePos = (mesh.getFace(i).getVertex(0)+mesh.getFace(i).getVertex(1)+mesh.getFace(i).getVertex(2))/3;
                     ofVec3f face2toolPt = v - facePos;
@@ -157,11 +160,14 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
                     // use the distance as the length of a vertical projection vector
                     ofVec3f length = ofVec3f(0,0,-projectedDist - srfOffset);
                     
-                    // preserve height offsets from original toolpaths
-                    if (zHeight > 0)
-                        length.z -= zHeight;
-                    
+                    // get point on surface
                     ofVec3f projectedPt = v-length;
+                    
+                    // preserve any 3D offset normal to the surface
+                    ofVec3f nOffset = mesh.getFace(i).getFaceNormal();
+                    nOffset.scale(zHeight+srfOffset);
+                    
+                    projectedPt -= nOffset;
                     
                     // save the projected point and face normal
                     temp3D.addVertex(projectedPt);
