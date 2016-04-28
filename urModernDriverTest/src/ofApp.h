@@ -1,6 +1,5 @@
 //Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 #pragma once
-#define USE_TIMELINE
 #define N_CAMERAS 2
 #include "ofMain.h"
 #include "ofxNatNet.h"
@@ -16,6 +15,7 @@
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
 #include "ofxGizmo.h"
+#include "Constants.h"
 #ifdef USE_TIMELINE
 #include "ofxTimeline.h"
 #include "ofxTLNodeTrack.h"

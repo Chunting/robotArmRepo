@@ -31,6 +31,7 @@
  */
 
 #pragma once
+#include "Constants.h"
 #ifdef USE_TIMELINE
 #include "ofMain.h"
 #include "ofxTLKeyframes.h"
