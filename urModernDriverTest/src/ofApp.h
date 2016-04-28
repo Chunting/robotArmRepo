@@ -15,11 +15,8 @@
 #include "WorkSurfaceController.h"
 #include "3DPath.h"
 #include "ofxGizmo.h"
-#include "Constants.h"
-#ifdef USE_TIMELINE
 #include "ofxTimeline.h"
 #include "ofxTLNodeTrack.h"
-#endif
 #include "ofxSyphon.h"
 
 //#define ENABLE_NATNET
