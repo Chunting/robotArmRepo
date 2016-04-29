@@ -15,6 +15,8 @@ public:
     virtual void addPaths(vector<ofPolyline> lines){};
     virtual void draw(){};
     int ptIndex;
+    virtual string getName(){return "Base Path";};
     virtual int size(){return 0;};
     ofPolyline path;
+    virtual ofPolyline getPolyline(){};
 };

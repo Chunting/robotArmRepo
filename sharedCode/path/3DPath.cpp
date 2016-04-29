@@ -43,8 +43,12 @@ void ThreeDPath::set(ofPolyline &polyline){
 //    profile = buildProfile(.025,4);
     path = polyline;
     buildPerpFrames(path);   
-    
-  }
+    cout << "polyline size in 3Dpath setup: " << path.size() << endl;
+}
+
+ofPolyline ThreeDPath::getPolyline(){
+    return path;
+}
 
 void ThreeDPath::keyPressed(int key){
         float step = .01;   // 10 millimeters

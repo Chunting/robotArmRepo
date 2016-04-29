@@ -59,6 +59,7 @@ void WorkSurface3D::setup(ofMesh mesh, vector<ofPolyline> polylines){
         p.set(pl);
         paths.push_back(p);
     }
+   
 }
 
 void WorkSurface3D::draw(bool showSrf=true, bool showWireframe=true, bool showNormals=false, bool showPaths=true){
@@ -118,9 +119,21 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
     }
 }
 
-vector<Path> WorkSurface3D::getPaths(){
-    return paths;
+vector<Path *> WorkSurface3D::getPaths(){
+    
+    vector<Path *> pathPtrs;
+
+    for (auto path : paths){
+        Path &p = path;
+        cout << p.getName() << endl;
+
+        pathPtrs.push_back(&path);
+        cout << pathPtrs[pathPtrs.size()-1]->getName() << endl;
+    }
+    
+    return pathPtrs;
 }
+
 
 void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths, float srfOffset){
     for (int i=0; i<paths2D.size(); i++){

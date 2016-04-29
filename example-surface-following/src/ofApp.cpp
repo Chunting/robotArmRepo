@@ -29,7 +29,28 @@ void ofApp::setup(){
     ofMesh mesh = loader.getMesh(0);
     workSrf.setup(mesh,toolpaths);
     
-    paths.setup(workSrf.getPaths());
+    auto wrkPaths = workSrf.paths;
+    cout << "number of paths: " << wrkPaths.size() << endl;
+    Path &p = wrkPaths[0];
+    cout << "number of pts in path 0: " << p.size() << endl;
+    
+    vector<Path *> workSrfPaths;
+    for (auto &path : workSrf.paths){
+        Path &p = path;
+        workSrfPaths.push_back(&path);
+        cout << "number of pts in path vector: " << workSrfPaths[workSrfPaths.size()-1]->size() << endl;
+
+    }
+    
+//    auto wrkPaths = workSrf.getPaths();
+//    cout << "number of paths: " << wrkPaths.size() << endl;
+//    Path p = *wrkPaths[0];
+//    cout << "number of pts in path 0: " << p.size() << endl;
+//    auto &workSrfPaths = wrkPaths;
+    paths.setup(workSrfPaths);
+    
+    
+    
     
     setupCameras();
 }
@@ -51,13 +72,15 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(true,true,false,true);
+//    workSrf.draw(true,true,false,false);
+    paths.draw();
     robot.robot.model.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(true,true,true,true);
+    workSrf.draw(true,true,true,false);
+    paths.draw();
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     
