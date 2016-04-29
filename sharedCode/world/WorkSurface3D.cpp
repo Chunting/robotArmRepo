@@ -121,17 +121,26 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
 
 vector<Path *> WorkSurface3D::getPaths(){
     
-    vector<Path *> pathPtrs;
-
-    for (auto path : paths){
-        Path &p = path;
-        cout << p.getName() << endl;
-
-        pathPtrs.push_back(&path);
-        cout << pathPtrs[pathPtrs.size()-1]->getName() << endl;
-    }
+//    vector<Path *> pathPtrs;
+//
+//    for (auto path : paths){
+//        Path &p = path;
+//        cout << p.getName() << endl;
+//
+//        pathPtrs.push_back(&path);
+//        cout << pathPtrs[pathPtrs.size()-1]->getName() << endl;
+//    }
+//    
+//    return pathPtrs;
     
-    return pathPtrs;
+    vector<Path *> pPaths;
+    for (auto &path : paths){
+
+        pPaths.push_back(&path);
+//        cout << "number of pts in path vector: " << workSrfPaths[workSrfPaths.size()-1]->size() << endl;
+        
+    }
+    return pPaths;
 }
 
 

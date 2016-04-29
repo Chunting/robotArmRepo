@@ -21,14 +21,11 @@ public:
     ofPoint centroid;
     bool pause;
     int ptIndex;
+    int getPtIndex();
+    void setPtIndex(int index);
     
     bool reverse;
     int direction;
-    
-    string getName(){return "Path3D";};
-    
-    ofPolyline getPolyline();
-    
     
     /// \brief Creates a periodic 3D path.
     /// Adapted from: <a href="http://openframeworks.cc/ofBook/chapters/lines.html">ofBook/chapters/lines.html</a>

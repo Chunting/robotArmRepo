@@ -29,34 +29,16 @@ void ofApp::setup(){
     ofMesh mesh = loader.getMesh(0);
     workSrf.setup(mesh,toolpaths);
     
-    auto wrkPaths = workSrf.paths;
-    cout << "number of paths: " << wrkPaths.size() << endl;
-    Path &p = wrkPaths[0];
-    cout << "number of pts in path 0: " << p.size() << endl;
-    
-    vector<Path *> workSrfPaths;
-    for (auto &path : workSrf.paths){
-        Path &p = path;
-        workSrfPaths.push_back(&path);
-        cout << "number of pts in path vector: " << workSrfPaths[workSrfPaths.size()-1]->size() << endl;
+    // setup path controller
+    paths.setup(workSrf.getPaths());
 
-    }
-    
-//    auto wrkPaths = workSrf.getPaths();
-//    cout << "number of paths: " << wrkPaths.size() << endl;
-//    Path p = *wrkPaths[0];
-//    cout << "number of pts in path 0: " << p.size() << endl;
-//    auto &workSrfPaths = wrkPaths;
-    paths.setup(workSrfPaths);
-    
-    
-    
-    
     setupCameras();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    paths.update();
     
     moveArm();
     robot.update();
@@ -72,7 +54,7 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-//    workSrf.draw(true,true,false,false);
+    workSrf.draw(true,true,false,false);
     paths.draw();
     robot.robot.model.draw();
     cams[0].end();
@@ -111,6 +93,7 @@ void ofApp::moveArm(){
         parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
     }
+    
     
 }
 

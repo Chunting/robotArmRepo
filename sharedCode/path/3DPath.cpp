@@ -43,12 +43,9 @@ void ThreeDPath::set(ofPolyline &polyline){
 //    profile = buildProfile(.025,4);
     path = polyline;
     buildPerpFrames(path);   
-    cout << "polyline size in 3Dpath setup: " << path.size() << endl;
+
 }
 
-ofPolyline ThreeDPath::getPolyline(){
-    return path;
-}
 
 void ThreeDPath::keyPressed(int key){
         float step = .01;   // 10 millimeters
@@ -100,6 +97,7 @@ void ThreeDPath::keyPressed(int key){
         }
 }
 
+
 ofMatrix4x4 ThreeDPath::getNextPose(){
     if(ptf.framesSize()>0){
         
@@ -130,6 +128,14 @@ ofMatrix4x4 ThreeDPath::getPoseAt(int index){
     
 }
 
+int ThreeDPath::getPtIndex(){
+    return ptIndex;
+};
+
+void ThreeDPath::setPtIndex(int index){
+    ptIndex = index;
+};
+
 
 void ThreeDPath::draw(){
 
@@ -150,7 +156,7 @@ void ThreeDPath::draw(){
     
     
     // show the 3D path
-    ofSetLineWidth(.01);
+    ofSetLineWidth(3);
     ofSetColor(ofColor::aqua);
     path.draw();
     
