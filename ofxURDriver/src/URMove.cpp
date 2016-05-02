@@ -103,7 +103,7 @@ void URMove::computeVelocities(){
             previews[selectedSolution]->jointsRaw.swapFront();
             previews[selectedSolution]->jointsProcessed.swapFront();
             for(int i = 0; i < previews[selectedSolution]->jointsRaw.getFront().size(); i++){
-                currentJointSpeeds[i] = (currentPose[i]-previews[selectedSolution]->jointsRaw.getFront()[i])/deltaTime/speedDivider;
+                currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw.getFront()[i]-currentPose[i])/deltaTime/speedDivider;
                 
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;
