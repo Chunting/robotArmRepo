@@ -15,23 +15,27 @@ URMove::~URMove(){
 }
 void URMove::setup(){
     movementParams.setName("UR Movements");
-    movementParams.add(reachPoint.set("Step", false));
+
     movementParams.add(minSpeed.set("MIN Speed", 0.0, 0.0, TWO_PI*10));
     movementParams.add(maxSpeed.set(" MAX Speed", 0.0, 0.0, TWO_PI*10));
-    movementParams.add(deltaTime.set("Delta T", 0.0, 0.0, 1.0));
-    movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
-    movementParams.add(jointSpeedLerpSpeed.set("Joint LerpSpeed", 0.9, 0.001, 1.0));
+
     
-    movementParams.add(avgAcceleration.set("avgAcceleration", 0, 0, 200));
-    movementParams.add(jointAccelerationMultipler.set("Acceleration M", 200, 1, 1000));
+    movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
+
+    
+    movementParams.add(avgAcceleration.set("Accel", 0, 0, 200));
+    movementParams.add(jointAccelerationMultipler.set("Accel Multi", 1, 1, 1000));
     movementParams.add(speedDivider.set("Speed Divider", 1, 1, 10));
-    movementParams.add(followLerp.set("followLerp", 1, 0, 1.0));
+    reachPoint.set("Step", false);
+    deltaTime.set("Delta T", 0.0, 0.0, 1.0);
+    jointSpeedLerpSpeed.set("Joint LerpSpeed", 0.9, 0.001, 1.0);
     
     
     for(int i = 0; i < 8; i++){
         previews.push_back(new UR5KinematicModel());
         previews.back()->setup();
     }
+    
     selectedSolution = -1;
     deltaTimer.setSmoothing(true);
     distance = 0;
@@ -99,11 +103,7 @@ void URMove::computeVelocities(){
             previews[selectedSolution]->jointsRaw.swapFront();
             previews[selectedSolution]->jointsProcessed.swapFront();
             for(int i = 0; i < previews[selectedSolution]->jointsRaw.getFront().size(); i++){
-                currentJointSpeeds[i] = (previews[selectedSolution]->jointsRaw.getFront()[i]-currentPose[i])/deltaTime/speedDivider;
-                
-//                if(abs(currentJointSpeeds[i]) < epslion){
-//                    currentJointSpeeds[i] = 0.0;
-//                }
+                currentJointSpeeds[i] = (currentPose[i]-previews[selectedSolution]->jointsRaw.getFront()[i])/deltaTime/speedDivider;
                 
                 float tempMin = minSpeed;
                 float tempMax = maxSpeed;

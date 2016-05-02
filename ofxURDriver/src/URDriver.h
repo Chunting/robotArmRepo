@@ -19,6 +19,7 @@ public:
     void setup(string ipAddress, double minPayload = 0.0, double maxPayload = 1.0);
     void start();
     void disconnect();
+    void stopThread();
     void setToolOffset(ofVec3f localPos);
     void threadedFunction();
     ofNode getToolNode();

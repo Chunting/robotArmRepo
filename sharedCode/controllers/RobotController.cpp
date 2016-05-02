@@ -93,6 +93,12 @@ void RobotController::updateData(){
     
 }
 
+void RobotController::close(){
+    if(robot.isThreadRunning()){
+        robot.stopThread();
+    }
+}
+
 void RobotController::toggleRecord(){
     if(robotParams->bRecord){
         recorder.startRecording();

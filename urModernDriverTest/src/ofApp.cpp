@@ -27,13 +27,22 @@ void ofApp::setupViewports(){
     viewportSim = ofRectangle(0, 0, (21*ofGetWindowWidth()/24)/2, 7*ofGetWindowHeight()/8);
     
     activeCam = 0;
-    cams[0].begin(viewportReal);
-    cams[0].end();
-    cams[0].enableMouseInput();
     
-    cams[1].begin(viewportSim);
-    cams[1].end();
-    cams[1].enableMouseInput();
+    
+    for(int i = 0; i < N_CAMERAS; i++){
+        cams.push_back(new ofEasyCam());
+        savedCamMats.push_back(ofMatrix4x4());
+        viewportLabels.push_back("");
+    }
+    
+    cams[0]->begin(viewportReal);
+    cams[0]->end();
+    cams[0]->enableMouseInput();
+    
+    
+    cams[1]->begin(viewportSim);
+    cams[1]->end();
+    cams[1]->enableMouseInput();
     
 }
 
@@ -82,9 +91,6 @@ void ofApp::setupGUI(){
     // get the current pose on start up
     parameters.bCopy = true;
     panel.loadFromFile("settings/settings.xml");
-    //    panelWorkSurface.loadFromFile("settings.xml");
-    
-    
 }
 
 void ofApp::positionGUI(){
@@ -119,11 +125,11 @@ void ofApp::update(){
     if (viewportReal.inside(ofGetMouseX(), ofGetMouseY()))
     {
         activeCam = 0;
-        if(!cams[0].getMouseInputEnabled()){
-            cams[0].enableMouseInput();
+        if(!cams[0]->getMouseInputEnabled()){
+            cams[0]->enableMouseInput();
         }
-        if(cams[1].getMouseInputEnabled()){
-            cams[1].disableMouseInput();
+        if(cams[1]->getMouseInputEnabled()){
+            cams[1]->disableMouseInput();
         }
         
         
@@ -132,14 +138,14 @@ void ofApp::update(){
     if(viewportSim.inside(ofGetMouseX(), ofGetMouseY()))
     {
         activeCam = 1;
-        if(!cams[1].getMouseInputEnabled()){
-            cams[1].enableMouseInput();
+        if(!cams[1]->getMouseInputEnabled()){
+            cams[1]->enableMouseInput();
         }
-        if(cams[0].getMouseInputEnabled()){
-            cams[0].disableMouseInput();
+        if(cams[0]->getMouseInputEnabled()){
+            cams[0]->disableMouseInput();
         }
-        if(gizmo.isInteracting() && cams[1].getMouseInputEnabled()){
-            cams[1].disableMouseInput();
+        if(gizmo.isInteracting() && cams[1]->getMouseInputEnabled()){
+            cams[1]->disableMouseInput();
         }
     }
 }
@@ -185,12 +191,12 @@ void ofApp::draw(){
     gizmo.setViewDimensions(viewportSim.width, viewportSim.height);
 
     
-    cams[1].begin(viewportSim);
-    gizmo.draw( cams[1] );
+    cams[1]->begin(viewportSim);
+    gizmo.draw( *cams[1] );
     robot.movement.draw(0);
-    cams[1].end();
+    cams[1]->end();
     
-    cams[0].begin(viewportReal);
+    cams[0]->begin(viewportReal);
 #ifdef ENABLE_NATNET
     natNet.draw();
 #endif
@@ -199,7 +205,7 @@ void ofApp::draw(){
     if (!hideRobot){
         robot.robot.model.draw();
     }
-    cams[0].end();
+    cams[0]->end();
     
 
     
@@ -219,10 +225,7 @@ void ofApp::draw(){
 void ofApp::exit(){
     parameters.bMove = false;
     panel.saveToFile("settings/settings.xml");
-//    panelWorkSurface.saveToFile("settings/workSurface.xml");
-    if(robot.robot.isThreadRunning()){
-        robot.robot.disconnect();
-    }
+    robot.close();
 }
 
 //--------------------------------------------------------------
@@ -237,18 +240,6 @@ void ofApp::keyPressed(int key){
         parameters.bMove = !parameters.bMove;
     }
     
-    if(key == 'u'){
-        workSurface.twoDSurface.setCorner(WorkSurface::UL, parameters.tcpPosition);
-    }
-    if(key == 'i'){
-        workSurface.twoDSurface.setCorner(WorkSurface::UR, parameters.tcpPosition);
-    }
-    if(key == 'o'){
-        workSurface.twoDSurface.setCorner(WorkSurface::LL, parameters.tcpPosition);
-    }
-    if(key == 'p'){
-        workSurface.twoDSurface.setCorner(WorkSurface::LR, parameters.tcpPosition);
-    }
     if(key == '8'){
         parameters.bFigure8 = !parameters.bFigure8;
     }
@@ -287,34 +278,34 @@ void ofApp::handleViewportPresets(int key){
     if(activeCam != -1){
         // TOP VIEW
         if (key == '1'){
-            cams[activeCam].reset();
-            cams[activeCam].setPosition(0, 0, dist);
-            cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam].movedManually();
+            cams[activeCam]->reset();
+            cams[activeCam]->setPosition(0, 0, dist);
+            cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "TOP VIEW";
         }
         // LEFT VIEW
         else if (key == '2'){
-            cams[activeCam].reset();
-            cams[activeCam].setPosition(dist, 0, 0);
-            cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam].movedManually();
+            cams[activeCam]->reset();
+            cams[activeCam]->setPosition(dist, 0, 0);
+            cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "LEFT VIEW";
         }
         // FRONT VIEW
         else if (key == '3'){
-            cams[activeCam].reset();
-            cams[activeCam].setPosition(0, dist, 0);
-            cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam].movedManually();
+            cams[activeCam]->reset();
+            cams[activeCam]->setPosition(0, dist, 0);
+            cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "FRONT VIEW";
         }
         // PERSPECTIVE VIEW
         else if (key == '4'){
-            cams[activeCam].reset();
-            cams[activeCam].setPosition(dist, dist, dist/4);
-            cams[activeCam].lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam].movedManually();
+            cams[activeCam]->reset();
+            cams[activeCam]->setPosition(dist, dist, dist/4);
+            cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
+            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "PERSPECTIVE VIEW";
         }
     }
