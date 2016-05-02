@@ -202,7 +202,6 @@ void ofApp::handleViewportPresets(int key){
             cams[activeCam]->reset();
             cams[activeCam]->setPosition(0, 0, dist);
             cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "TOP VIEW";
         }
         // LEFT VIEW
@@ -210,7 +209,6 @@ void ofApp::handleViewportPresets(int key){
             cams[activeCam]->reset();
             cams[activeCam]->setPosition(dist, 0, 0);
             cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "LEFT VIEW";
         }
         // FRONT VIEW
@@ -218,7 +216,6 @@ void ofApp::handleViewportPresets(int key){
             cams[activeCam]->reset();
             cams[activeCam]->setPosition(0, dist, 0);
             cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "FRONT VIEW";
         }
         // PERSPECTIVE VIEW
@@ -226,7 +223,6 @@ void ofApp::handleViewportPresets(int key){
             cams[activeCam]->reset();
             cams[activeCam]->setPosition(dist, dist, dist/4);
             cams[activeCam]->lookAt(ofVec3f(0, 0, 0), ofVec3f(0, 0, 1));
-            //        cams[activeCam]->movedManually();
             viewportLabels[activeCam] = "PERSPECTIVE VIEW";
         }
     }
@@ -254,9 +250,9 @@ void ofApp::hightlightViewports(){
     
     // show Viewport info
     ofSetColor(ofColor::white,200);
-//    ofDrawBitmapString(viewportLabels[0], 30, ofGetWindowHeight()-30);
+    ofDrawBitmapString(viewportLabels[0], viewportReal.x+viewportReal.width-120, ofGetWindowHeight()-30);
     ofDrawBitmapString("REALTIME", ofGetWindowWidth()/2 - 90, ofGetWindowHeight()-30);
-//    ofDrawBitmapString(viewportLabels[1], ofGetWindowWidth()/2+30, ofGetWindowHeight()-30);
+    ofDrawBitmapString(viewportLabels[1], viewportSim.x+viewportSim.width-120, ofGetWindowHeight()-30);
     ofDrawBitmapString("SIMULATED", 30, ofGetWindowHeight()-30);
     
     ofPopStyle();
@@ -298,7 +294,7 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    viewportLabels[activeCam] = "";
 }
 
 //--------------------------------------------------------------
