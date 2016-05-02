@@ -9,7 +9,8 @@ PREFIX="git clone http://github.com/"
 ${PREFIX}kylemcdonald/ofxTiming
 ${PREFIX}kylemcdonald/ofxCV
 ${PREFIX}CreativeInquiry/ofxNatNet
-${PREFIX}julapy/ofxQuadWarp
 ${PREFIX}danzeeeman/ofxGML
-${PREFIX}Flightphase/ofxGameCamera
+${PREFIX}danzeeeman/ofxGizmo
+${PREFIX}danzeeeman/ofxTimeline
+
 cd ../apps/robotArmRepo

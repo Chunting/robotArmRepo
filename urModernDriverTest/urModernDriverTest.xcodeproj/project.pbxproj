@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		03B14860C85545A54080C30A /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7DB470D57A91A0701B9FCD /* tagWriter.cpp */; };
 		0546D1A38E13BD319CC9755B /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9BF3AA0D4FAA89D0F8A0E545 /* OscReceivedElements.cpp */; };
-		09DCB2459CB1AD6C39EF7C5D /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CD3DB9787C3DD37A506FB45C /* ofxGameCamera.cpp */; };
 		152EAECABD008D84AF7F27F8 /* ofxEasingLinear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A4CFDCEA412E8BCDACA9B26 /* ofxEasingLinear.cpp */; };
 		168C43F69AF6A8042EA0B13F /* easing_terms_of_use.html in Sources */ = {isa = PBXBuildFile; fileRef = 9AAEF50558BBDBEB5260FC35 /* easing_terms_of_use.html */; };
 		169D3C72FDE6C5590A1616F5 /* ofxCvFloatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7B6A03390302D5A2C9F0E4AB /* ofxCvFloatImage.cpp */; };
@@ -311,7 +310,6 @@
 		71C98C3F44D63B39F1482A54 /* background_segm.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = background_segm.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/video/background_segm.hpp; sourceTree = SOURCE_ROOT; };
 		722542BCDC94162B6A8B9B72 /* defines.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = defines.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/defines.h; sourceTree = SOURCE_ROOT; };
 		7279658ADA9582251CB1D783 /* log.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = log.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/videostab/log.hpp; sourceTree = SOURCE_ROOT; };
-		7361158E71EB594FC111950C /* ofxGameCamera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxGameCamera.h; path = ../../../addons/ofxGameCamera/src/ofxGameCamera.h; sourceTree = SOURCE_ROOT; };
 		75386E12E645F42737CA0EB5 /* scan.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = scan.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/scan.hpp; sourceTree = SOURCE_ROOT; };
 		758F19335D4E46A5E0DE449F /* kdtree_single_index.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = kdtree_single_index.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kdtree_single_index.h; sourceTree = SOURCE_ROOT; };
 		7599804C6260EC1CD8D3567D /* ofxEasingLinear.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxEasingLinear.h; path = ../../../addons/ofxTween/src/Easings/ofxEasingLinear.h; sourceTree = SOURCE_ROOT; };
@@ -600,7 +598,6 @@
 		CBDE84185E2969BA4AB209FC /* general.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = general.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/general.h; sourceTree = SOURCE_ROOT; };
 		CCC89CA785CFCE1FE8D78F26 /* cvstd.inl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = cvstd.inl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cvstd.inl.hpp; sourceTree = SOURCE_ROOT; };
 		CCFB64CDA537F2B5A54CDC13 /* photo.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = photo.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/photo/photo.hpp; sourceTree = SOURCE_ROOT; };
-		CD3DB9787C3DD37A506FB45C /* ofxGameCamera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxGameCamera.cpp; path = ../../../addons/ofxGameCamera/src/ofxGameCamera.cpp; sourceTree = SOURCE_ROOT; };
 		CD8565F2F122EECA0C095526 /* types_c.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = types_c.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/types_c.h; sourceTree = SOURCE_ROOT; };
 		CDD232607BBCF4BDE5954EEC /* directx.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = directx.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/directx.hpp; sourceTree = SOURCE_ROOT; };
 		CE5203B78839A661DA972B33 /* warpers_inl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = warpers_inl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/stitching/detail/warpers_inl.hpp; sourceTree = SOURCE_ROOT; };
@@ -828,14 +825,6 @@
 				6E54289412D2D94F45A05113 /* libs */,
 			);
 			name = ofxXmlSettings;
-			sourceTree = "<group>";
-		};
-		29032E417095D90713AF7E79 /* ofxGameCamera */ = {
-			isa = PBXGroup;
-			children = (
-				7192EB7352827AF20FE9AF59 /* src */,
-			);
-			name = ofxGameCamera;
 			sourceTree = "<group>";
 		};
 		2C8F245ACBE61E28646C17F2 /* ofxAssimpModelLoader */ = {
@@ -1105,15 +1094,6 @@
 			children = (
 				50DF87D612C5AAE17AAFA6C0 /* ofxXmlSettings.cpp */,
 				01DCC0911400F9ACF5B65578 /* ofxXmlSettings.h */,
-			);
-			name = src;
-			sourceTree = "<group>";
-		};
-		7192EB7352827AF20FE9AF59 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				CD3DB9787C3DD37A506FB45C /* ofxGameCamera.cpp */,
-				7361158E71EB594FC111950C /* ofxGameCamera.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -1450,7 +1430,6 @@
 				C8BBABBA1CCEE3A60045C06A /* ofxSyphon */,
 				2C8F245ACBE61E28646C17F2 /* ofxAssimpModelLoader */,
 				3990BDD3729EB86DA1712921 /* ofxGML */,
-				29032E417095D90713AF7E79 /* ofxGameCamera */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
 				5D5C0AE687AC481A1CA3E1C2 /* ofxMSATimer */,
 				9BAC8758F307EC8672EA99CE /* ofxNatNet */,
@@ -2239,7 +2218,6 @@
 				C8BBAA651CCEA67A0045C06A /* ZMathsFunc.cpp in Sources */,
 				03B14860C85545A54080C30A /* tagWriter.cpp in Sources */,
 				C8BBAADF1CCEA6900045C06A /* ofxTLImageSequence.cpp in Sources */,
-				09DCB2459CB1AD6C39EF7C5D /* ofxGameCamera.cpp in Sources */,
 				C8BBAA371CCEA64F0045C06A /* robot_state_RT.cpp in Sources */,
 				C8BBABF11CCEE3A60045C06A /* SyphonNameboundClient.m in Sources */,
 				C8BBAA041CCEA6430045C06A /* RobotController.cpp in Sources */,
