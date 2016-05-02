@@ -33,7 +33,7 @@ void Path3D::set(ofPolyline &polyline){
     
     ptIndex = 0;
     
-    // ignore the first and last points
+    // ignore the first and last points for the centroid
     for (int i=1; i<polyline.getVertices().size()-1; i++){
         centroid += polyline.getVertices()[i];
     }

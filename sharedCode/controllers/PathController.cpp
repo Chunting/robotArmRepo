@@ -3,8 +3,6 @@
 
 PathController::PathController():currentState(NOT_READY){
     
-//    this->paths = *new vector<Path>;
-    pathIndex = 0;
 }
 
 PathController::~PathController(){
@@ -26,7 +24,7 @@ void PathController::update(){
     
     if (!pause){
 
-        if (paths[pathIndex]->getPtIndex() >= paths[pathIndex]->size()-1){ // this is a bug :(
+        if (paths[pathIndex]->getPtIndex() >= paths[pathIndex]->size()-1){ // there's a bug here with ptf :(
             paths[pathIndex]->setPtIndex(0);
             pathIndex = (pathIndex+1) % paths.size();
         }

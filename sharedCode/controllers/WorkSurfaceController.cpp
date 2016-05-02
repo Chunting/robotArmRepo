@@ -35,8 +35,8 @@ Joint WorkSurfaceController::getNextPose(){
     return threeDSurface.getTargetPose(ofGetElapsedTimef()-startTime);
 }
 
-void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers){
-    
+//void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers){
+
 //    if (markers.size() != 4)
 //        cout << "wrong number of unlabled makers for the worksurface: " << markers.size() << endl;
 //    else{
@@ -54,9 +54,9 @@ void WorkSurfaceController::updateWorksurface(vector<ofxNatNet::Marker> &markers
 //        twoDSurface.targetPoints[3] = toMeters(markers[3]);
 //    }
     
-}
+//}
 
-void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
+//void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
 
 //    // find the difference between the current transformation matrix
 //    ofMatrix4x4 diff = prev.matrix.getInverse() * rb.matrix;
@@ -110,4 +110,4 @@ void WorkSurfaceController::updateWorksurface(ofxNatNet::RigidBody &rb){
 //    
 //    prev = rb;
 
-}
+//}

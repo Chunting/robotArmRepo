@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "WorkSurface.h"
-#include "ofxNatNet.h"
+//#include "ofxNatNet.h"
 class ThreeDWorkSurface : public WorkSurface{
 public:
     ThreeDWorkSurface();

@@ -19,4 +19,9 @@ public:
     int ptIndex;
     virtual int size(){return 0;};
     ofPolyline path;
+    
+    // add retract & approach
+    
+protected:
+    
 };

@@ -20,7 +20,7 @@ public:
     
     ofPoint centroid;
     bool pause;
-    int ptIndex;
+
     int getPtIndex();
     void setPtIndex(int index);
     
