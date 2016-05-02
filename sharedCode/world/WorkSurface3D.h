@@ -9,7 +9,7 @@
 #pragma once
 #include "ofMain.h"
 #include "WorkSurface.h"
-#include "3DPath.h"
+#include "Path3D.h"
 
 class WorkSurface3D : public WorkSurface{
 public:
@@ -29,7 +29,7 @@ public:
     vector<Path *> getPaths();
 //    vector<Path> getPaths();
     
-    vector<ThreeDPath> paths;
+    vector<Path3D> paths;
     
     void transform(ofVec3f p);
     void transform(ofMatrix4x4 m44);

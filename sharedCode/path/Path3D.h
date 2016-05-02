@@ -2,7 +2,7 @@
 #include "ofMain.h"
 #include "ofxPtf.h"
 #include "Path.h"
-class ThreeDPath : public Path{
+class Path3D : public Path{
 public:
     /* Path Generator */
     void setup();

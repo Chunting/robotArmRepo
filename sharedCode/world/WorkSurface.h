@@ -5,7 +5,7 @@
 #include "ofxTiming.h"
 #include "UR5KinematicModel.h"
 #include "RobotParameters.h"
-#include "3DPath.h"
+#include "Path3D.h"
 #include "PathController.h"
 class WorkSurface{
 public:

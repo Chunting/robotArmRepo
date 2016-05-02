@@ -9,7 +9,7 @@
 #include "ofMain.h"
 #include "Path.h"
 #include "GMLPath.h"
-#include "3DPath.h"
+#include "Path3D.h"
 class PathController{
 public:
     PathController();

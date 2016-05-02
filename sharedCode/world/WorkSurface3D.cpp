@@ -55,7 +55,7 @@ void WorkSurface3D::setup(ofMesh mesh, vector<ofPolyline> polylines){
     project(surfaceMesh, polylines, polylines3D,0);
     
     for (auto &pl : polylines3D){
-        ThreeDPath p;
+        Path3D p;
         p.set(pl);
         paths.push_back(p);
     }
@@ -113,7 +113,7 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
     
     paths.clear();
     for (auto &pl : polylines3D){
-        ThreeDPath p;
+        Path3D p;
         p.set(pl);
         paths.push_back(p);
     }
