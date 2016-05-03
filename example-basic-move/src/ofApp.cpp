@@ -27,7 +27,6 @@ void ofApp::update(){
     else{
         tcpNode.setTransformMatrix(gizmo.getMatrix());
     }
-
     moveArm();
     robot.update();
     
@@ -36,6 +35,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     ofSetColor(255,160);
     ofDrawBitmapString("OF FPS "+ofToString(ofGetFrameRate()), 30, ofGetWindowHeight()-50);
     ofDrawBitmapString("Robot FPS "+ofToString(robot.robot.getThreadFPS()), 30, ofGetWindowHeight()-65);
@@ -73,6 +73,7 @@ void ofApp::moveArm(){
         tcpNode.setPosition(parameters.targetTCP.position*1000);
         tcpNode.setOrientation(parameters.targetTCP.rotation);
         gizmo.setNode(tcpNode);
+        
         // update GUI params
         parameters.targetTCPPosition = parameters.targetTCP.position;
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
@@ -80,14 +81,11 @@ void ofApp::moveArm(){
     }
     // follow a user-defined position and orientation
     if(parameters.bFollow){
-        
         parameters.targetTCP.position.interpolate(tcpNode.getPosition()/1000.0, parameters.followLerp);
         parameters.targetTCP.rotation = tcpNode.getOrientationQuat();
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
-
-    
 }
 
 void ofApp::setupViewports(){
