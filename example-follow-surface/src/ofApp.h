@@ -1,24 +1,13 @@
 #pragma once
 
-//Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
-
-//--------------------------------------------------------------
-//
-//
-// Robot following targets on a surface EXAMPLE
-//
-//
-//--------------------------------------------------------------
-
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "ofxGameCamera.h"
+#include "ofxGizmo.h"
 #include "RobotController.h"
+#include "PathController.h"
+#include "WorkSurface3D.h"
 #include "RobotParameters.h"
-
 #define N_CAMERAS 2
-
-
 
 class ofApp : public ofBaseApp{
 
@@ -38,21 +27,17 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
-    
-        ofMesh srf;
-  
-<<<<<<< HEAD
-    
-<<<<<<< HEAD
+		
         RobotParameters parameters;
     
-        void setupUserPanel();
-        void setupDebugPanel();
-        void setupCameras();
-        void setupGeometry();
-        void drawGeometry();
+        ofxGizmo gizmo;
+        ofNode tcpNode;
+    
+        void setupViewports();
+        void setupGUI();
+        void positionGUI();
         void drawGUI();
+    
     
         ofxPanel panel;
         ofxPanel panelJoints;
@@ -62,59 +47,29 @@ class ofApp : public ofBaseApp{
         
         
         RobotController robot;
-        float acceleration;
-        vector<double> speeds;
-
-
+        void moveArm();
     
-=======
->>>>>>> origin/master
-=======
+        PathController paths;
+        WorkSurface3D workSrf;
+        ofPolyline buildToolpath(ofVec3f centroid);
     
->>>>>>> origin/master
-        /// \brief example toolpath for projecting
-        void buildToolpath(ofPolyline &path);
-    
-        /// \brief orthogonal projection of a 2D curve onto a 3D surface
-        /// \param mesh 3D surface for proection
-        /// \param path2D 2D toolpath to project
-        /// \param path resulting 3D projected toolpath
-        void projectToolpath(ofMesh mesh, ofPolyline &path2D, ofPolyline &path);
-    
-        /// \brief 2D toolpath to project onto surface
-        ofPolyline toolpath2D;
-        /// \brief 3D toolpath on surface
-        ofPolyline toolpath;
-        /// \brief Orientation quaternions at each 3D toolpath point
-        vector<ofQuaternion> toolpathOrients;
-
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-        int pathIndex;
-    
-    
-        /* 3D Navigation */
-=======
->>>>>>> origin/master
-=======
->>>>>>> origin/master
-    
+        
+        // 3D Navigation
         void updateActiveCamera();
-        ofxGameCamera cams[N_CAMERAS];
-        ofMatrix4x4 savedCamMats[N_CAMERAS];
-        string viewportLabels[N_CAMERAS];
+        vector<ofEasyCam*> cams;
+        ofRectangle viewportReal;
+        ofRectangle viewportSim;
+        vector<ofMatrix4x4> savedCamMats;
+        vector<string> viewportLabels;
         int activeCam;
         
         /**
          Use hotkeys to cyle through preset viewports.
          @param key
-         't' = Top View      <br/>
-         'l' = Left View     <br/>
-         'f' = Front View    <br/>
-         'p' = Perspective   <br/>
-         'c' = Custom View   <br/>
-         's' = Save current for Custom View
+             '1' = Top View      <br/>
+             '2' = Left View     <br/>
+             '3' = Front View    <br/>
+             '4' = Perspective   <br/>
          */
         void handleViewportPresets(int key);
         
