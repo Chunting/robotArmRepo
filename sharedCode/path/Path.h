@@ -26,7 +26,7 @@ public:
     virtual int size(){return 0;};
     ofPolyline path;
     
-    // add retract & approach
+    // add retract & approach ???
     
 protected:
     

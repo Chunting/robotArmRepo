@@ -52,7 +52,8 @@ void ofApp::draw(){
     
     // show simulation robot
     cams[1]->begin(viewportSim);
-    gizmo.draw(*cams[1]);
+    if (parameters.bFollow)
+        gizmo.draw(*cams[1]);
     paths.draw();
     robot.movement.draw(0);
     cams[1]->end();
@@ -97,13 +98,19 @@ void ofApp::moveArm(){
         
     }
     
-    
-    ofMatrix4x4 orientation = paths.getNextPose();
-    parameters.targetTCP.position = orientation.getTranslation();
-    
-    parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-    parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-    parameters.targetTCP.rotation *= orientation.getRotate();
+    if (parameters.bMove){
+        ofMatrix4x4 orientation = paths.getNextPose();
+        parameters.targetTCP.position = orientation.getTranslation();
+        
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        parameters.targetTCP.rotation *= orientation.getRotate();
+        
+        // update the gizmo controller
+        tcpNode.setPosition(parameters.targetTCP.position*1000);
+        tcpNode.setOrientation(parameters.targetTCP.rotation);
+        gizmo.setNode(tcpNode);
+    }
 }
 
 void ofApp::setupViewports(){
@@ -282,9 +289,9 @@ void ofApp::keyPressed(int key){
         parameters.bMove = !parameters.bMove;
         
         if (parameters.bMove)
-            paths.pauseDrawing();
-        else
             paths.startDrawing();
+        else
+            paths.pauseDrawing();
     }
     
     if( key == 'r' ) {
