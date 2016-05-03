@@ -5,6 +5,7 @@
 #include "RobotController.h"
 #include "RobotParameters.h"
 #include "WorkSurface3D.h"
+#include "PathController.h"
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -43,8 +44,10 @@ class ofApp : public ofBaseApp{
         RobotController robot;
         void moveArm();
     
+        PathController paths;
         WorkSurface3D workSrf;
         ofPolyline buildToolpath(ofVec3f centroid);
+    
     
         
         // 3D Navigation

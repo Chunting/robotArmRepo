@@ -9,7 +9,7 @@
 #include "ofMain.h"
 #include "Path.h"
 #include "GMLPath.h"
-#include "3DPath.h"
+#include "Path3D.h"
 class PathController{
 public:
     PathController();
@@ -33,18 +33,22 @@ public:
     };
     
     void setup();
-    void setup(vector<Path> paths);
+    void setup(vector<Path *> paths);
+//    void setup(vector<Path> paths);
     void update();
+    ofMatrix4x4 getNextPose();
     void draw();
     void pauseDrawing();
     void startDrawing();
     void endDrawing();
     void loadPath(string file);
     
-    vector<Path> paths;
+    vector<Path *> paths;
     int pathIndex;
     
     PathState currentState;
+    
+    void keyPressed(int key);
     
     bool isDone;
     

@@ -2,7 +2,7 @@
 #include "ofMain.h"
 #include "ofxPtf.h"
 #include "Path.h"
-class ThreeDPath : public Path{
+class Path3D : public Path{
 public:
     /* Path Generator */
     void setup();
@@ -20,17 +20,18 @@ public:
     
     ofPoint centroid;
     bool pause;
-    int ptIndex;
+
+    int getPtIndex();
+    void setPtIndex(int index);
     
     bool reverse;
     int direction;
-    
     
     /// \brief Creates a periodic 3D path.
     /// Adapted from: <a href="http://openframeworks.cc/ofBook/chapters/lines.html">ofBook/chapters/lines.html</a>
     ofPolyline buildPath();
     
-    /// Periodic 3D path
+    /// \brief polyline path
     ofPolyline path;
     
     /// \brief Perpendicular Frame Generator
@@ -64,6 +65,7 @@ public:
     
     /// \brief polygonal profile to loft
     ofPolyline profile;
+    
     
     
     /* Test Paths for Orientation */

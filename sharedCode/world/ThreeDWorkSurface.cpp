@@ -46,7 +46,7 @@ void ThreeDWorkSurface::setup(string filename){
     buildToolpath(toolpath2D, offset);
     projectToolpath(surfaceMesh, toolpath2D, toolpath);
     
-    ThreeDPath p;
+    Path3D p;
     p.set(toolpath);
     paths.push_back(p);
     
@@ -76,7 +76,7 @@ void ThreeDWorkSurface::setup(string filename, vector<ofPolyline> polylines){
     projectToolpath(surfaceMesh, polylines, polylines3D);
     
     for (auto &pl : polylines3D){
-        ThreeDPath p;
+        Path3D p;
         p.set(pl);
         paths.push_back(p);
     }

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxGizmo.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
 #define N_CAMERAS 2
@@ -26,12 +27,16 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
         RobotParameters parameters;
-        
-        void setupUserPanel();
-        void setupDebugPanel();
-        void setupCameras();
+    
+        ofxGizmo gizmo;
+        ofNode tcpNode;
+    
+        void setupViewports();
+        void setupGUI();
+        void positionGUI();
         void drawGUI();
-        
+    
+    
         ofxPanel panel;
         ofxPanel panelJoints;
         ofxPanel panelTargetJoints;
@@ -45,9 +50,11 @@ class ofApp : public ofBaseApp{
         
         // 3D Navigation
         void updateActiveCamera();
-        ofEasyCam cams[N_CAMERAS];
-        ofMatrix4x4 savedCamMats[N_CAMERAS];
-        string viewportLabels[N_CAMERAS];
+        vector<ofEasyCam*> cams;
+        ofRectangle viewportReal;
+        ofRectangle viewportSim;
+        vector<ofMatrix4x4> savedCamMats;
+        vector<string> viewportLabels;
         int activeCam;
         
         /**

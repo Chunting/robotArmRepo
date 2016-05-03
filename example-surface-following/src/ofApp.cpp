@@ -29,11 +29,16 @@ void ofApp::setup(){
     ofMesh mesh = loader.getMesh(0);
     workSrf.setup(mesh,toolpaths);
     
+    // setup path controller
+    paths.setup(workSrf.getPaths());
+
     setupCameras();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    paths.update();
     
     moveArm();
     robot.update();
@@ -49,13 +54,15 @@ void ofApp::draw(){
     
     // show realtime robot
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(true,true,false,true);
+    workSrf.draw(true,true,false,false);
+    paths.draw();
     robot.robot.model.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
-    workSrf.draw(true,true,false,true);
+    workSrf.draw(true,true,true,false);
+    paths.draw();
     robot.movement.draw(robot.movement.selectedSolution);
     cams[1].end();
     
@@ -86,6 +93,7 @@ void ofApp::moveArm(){
         parameters.targetTCP.rotation.slerp(parameters.followLerp, parameters.targetTCP.rotation, ofQuaternion(parameters.targetTCPOrientation));
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
     }
+    
     
 }
 

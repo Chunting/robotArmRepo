@@ -55,10 +55,11 @@ void WorkSurface3D::setup(ofMesh mesh, vector<ofPolyline> polylines){
     project(surfaceMesh, polylines, polylines3D,0);
     
     for (auto &pl : polylines3D){
-        ThreeDPath p;
+        Path3D p;
         p.set(pl);
         paths.push_back(p);
     }
+   
 }
 
 void WorkSurface3D::draw(bool showSrf=true, bool showWireframe=true, bool showNormals=false, bool showPaths=true){
@@ -83,10 +84,11 @@ void WorkSurface3D::draw(bool showSrf=true, bool showWireframe=true, bool showNo
         }
     }
     if (showPaths){
-        ofSetColor(0, 255, 255, 200);
         ofSetLineWidth(3);
-        for (auto &p : paths)
+        ofSetColor(0, 255, 255, 200);
+        for (auto &p : paths){
             p.draw();
+        }
     }
     
     ofPopStyle();
@@ -111,15 +113,36 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
     
     paths.clear();
     for (auto &pl : polylines3D){
-        ThreeDPath p;
+        Path3D p;
         p.set(pl);
         paths.push_back(p);
     }
 }
 
-vector<ThreeDPath> WorkSurface3D::getPaths(){
-    return paths;
+vector<Path *> WorkSurface3D::getPaths(){
+    
+//    vector<Path *> pathPtrs;
+//
+//    for (auto path : paths){
+//        Path &p = path;
+//        cout << p.getName() << endl;
+//
+//        pathPtrs.push_back(&path);
+//        cout << pathPtrs[pathPtrs.size()-1]->getName() << endl;
+//    }
+//    
+//    return pathPtrs;
+    
+    vector<Path *> pPaths;
+    for (auto &path : paths){
+
+        pPaths.push_back(&path);
+//        cout << "number of pts in path vector: " << workSrfPaths[workSrfPaths.size()-1]->size() << endl;
+        
+    }
+    return pPaths;
 }
+
 
 void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<ofPolyline> &paths, float srfOffset){
     for (int i=0; i<paths2D.size(); i++){
@@ -157,11 +180,14 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
                     // use the distance as the length of a vertical projection vector
                     ofVec3f length = ofVec3f(0,0,-projectedDist - srfOffset);
                     
-                    // preserve height offsets from original toolpaths
-                    if (zHeight > 0)
-                        length.z -= zHeight;
-                    
+                    // get point on surface
                     ofVec3f projectedPt = v-length;
+                    
+                    // preserve any 3D offset normal to the surface
+                    ofVec3f nOffset = face.getFaceNormal();
+                    nOffset.scale(zHeight+srfOffset);
+                    
+                    projectedPt -= nOffset;
                     
                     // save the projected point and face normal
                     temp3D.addVertex(projectedPt);

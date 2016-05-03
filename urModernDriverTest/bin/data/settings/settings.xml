@@ -16,15 +16,11 @@
 		<Record>0</Record>
 	</Path_Recording>
 	<UR_Movements>
-		<Step>0</Step>
 		<MIN_Speed>nan</MIN_Speed>
 		<_MAX_Speed>nan</_MAX_Speed>
-		<Delta_T>0.242106</Delta_T>
 		<TCP_LerpSpeed>0.9</TCP_LerpSpeed>
-		<Joint_LerpSpeed>0.9</Joint_LerpSpeed>
-		<avgAcceleration>0</avgAcceleration>
-		<Acceleration_M>200</Acceleration_M>
+		<Accel>0</Accel>
+		<Accel_Multi>1</Accel_Multi>
 		<Speed_Divider>1</Speed_Divider>
-		<followLerp>1</followLerp>
 	</UR_Movements>
 </UR_5>

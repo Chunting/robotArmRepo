@@ -1,7 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "WorkSurface.h"
-#include "ofxNatNet.h"
+//#include "ofxNatNet.h"
 #include "RobotParameters.h"
 #include "TwoDWorkSurface.h"
 #include "ThreeDWorkSurface.h"
@@ -12,14 +12,14 @@ public:
     void setup(RobotParameters & params);
     void update();
     void draw();
-    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
-    void updateWorksurface(ofxNatNet::RigidBody &rb);
+//    void updateWorksurface(vector<ofxNatNet::Marker> &markers);
+//    void updateWorksurface(ofxNatNet::RigidBody &rb);
     Joint getNextPose();
     
     ThreeDWorkSurface threeDSurface;
     RobotParameters * robotParams;
     TwoDWorkSurface twoDSurface;
-    ofxNatNet::RigidBody prev;
+//    ofxNatNet::RigidBody prev;
     Joint currentPt;
     float startTime;
     

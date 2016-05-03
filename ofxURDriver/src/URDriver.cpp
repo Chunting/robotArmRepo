@@ -51,11 +51,16 @@ void ofxURDriver::start(){
     startThread();
 }
 
-void ofxURDriver::disconnect(){
+void ofxURDriver::stopThread(){
     if(bStarted){
-        robot->halt();
+        disconnect();
+        ofThread::stopThread();
     }
-    stopThread();
+}
+
+void ofxURDriver::disconnect(){
+    robot->halt();
+    
 }
 
 bool ofxURDriver::isDataReady(){
@@ -167,7 +172,6 @@ void ofxURDriver::threadedFunction(){
                 ofLog(OF_LOG_NOTICE)<<"Robot Started"<<endl;
             }else{
                 ofLog(OF_LOG_ERROR)<<"Rboto Not Started"<<endl;
-                stopThread();
             }
         }else{
             bDataReady = false;
@@ -193,7 +197,7 @@ void ofxURDriver::threadedFunction(){
             
             
             //this is returning weird shit that doesn't return the same values.
-          
+            
             model.toolPointRaw.getBack() = robot->rt_interface_->robot_state_->getToolVectorActual();
             model.toolPointRaw.getBack()[3] = model.toolPointRaw.getBack()[3]/PI*180;
             model.toolPointRaw.getBack()[4] = model.toolPointRaw.getBack()[4]/PI*180;
@@ -225,5 +229,5 @@ void ofxURDriver::threadedFunction(){
             model.jointsProcessed.swapBack();
         }
     }
- 
+    
 }

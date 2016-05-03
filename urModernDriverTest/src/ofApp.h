@@ -2,18 +2,9 @@
 #pragma once
 #define N_CAMERAS 2
 #include "ofMain.h"
-#include "ofxNatNet.h"
-#include "ofxOsc.h"
 #include "ofxGui.h"
-#include "GMLPath.h"
-#include "WorkSurface.h"
-#include "ofxGameCamera.h"
 #include "RobotController.h"
-#include "PathController.h"
 #include "RobotParameters.h"
-#include "NatNetController.h"
-#include "WorkSurfaceController.h"
-#include "3DPath.h"
 #include "ofxGizmo.h"
 #include "ofxTimeline.h"
 #include "ofxTLNodeTrack.h"
@@ -67,12 +58,6 @@ public:
     ofNode tcpNode;
     
     RobotController robot;
-    NatNetController natNet;
-
-   
-    WorkSurfaceController workSurface;
-    
-    Joint workSurfaceTargetTCP;
     
     float acceleration;
     vector<double> speeds;
@@ -83,16 +68,14 @@ public:
     
     int count;
     
-    bool move;
+   
     bool hideRobot;
-    
-    GMLPath gml;
-    float tagStartTime;
+
     
     // 3D Navigation
-    ofEasyCam cams[N_CAMERAS];
-    ofMatrix4x4 savedCamMats[N_CAMERAS];
-    string viewportLabels[N_CAMERAS];
+    vector<ofEasyCam*> cams;
+    vector<ofMatrix4x4> savedCamMats;
+    vector<string> viewportLabels;
     int activeCam;
     
     /**

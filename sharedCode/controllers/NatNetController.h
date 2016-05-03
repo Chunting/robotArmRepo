@@ -8,36 +8,36 @@
 
 #pragma once
 #include "ofMain.h"
-#include "ofxNatNet.h"
+//#include "ofxNatNet.h"
 class NatNetController{
 public:
     NatNetController();
     ~NatNetController();
-    void setup(string myIP, string serverIP);
-    void setup(string myIP, string serverIP, int scale);
-    void update();
-    void draw();
-    bool isFrameNew();
-    
-    vector<ofxNatNet::Marker> getCurrentMarkers();
-    ofxNatNet::RigidBody getCurrentRigidBody();
-    
-    ofxNatNet natnet;
-    ofParameter<bool> useUnlabledMarkers;
-    ofParameter<bool> isMoving;
-    ofParameter<bool> record;
-    ofPolyline rbWorksrf;
-    /// \brief Stores previous rigid bodies
-    vector<ofxNatNet::RigidBody> recordedPath;
-    ofxNatNet::RigidBody currentRigidBody;
-    vector<ofxNatNet::Marker> markers;
-    
-    
-    /// \brief Draws the plane, markers, and orientation axes of a given RigidBody.
-    /// \param rb
-    ///     Rigid Body passed by NatNet
-    void drawRigidBody(const ofxNatNet::RigidBody &rb);
-    void drawHistory();
+//    void setup(string myIP, string serverIP);
+//    void setup(string myIP, string serverIP, int scale);
+//    void update();
+//    void draw();
+//    bool isFrameNew();
+//    
+//    vector<ofxNatNet::Marker> getCurrentMarkers();
+//    ofxNatNet::RigidBody getCurrentRigidBody();
+//    
+//    ofxNatNet natnet;
+//    ofParameter<bool> useUnlabledMarkers;
+//    ofParameter<bool> isMoving;
+//    ofParameter<bool> record;
+//    ofPolyline rbWorksrf;
+//    /// \brief Stores previous rigid bodies
+//    vector<ofxNatNet::RigidBody> recordedPath;
+//    ofxNatNet::RigidBody currentRigidBody;
+//    vector<ofxNatNet::Marker> markers;
+//    
+//    
+//    /// \brief Draws the plane, markers, and orientation axes of a given RigidBody.
+//    /// \param rb
+//    ///     Rigid Body passed by NatNet
+//    void drawRigidBody(const ofxNatNet::RigidBody &rb);
+//    void drawHistory();
  
     
     /// \brief Transforms a recorded toolpath based on the movement of a RigidBody.
