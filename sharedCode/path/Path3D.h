@@ -67,6 +67,7 @@ public:
     ofPolyline profile;
     
     
+    
     /* Test Paths for Orientation */
     ofPolyline path_XZ;
     ofPolyline path_YZ;

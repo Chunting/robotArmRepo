@@ -36,6 +36,7 @@ public:
     void setup(vector<Path *> paths);
 //    void setup(vector<Path> paths);
     void update();
+    ofMatrix4x4 getNextPose();
     void draw();
     void pauseDrawing();
     void startDrawing();
@@ -46,6 +47,8 @@ public:
     int pathIndex;
     
     PathState currentState;
+    
+    void keyPressed(int key);
     
     bool isDone;
     

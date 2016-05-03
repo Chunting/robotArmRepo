@@ -2,11 +2,12 @@
 
 #pragma once
 #include "ofMain.h"
-#include "ofxTiming.h"
+//#include "ofxTiming.h"
 #include "UR5KinematicModel.h"
 #include "RobotParameters.h"
 #include "Path3D.h"
 #include "PathController.h"
+#include "ofxTiming.h"
 class WorkSurface{
 public:
     

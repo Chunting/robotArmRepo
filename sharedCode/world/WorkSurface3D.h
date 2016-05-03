@@ -27,7 +27,6 @@ public:
     
     void setPaths(vector<ofPolyline> polylines3D);
     vector<Path *> getPaths();
-//    vector<Path> getPaths();
     
     vector<Path3D> paths;
     

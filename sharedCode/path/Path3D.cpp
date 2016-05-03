@@ -20,9 +20,10 @@ void Path3D::setup(){
     
     // assign path and make profile
     profile = buildProfile(.025,4);
-    path = fooCircle[0];
+//    path = fooCircle[0];
+    path = path_XZ;
     buildPerpFrames(path);
-    reverse = false;
+    reverse = true;
     
     direction = 1;
 }
@@ -148,12 +149,21 @@ void Path3D::draw(){
     ofDrawAxis(.010);
     ofPopMatrix();
     
+    // show all the frames
+    ofSetColor(ofColor::aqua,20);
+    for (auto frame : ptf.getFrames()){
+        ofPushMatrix();
+        ofMultMatrix(frame);
+        profile.draw();
+//        ofDrawAxis(.010);
+        ofPopMatrix();
+    }
+    
     // show the target point
     ofSetColor(ofColor::yellow);
     if (path.size() > 0){
         ofDrawSphere(path.getVertices()[ptIndex], .003);
     }
-    
     
     // show the 3D path
     ofSetLineWidth(3);

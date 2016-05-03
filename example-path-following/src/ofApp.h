@@ -4,7 +4,8 @@
 #include "ofxGui.h"
 #include "RobotController.h"
 #include "RobotParameters.h"
-#include "3DPath.h"
+#include "PathController.h"
+#include "Path3D.h"
 #define N_CAMERAS 2
 
 class ofApp : public ofBaseApp{
@@ -44,9 +45,10 @@ class ofApp : public ofBaseApp{
         RobotController robot;
         void moveArm();
     
-        ThreeDPath path;
+        Path3D path;
         bool pause;
     
+        PathController paths;
     
         
         // 3D Navigation

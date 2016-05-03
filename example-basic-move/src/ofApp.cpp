@@ -20,13 +20,6 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-       
-    if(parameters.bCopy){
-        gizmo.setNode(tcpNode);
-    }
-    else{
-        tcpNode.setTransformMatrix(gizmo.getMatrix());
-    }
     moveArm();
     robot.update();
     
@@ -70,6 +63,7 @@ void ofApp::moveArm(){
         parameters.targetTCP.position = parameters.actualTCP.position;
         parameters.targetTCP.rotation*=parameters.actualTCP.rotation;
         
+        // update the gizmo controller
         tcpNode.setPosition(parameters.targetTCP.position*1000);
         tcpNode.setOrientation(parameters.targetTCP.rotation);
         gizmo.setNode(tcpNode);
@@ -79,6 +73,11 @@ void ofApp::moveArm(){
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
+    else{
+        // update the tool tcp
+        tcpNode.setTransformMatrix(gizmo.getMatrix());
+    }
+    
     // follow a user-defined position and orientation
     if(parameters.bFollow){
         parameters.targetTCP.position.interpolate(tcpNode.getPosition()/1000.0, parameters.followLerp);

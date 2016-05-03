@@ -19,11 +19,16 @@ void ofApp::setup(){
     setupCameras();
     
     path.setup();
+    
+    vector<Path *> pathPtrs;
+    pathPtrs.push_back(&path);
+    paths.setup(pathPtrs);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    paths.update();
     
     moveArm();
     robot.update();
@@ -42,12 +47,14 @@ void ofApp::draw(){
     cams[0].begin(ofRectangle(0, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.robot.model.draw();
     drawGeometry();
+    paths.draw();
     cams[0].end();
     
     // show simulation robot
     cams[1].begin(ofRectangle(ofGetWindowWidth()/2, 0, ofGetWindowWidth()/2, ofGetWindowHeight()));
     robot.movement.draw(robot.movement.selectedSolution);
     drawGeometry();
+    paths.draw();
     cams[1].end();
     
     drawGUI();
@@ -79,16 +86,17 @@ void ofApp::moveArm(){
     }
     
     // follow geometry
-    if (!pause){
-        
-        ofMatrix4x4 orientation = path.getNextPose();
+//    if (!pause){
+    
+//        ofMatrix4x4 orientation = path.getNextPose();
+        ofMatrix4x4 orientation = paths.getNextPose();
         
         parameters.targetTCP.position = orientation.getTranslation();
         
         parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
         parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
         parameters.targetTCP.rotation *= orientation.getRotate();
-    }
+//    }
     
 }
 
@@ -250,8 +258,14 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         parameters.bMove = !parameters.bMove;
     }
-    else if (key == ' ')
+    else if (key == ' '){
         pause = !pause;
+        
+        if (pause)
+            paths.pauseDrawing();
+        else
+            paths.startDrawing();
+    }
     
     path.keyPressed(key);
     handleViewportPresets(key);

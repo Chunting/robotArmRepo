@@ -24,16 +24,23 @@ void PathController::update(){
     
     if (!pause){
 
+        // update the path & point indices
         if (paths[pathIndex]->getPtIndex() >= paths[pathIndex]->size()-1){ // there's a bug here with ptf :(
             paths[pathIndex]->setPtIndex(0);
             pathIndex = (pathIndex+1) % paths.size();
         }
+        
         paths[pathIndex]->getNextPose();
-    
     }
     
+    
+
     // check if we are done drawing
     
+}
+
+ofMatrix4x4 PathController::getNextPose(){
+    return paths[pathIndex]->getPoseAt(paths[pathIndex]->getPtIndex());
 }
 
 void PathController::draw(){
@@ -43,6 +50,7 @@ void PathController::draw(){
     ofScale(1000);
     
     for (auto &p : paths){
+        
         p->draw();
     }
     
@@ -61,6 +69,12 @@ void PathController::startDrawing(){
 
 void PathController::endDrawing(){
     
+}
+
+void PathController::keyPressed(int key){
+    for (auto &p : paths){
+        p->keyPressed(key);
+    }
 }
 
 void PathController::loadPath(string file){
