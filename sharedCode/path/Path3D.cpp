@@ -23,7 +23,7 @@ void Path3D::setup(){
 //    path = fooCircle[0];
     path = path_XZ;
     buildPerpFrames(path);
-    reverse = true;
+    reverse = false;
     
     direction = 1;
 }
@@ -102,7 +102,6 @@ void Path3D::keyPressed(int key){
 ofMatrix4x4 Path3D::getNextPose(){
     if(ptf.framesSize()>0){
         
-
         // go back-and-forth along a path
         if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
             direction *= -1;
@@ -150,7 +149,7 @@ void Path3D::draw(){
     ofPopMatrix();
     
     // show all the frames
-    ofSetColor(ofColor::aqua,20);
+    ofSetColor(ofColor::aqua,80);
     for (auto frame : ptf.getFrames()){
         ofPushMatrix();
         ofMultMatrix(frame);
@@ -162,7 +161,8 @@ void Path3D::draw(){
     // show the target point
     ofSetColor(ofColor::yellow);
     if (path.size() > 0){
-        ofDrawSphere(path.getVertices()[ptIndex], .003);
+//        ofDrawSphere(path.getVertices()[ptIndex], .003);
+        ofDrawSphere(getPoseAt(ptIndex).getTranslation(), .003);
     }
     
     // show the 3D path
