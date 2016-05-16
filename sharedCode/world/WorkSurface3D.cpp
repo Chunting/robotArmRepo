@@ -202,24 +202,13 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
 }
 
 void WorkSurface3D::transform(ofVec3f p){
-<<<<<<< HEAD
-    
-    for (auto &v : surfaceMesh.getVertices()){
-        v += p;
-    }
-    for (auto &path : paths){
-        for (auto &v : path.path.getVertices()){
-            v += p;
-        }
-//        ThreeDPath::buildPerpFrames(p.path);
-=======
+
     for (auto &v: surfaceMesh.getVertices()){
         v += p;
     }
     for (auto &path : paths){
         for (auto &v : path.path.getVertices())
             v += p;
->>>>>>> master
     }
 
    
