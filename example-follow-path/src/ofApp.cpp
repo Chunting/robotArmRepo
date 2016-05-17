@@ -1,6 +1,27 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+//
+//
+// Follow Path Example
+//
+//
+//--------------------------------------------------------------
+
+//
+// This example shows you how to:
+//  1.  Import and Create 2D/3D paths
+//  2.  Move & reiorient the robot using a PathController
+//  3.  Dynamically move paths using keypressed
+//
+// See the ReadMe for more tutorial details
+//
+// TO DO:
+//      - Fix robot misaligment to perp planes
+//      - Realign default perp plane to local axes
+
+
+//--------------------------------------------------------------
 void ofApp::setup(){
 
     ofSetFrameRate(60);
@@ -11,7 +32,7 @@ void ofApp::setup(){
     setupViewports();
     
     parameters.setup();
-    robot.setup(parameters);
+    robot.setup("192.168.1.9",parameters); // <-- swap with your robot's ip address
     
     setupGUI();
     positionGUI();

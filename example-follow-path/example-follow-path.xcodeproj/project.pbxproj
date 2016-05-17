@@ -7,36 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00FE53CD1CD8F1D300F70B67 /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53801CD8F1D300F70B67 /* do_output.cpp */; };
-		00FE53CE1CD8F1D300F70B67 /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53831CD8F1D300F70B67 /* robot_state.cpp */; };
-		00FE53CF1CD8F1D300F70B67 /* robot_state_RT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53851CD8F1D300F70B67 /* robot_state_RT.cpp */; };
-		00FE53D01CD8F1D300F70B67 /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53871CD8F1D300F70B67 /* ur_communication.cpp */; };
-		00FE53D11CD8F1D300F70B67 /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53891CD8F1D300F70B67 /* ur_driver.cpp */; };
-		00FE53D21CD8F1D300F70B67 /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE538B1CD8F1D300F70B67 /* ur_realtime_communication.cpp */; };
-		00FE53D31CD8F1D300F70B67 /* ur_kin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE538F1CD8F1D300F70B67 /* ur_kin.cpp */; };
-		00FE53D41CD8F1D300F70B67 /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53951CD8F1D300F70B67 /* UR5KinematicModel.cpp */; };
-		00FE53D51CD8F1D300F70B67 /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53971CD8F1D300F70B67 /* URDriver.cpp */; };
-		00FE53D61CD8F1D300F70B67 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53991CD8F1D300F70B67 /* URMove.cpp */; };
-		00FE53D71CD8F1D300F70B67 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE539B1CD8F1D300F70B67 /* URToolHead.cpp */; };
-		00FE53D81CD8F1D300F70B67 /* NatNetController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53A01CD8F1D300F70B67 /* NatNetController.cpp */; };
-		00FE53D91CD8F1D300F70B67 /* PathController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53A21CD8F1D300F70B67 /* PathController.cpp */; };
-		00FE53DA1CD8F1D300F70B67 /* RobotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53A41CD8F1D300F70B67 /* RobotController.cpp */; };
-		00FE53DB1CD8F1D300F70B67 /* TCPController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53A61CD8F1D300F70B67 /* TCPController.cpp */; };
-		00FE53DC1CD8F1D300F70B67 /* WorkSurfaceController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53A81CD8F1D300F70B67 /* WorkSurfaceController.cpp */; };
-		00FE53DD1CD8F1D300F70B67 /* GMLPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53AB1CD8F1D300F70B67 /* GMLPath.cpp */; };
-		00FE53DE1CD8F1D300F70B67 /* ofxStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53AD1CD8F1D300F70B67 /* ofxStrip.cpp */; };
-		00FE53DF1CD8F1D300F70B67 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53AF1CD8F1D300F70B67 /* Path.cpp */; };
-		00FE53E01CD8F1D300F70B67 /* Path3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53B11CD8F1D300F70B67 /* Path3D.cpp */; };
-		00FE53E11CD8F1D300F70B67 /* ofxGameCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53B41CD8F1D300F70B67 /* ofxGameCamera.cpp */; };
-		00FE53E21CD8F1D300F70B67 /* PathPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53B71CD8F1D300F70B67 /* PathPlayer.cpp */; };
-		00FE53E31CD8F1D300F70B67 /* PathRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53B91CD8F1D300F70B67 /* PathRecorder.cpp */; };
-		00FE53E41CD8F1D300F70B67 /* RobotStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53BD1CD8F1D300F70B67 /* RobotStateMachine.cpp */; };
-		00FE53E51CD8F1D300F70B67 /* Calibration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53C01CD8F1D300F70B67 /* Calibration.cpp */; };
-		00FE53E61CD8F1D300F70B67 /* ThreeDWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53C21CD8F1D300F70B67 /* ThreeDWorkSurface.cpp */; };
-		00FE53E71CD8F1D300F70B67 /* TwoDWorkSurface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53C41CD8F1D300F70B67 /* TwoDWorkSurface.cpp */; };
-		00FE53E81CD8F1D300F70B67 /* WorkSurface3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53C71CD8F1D300F70B67 /* WorkSurface3D.cpp */; };
-		00FE53E91CD8F1D300F70B67 /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53C91CD8F1D300F70B67 /* World.cpp */; };
-		00FE53EA1CD8F1D300F70B67 /* WorldObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FE53CB1CD8F1D300F70B67 /* WorldObject.cpp */; };
+		009245F01CEBB308002B4EA3 /* do_output.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245B81CEBB308002B4EA3 /* do_output.cpp */; };
+		009245F11CEBB308002B4EA3 /* robot_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245BB1CEBB308002B4EA3 /* robot_state.cpp */; };
+		009245F21CEBB308002B4EA3 /* robot_state_RT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245BD1CEBB308002B4EA3 /* robot_state_RT.cpp */; };
+		009245F31CEBB308002B4EA3 /* ur_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245BF1CEBB308002B4EA3 /* ur_communication.cpp */; };
+		009245F41CEBB308002B4EA3 /* ur_driver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245C11CEBB308002B4EA3 /* ur_driver.cpp */; };
+		009245F51CEBB308002B4EA3 /* ur_realtime_communication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245C31CEBB308002B4EA3 /* ur_realtime_communication.cpp */; };
+		009245F61CEBB308002B4EA3 /* ur_kin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245C71CEBB308002B4EA3 /* ur_kin.cpp */; };
+		009245F71CEBB308002B4EA3 /* UR5KinematicModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245CD1CEBB308002B4EA3 /* UR5KinematicModel.cpp */; };
+		009245F81CEBB308002B4EA3 /* URDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245CF1CEBB308002B4EA3 /* URDriver.cpp */; };
+		009245F91CEBB308002B4EA3 /* URMove.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245D11CEBB308002B4EA3 /* URMove.cpp */; };
+		009245FA1CEBB308002B4EA3 /* URToolHead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245D31CEBB308002B4EA3 /* URToolHead.cpp */; };
+		009245FB1CEBB308002B4EA3 /* PathController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245D81CEBB308002B4EA3 /* PathController.cpp */; };
+		009245FC1CEBB308002B4EA3 /* RobotController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245DA1CEBB308002B4EA3 /* RobotController.cpp */; };
+		009245FD1CEBB308002B4EA3 /* GMLPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245DD1CEBB308002B4EA3 /* GMLPath.cpp */; };
+		009245FE1CEBB308002B4EA3 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245DF1CEBB308002B4EA3 /* Path.cpp */; };
+		009245FF1CEBB308002B4EA3 /* Path3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245E11CEBB308002B4EA3 /* Path3D.cpp */; };
+		009246001CEBB308002B4EA3 /* PathPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245E51CEBB308002B4EA3 /* PathPlayer.cpp */; };
+		009246011CEBB308002B4EA3 /* PathRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245E71CEBB308002B4EA3 /* PathRecorder.cpp */; };
+		009246021CEBB308002B4EA3 /* RobotStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245EA1CEBB308002B4EA3 /* RobotStateMachine.cpp */; };
+		009246031CEBB308002B4EA3 /* WorkSurface3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 009245EE1CEBB308002B4EA3 /* WorkSurface3D.cpp */; };
 		03B14860C85545A54080C30A /* tagWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE7DB470D57A91A0701B9FCD /* tagWriter.cpp */; };
 		0E33E39B0F7BD7C01D368551 /* GizmoTransformRender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB503F534BC39BB8E1699F73 /* GizmoTransformRender.cpp */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
@@ -98,75 +88,54 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00FE53801CD8F1D300F70B67 /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
-		00FE53811CD8F1D300F70B67 /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
-		00FE53821CD8F1D300F70B67 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
-		00FE53831CD8F1D300F70B67 /* robot_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state.cpp; sourceTree = "<group>"; };
-		00FE53841CD8F1D300F70B67 /* robot_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state.h; sourceTree = "<group>"; };
-		00FE53851CD8F1D300F70B67 /* robot_state_RT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state_RT.cpp; sourceTree = "<group>"; };
-		00FE53861CD8F1D300F70B67 /* robot_state_RT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state_RT.h; sourceTree = "<group>"; };
-		00FE53871CD8F1D300F70B67 /* ur_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_communication.cpp; sourceTree = "<group>"; };
-		00FE53881CD8F1D300F70B67 /* ur_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_communication.h; sourceTree = "<group>"; };
-		00FE53891CD8F1D300F70B67 /* ur_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_driver.cpp; sourceTree = "<group>"; };
-		00FE538A1CD8F1D300F70B67 /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
-		00FE538B1CD8F1D300F70B67 /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
-		00FE538C1CD8F1D300F70B67 /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
-		00FE538E1CD8F1D300F70B67 /* ikfast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ikfast.h; sourceTree = "<group>"; };
-		00FE538F1CD8F1D300F70B67 /* ur_kin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_kin.cpp; sourceTree = "<group>"; };
-		00FE53901CD8F1D300F70B67 /* ur_kin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_kin.h; sourceTree = "<group>"; };
-		00FE53911CD8F1D300F70B67 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		00FE53931CD8F1D300F70B67 /* ofxURDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxURDriver.h; sourceTree = "<group>"; };
-		00FE53941CD8F1D300F70B67 /* Synchronized.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synchronized.h; sourceTree = "<group>"; };
-		00FE53951CD8F1D300F70B67 /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
-		00FE53961CD8F1D300F70B67 /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
-		00FE53971CD8F1D300F70B67 /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
-		00FE53981CD8F1D300F70B67 /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
-		00FE53991CD8F1D300F70B67 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
-		00FE539A1CD8F1D300F70B67 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
-		00FE539B1CD8F1D300F70B67 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
-		00FE539C1CD8F1D300F70B67 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
-		00FE539D1CD8F1D300F70B67 /* URUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
-		00FE53A01CD8F1D300F70B67 /* NatNetController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NatNetController.cpp; sourceTree = "<group>"; };
-		00FE53A11CD8F1D300F70B67 /* NatNetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NatNetController.h; sourceTree = "<group>"; };
-		00FE53A21CD8F1D300F70B67 /* PathController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathController.cpp; sourceTree = "<group>"; };
-		00FE53A31CD8F1D300F70B67 /* PathController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathController.h; sourceTree = "<group>"; };
-		00FE53A41CD8F1D300F70B67 /* RobotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotController.cpp; sourceTree = "<group>"; };
-		00FE53A51CD8F1D300F70B67 /* RobotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotController.h; sourceTree = "<group>"; };
-		00FE53A61CD8F1D300F70B67 /* TCPController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPController.cpp; sourceTree = "<group>"; };
-		00FE53A71CD8F1D300F70B67 /* TCPController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPController.h; sourceTree = "<group>"; };
-		00FE53A81CD8F1D300F70B67 /* WorkSurfaceController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurfaceController.cpp; sourceTree = "<group>"; };
-		00FE53A91CD8F1D300F70B67 /* WorkSurfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurfaceController.h; sourceTree = "<group>"; };
-		00FE53AB1CD8F1D300F70B67 /* GMLPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GMLPath.cpp; sourceTree = "<group>"; };
-		00FE53AC1CD8F1D300F70B67 /* GMLPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMLPath.h; sourceTree = "<group>"; };
-		00FE53AD1CD8F1D300F70B67 /* ofxStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStrip.cpp; sourceTree = "<group>"; };
-		00FE53AE1CD8F1D300F70B67 /* ofxStrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxStrip.h; sourceTree = "<group>"; };
-		00FE53AF1CD8F1D300F70B67 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
-		00FE53B01CD8F1D300F70B67 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
-		00FE53B11CD8F1D300F70B67 /* Path3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path3D.cpp; sourceTree = "<group>"; };
-		00FE53B21CD8F1D300F70B67 /* Path3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path3D.h; sourceTree = "<group>"; };
-		00FE53B41CD8F1D300F70B67 /* ofxGameCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGameCamera.cpp; sourceTree = "<group>"; };
-		00FE53B51CD8F1D300F70B67 /* ofxGameCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGameCamera.h; sourceTree = "<group>"; };
-		00FE53B71CD8F1D300F70B67 /* PathPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathPlayer.cpp; sourceTree = "<group>"; };
-		00FE53B81CD8F1D300F70B67 /* PathPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathPlayer.h; sourceTree = "<group>"; };
-		00FE53B91CD8F1D300F70B67 /* PathRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathRecorder.cpp; sourceTree = "<group>"; };
-		00FE53BA1CD8F1D300F70B67 /* PathRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathRecorder.h; sourceTree = "<group>"; };
-		00FE53BB1CD8F1D300F70B67 /* RobotParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotParameters.h; sourceTree = "<group>"; };
-		00FE53BC1CD8F1D300F70B67 /* RobotParametersBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotParametersBasic.h; sourceTree = "<group>"; };
-		00FE53BD1CD8F1D300F70B67 /* RobotStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotStateMachine.cpp; sourceTree = "<group>"; };
-		00FE53BE1CD8F1D300F70B67 /* RobotStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotStateMachine.h; sourceTree = "<group>"; };
-		00FE53C01CD8F1D300F70B67 /* Calibration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Calibration.cpp; sourceTree = "<group>"; };
-		00FE53C11CD8F1D300F70B67 /* Calibration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calibration.h; sourceTree = "<group>"; };
-		00FE53C21CD8F1D300F70B67 /* ThreeDWorkSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreeDWorkSurface.cpp; sourceTree = "<group>"; };
-		00FE53C31CD8F1D300F70B67 /* ThreeDWorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreeDWorkSurface.h; sourceTree = "<group>"; };
-		00FE53C41CD8F1D300F70B67 /* TwoDWorkSurface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwoDWorkSurface.cpp; sourceTree = "<group>"; };
-		00FE53C51CD8F1D300F70B67 /* TwoDWorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoDWorkSurface.h; sourceTree = "<group>"; };
-		00FE53C61CD8F1D300F70B67 /* WorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface.h; sourceTree = "<group>"; };
-		00FE53C71CD8F1D300F70B67 /* WorkSurface3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurface3D.cpp; sourceTree = "<group>"; };
-		00FE53C81CD8F1D300F70B67 /* WorkSurface3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface3D.h; sourceTree = "<group>"; };
-		00FE53C91CD8F1D300F70B67 /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
-		00FE53CA1CD8F1D300F70B67 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
-		00FE53CB1CD8F1D300F70B67 /* WorldObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorldObject.cpp; sourceTree = "<group>"; };
-		00FE53CC1CD8F1D300F70B67 /* WorldObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldObject.h; sourceTree = "<group>"; };
+		009245B81CEBB308002B4EA3 /* do_output.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = do_output.cpp; sourceTree = "<group>"; };
+		009245B91CEBB308002B4EA3 /* do_output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = do_output.h; sourceTree = "<group>"; };
+		009245BA1CEBB308002B4EA3 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		009245BB1CEBB308002B4EA3 /* robot_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state.cpp; sourceTree = "<group>"; };
+		009245BC1CEBB308002B4EA3 /* robot_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state.h; sourceTree = "<group>"; };
+		009245BD1CEBB308002B4EA3 /* robot_state_RT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robot_state_RT.cpp; sourceTree = "<group>"; };
+		009245BE1CEBB308002B4EA3 /* robot_state_RT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robot_state_RT.h; sourceTree = "<group>"; };
+		009245BF1CEBB308002B4EA3 /* ur_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_communication.cpp; sourceTree = "<group>"; };
+		009245C01CEBB308002B4EA3 /* ur_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_communication.h; sourceTree = "<group>"; };
+		009245C11CEBB308002B4EA3 /* ur_driver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_driver.cpp; sourceTree = "<group>"; };
+		009245C21CEBB308002B4EA3 /* ur_driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_driver.h; sourceTree = "<group>"; };
+		009245C31CEBB308002B4EA3 /* ur_realtime_communication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_realtime_communication.cpp; sourceTree = "<group>"; };
+		009245C41CEBB308002B4EA3 /* ur_realtime_communication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_realtime_communication.h; sourceTree = "<group>"; };
+		009245C61CEBB308002B4EA3 /* ikfast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ikfast.h; sourceTree = "<group>"; };
+		009245C71CEBB308002B4EA3 /* ur_kin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ur_kin.cpp; sourceTree = "<group>"; };
+		009245C81CEBB308002B4EA3 /* ur_kin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ur_kin.h; sourceTree = "<group>"; };
+		009245C91CEBB308002B4EA3 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		009245CB1CEBB308002B4EA3 /* ofxURDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxURDriver.h; sourceTree = "<group>"; };
+		009245CC1CEBB308002B4EA3 /* Synchronized.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synchronized.h; sourceTree = "<group>"; };
+		009245CD1CEBB308002B4EA3 /* UR5KinematicModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UR5KinematicModel.cpp; sourceTree = "<group>"; };
+		009245CE1CEBB308002B4EA3 /* UR5KinematicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UR5KinematicModel.h; sourceTree = "<group>"; };
+		009245CF1CEBB308002B4EA3 /* URDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URDriver.cpp; sourceTree = "<group>"; };
+		009245D01CEBB308002B4EA3 /* URDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URDriver.h; sourceTree = "<group>"; };
+		009245D11CEBB308002B4EA3 /* URMove.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URMove.cpp; sourceTree = "<group>"; };
+		009245D21CEBB308002B4EA3 /* URMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URMove.h; sourceTree = "<group>"; };
+		009245D31CEBB308002B4EA3 /* URToolHead.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URToolHead.cpp; sourceTree = "<group>"; };
+		009245D41CEBB308002B4EA3 /* URToolHead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URToolHead.h; sourceTree = "<group>"; };
+		009245D51CEBB308002B4EA3 /* URUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URUtils.h; sourceTree = "<group>"; };
+		009245D81CEBB308002B4EA3 /* PathController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathController.cpp; sourceTree = "<group>"; };
+		009245D91CEBB308002B4EA3 /* PathController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathController.h; sourceTree = "<group>"; };
+		009245DA1CEBB308002B4EA3 /* RobotController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotController.cpp; sourceTree = "<group>"; };
+		009245DB1CEBB308002B4EA3 /* RobotController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotController.h; sourceTree = "<group>"; };
+		009245DD1CEBB308002B4EA3 /* GMLPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GMLPath.cpp; sourceTree = "<group>"; };
+		009245DE1CEBB308002B4EA3 /* GMLPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMLPath.h; sourceTree = "<group>"; };
+		009245DF1CEBB308002B4EA3 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		009245E01CEBB308002B4EA3 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		009245E11CEBB308002B4EA3 /* Path3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path3D.cpp; sourceTree = "<group>"; };
+		009245E21CEBB308002B4EA3 /* Path3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path3D.h; sourceTree = "<group>"; };
+		009245E51CEBB308002B4EA3 /* PathPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathPlayer.cpp; sourceTree = "<group>"; };
+		009245E61CEBB308002B4EA3 /* PathPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathPlayer.h; sourceTree = "<group>"; };
+		009245E71CEBB308002B4EA3 /* PathRecorder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathRecorder.cpp; sourceTree = "<group>"; };
+		009245E81CEBB308002B4EA3 /* PathRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathRecorder.h; sourceTree = "<group>"; };
+		009245E91CEBB308002B4EA3 /* RobotParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotParameters.h; sourceTree = "<group>"; };
+		009245EA1CEBB308002B4EA3 /* RobotStateMachine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotStateMachine.cpp; sourceTree = "<group>"; };
+		009245EB1CEBB308002B4EA3 /* RobotStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotStateMachine.h; sourceTree = "<group>"; };
+		009245ED1CEBB308002B4EA3 /* WorkSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface.h; sourceTree = "<group>"; };
+		009245EE1CEBB308002B4EA3 /* WorkSurface3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkSurface3D.cpp; sourceTree = "<group>"; };
+		009245EF1CEBB308002B4EA3 /* WorkSurface3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkSurface3D.h; sourceTree = "<group>"; };
 		01DCC0911400F9ACF5B65578 /* ofxXmlSettings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxXmlSettings.h; path = ../../../addons/ofxXmlSettings/src/ofxXmlSettings.h; sourceTree = SOURCE_ROOT; };
 		0853C1E83DCC54A6D30F5C5A /* Hysteresis.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Hysteresis.h; path = ../../../addons/ofxTiming/src/Hysteresis.h; sourceTree = SOURCE_ROOT; };
 		0A1DAC09F322AE313A40706D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
@@ -290,159 +259,138 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00FE537D1CD8F1D300F70B67 /* ofxURDriver */ = {
+		009245B51CEBB308002B4EA3 /* ofxURDriver */ = {
 			isa = PBXGroup;
 			children = (
-				00FE537E1CD8F1D300F70B67 /* lib */,
-				00FE53911CD8F1D300F70B67 /* LICENSE */,
-				00FE53921CD8F1D300F70B67 /* src */,
+				009245B61CEBB308002B4EA3 /* lib */,
+				009245C91CEBB308002B4EA3 /* LICENSE */,
+				009245CA1CEBB308002B4EA3 /* src */,
 			);
 			name = ofxURDriver;
 			path = ../../ofxURDriver;
 			sourceTree = "<group>";
 		};
-		00FE537E1CD8F1D300F70B67 /* lib */ = {
+		009245B61CEBB308002B4EA3 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				00FE537F1CD8F1D300F70B67 /* urDriver */,
-				00FE538D1CD8F1D300F70B67 /* urKinematics */,
+				009245B71CEBB308002B4EA3 /* urDriver */,
+				009245C51CEBB308002B4EA3 /* urKinematics */,
 			);
 			path = lib;
 			sourceTree = "<group>";
 		};
-		00FE537F1CD8F1D300F70B67 /* urDriver */ = {
+		009245B71CEBB308002B4EA3 /* urDriver */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53801CD8F1D300F70B67 /* do_output.cpp */,
-				00FE53811CD8F1D300F70B67 /* do_output.h */,
-				00FE53821CD8F1D300F70B67 /* endian.h */,
-				00FE53831CD8F1D300F70B67 /* robot_state.cpp */,
-				00FE53841CD8F1D300F70B67 /* robot_state.h */,
-				00FE53851CD8F1D300F70B67 /* robot_state_RT.cpp */,
-				00FE53861CD8F1D300F70B67 /* robot_state_RT.h */,
-				00FE53871CD8F1D300F70B67 /* ur_communication.cpp */,
-				00FE53881CD8F1D300F70B67 /* ur_communication.h */,
-				00FE53891CD8F1D300F70B67 /* ur_driver.cpp */,
-				00FE538A1CD8F1D300F70B67 /* ur_driver.h */,
-				00FE538B1CD8F1D300F70B67 /* ur_realtime_communication.cpp */,
-				00FE538C1CD8F1D300F70B67 /* ur_realtime_communication.h */,
+				009245B81CEBB308002B4EA3 /* do_output.cpp */,
+				009245B91CEBB308002B4EA3 /* do_output.h */,
+				009245BA1CEBB308002B4EA3 /* endian.h */,
+				009245BB1CEBB308002B4EA3 /* robot_state.cpp */,
+				009245BC1CEBB308002B4EA3 /* robot_state.h */,
+				009245BD1CEBB308002B4EA3 /* robot_state_RT.cpp */,
+				009245BE1CEBB308002B4EA3 /* robot_state_RT.h */,
+				009245BF1CEBB308002B4EA3 /* ur_communication.cpp */,
+				009245C01CEBB308002B4EA3 /* ur_communication.h */,
+				009245C11CEBB308002B4EA3 /* ur_driver.cpp */,
+				009245C21CEBB308002B4EA3 /* ur_driver.h */,
+				009245C31CEBB308002B4EA3 /* ur_realtime_communication.cpp */,
+				009245C41CEBB308002B4EA3 /* ur_realtime_communication.h */,
 			);
 			path = urDriver;
 			sourceTree = "<group>";
 		};
-		00FE538D1CD8F1D300F70B67 /* urKinematics */ = {
+		009245C51CEBB308002B4EA3 /* urKinematics */ = {
 			isa = PBXGroup;
 			children = (
-				00FE538E1CD8F1D300F70B67 /* ikfast.h */,
-				00FE538F1CD8F1D300F70B67 /* ur_kin.cpp */,
-				00FE53901CD8F1D300F70B67 /* ur_kin.h */,
+				009245C61CEBB308002B4EA3 /* ikfast.h */,
+				009245C71CEBB308002B4EA3 /* ur_kin.cpp */,
+				009245C81CEBB308002B4EA3 /* ur_kin.h */,
 			);
 			path = urKinematics;
 			sourceTree = "<group>";
 		};
-		00FE53921CD8F1D300F70B67 /* src */ = {
+		009245CA1CEBB308002B4EA3 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53931CD8F1D300F70B67 /* ofxURDriver.h */,
-				00FE53941CD8F1D300F70B67 /* Synchronized.h */,
-				00FE53951CD8F1D300F70B67 /* UR5KinematicModel.cpp */,
-				00FE53961CD8F1D300F70B67 /* UR5KinematicModel.h */,
-				00FE53971CD8F1D300F70B67 /* URDriver.cpp */,
-				00FE53981CD8F1D300F70B67 /* URDriver.h */,
-				00FE53991CD8F1D300F70B67 /* URMove.cpp */,
-				00FE539A1CD8F1D300F70B67 /* URMove.h */,
-				00FE539B1CD8F1D300F70B67 /* URToolHead.cpp */,
-				00FE539C1CD8F1D300F70B67 /* URToolHead.h */,
-				00FE539D1CD8F1D300F70B67 /* URUtils.h */,
+				009245CB1CEBB308002B4EA3 /* ofxURDriver.h */,
+				009245CC1CEBB308002B4EA3 /* Synchronized.h */,
+				009245CD1CEBB308002B4EA3 /* UR5KinematicModel.cpp */,
+				009245CE1CEBB308002B4EA3 /* UR5KinematicModel.h */,
+				009245CF1CEBB308002B4EA3 /* URDriver.cpp */,
+				009245D01CEBB308002B4EA3 /* URDriver.h */,
+				009245D11CEBB308002B4EA3 /* URMove.cpp */,
+				009245D21CEBB308002B4EA3 /* URMove.h */,
+				009245D31CEBB308002B4EA3 /* URToolHead.cpp */,
+				009245D41CEBB308002B4EA3 /* URToolHead.h */,
+				009245D51CEBB308002B4EA3 /* URUtils.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
 		};
-		00FE539E1CD8F1D300F70B67 /* sharedCode */ = {
+		009245D61CEBB308002B4EA3 /* sharedCode */ = {
 			isa = PBXGroup;
 			children = (
-				00FE539F1CD8F1D300F70B67 /* controllers */,
-				00FE53AA1CD8F1D300F70B67 /* path */,
-				00FE53B31CD8F1D300F70B67 /* utils */,
-				00FE53BF1CD8F1D300F70B67 /* world */,
+				009245D71CEBB308002B4EA3 /* controllers */,
+				009245DC1CEBB308002B4EA3 /* path */,
+				009245E31CEBB308002B4EA3 /* utils */,
+				009245EC1CEBB308002B4EA3 /* world */,
 			);
 			name = sharedCode;
 			path = ../../sharedCode;
 			sourceTree = "<group>";
 		};
-		00FE539F1CD8F1D300F70B67 /* controllers */ = {
+		009245D71CEBB308002B4EA3 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53A01CD8F1D300F70B67 /* NatNetController.cpp */,
-				00FE53A11CD8F1D300F70B67 /* NatNetController.h */,
-				00FE53A21CD8F1D300F70B67 /* PathController.cpp */,
-				00FE53A31CD8F1D300F70B67 /* PathController.h */,
-				00FE53A41CD8F1D300F70B67 /* RobotController.cpp */,
-				00FE53A51CD8F1D300F70B67 /* RobotController.h */,
-				00FE53A61CD8F1D300F70B67 /* TCPController.cpp */,
-				00FE53A71CD8F1D300F70B67 /* TCPController.h */,
-				00FE53A81CD8F1D300F70B67 /* WorkSurfaceController.cpp */,
-				00FE53A91CD8F1D300F70B67 /* WorkSurfaceController.h */,
+				009245D81CEBB308002B4EA3 /* PathController.cpp */,
+				009245D91CEBB308002B4EA3 /* PathController.h */,
+				009245DA1CEBB308002B4EA3 /* RobotController.cpp */,
+				009245DB1CEBB308002B4EA3 /* RobotController.h */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
 		};
-		00FE53AA1CD8F1D300F70B67 /* path */ = {
+		009245DC1CEBB308002B4EA3 /* path */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53AB1CD8F1D300F70B67 /* GMLPath.cpp */,
-				00FE53AC1CD8F1D300F70B67 /* GMLPath.h */,
-				00FE53AD1CD8F1D300F70B67 /* ofxStrip.cpp */,
-				00FE53AE1CD8F1D300F70B67 /* ofxStrip.h */,
-				00FE53AF1CD8F1D300F70B67 /* Path.cpp */,
-				00FE53B01CD8F1D300F70B67 /* Path.h */,
-				00FE53B11CD8F1D300F70B67 /* Path3D.cpp */,
-				00FE53B21CD8F1D300F70B67 /* Path3D.h */,
+				009245DD1CEBB308002B4EA3 /* GMLPath.cpp */,
+				009245DE1CEBB308002B4EA3 /* GMLPath.h */,
+				009245DF1CEBB308002B4EA3 /* Path.cpp */,
+				009245E01CEBB308002B4EA3 /* Path.h */,
+				009245E11CEBB308002B4EA3 /* Path3D.cpp */,
+				009245E21CEBB308002B4EA3 /* Path3D.h */,
 			);
 			path = path;
 			sourceTree = "<group>";
 		};
-		00FE53B31CD8F1D300F70B67 /* utils */ = {
+		009245E31CEBB308002B4EA3 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53B41CD8F1D300F70B67 /* ofxGameCamera.cpp */,
-				00FE53B51CD8F1D300F70B67 /* ofxGameCamera.h */,
-				00FE53B61CD8F1D300F70B67 /* ofxTimeline */,
-				00FE53B71CD8F1D300F70B67 /* PathPlayer.cpp */,
-				00FE53B81CD8F1D300F70B67 /* PathPlayer.h */,
-				00FE53B91CD8F1D300F70B67 /* PathRecorder.cpp */,
-				00FE53BA1CD8F1D300F70B67 /* PathRecorder.h */,
-				00FE53BB1CD8F1D300F70B67 /* RobotParameters.h */,
-				00FE53BC1CD8F1D300F70B67 /* RobotParametersBasic.h */,
-				00FE53BD1CD8F1D300F70B67 /* RobotStateMachine.cpp */,
-				00FE53BE1CD8F1D300F70B67 /* RobotStateMachine.h */,
+				009245E41CEBB308002B4EA3 /* ofxTimeline */,
+				009245E51CEBB308002B4EA3 /* PathPlayer.cpp */,
+				009245E61CEBB308002B4EA3 /* PathPlayer.h */,
+				009245E71CEBB308002B4EA3 /* PathRecorder.cpp */,
+				009245E81CEBB308002B4EA3 /* PathRecorder.h */,
+				009245E91CEBB308002B4EA3 /* RobotParameters.h */,
+				009245EA1CEBB308002B4EA3 /* RobotStateMachine.cpp */,
+				009245EB1CEBB308002B4EA3 /* RobotStateMachine.h */,
 			);
 			path = utils;
 			sourceTree = "<group>";
 		};
-		00FE53B61CD8F1D300F70B67 /* ofxTimeline */ = {
+		009245E41CEBB308002B4EA3 /* ofxTimeline */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = ofxTimeline;
 			sourceTree = "<group>";
 		};
-		00FE53BF1CD8F1D300F70B67 /* world */ = {
+		009245EC1CEBB308002B4EA3 /* world */ = {
 			isa = PBXGroup;
 			children = (
-				00FE53C01CD8F1D300F70B67 /* Calibration.cpp */,
-				00FE53C11CD8F1D300F70B67 /* Calibration.h */,
-				00FE53C21CD8F1D300F70B67 /* ThreeDWorkSurface.cpp */,
-				00FE53C31CD8F1D300F70B67 /* ThreeDWorkSurface.h */,
-				00FE53C41CD8F1D300F70B67 /* TwoDWorkSurface.cpp */,
-				00FE53C51CD8F1D300F70B67 /* TwoDWorkSurface.h */,
-				00FE53C61CD8F1D300F70B67 /* WorkSurface.h */,
-				00FE53C71CD8F1D300F70B67 /* WorkSurface3D.cpp */,
-				00FE53C81CD8F1D300F70B67 /* WorkSurface3D.h */,
-				00FE53C91CD8F1D300F70B67 /* World.cpp */,
-				00FE53CA1CD8F1D300F70B67 /* World.h */,
-				00FE53CB1CD8F1D300F70B67 /* WorldObject.cpp */,
-				00FE53CC1CD8F1D300F70B67 /* WorldObject.h */,
+				009245ED1CEBB308002B4EA3 /* WorkSurface.h */,
+				009245EE1CEBB308002B4EA3 /* WorkSurface3D.cpp */,
+				009245EF1CEBB308002B4EA3 /* WorkSurface3D.h */,
 			);
 			path = world;
 			sourceTree = "<group>";
@@ -765,8 +713,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				00FE537D1CD8F1D300F70B67 /* ofxURDriver */,
-				00FE539E1CD8F1D300F70B67 /* sharedCode */,
+				009245B51CEBB308002B4EA3 /* ofxURDriver */,
+				009245D61CEBB308002B4EA3 /* sharedCode */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -890,60 +838,50 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				00FE53E51CD8F1D300F70B67 /* Calibration.cpp in Sources */,
-				00FE53D01CD8F1D300F70B67 /* ur_communication.cpp in Sources */,
+				009245F31CEBB308002B4EA3 /* ur_communication.cpp in Sources */,
+				009245FC1CEBB308002B4EA3 /* RobotController.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				009246011CEBB308002B4EA3 /* PathRecorder.cpp in Sources */,
 				3B8120368B4FCCD80883BAF3 /* ofxAssimpAnimation.cpp in Sources */,
-				00FE53E81CD8F1D300F70B67 /* WorkSurface3D.cpp in Sources */,
+				009245FD1CEBB308002B4EA3 /* GMLPath.cpp in Sources */,
 				483FA4F6D5FA6422C559B1F5 /* ofxAssimpMeshHelper.cpp in Sources */,
-				00FE53E71CD8F1D300F70B67 /* TwoDWorkSurface.cpp in Sources */,
-				00FE53E61CD8F1D300F70B67 /* ThreeDWorkSurface.cpp in Sources */,
-				00FE53E21CD8F1D300F70B67 /* PathPlayer.cpp in Sources */,
 				8DED5056525646FA71980866 /* ofxAssimpModelLoader.cpp in Sources */,
 				B8846EF8E504895A4A9EFEC0 /* ofxAssimpTexture.cpp in Sources */,
-				00FE53D91CD8F1D300F70B67 /* PathController.cpp in Sources */,
-				00FE53EA1CD8F1D300F70B67 /* WorldObject.cpp in Sources */,
 				39C1076FC679109A21E21816 /* tagReader.cpp in Sources */,
 				03B14860C85545A54080C30A /* tagWriter.cpp in Sources */,
+				009245FF1CEBB308002B4EA3 /* Path3D.cpp in Sources */,
 				3415942CF8402F92CD12F9A1 /* ofxGizmo.cpp in Sources */,
 				41E2223E5B0F12AB2C7D678B /* GizmoTransformMove.cpp in Sources */,
-				00FE53D61CD8F1D300F70B67 /* URMove.cpp in Sources */,
+				009245F91CEBB308002B4EA3 /* URMove.cpp in Sources */,
 				0E33E39B0F7BD7C01D368551 /* GizmoTransformRender.cpp in Sources */,
-				00FE53DB1CD8F1D300F70B67 /* TCPController.cpp in Sources */,
-				00FE53E01CD8F1D300F70B67 /* Path3D.cpp in Sources */,
-				00FE53D41CD8F1D300F70B67 /* UR5KinematicModel.cpp in Sources */,
-				00FE53DF1CD8F1D300F70B67 /* Path.cpp in Sources */,
-				00FE53E91CD8F1D300F70B67 /* World.cpp in Sources */,
-				00FE53E31CD8F1D300F70B67 /* PathRecorder.cpp in Sources */,
+				009245F71CEBB308002B4EA3 /* UR5KinematicModel.cpp in Sources */,
 				658E7D8B200D6D15D55EFF62 /* GizmoTransformRotate.cpp in Sources */,
 				2678BE5C3074D11B5F284D2D /* GizmoTransformScale.cpp in Sources */,
 				F090A3379D0F9EA5625F5896 /* ZBaseMaths.cpp in Sources */,
-				00FE53CE1CD8F1D300F70B67 /* robot_state.cpp in Sources */,
-				00FE53E11CD8F1D300F70B67 /* ofxGameCamera.cpp in Sources */,
-				00FE53D21CD8F1D300F70B67 /* ur_realtime_communication.cpp in Sources */,
-				00FE53E41CD8F1D300F70B67 /* RobotStateMachine.cpp in Sources */,
+				009246031CEBB308002B4EA3 /* WorkSurface3D.cpp in Sources */,
+				009245F11CEBB308002B4EA3 /* robot_state.cpp in Sources */,
+				009245F51CEBB308002B4EA3 /* ur_realtime_communication.cpp in Sources */,
 				FCBD7626110FDE944C671566 /* ZMathsFunc.cpp in Sources */,
-				00FE53DC1CD8F1D300F70B67 /* WorkSurfaceController.cpp in Sources */,
+				009245FB1CEBB308002B4EA3 /* PathController.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
-				00FE53D51CD8F1D300F70B67 /* URDriver.cpp in Sources */,
+				009245F81CEBB308002B4EA3 /* URDriver.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
-				00FE53D31CD8F1D300F70B67 /* ur_kin.cpp in Sources */,
-				00FE53D11CD8F1D300F70B67 /* ur_driver.cpp in Sources */,
-				00FE53DD1CD8F1D300F70B67 /* GMLPath.cpp in Sources */,
+				009245F61CEBB308002B4EA3 /* ur_kin.cpp in Sources */,
+				009245F41CEBB308002B4EA3 /* ur_driver.cpp in Sources */,
 				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
+				009245FE1CEBB308002B4EA3 /* Path.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
+				009246021CEBB308002B4EA3 /* RobotStateMachine.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
-				00FE53D71CD8F1D300F70B67 /* URToolHead.cpp in Sources */,
-				00FE53CD1CD8F1D300F70B67 /* do_output.cpp in Sources */,
+				009245FA1CEBB308002B4EA3 /* URToolHead.cpp in Sources */,
+				009245F01CEBB308002B4EA3 /* do_output.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,
-				00FE53DE1CD8F1D300F70B67 /* ofxStrip.cpp in Sources */,
 				1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */,
 				714509BA4B4022405175C461 /* ParallelTransportFrames.cpp in Sources */,
-				00FE53CF1CD8F1D300F70B67 /* robot_state_RT.cpp in Sources */,
-				00FE53D81CD8F1D300F70B67 /* NatNetController.cpp in Sources */,
+				009245F21CEBB308002B4EA3 /* robot_state_RT.cpp in Sources */,
+				009246001CEBB308002B4EA3 /* PathPlayer.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
-				00FE53DA1CD8F1D300F70B67 /* RobotController.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
