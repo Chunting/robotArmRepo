@@ -26,10 +26,12 @@ public:
     virtual void update(){};
     virtual void draw(){};
     virtual void draw(bool showNormals){};
+    virtual void keyPressed(int key){};
     virtual vector<Path *> getPaths(){};
-//    virtual void transform(ofMatrix4x4 m44){};
-//    virtual void transform(ofVec3f pos){};
-//    virtual void transform(ofVec3f pos, ofQuaternion orient){};
+    
+    virtual void transform(ofVec3f pos){};
+    virtual void transform(ofMatrix4x4 m44){};
+
     virtual Joint getTargetPoint(float t){};
     virtual void addPoint(ofVec3f pt){};
     virtual void addStroke(ofPolyline stroke){};

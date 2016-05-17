@@ -23,7 +23,7 @@ void URMove::setup(){
     movementParams.add(targetTCPLerpSpeed.set("TCP LerpSpeed", 0.9, 0.001, 1.0));
 
     
-    movementParams.add(avgAcceleration.set("Accel", 0, 0, 200));
+    movementParams.add(avgAcceleration.set("Accel", 100, 0, 200));
     movementParams.add(jointAccelerationMultipler.set("Accel Multi", 1, 1, 1000));
     movementParams.add(speedDivider.set("Speed Divider", 1, 1, 10));
     reachPoint.set("Step", false);

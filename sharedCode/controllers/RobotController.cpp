@@ -18,6 +18,13 @@ void RobotController::setup(RobotParameters & params){
     movement.setup();
 }
 
+void RobotController::setup(string ipAddress, RobotParameters & params){
+    robot.setup(ipAddress,0, 1);
+    robot.start();
+    robotParams = &params;
+    movement.setup();
+}
+
 vector<double> RobotController::getJointPosition(){
     return robotParams->currentJointPos;
 }

@@ -11,7 +11,7 @@ void ofApp::setup(){
     setupViewports();
     
     parameters.setup();
-    robot.setup(parameters);
+    robot.setup("192.168.1.9", parameters);
     
     setupGUI();
     positionGUI();
@@ -358,7 +358,9 @@ void ofApp::keyPressed(int key){
         gizmo.toggleVisible();
     }
     
-    paths.keyPressed(key);
+//    paths.keyPressed(key);
+    
+    workSrf.keyPressed(key);
 
     handleViewportPresets(key);
 }

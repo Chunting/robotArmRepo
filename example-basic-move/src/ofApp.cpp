@@ -1,6 +1,26 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+//
+//
+// Basic Move Example
+//
+//
+//--------------------------------------------------------------
+
+//
+// This example shows you how to:
+//  1.  Connect ofxRobotArm to your robot via ethernet
+//  2.  Move & reiorient the simulated robot (dragging ofxGizmo)
+//  3.  Move & reiorient the real-time robot (use 'm' to enable real-time movement)
+//
+// Remeber to swap in your robot's ip address in robot.setup() [line 40]
+// If you don't know your robot's ip address, you may not be set up yet ...
+//  -   Refer to http://www.universal-robots.com/how-tos-and-faqs/how-to/ur-how-tos/ethernet-ip-guide-18712/
+//      for a walk-thru to setup you ethernet connection
+//
+
+//--------------------------------------------------------------
 void ofApp::setup(){
 
     ofSetFrameRate(60);
@@ -11,7 +31,7 @@ void ofApp::setup(){
     setupViewports();
     
     parameters.setup();
-    robot.setup(parameters);
+    robot.setup("192.168.1.9", parameters); // <-- change to your robot's ip address
     
     setupGUI();
     positionGUI();
@@ -43,6 +63,7 @@ void ofApp::draw(){
     
     // show simulation robot
     cams[1]->begin(viewportSim);
+    ofDrawAxis(100);
     gizmo.draw(*cams[1]);
     robot.movement.draw(0);
     cams[1]->end();
@@ -78,7 +99,7 @@ void ofApp::moveArm(){
         tcpNode.setTransformMatrix(gizmo.getMatrix());
     }
     
-    // follow a user-defined position and orientation
+    // follow the gizmo's position and orientation
     if(parameters.bFollow){
         parameters.targetTCP.position.interpolate(tcpNode.getPosition()/1000.0, parameters.followLerp);
         parameters.targetTCP.rotation = tcpNode.getOrientationQuat();

@@ -95,6 +95,41 @@ void WorkSurface3D::draw(bool showSrf=true, bool showWireframe=true, bool showNo
     ofPopMatrix();
 }
 
+void WorkSurface3D::keyPressed(int key){
+    
+    ofVec3f offset;
+    offset.set(0,0,0);
+    
+    float step = .01;
+    
+    // move the work surface
+    if (key == OF_KEY_LEFT)
+        offset.x -= step;
+    else if (key == OF_KEY_RIGHT)
+        offset.x += step;
+    else if (key == OF_KEY_DOWN)
+        offset.y -= step;
+    else if (key == OF_KEY_UP)
+        offset.y += step;
+    
+    transform(offset);
+    
+    // rotate the work surface (in place)
+    if (key == 'R'){
+        ofMatrix4x4 m44;
+        ofVec3f centroid = getMesh().getCentroid();
+        
+        // rotate about the x-axis 90º
+        m44.setRotate(ofQuaternion(sqrt(.5),0,0,sqrt(.5)));
+        
+        // move to origin to transform
+        m44.setTranslation(-1*centroid);
+        // apply tranformation
+        transform(m44);
+        // move back to origin
+        transform(centroid);
+    }
+}
 
 void WorkSurface3D::setMesh(ofMesh mesh, vector<ofPolyline> polylines2D){
     surfaceMesh = mesh;
@@ -121,24 +156,11 @@ void WorkSurface3D::setPaths(vector<ofPolyline> polylines2D){
 
 vector<Path *> WorkSurface3D::getPaths(){
     
-//    vector<Path *> pathPtrs;
-//
-//    for (auto path : paths){
-//        Path &p = path;
-//        cout << p.getName() << endl;
-//
-//        pathPtrs.push_back(&path);
-//        cout << pathPtrs[pathPtrs.size()-1]->getName() << endl;
-//    }
-//    
-//    return pathPtrs;
-    
     vector<Path *> pPaths;
     for (auto &path : paths){
 
         pPaths.push_back(&path);
-//        cout << "number of pts in path vector: " << workSrfPaths[workSrfPaths.size()-1]->size() << endl;
-        
+
     }
     return pPaths;
 }
@@ -201,21 +223,37 @@ void WorkSurface3D::project(ofMesh & mesh, vector<ofPolyline> &paths2D, vector<o
     
 }
 
-//void WorkSurface3D::transform(ofVec3f p){
-//
-//    for (auto &v: surfaceMesh.getVertices()){
-//        v += p;
-//    }
-//    for (auto &path : paths){
-//        for (auto &v : path.path.getVertices())
-//            v += p;
-//    }
-//
-//   
-//}
+void WorkSurface3D::transform(ofVec3f p){
 
-//void WorkSurface3D::transform(ofMatrix4x4 m44){
-//    
-//}
+    for (auto &v: surfaceMesh.getVertices()){
+        v += p;
+    }
+    for (auto &path : paths){
+        // move the path
+        for (auto &v : path.path.getVertices())
+            v += p;
+        // update the perp frames
+        path.buildPerpFrames(path.path);
+    }
+}
+
+void WorkSurface3D::transform(ofMatrix4x4 m44){
+    
+    for (auto &v: surfaceMesh.getVertices()){
+        v += m44.getTranslation();
+        v  = v * m44.getRotate();
+    }
+    for (auto &path : paths){
+        // move the path
+        for (auto &v : path.path.getVertices()){
+            v += m44.getTranslation();
+            v  = v * m44.getRotate();
+        }
+        // update the perp frames
+        path.buildPerpFrames(path.path);
+    }
+
+    
+}
 
 
