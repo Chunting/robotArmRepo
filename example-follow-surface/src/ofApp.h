@@ -1,5 +1,13 @@
 #pragma once
 
+//--------------------------------------------------------------
+//
+//
+// Follow Path on Surface Example
+//
+//
+//--------------------------------------------------------------
+
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxGizmo.h"

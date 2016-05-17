@@ -18,6 +18,7 @@
 // If you don't know your robot's ip address, you may not be set up yet ...
 //  -   Refer to http://www.universal-robots.com/how-tos-and-faqs/how-to/ur-how-tos/ethernet-ip-guide-18712/
 //      for a walk-thru to setup you ethernet connection
+// See the ReadMe for more tutorial details
 //
 
 //--------------------------------------------------------------

@@ -1,6 +1,25 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+//
+//
+// Follow Path on Surface Example
+//
+//
+//--------------------------------------------------------------
+
+//
+// This example shows you how to:
+//  1.  Import a 3D worksurface
+//  2.  Project 2D paths onto the 3D surface
+//  3.  Move & reiorient the robot to stay normal to the paths on the surface
+//  4.  Retract & approach the surface using offsets
+//  5.  Dynamically move the worksurface & paths using a vector or transformation matrix
+//
+// See the ReadMe for more tutorial details
+//
+
+//--------------------------------------------------------------
 void ofApp::setup(){
 
     ofSetFrameRate(60);
@@ -11,7 +30,7 @@ void ofApp::setup(){
     setupViewports();
     
     parameters.setup();
-    robot.setup("192.168.1.9", parameters);
+    robot.setup("192.168.1.9", parameters); // <-- swap your robot's ip address here
     
     setupGUI();
     positionGUI();
@@ -127,27 +146,25 @@ void ofApp::moveArm(){
 
 ofPolyline ofApp::buildToolpath(ofVec3f centroid){
     
-    // make an XY circle as a test toolpath ...
+
     ofPolyline path;
-    float retract = 0;//.05;
+    float retract = .05;
     
     float res = 120;
     float radius = .05;
     float theta = 360/res;
     
-    for (int i=0; i<res/2; i++){
+    for (int i=0; i<res; i++){
         ofPoint p = ofPoint(radius,0,0);
         p.rotate(theta*i, ofVec3f(0,0,1));
         p += centroid;
         
         // add an approach point
-//        if (i==0){
-//            p.z+=retract;
-//            path.addVertex(p);
-//            // add duplicate point for Path3D?
-//            // path.addVertex(p);
-//            p.z -=retract;
-//        }
+        if (i==0){
+            p.z+=retract;
+//            path.addVertex(p); // BUG: messes up Path3D's ptf
+            p.z -=retract;
+        }
         
         path.addVertex(p);
         
@@ -155,8 +172,6 @@ ofPolyline ofApp::buildToolpath(ofVec3f centroid){
         if (i==res-1){
             p.z+=retract;
             path.addVertex(p);
-            // add duplicate point for Path3D?
-            // path.addVertex(p);
         }
     }
     //    path.close();
