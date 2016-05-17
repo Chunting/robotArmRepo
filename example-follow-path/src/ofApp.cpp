@@ -1,4 +1,4 @@
-#include "ofApp.h"
+//Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 
 //--------------------------------------------------------------
 //
@@ -20,6 +20,7 @@
 //      - Fix robot misaligment to perp planes
 //      - Realign default perp plane to local axes
 
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){

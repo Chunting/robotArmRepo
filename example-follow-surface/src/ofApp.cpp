@@ -1,4 +1,4 @@
-#include "ofApp.h"
+//Copyright (c) 2016, Daniel Moore, Madaline Gannon, and The Frank-Ratchye STUDIO for Creative Inquiry All rights reserved.
 
 //--------------------------------------------------------------
 //
@@ -18,6 +18,8 @@
 //
 // See the ReadMe for more tutorial details
 //
+
+#include "ofApp.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
