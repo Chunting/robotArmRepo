@@ -1,8 +1,8 @@
 ofxAssimpModelLoader
 ofxGML
+ofxGizmo
 ofxGui
 ofxNatNet
-ofxOsc
 ofxPtf
 ofxTiming
 ofxXmlSettings
