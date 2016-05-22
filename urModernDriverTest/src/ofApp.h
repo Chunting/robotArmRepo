@@ -57,7 +57,14 @@ public:
     ofxGizmo gizmo;
     ofNode tcpNode;
     
+<<<<<<< HEAD
     RobotController robot;
+=======
+    ofxNatNet natnet;
+    void setupNatNet();
+    void updateNatNet();
+    void drawNatNet();
+>>>>>>> parent of 31eef24... Drawing on tracked surface
     
     float acceleration;
     vector<double> speeds;
@@ -92,4 +99,37 @@ public:
     
     ofxSyphonServer syphon;
     
+<<<<<<< HEAD
+=======
+    /// Draws the plane, markers, and orientation axes of a given RigidBody.
+    /// @param rb
+    ///     Rigid Body passed by NatNet
+    void drawRigidBody(const ofxNatNet::RigidBody &rb);
+    void drawHistory();
+
+    
+    /// Transforms a recorded toolpath based on the movement of a RigidBody.
+    /// @param rb
+    ///     Rigid Body that transforms the recorded toolpath
+    void updateWorksurface(const ofxNatNet::RigidBody &rb);
+    
+    
+    /*
+        Common Quaternion Values
+        from: http://www.ogre3d.org/tikiwiki/Quaternion+and+Rotation+Primer
+     
+         w          x           y           z           Description
+         
+         1          0           0           0           Identity quaternion, no rotation
+         0          1           0           0           180¡ turn around X axis
+         0          0           1           0           180¡ turn around Y axis
+         0          0           0           1           180¡ turn around Z axis
+         sqrt(0.5)	sqrt(0.5)	0           0           90¡ rotation around X axis
+         sqrt(0.5)	0           sqrt(0.5)	0           90¡ rotation around Y axis
+         sqrt(0.5)	0           0           sqrt(0.5)	90¡ rotation around Z axis
+         sqrt(0.5)	-sqrt(0.5)	0           0           -90¡ rotation around X axis
+         sqrt(0.5)	0           -sqrt(0.5)	0           -90¡ rotation around Y axis
+         sqrt(0.5)	0           0           -sqrt(0.5)	-90¡ rotation around Z axis
+     */
+>>>>>>> parent of 31eef24... Drawing on tracked surface
 };

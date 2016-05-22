@@ -117,6 +117,7 @@ void ofApp::updateMocap(){
         
         currentRB = rb;
         
+
         if (attach){
             keepAttached(currentRB, recordedPath);
         }
@@ -185,14 +186,18 @@ void ofApp::drawMocap(){
 
 void ofApp::keepAttached(ofxNatNet::RigidBody &currRB, vector<ofxNatNet::RigidBody> &recordedBodies){
 
-    // multiply all the rigid bodies by the difference between the current rigid body and the first rigid body in the recorded path
-    
+    // get the difference between the current rigid body and the previous rigid body in the recorded path
     ofMatrix4x4 diff = recordedBodies[recordedBodies.size()-1].matrix.getInverse() * currRB.matrix;
     
-    recordedBodies[recordedBodies.size()-1].matrix.getRotate().conj();
-
     for (auto &rb : recordedBodies){
+        
+        // update its transformation matrix
         rb.matrix *= diff;
+        
+        // update its markers
+        for (auto &marker : rb.markers){
+            marker = marker * diff;
+        }
     }
     
 }
@@ -443,10 +448,18 @@ void ofApp::keyPressed(int key){
     }
     
     // mocap key pressed
-    if (key == 'A')
+    if (key == 'A'){
         attach = !attach;
-    if (key == 'R')
+        if (attach)
+            record = false;
+    }
+    if (key == 'R'){
         record = !record;
+        if (record)
+            attach = false;
+        else if (!record)
+            attach = true;
+    }
     
     
     paths.keyPressed(key);
