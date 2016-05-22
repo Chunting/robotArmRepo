@@ -60,6 +60,7 @@ class ofApp : public ofBaseApp{
         Path3D path;
         PathController paths;
         void moveArm();
+        bool followRigidBody;
     
 
         // Motion Capture
@@ -69,12 +70,11 @@ class ofApp : public ofBaseApp{
         void updateMocap();
         void drawMocap();
     
-    /// \brief Transforms the recorded rigid bodies so they move with the
-    /// current rigid body
-    /// \param currRB current rigid body
-    /// \param recordedBodies list of recorded rigid bodies to transform
+        /// \brief Transforms the recorded rigid bodies so they move with the
+        /// current rigid body
+        /// \param currRB current rigid body
+        /// \param recordedBodies list of recorded rigid bodies to transform
         void keepAttached(ofxNatNet::RigidBody &currRB, vector<ofxNatNet::RigidBody> &recordedBodies);
-    
         bool record;
         bool attach;
     

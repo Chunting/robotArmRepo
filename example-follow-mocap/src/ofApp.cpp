@@ -13,6 +13,7 @@
 //  1.  Create 3D Paths using an Optitrack motion capture markers
 //  2.  Move & reiorient 3D Paths using motion capture markers
 //  3.  Move & reiorient the robot to follow paths using a PathController
+//  4.  Move & reiorient the robot to follow a rigid body
 //
 // See the ReadMe for more tutorial details
 //
@@ -224,11 +225,19 @@ void ofApp::moveArm(){
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
     }
-    else{
+    else if (!followRigidBody){
         // update the tool tcp
         tcpNode.setTransformMatrix(gizmo.getMatrix());
     }
+    
+    // update based on rigid body position and orientation
+    if (followRigidBody){
 
+        
+//        tcpNode.setTransformMatrix(currentRB.matrix);
+        tcpNode.setPosition(tcpNode.getPosition().x, tcpNode.getPosition().y, currentRB.matrix.getTranslation().y*1000);
+        tcpNode.setOrientation(currentRB.matrix.getRotate());
+    }
     
     // follow a user-defined position and orientation
     if(parameters.bFollow){
@@ -238,19 +247,8 @@ void ofApp::moveArm(){
         
     }
     
-    if (parameters.bMove){
-        ofMatrix4x4 orientation = paths.getNextPose();
-        parameters.targetTCP.position = orientation.getTranslation();
-        
-        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
-        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
-        parameters.targetTCP.rotation *= orientation.getRotate();
-        
-        // update the gizmo controller
-        tcpNode.setPosition(parameters.targetTCP.position*1000);
-        tcpNode.setOrientation(parameters.targetTCP.rotation);
-        gizmo.setNode(tcpNode);
-    }
+    
+    
 }
 
 void ofApp::setupViewports(){
@@ -428,10 +426,10 @@ void ofApp::keyPressed(int key){
     if(key == 'm'){
         parameters.bMove = !parameters.bMove;
         
-        if (parameters.bMove)
-            paths.startDrawing();
-        else
-            paths.pauseDrawing();
+//        if (parameters.bMove)
+//            paths.startDrawing();
+//        else
+//            paths.pauseDrawing();
     }
     
     if( key == 'r' ) {
@@ -459,6 +457,10 @@ void ofApp::keyPressed(int key){
             attach = false;
         else if (!record)
             attach = true;
+    }
+    
+    if (key == 'F'){
+        followRigidBody = !followRigidBody;
     }
     
     
