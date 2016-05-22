@@ -12,6 +12,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxNatNet.h"
 #include "ofxGizmo.h"
 #include "RobotController.h"
 #include "PathController.h"
@@ -59,8 +60,30 @@ class ofApp : public ofBaseApp{
         Path3D path;
         PathController paths;
         void moveArm();
-        
-        
+    
+
+        // Motion Capture
+        ofxNatNet mocap;
+        void setupMocap(string myIP, string serverIP);
+        void setupMocap(string myIP, string serverIP, int scale);
+        void updateMocap();
+        void drawMocap();
+    
+    /// \brief Transforms the recorded rigid bodies so they move with the
+    /// current rigid body
+    /// \param currRB current rigid body
+    /// \param recordedBodies list of recorded rigid bodies to transform
+        void keepAttached(ofxNatNet::RigidBody &currRB, vector<ofxNatNet::RigidBody> &recordedBodies);
+    
+        bool record;
+        bool attach;
+    
+        /// \brief Stores previous rigid bodies
+        vector<ofxNatNet::RigidBody> recordedPath;
+        ofxNatNet::RigidBody currentRB;
+    
+    
+    
         // 3D Navigation
         void updateActiveCamera();
         vector<ofEasyCam*> cams;

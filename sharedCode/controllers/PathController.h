@@ -34,10 +34,11 @@ public:
     
     void setup();
     void setup(vector<Path *> paths);
-//    void setup(vector<Path> paths);
+
     void update();
     ofMatrix4x4 getNextPose();
     void draw();
+    void addPath(Path *path);
     void pauseDrawing();
     void startDrawing();
     void endDrawing();

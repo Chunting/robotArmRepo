@@ -38,17 +38,19 @@ void ofApp::setup(){
     setupGUI();
     positionGUI();
     
-    // setup path controller
-    path.setup();
-    vector<Path *> pathPtrs;
-    pathPtrs.push_back(&path);
-    paths.setup(pathPtrs);
+    
+    // setup mocap
+    string localIP  = "192.168.1.140";
+    string serverIP = "192.168.1.10";
+    setupMocap(localIP,serverIP,1);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    paths.update();
+//    paths.update();
+    
+    updateMocap();
     
     moveArm();
     robot.update();
@@ -70,6 +72,7 @@ void ofApp::draw(){
     tcpNode.draw();
     paths.draw();
     robot.robot.model.draw();
+    drawMocap();
     cams[0]->end();
     
     // show simulation robot
@@ -78,9 +81,119 @@ void ofApp::draw(){
         gizmo.draw(*cams[1]);
     paths.draw();
     robot.movement.draw(0);
+    drawMocap();
     cams[1]->end();
     
     drawGUI();
+    
+}
+
+void ofApp::setupMocap(string myIP, string serverIP){
+    mocap.setup(myIP, serverIP);  // interface name, server ip
+    mocap.setScale(1);
+    mocap.setDuplicatedPointRemovalDistance(.020);
+}
+
+void ofApp::setupMocap(string myIP, string serverIP, int scale){
+    mocap.setup(myIP, serverIP);  // interface name, server ip
+    mocap.setScale(scale);
+    mocap.setDuplicatedPointRemovalDistance(.020);
+    
+}
+void ofApp::updateMocap(){
+    mocap.update();
+    
+    if (mocap.getNumRigidBody() > 0){
+        const ofxNatNet::RigidBody &rb = mocap.getRigidBodyAt(0);  // more than one rigid body crashes ofxNatNet now
+        
+        // add to the rigid body history
+        if (record){
+            recordedPath.push_back(rb);
+            
+            // store previous 20 rigid bodies
+            if (recordedPath.size()>20)
+                recordedPath.erase(recordedPath.begin());
+        }
+        
+        currentRB = rb;
+        
+        if (attach){
+            keepAttached(currentRB, recordedPath);
+        }
+    }
+    
+}
+
+void ofApp::drawMocap(){
+    
+    ofPushMatrix();
+    ofScale(1000);
+    
+    // show path
+    ofPolyline tp;
+    for (auto &path: recordedPath){
+        ofSetColor(ofColor::azure);
+        tp.addVertex(path.getMatrix().getTranslation());
+    }
+    tp.draw();
+
+    // show rigid body
+    ofPolyline bodies;
+    float alpha = 255;
+    float step = 255 / (recordedPath.size()+1);
+    for (auto &rb: recordedPath){
+        ofSetColor(ofColor::navajoWhite, alpha);
+        for (int i = 0; i < rb.markers.size(); i++)
+            bodies.addVertex(rb.markers[i]);
+        alpha -= step;
+    }
+    bodies.draw();
+    
+    
+    
+    // draw rigidbodies
+//    for (int i = 0; i < mocap.getNumRigidBody(); i++) {
+        const ofxNatNet::RigidBody &RB = currentRB;
+        
+        if (RB.isActive())
+            ofSetColor(0, 255, 0);
+        else
+            ofSetColor(255, 0, 0);
+        
+        //        cout << "rigidBody: " << RB.id << ", pos: " << RB.matrix.getTranslation().operator*=(10) << ", orientation: "<< RB.getMatrix().getRotate() << endl;
+        
+        ofPushMatrix();
+        glMultMatrixf(RB.getMatrix().getPtr());
+        ofDrawAxis(.030);
+        ofPopMatrix();
+        
+        glBegin(GL_LINE_LOOP);
+        for (int n = 0; n < RB.markers.size(); n++) {
+            glVertex3fv(RB.markers[n].getPtr());
+        }
+        glEnd();
+        
+        for (int n = 0; n < RB.markers.size(); n++) {
+            ofDrawBox(RB.markers[n], .005);
+        }
+//    }
+    
+
+    ofPopMatrix();
+}
+
+
+void ofApp::keepAttached(ofxNatNet::RigidBody &currRB, vector<ofxNatNet::RigidBody> &recordedBodies){
+
+    // multiply all the rigid bodies by the difference between the current rigid body and the first rigid body in the recorded path
+    
+    ofMatrix4x4 diff = recordedBodies[recordedBodies.size()-1].matrix.getInverse() * currRB.matrix;
+    
+    recordedBodies[recordedBodies.size()-1].matrix.getRotate().conj();
+
+    for (auto &rb : recordedBodies){
+        rb.matrix *= diff;
+    }
     
 }
 
@@ -328,6 +441,13 @@ void ofApp::keyPressed(int key){
     if( key == 'e' ) {
         gizmo.toggleVisible();
     }
+    
+    // mocap key pressed
+    if (key == 'A')
+        attach = !attach;
+    if (key == 'R')
+        record = !record;
+    
     
     paths.keyPressed(key);
 
