@@ -64,7 +64,7 @@ void PathController::draw(){
 }
 
 
-void PathController::size(){
+int PathController::size(){
     return paths.size();
 }
 

@@ -129,31 +129,55 @@ void Path3D::keyPressed(int key){
 
 
 ofMatrix4x4 Path3D::getNextPose(){
-    if(ptf.framesSize()>0){
-        
+    
+    if (perpFrames.size() > 0){
         // go back-and-forth along a path
-        if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
+        if (reverse && (ptIndex == 0 || ptIndex == perpFrames.size()-1))
             direction *= -1;
         
-        ptIndex = (ptIndex + direction) % ptf.framesSize();
+        ptIndex = (ptIndex + direction) % perpFrames.size();
         
-        orientation = ptf.frameAt(ptIndex);
+        orientation = perpFrames[ptIndex];
         
         if (makeZForward)
             orientation = zForward(orientation);
         else if (makeZOut)
             orientation = zOut(orientation);
-//        else
-//            orientation = flip(orientation);
+        //        else
+        //            orientation = flip(orientation);
         
-//        return flip(orientation);
+        //        return flip(orientation);
         return orientation;
+
     }
+    
+//    
+//    if(ptf.framesSize()>0){
+//        
+//        // go back-and-forth along a path
+//        if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
+//            direction *= -1;
+//        
+//        ptIndex = (ptIndex + direction) % ptf.framesSize();
+//        
+//        orientation = ptf.frameAt(ptIndex);
+//        
+//        if (makeZForward)
+//            orientation = zForward(orientation);
+//        else if (makeZOut)
+//            orientation = zOut(orientation);
+////        else
+////            orientation = flip(orientation);
+//        
+////        return flip(orientation);
+//        return orientation;
+//    }
 }
 
 ofMatrix4x4 Path3D::getPoseAt(int index){
     
-    return ptf.frameAt(index);
+    return perpFrames[index];
+//    return ptf.frameAt(index);
     
 }
 

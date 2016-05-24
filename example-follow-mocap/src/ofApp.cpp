@@ -245,6 +245,9 @@ void ofApp::moveArm(){
         mocapOrient *= currentRB.matrix.getRotate();
         
         tcpNode.setOrientation(mocapOrient);
+        
+        // update the gizmo
+        gizmo.setNode(tcpNode);
     }
     
     // follow a user-defined position and orientation

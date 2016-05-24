@@ -43,7 +43,7 @@ public:
     void startDrawing();
     void endDrawing();
     void loadPath(string file);
-    void size();
+    int size();
     
     vector<Path *> paths;
     int pathIndex;

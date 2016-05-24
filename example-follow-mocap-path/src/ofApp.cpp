@@ -49,7 +49,7 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    if (paths.size > 0){
+    if (paths.size() > 0){
         paths.update();
     }
     
