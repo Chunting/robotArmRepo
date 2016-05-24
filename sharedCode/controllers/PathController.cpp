@@ -63,6 +63,11 @@ void PathController::draw(){
    
 }
 
+
+void PathController::size(){
+    return paths.size();
+}
+
 void PathController::pauseDrawing(){
     pause = true;
 }

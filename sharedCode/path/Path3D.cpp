@@ -23,9 +23,33 @@ void Path3D::setup(){
 //    path = fooCircle[0];
     path = path_XZ;
     buildPerpFrames(path);
+    
+    perpFrames.clear();
+    for (int i=0; i<ptf.framesSize(); i++){
+        perpFrames.push_back(ptf.frameAt(i));
+    }
+    
     reverse = false;
     
     direction = 1;
+}
+
+void Path3D::setup(ofPolyline &polyline, vector<ofMatrix4x4> &m44){
+    
+    
+    
+    ptIndex = 0;
+    
+    // ignore the first and last points for the centroid
+    for (int i=0; i<polyline.getVertices().size(); i++){
+        centroid += polyline.getVertices()[i];
+    }
+    centroid /= polyline.getVertices().size();
+
+    path = polyline;
+    perpFrames.clear();
+    perpFrames = m44;
+    
 }
 
 void Path3D::set(ofPolyline &polyline){
@@ -43,7 +67,12 @@ void Path3D::set(ofPolyline &polyline){
     // assign path and make profile
 //    profile = buildProfile(.025,4);
     path = polyline;
-    buildPerpFrames(path);   
+    buildPerpFrames(path);
+    
+    perpFrames.clear();
+    for (int i=0; i<ptf.framesSize(); i++){
+        perpFrames.push_back(ptf.frameAt(i));
+    }
 
 }
 
@@ -280,6 +309,8 @@ void Path3D::buildPerpFrames(ofPolyline polyline){
     for (auto &p : polyline){
         ptf.addPoint(p);
     }
+    
+
     
 }
 
