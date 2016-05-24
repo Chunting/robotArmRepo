@@ -235,8 +235,16 @@ void ofApp::moveArm(){
 
         
 //        tcpNode.setTransformMatrix(currentRB.matrix);
-        tcpNode.setPosition(tcpNode.getPosition().x, tcpNode.getPosition().y, currentRB.matrix.getTranslation().y*1000);
-        tcpNode.setOrientation(currentRB.matrix.getRotate());
+        tcpNode.setPosition(currentRB.matrix.getTranslation().x*1000, currentRB.matrix.getTranslation().y*1000, currentRB.matrix.getTranslation().z*1000);
+        
+        
+        // rotate quaternion so that robot aligns to rb's z-axis instead of x-axis
+        ofQuaternion mocapOrient = currentRB.matrix.getRotate();
+        mocapOrient *= mocapOrient.conj();
+        mocapOrient.makeRotate(90, 0, 1, 0);
+        mocapOrient *= currentRB.matrix.getRotate();
+        
+        tcpNode.setOrientation(mocapOrient);
     }
     
     // follow a user-defined position and orientation
