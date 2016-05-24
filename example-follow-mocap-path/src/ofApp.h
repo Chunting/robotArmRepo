@@ -61,6 +61,7 @@ class ofApp : public ofBaseApp{
         PathController paths;
         void moveArm();
         bool followRigidBody;
+        bool followPath;
     
 
         // Motion Capture

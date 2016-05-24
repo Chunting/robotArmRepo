@@ -44,6 +44,7 @@ void PathController::addPath(Path *path){
 }
 
 ofMatrix4x4 PathController::getNextPose(){
+    
     return paths[pathIndex]->getPoseAt(paths[pathIndex]->getPtIndex());
 }
 

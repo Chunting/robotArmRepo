@@ -24,39 +24,41 @@ void Path3D::setup(){
     path = path_XZ;
     buildPerpFrames(path);
     
-    perpFrames.clear();
-    for (int i=0; i<ptf.framesSize(); i++){
-        perpFrames.push_back(ptf.frameAt(i));
-    }
+//    perpFrames.clear();
+//    for (int i=0; i<ptf.framesSize(); i++){
+//        perpFrames.push_back(ptf.frameAt(i));
+//    }
     
     reverse = false;
     
     direction = 1;
 }
 
-void Path3D::setup(ofPolyline &polyline, vector<ofMatrix4x4> &m44){
-    
-    
-    
-    ptIndex = 0;
-    
-    // ignore the first and last points for the centroid
-    for (int i=0; i<polyline.getVertices().size(); i++){
-        centroid += polyline.getVertices()[i];
-    }
-    centroid /= polyline.getVertices().size();
-
-    path = polyline;
-    perpFrames.clear();
-    perpFrames = m44;
-    
-}
+//void Path3D::setup(ofPolyline &polyline, vector<ofMatrix4x4> &m44){
+//    
+//    
+//    
+//    ptIndex = 0;
+//    
+//    // ignore the first and last points for the centroid
+//    for (int i=0; i<polyline.getVertices().size(); i++){
+//        centroid += polyline.getVertices()[i];
+//    }
+//    centroid /= polyline.getVertices().size();
+//
+//    path = polyline;
+//    perpFrames.clear();
+//    perpFrames = m44;
+//    
+//}
 
 void Path3D::set(ofPolyline &polyline){
     
     setup(); // incase path hasn't been set up yet
     
     ptIndex = 0;
+    reverse = true;
+    direction = 1;
     
     // ignore the first and last points for the centroid
     for (int i=1; i<polyline.getVertices().size()-1; i++){
@@ -69,10 +71,6 @@ void Path3D::set(ofPolyline &polyline){
     path = polyline;
     buildPerpFrames(path);
     
-    perpFrames.clear();
-    for (int i=0; i<ptf.framesSize(); i++){
-        perpFrames.push_back(ptf.frameAt(i));
-    }
 
 }
 
@@ -130,54 +128,33 @@ void Path3D::keyPressed(int key){
 
 ofMatrix4x4 Path3D::getNextPose(){
     
-    if (perpFrames.size() > 0){
+    reverse = true;
+    if(ptf.framesSize()>0){
+        
         // go back-and-forth along a path
-        if (reverse && (ptIndex == 0 || ptIndex == perpFrames.size()-1))
+        if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
             direction *= -1;
         
-        ptIndex = (ptIndex + direction) % perpFrames.size();
+        ptIndex = (ptIndex + direction) % ptf.framesSize();
         
-        orientation = perpFrames[ptIndex];
+        orientation = ptf.frameAt(ptIndex);
         
         if (makeZForward)
             orientation = zForward(orientation);
         else if (makeZOut)
             orientation = zOut(orientation);
-        //        else
-        //            orientation = flip(orientation);
+//        else
+//            orientation = flip(orientation);
         
-        //        return flip(orientation);
+//        return flip(orientation);
         return orientation;
-
     }
-    
-//    
-//    if(ptf.framesSize()>0){
-//        
-//        // go back-and-forth along a path
-//        if (reverse && (ptIndex == 0 || ptIndex == ptf.framesSize()-1))
-//            direction *= -1;
-//        
-//        ptIndex = (ptIndex + direction) % ptf.framesSize();
-//        
-//        orientation = ptf.frameAt(ptIndex);
-//        
-//        if (makeZForward)
-//            orientation = zForward(orientation);
-//        else if (makeZOut)
-//            orientation = zOut(orientation);
-////        else
-////            orientation = flip(orientation);
-//        
-////        return flip(orientation);
-//        return orientation;
-//    }
 }
 
 ofMatrix4x4 Path3D::getPoseAt(int index){
     
-    return perpFrames[index];
-//    return ptf.frameAt(index);
+    
+    return ptf.frameAt(index);
     
 }
 

@@ -6,7 +6,7 @@ class Path3D : public Path{
 public:
     /* Path Generator */
     void setup();
-    void setup(ofPolyline &polyline, vector<ofMatrix4x4> &m44);
+//    void setup(ofPolyline &polyline, vector<ofMatrix4x4> &m44);
     void set(ofPolyline &polyline);
 
     ofVec3f getNextNormal();
@@ -37,9 +37,6 @@ public:
     
     /// \brief Perpendicular Frame Generator
     ofxPtf ptf;
-    
-    /// \brief Perpendicular Frame Generator
-    vector<ofMatrix4x4> perpFrames;
     
     /// \brief Make the z-axis of the perp frame the forward-facing axis
     ///

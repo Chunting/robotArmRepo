@@ -113,8 +113,8 @@ void ofApp::updateMocap(){
         if (record){
             recordedPath.push_back(rb);
             
-            // store previous 20 rigid bodies
-            if (recordedPath.size()>20)
+            // store previous 200 rigid bodies
+            if (recordedPath.size()>200)
                 recordedPath.erase(recordedPath.begin());
         }
         
@@ -247,6 +247,9 @@ void ofApp::moveArm(){
         mocapOrient *= currentRB.matrix.getRotate();
         
         tcpNode.setOrientation(mocapOrient);
+        
+        // update gizmo
+        gizmo.setNode(tcpNode);
     }
     
     // follow a user-defined position and orientation
@@ -255,6 +258,20 @@ void ofApp::moveArm(){
         parameters.targetTCP.rotation = tcpNode.getOrientationQuat();
         parameters.targetTCPOrientation = ofVec4f(parameters.targetTCP.rotation.x(), parameters.targetTCP.rotation.y(), parameters.targetTCP.rotation.z(), parameters.targetTCP.rotation.w());
         
+    }
+    
+    if (followPath && !followRigidBody){
+        ofMatrix4x4 orientation = paths.getNextPose();
+        parameters.targetTCP.position = orientation.getTranslation();
+        
+        parameters.targetTCP.rotation = ofQuaternion(90, ofVec3f(0, 0, 1));
+        parameters.targetTCP.rotation*=ofQuaternion(90, ofVec3f(1, 0, 0));
+        parameters.targetTCP.rotation *= orientation.getRotate();
+        
+        // update the gizmo controller
+        tcpNode.setPosition(parameters.targetTCP.position*1000);
+        tcpNode.setOrientation(parameters.targetTCP.rotation);
+        gizmo.setNode(tcpNode);
     }
     
     
@@ -473,7 +490,7 @@ void ofApp::keyPressed(int key){
                 pl.addVertex(ofPoint(rb.getMatrix().getTranslation()));
                 m44.push_back(rb.getMatrix());
             }
-            path.setup(pl, m44);
+            path.set(pl);
             
             paths.addPath(&path);
         }
@@ -483,8 +500,11 @@ void ofApp::keyPressed(int key){
         followRigidBody = !followRigidBody;
     }
     
+    if (key == ' '){
+        followPath = !followPath;
+    }
     
-    paths.keyPressed(key);
+//    paths.keyPressed(key);
 
     handleViewportPresets(key);
 }
